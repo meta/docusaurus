@@ -7,7 +7,14 @@
 
 import {translate} from '@docusaurus/Translate';
 
-import type {DocSearchTranslations} from '@docsearch/react';
+import type {ButtonTranslations, ModalTranslations} from '@docsearch/react';
+
+// We use our own type because the exported one is Partial<>
+// TS should ensure we have translated everything exhaustively
+type DocSearchTranslations = {
+  button: ButtonTranslations;
+  modal: ModalTranslations;
+};
 
 // TODO Docusaurus v4: require DocSearch v4
 //  This needs to be cleaned after the upgrade
@@ -257,37 +264,10 @@ const translations: DocSearchTranslations = {
         message: 'Escape key',
         description: 'The ARIA label for close key in footer',
       }),
-      poweredByText: translate({
-        id: 'theme.SearchModal.footer.searchByText',
-        message: 'Powered by',
-        description: "The 'Powered by' text for footer",
-      }),
       backToSearchText: translate({
         id: 'theme.SearchModal.footer.backToSearchText',
         message: 'Back to search',
         description: 'The back to search text for footer',
-      }),
-    },
-    noResultsScreen: {
-      noResultsText: translate({
-        id: 'theme.SearchModal.noResultsScreen.noResultsText',
-        message: 'No results found for',
-        description: 'The text when there are no results',
-      }),
-      suggestedQueryText: translate({
-        id: 'theme.SearchModal.noResultsScreen.suggestedQueryText',
-        message: 'Try searching for',
-        description: 'The text for suggested query',
-      }),
-      reportMissingResultsText: translate({
-        id: 'theme.SearchModal.noResultsScreen.reportMissingResultsText',
-        message: 'Believe this query should return results?',
-        description: 'The text for reporting missing results',
-      }),
-      reportMissingResultsLinkText: translate({
-        id: 'theme.SearchModal.noResultsScreen.reportMissingResultsLinkText',
-        message: 'Let us know.',
-        description: 'The link text for reporting missing results',
       }),
     },
   },
