@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Дайте нам знати.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Чи вважаєте ви, що цей запит має повернути результати?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Спробуйте пошукати",
-  "theme.SearchModal.placeholder": "Пошук документів",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

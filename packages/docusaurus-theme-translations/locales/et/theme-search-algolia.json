@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Anna meile teada.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Usud, et see päring peaks tulemuse andma?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Proovi otsida",
-  "theme.SearchModal.placeholder": "Otsi dokumente",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Återkoppla.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Tycker du att sökningen borde returnera resultat?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Försök sök efter",
-  "theme.SearchModal.placeholder": "Sök i dokumentationen",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Fråga AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Tillbaka till sökordssökning",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Tillbaka till sökordssökning",

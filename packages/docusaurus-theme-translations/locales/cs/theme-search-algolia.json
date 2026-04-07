@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Dejte nám vědět.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Věříte, že tento dotaz by měl vrátit výsledky?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Zkuste vyhledat",
-  "theme.SearchModal.placeholder": "Prohledat dokumentaci",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

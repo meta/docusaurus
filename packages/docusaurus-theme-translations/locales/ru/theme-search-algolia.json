@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Сообщите нам.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Нет подходящего результата поиска?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Попробуйте",
-  "theme.SearchModal.placeholder": "Поиск",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

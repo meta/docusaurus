@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Láttu okkur vita.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Tel að þessi fyrirspurn eigi að skila niðurstöðum?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Prófaðu að leita að",
-  "theme.SearchModal.placeholder": "Leita í skjölum",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

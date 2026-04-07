@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "報告する",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "よりよい検索結果がありますか?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "次の検索を試す:",
-  "theme.SearchModal.placeholder": "ドキュメントを検索",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "AIに質問：",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "キーワード検索に戻る",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "キーワード検索に戻る",

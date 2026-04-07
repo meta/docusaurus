@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "請告知我們。",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "認為這個查詢應該有結果？",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "試試搜尋",
-  "theme.SearchModal.placeholder": "搜尋文檔",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

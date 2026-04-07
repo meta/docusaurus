@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "আমাদের জানান।",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "বিশ্বাস করেন এই অনুসন্ধানে ফলাফল থাকা উচিত?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "অনুসন্ধান করার চেষ্টা করুন",
-  "theme.SearchModal.placeholder": "ডক্স অনুসন্ধান করুন",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

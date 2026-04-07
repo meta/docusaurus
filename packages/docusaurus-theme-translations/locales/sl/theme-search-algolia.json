@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Obvestite nas.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Mislite, da bi morali obstajati rezultati?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Poskusite poiskati",
-  "theme.SearchModal.placeholder": "Išči po dokumentaciji",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

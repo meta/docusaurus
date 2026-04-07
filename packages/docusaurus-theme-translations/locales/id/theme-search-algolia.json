@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Beri tahu kami.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Yakin pencarian ini seharusnya memberikan hasil?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Coba lakukan pencarian untuk",
-  "theme.SearchModal.placeholder": "Cari dokumentasi",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Tanya AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Kembali ke pencarian kata kunci",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Kembali ke pencarian kata kunci",

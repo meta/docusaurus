@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Adja meg nekünk.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Úgy gondolja, hogy ez a keresés eredményt kellene adnia?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Próbálja meg keresni",
-  "theme.SearchModal.placeholder": "Dokumentumok keresése",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",
