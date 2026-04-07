@@ -6,7 +6,6 @@
  */
 
 import {Joi} from '@docusaurus/utils-validation';
-import {docSearchV3} from './docSearchVersion';
 import type {ThemeConfigValidationContext} from '@docusaurus/types';
 import type {
   ThemeConfig,
@@ -129,23 +128,11 @@ const Schema = Joi.object<ThemeConfig>({
     .unknown(),
 });
 
-// TODO Docusaurus v4: remove this check when we drop DocSearch v3
-function ensureAskAISupported(themeConfig: ThemeConfig) {
-  // enforce DocsSearch v4 requirement when AskAI is configured
-  if (themeConfig.algolia.askAi && docSearchV3) {
-    throw new Error(
-      'The askAi feature is only supported in DocSearch v4. ' +
-        'Please upgrade to DocSearch v4 by installing "@docsearch/react": "^4.0.0" ' +
-        'or remove the askAi configuration from your theme config.',
-    );
-  }
-}
-
 export function validateThemeConfig({
   validate,
   themeConfig: themeConfigInput,
 }: ThemeConfigValidationContext<ThemeConfig>): ThemeConfig {
   const themeConfig = validate(Schema, themeConfigInput);
-  ensureAskAISupported(themeConfig);
+
   return themeConfig;
 }

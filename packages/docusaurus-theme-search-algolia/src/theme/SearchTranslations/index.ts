@@ -15,56 +15,7 @@ import type {DocSearchTranslations} from '@docsearch/react';
 //  This implies that labels have been kept retro-compatible with v3
 //  Once we upgrade, we should be able to rely on v4 types only
 //  and remove v3 retro-compatibility labels that do not exist anymore in v4
-const translations: DocSearchTranslations & {
-  placeholder: string;
-  modal: {
-    searchBox: {
-      placeholderText: string;
-      placeholderTextAskAi: string;
-      placeholderTextAskAiStreaming: string;
-      enterKeyHintAskAi: string;
-      searchInputLabel: string;
-      backToKeywordSearchButtonText: string;
-      backToKeywordSearchButtonAriaLabel: string;
-      enterKeyHint: string;
-      clearButtonTitle: string;
-      clearButtonAriaLabel: string;
-      closeButtonText: string;
-      resetButtonTitle: string;
-      resetButtonAriaLabel: string;
-      cancelButtonText: string;
-      cancelButtonAriaLabel: string;
-      closeButtonAriaLabel: string;
-    };
-    startScreen: {
-      recentConversationsTitle: string;
-      removeRecentConversationButtonTitle: string;
-    };
-    resultsScreen: {
-      askAiPlaceholder: string;
-    };
-    askAiScreen: {
-      disclaimerText: string;
-      relatedSourcesText: string;
-      thinkingText: string;
-      copyButtonText: string;
-      copyButtonCopiedText: string;
-      copyButtonTitle: string;
-      likeButtonTitle: string;
-      dislikeButtonTitle: string;
-      thanksForFeedbackText: string;
-      preToolCallText: string;
-      duringToolCallText: string;
-      afterToolCallText: string;
-    };
-    footer: {
-      submitQuestionText: string;
-      poweredByText: string;
-      backToSearchText: string;
-      searchByText: string;
-    };
-  };
-} = {
+const translations: DocSearchTranslations = {
   button: {
     buttonText: translate({
       id: 'theme.SearchBar.label',
@@ -79,28 +30,6 @@ const translations: DocSearchTranslations & {
   },
   modal: {
     searchBox: {
-      resetButtonTitle: translate({
-        id: 'theme.SearchModal.searchBox.resetButtonTitle',
-        message: 'Clear the query',
-        description: 'The label and ARIA label for search box reset button',
-      }),
-      resetButtonAriaLabel: translate({
-        id: 'theme.SearchModal.searchBox.resetButtonTitle',
-        message: 'Clear the query',
-        description: 'The label and ARIA label for search box reset button',
-      }),
-      cancelButtonText: translate({
-        id: 'theme.SearchModal.searchBox.cancelButtonText',
-        message: 'Cancel',
-        description: 'The label and ARIA label for search box cancel button',
-      }),
-      cancelButtonAriaLabel: translate({
-        id: 'theme.SearchModal.searchBox.cancelButtonText',
-        message: 'Cancel',
-        description: 'The label and ARIA label for search box cancel button',
-      }),
-
-      // v4
       clearButtonTitle: translate({
         id: 'theme.SearchModal.searchBox.resetButtonTitle',
         message: 'Clear the query',
@@ -333,11 +262,6 @@ const translations: DocSearchTranslations & {
         message: 'Powered by',
         description: "The 'Powered by' text for footer",
       }),
-      searchByText: translate({
-        id: 'theme.SearchModal.footer.searchByText',
-        message: 'Powered by',
-        description: "The 'Powered by' text for footer",
-      }),
       backToSearchText: translate({
         id: 'theme.SearchModal.footer.backToSearchText',
         message: 'Back to search',
@@ -367,11 +291,6 @@ const translations: DocSearchTranslations & {
       }),
     },
   },
-  placeholder: translate({
-    id: 'theme.SearchModal.placeholder',
-    message: 'Search docs',
-    description: 'The placeholder of the input of the DocSearch pop-up modal',
-  }),
 };
 
 export default translations;

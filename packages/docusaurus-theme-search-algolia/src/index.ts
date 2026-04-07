@@ -12,7 +12,6 @@ import {
   createOpenSearchHeadTags,
   shouldCreateOpenSearchFile,
 } from './opensearch';
-import {docSearchV3} from './docSearchVersion';
 
 import type {LoadContext, Plugin} from '@docusaurus/types';
 import type {ThemeConfig} from '@docusaurus/theme-search-algolia';
@@ -65,26 +64,6 @@ export default function themeSearchAlgolia(context: LoadContext): Plugin<void> {
         return {headTags: createOpenSearchHeadTags({context})};
       }
       return {};
-    },
-
-    configureWebpack() {
-      // TODO Docusaurus v4: remove after dropping DocSearch v3 support
-      if (docSearchV3) {
-        // These aliases ensure DocSearch v3 imports are compatible with
-        // the newly added DocSearch v4 entry points
-        // See https://github.com/algolia/docsearch/pull/2764
-        const docSearchV3Entry = require.resolve('@docsearch/react');
-        return {
-          resolve: {
-            alias: {
-              '@docsearch/react/version': docSearchV3Entry,
-              '@docsearch/react/useDocSearchKeyboardEvents': docSearchV3Entry,
-              '@docsearch/react/useTheme': docSearchV3Entry,
-            },
-          },
-        };
-      }
-      return undefined;
     },
   };
 }
