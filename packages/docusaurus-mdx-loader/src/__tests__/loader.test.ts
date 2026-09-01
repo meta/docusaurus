@@ -11,7 +11,13 @@ import {mdxLoader} from '../loader';
 import type {CrossCompilerCache, Options} from '../options';
 import type {SimpleProcessor} from '../processor';
 import type {WebpackCompilerName} from '@docusaurus/utils';
+import type {Root} from 'mdast';
+import type {Plugin} from 'unified';
 import type {LoaderContext} from 'webpack';
+
+const warningPlugin: Plugin<[], Root> = () => (_tree, file) => {
+  file.message('This is a Remark plugin warning');
+};
 
 describe('mdxLoader', () => {
   it('compiles MDX only once for client/server with cloned loader options', async () => {
@@ -26,19 +32,50 @@ describe('mdxLoader', () => {
     expect(processor.process).toHaveBeenCalledTimes(1);
     expect(serverResult).toEqual(clientResult);
   });
+
+  it('warns about messages reported by Remark plugins', async () => {
+    using warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    await runLoader({
+      compilerName: 'client',
+      options: createOptions({remarkPlugins: [warningPlugin]}),
+    });
+
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0]![0]).toContain('This is a Remark plugin warning');
+  });
+
+  it('does not warn when Remark plugins report nothing', async () => {
+    using warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    await runLoader({compilerName: 'client', options: createOptions()});
+
+    expect(warn).not.toHaveBeenCalled();
+  });
 });
 
 function createFakeProcessor(): SimpleProcessor {
   return {
-    process: vi.fn(async () => ({content: 'export default "MDX";', data: {}})),
+    process: vi.fn(async () => ({
+      content: 'export default "MDX";',
+      data: {},
+      messages: [],
+    })),
   };
 }
 
-function createOptions({processor}: {processor: SimpleProcessor}): Options {
+function createOptions({
+  processor,
+  remarkPlugins,
+}: {
+  processor?: SimpleProcessor;
+  remarkPlugins?: Options['remarkPlugins'];
+} = {}): Options {
   const crossCompilerCache: CrossCompilerCache = new Map();
   return {
     siteDir: __dirname,
     staticDirs: [],
+    remarkPlugins,
     markdownConfig: {
       format: 'mdx',
       parseFrontMatter: DEFAULT_PARSE_FRONT_MATTER,
@@ -53,7 +90,7 @@ function createOptions({processor}: {processor: SimpleProcessor}): Options {
         onUnusedMarkdownDirectives: 'throw',
       },
     },
-    processors: {mdProcessor: processor, mdxProcessor: processor},
+    processors: processor && {mdProcessor: processor, mdxProcessor: processor},
     getCrossCompilerCache: () => crossCompilerCache,
   };
 }

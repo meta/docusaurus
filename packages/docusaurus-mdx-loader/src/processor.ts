@@ -44,6 +44,11 @@ import type {Pluggable} from 'unified';
 export type SimpleProcessorResult = {
   content: string;
   data: {[key: string]: unknown};
+  /**
+   * Warnings reported by Remark/Rehype plugins through the vfile API.
+   * See https://github.com/vfile/vfile#filemessagereason-options
+   */
+  messages: VFile['messages'];
 };
 
 export type SimpleProcessor = {
@@ -241,6 +246,7 @@ function createProcessorUncached({
       return mdxProcessor.process(vfile).then((result) => ({
         content: result.toString(),
         data: result.data,
+        messages: result.messages,
       }));
     },
   };
