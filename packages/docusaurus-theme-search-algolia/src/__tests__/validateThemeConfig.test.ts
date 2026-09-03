@@ -5,16 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {describe, expect, it, vi} from 'vitest';
+import {describe, expect, it} from 'vitest';
 import {DEFAULT_CONFIG, validateThemeConfig} from '../validateThemeConfig';
 import type {Joi} from '@docusaurus/utils-validation';
 import type {
   ThemeConfig,
   UserThemeConfig,
 } from '@docusaurus/theme-search-algolia';
-
-// mock DocSearch to a v4 version to allow AskAI tests to pass
-vi.mock('@docsearch/react', () => ({version: '4.0.0'}));
 
 type AlgoliaInput = UserThemeConfig['algolia'];
 
@@ -41,7 +38,7 @@ function testValidateThemeConfig(algolia: AlgoliaInput) {
 describe('validateThemeConfig', () => {
   it('minimal config', () => {
     const algolia: AlgoliaInput = {
-      indexName: 'index',
+      indices: ['index'],
       apiKey: 'apiKey',
       appId: 'BH4D9OD16A',
     };
@@ -55,7 +52,7 @@ describe('validateThemeConfig', () => {
 
   it('unknown attributes', () => {
     const algolia: AlgoliaInput = {
-      indexName: 'index',
+      indices: ['index'],
       apiKey: 'apiKey',
       // @ts-expect-error: expected type error!
       unknownKey: 'unknownKey',
@@ -89,7 +86,7 @@ describe('validateThemeConfig', () => {
     );
   });
 
-  it('missing indexName config', () => {
+  it('missing indices config', () => {
     // @ts-expect-error: expected type error!
     const algolia: AlgoliaInput = {
       apiKey: 'apiKey',
@@ -98,14 +95,14 @@ describe('validateThemeConfig', () => {
     expect(() =>
       testValidateThemeConfig(algolia),
     ).toThrowErrorMatchingInlineSnapshot(
-      `[ValidationError: "algolia.indexName" is required]`,
+      `[ValidationError: "algolia.indices" is required]`,
     );
   });
 
   it('missing apiKey config', () => {
     // @ts-expect-error: expected type error!
     const algolia: AlgoliaInput = {
-      indexName: 'indexName',
+      indices: ['indexName'],
       appId: 'BH4D9OD16A',
     };
     expect(() =>
@@ -118,7 +115,7 @@ describe('validateThemeConfig', () => {
   it('missing appId config', () => {
     // @ts-expect-error: expected type error!
     const algolia: AlgoliaInput = {
-      indexName: 'indexName',
+      indices: ['indexName'],
       apiKey: 'apiKey',
     };
     expect(() =>
@@ -128,10 +125,66 @@ describe('validateThemeConfig', () => {
     );
   });
 
+  describe('indices config', () => {
+    it('accepts string and object indices', () => {
+      const algolia: AlgoliaInput = {
+        appId: 'BH4D9OD16A',
+        apiKey: 'apiKey',
+        indices: [
+          'primary-index',
+          {
+            name: 'secondary-index',
+            searchParameters: {
+              facetFilters: [
+                'language:en',
+                ['version:current', 'version:next'],
+              ],
+              hitsPerPage: 5,
+            },
+          },
+        ],
+      };
+
+      expect(testValidateThemeConfig(algolia)).toEqual({
+        algolia: {
+          ...DEFAULT_CONFIG,
+          ...algolia,
+        },
+      });
+    });
+
+    it('rejects an empty indices array', () => {
+      const algolia: AlgoliaInput = {
+        appId: 'BH4D9OD16A',
+        apiKey: 'apiKey',
+        indices: [],
+      };
+
+      expect(() => testValidateThemeConfig(algolia)).toThrow(
+        '"algolia.indices" must contain at least 1 items',
+      );
+    });
+
+    it('rejects an index object without a name', () => {
+      const algolia: AlgoliaInput = {
+        appId: 'BH4D9OD16A',
+        apiKey: 'apiKey',
+        indices: [
+          // @ts-expect-error: expected type error: missing name
+          {searchParameters: {facetFilters: ['language:en']}},
+        ],
+      };
+
+      expect(() => testValidateThemeConfig(algolia)).toThrow(
+        '"algolia.indices[0].name" is required',
+      );
+    });
+  });
+
   it('contextualSearch config', () => {
     const algolia: AlgoliaInput = {
       appId: 'BH4D9OD16A',
-      indexName: 'index',
+      indices: ['index'],
       apiKey: 'apiKey',
       contextualSearch: true,
     };
@@ -146,7 +199,7 @@ describe('validateThemeConfig', () => {
   it('externalUrlRegex config', () => {
     const algolia: AlgoliaInput = {
       appId: 'BH4D9OD16A',
-      indexName: 'index',
+      indices: ['index'],
       apiKey: 'apiKey',
       externalUrlRegex: 'http://external-domain.com',
     };
@@ -158,11 +211,46 @@ describe('validateThemeConfig', () => {
     });
   });
 
+  describe('searchPagePath config', () => {
+    it.each([false, null, 'custom-search'] as const)(
+      'accepts %j',
+      (searchPagePath) => {
+        const algolia: AlgoliaInput = {
+          appId: 'BH4D9OD16A',
+          indices: ['index'],
+          apiKey: 'apiKey',
+          searchPagePath,
+        };
+
+        expect(testValidateThemeConfig(algolia)).toEqual({
+          algolia: {
+            ...DEFAULT_CONFIG,
+            ...algolia,
+          },
+        });
+      },
+    );
+
+    it('rejects true', () => {
+      const algolia: AlgoliaInput = {
+        appId: 'BH4D9OD16A',
+        indices: ['index'],
+        apiKey: 'apiKey',
+        // @ts-expect-error: expected type error
+        searchPagePath: true,
+      };
+
+      expect(() => testValidateThemeConfig(algolia)).toThrow(
+        '"algolia.searchPagePath" contains an invalid value',
+      );
+    });
+  });
+
   describe('replaceSearchResultPathname', () => {
     it('escapes from string', () => {
       const algolia: AlgoliaInput = {
         appId: 'BH4D9OD16A',
-        indexName: 'index',
+        indices: ['index'],
         apiKey: 'apiKey',
         replaceSearchResultPathname: {
           from: '/docs/some-\\special-.[regexp]{chars*}',
@@ -184,7 +272,7 @@ describe('validateThemeConfig', () => {
     it('converts from regexp to string', () => {
       const algolia: AlgoliaInput = {
         appId: 'BH4D9OD16A',
-        indexName: 'index',
+        indices: ['index'],
         apiKey: 'apiKey',
         replaceSearchResultPathname: {
           // @ts-expect-error: test regexp input
@@ -204,16 +292,45 @@ describe('validateThemeConfig', () => {
         },
       });
     });
+
+    it('rejects an invalid from value', () => {
+      const algolia: AlgoliaInput = {
+        appId: 'BH4D9OD16A',
+        indices: ['index'],
+        apiKey: 'apiKey',
+        replaceSearchResultPathname: {
+          // @ts-expect-error: expected type error
+          from: 42,
+          to: '/abc',
+        },
+      };
+
+      expect(() => testValidateThemeConfig(algolia)).toThrow(
+        /it should be a RegExp or a string, but received 42/,
+      );
+    });
+
+    it('rejects a missing to value', () => {
+      const algolia: AlgoliaInput = {
+        appId: 'BH4D9OD16A',
+        indices: ['index'],
+        apiKey: 'apiKey',
+        replaceSearchResultPathname: {from: '/docs'},
+      };
+
+      expect(() => testValidateThemeConfig(algolia)).toThrow(
+        '"algolia.replaceSearchResultPathname.to" is required',
+      );
+    });
   });
 
   it('searchParameters.facetFilters search config', () => {
     const algolia: AlgoliaInput = {
       appId: 'BH4D9OD16A',
-      indexName: 'index',
+      indices: [
+        {name: 'index', searchParameters: {facetFilters: ['version:1.0']}},
+      ],
       apiKey: 'apiKey',
-      searchParameters: {
-        facetFilters: ['version:1.0'],
-      },
     };
     expect(testValidateThemeConfig(algolia)).toEqual({
       algolia: {
@@ -223,11 +340,67 @@ describe('validateThemeConfig', () => {
     });
   });
 
-  describe('askAi config validation', () => {
-    it('accepts string format (assistantId)', () => {
+  // TODO Enable once DocSearch releases fix for facets with multiple
+  // selected values. Currently the contextual search facets do no work.
+  // https://github.com/algolia/docsearch/issues/3037
+  describe.todo('facets config', () => {
+    it('accepts facets and a result badge key', () => {
       const algolia: AlgoliaInput = {
         appId: 'BH4D9OD16A',
-        indexName: 'index',
+        indices: ['index'],
+        apiKey: 'apiKey',
+        // @ts-expect-error: expected type error
+        facets: [{key: 'language', label: 'Language'}, {key: 'version'}],
+        resultBadgeKey: 'language',
+      };
+
+      expect(testValidateThemeConfig(algolia)).toEqual({
+        algolia: {
+          ...DEFAULT_CONFIG,
+          ...algolia,
+        },
+      });
+    });
+
+    it('rejects a facet without a key', () => {
+      const algolia: AlgoliaInput = {
+        appId: 'BH4D9OD16A',
+        indices: ['index'],
+        apiKey: 'apiKey',
+        // @ts-expect-error: expected type error
+        facets: [{label: 'Language'}],
+      };
+
+      expect(() => testValidateThemeConfig(algolia)).toThrow(
+        '"algolia.facets[0].key" is required',
+      );
+    });
+
+    it('rejects unknown facet properties', () => {
+      const algolia: AlgoliaInput = {
+        appId: 'BH4D9OD16A',
+        indices: ['index'],
+        apiKey: 'apiKey',
+        // @ts-expect-error: expected type error
+        facets: [
+          {
+            key: 'language',
+            unknown: true,
+          },
+        ],
+      };
+
+      expect(() => testValidateThemeConfig(algolia)).toThrow(
+        '"algolia.facets[0].unknown" is not allowed',
+      );
+    });
+  });
+
+  describe('askAi config validation', () => {
+    it('accepts string format (agentId)', () => {
+      const algolia: AlgoliaInput = {
+        appId: 'BH4D9OD16A',
+        indices: ['index'],
         apiKey: 'apiKey',
         askAi: 'my-assistant-id',
       };
@@ -236,8 +409,7 @@ describe('validateThemeConfig', () => {
           ...DEFAULT_CONFIG,
           ...algolia,
           askAi: {
-            assistantId: 'my-assistant-id',
-            indexName: algolia.indexName,
+            agentId: 'my-assistant-id',
             apiKey: algolia.apiKey,
             appId: algolia.appId,
           },
@@ -248,10 +420,10 @@ describe('validateThemeConfig', () => {
     it('accepts minimal object format', () => {
       const algolia: AlgoliaInput = {
         appId: 'BH4D9OD16A',
-        indexName: 'index',
+        indices: ['index'],
         apiKey: 'apiKey',
         askAi: {
-          assistantId: 'my-assistant-id',
+          agentId: 'my-assistant-id',
         },
       };
       expect(testValidateThemeConfig(algolia)).toEqual({
@@ -259,8 +431,7 @@ describe('validateThemeConfig', () => {
           ...DEFAULT_CONFIG,
           ...algolia,
           askAi: {
-            assistantId: 'my-assistant-id',
-            indexName: algolia.indexName,
+            agentId: 'my-assistant-id',
             apiKey: algolia.apiKey,
             appId: algolia.appId,
           },
@@ -271,13 +442,12 @@ describe('validateThemeConfig', () => {
     it('accepts full object format', () => {
       const algolia: AlgoliaInput = {
         appId: 'BH4D9OD16A',
-        indexName: 'index',
+        indices: ['index'],
         apiKey: 'apiKey',
         askAi: {
-          indexName: 'ai-index',
           apiKey: 'ai-apiKey',
           appId: 'ai-appId',
-          assistantId: 'my-assistant-id',
+          agentId: 'my-assistant-id',
         },
       };
       expect(testValidateThemeConfig(algolia)).toEqual({
@@ -291,7 +461,7 @@ describe('validateThemeConfig', () => {
     it('rejects invalid type', () => {
       const algolia: AlgoliaInput = {
         appId: 'BH4D9OD16A',
-        indexName: 'index',
+        indices: ['index'],
         apiKey: 'apiKey',
         // @ts-expect-error: expected type error
         askAi: 123, // Invalid: should be string or object
@@ -299,14 +469,14 @@ describe('validateThemeConfig', () => {
       expect(() =>
         testValidateThemeConfig(algolia),
       ).toThrowErrorMatchingInlineSnapshot(
-        `[ValidationError: askAi must be either a string (assistantId) or an object with indexName, apiKey, appId, and assistantId]`,
+        `[ValidationError: askAi must be either a string (agentId) or an object with apiKey, appId, and agentId]`,
       );
     });
 
     it('rejects empty askAi', () => {
       const algolia: AlgoliaInput = {
         appId: 'BH4D9OD16A',
-        indexName: 'index',
+        indices: ['index'],
         apiKey: 'apiKey',
         // @ts-expect-error: expected type error: missing mandatory fields
         askAi: {},
@@ -314,14 +484,14 @@ describe('validateThemeConfig', () => {
       expect(() =>
         testValidateThemeConfig(algolia),
       ).toThrowErrorMatchingInlineSnapshot(
-        `[ValidationError: "algolia.askAi.assistantId" is required]`,
+        `[ValidationError: "algolia.askAi.agentId" is required]`,
       );
     });
 
     it('accepts undefined askAi', () => {
       const algolia: AlgoliaInput = {
         appId: 'BH4D9OD16A',
-        indexName: 'index',
+        indices: ['index'],
         apiKey: 'apiKey',
       };
       expect(testValidateThemeConfig(algolia)).toEqual({
@@ -336,15 +506,17 @@ describe('validateThemeConfig', () => {
       it('accepts Ask AI facet filters', () => {
         const algolia = {
           appId: 'BH4D9OD16A',
-          indexName: 'index',
+          indices: ['index'],
           apiKey: 'apiKey',
           askAi: {
-            indexName: 'ai-index',
+            indices: ['ai-index'],
             apiKey: 'ai-apiKey',
             appId: 'ai-appId',
-            assistantId: 'my-assistant-id',
+            agentId: 'my-assistant-id',
             searchParameters: {
-              facetFilters: ['version:1.0'],
+              'ai-index': {
+                facetFilters: ['version:1.0'],
+              },
             },
           },
         } satisfies AlgoliaInput;
@@ -360,18 +532,24 @@ describe('validateThemeConfig', () => {
       it('accepts distinct Ask AI / algolia facet filters', () => {
         const algolia = {
           appId: 'BH4D9OD16A',
-          indexName: 'index',
+          indices: [
+            {
+              name: 'index',
+              searchParameters: {
+                facetFilters: ['version:algolia'],
+              },
+            },
+          ],
           apiKey: 'apiKey',
-          searchParameters: {
-            facetFilters: ['version:algolia'],
-          },
           askAi: {
-            indexName: 'ai-index',
+            indices: ['ai-index'],
             apiKey: 'ai-apiKey',
             appId: 'ai-appId',
-            assistantId: 'my-assistant-id',
+            agentId: 'my-assistant-id',
             searchParameters: {
-              facetFilters: ['version:askAi'],
+              'ai-index': {
+                facetFilters: ['version:askAi'],
+              },
             },
           },
         } satisfies AlgoliaInput;
@@ -384,19 +562,23 @@ describe('validateThemeConfig', () => {
         });
       });
 
-      it('falls back to algolia facet filters', () => {
+      it('does not inherit Algolia facet filters', () => {
         const algolia = {
           appId: 'BH4D9OD16A',
-          indexName: 'index',
+          indices: [
+            {
+              name: 'index',
+              searchParameters: {
+                facetFilters: ['version:1.0'],
+              },
+            },
+          ],
           apiKey: 'apiKey',
-          searchParameters: {
-            facetFilters: ['version:1.0'],
-          },
           askAi: {
-            indexName: 'ai-index',
+            indices: ['ai-index'],
             apiKey: 'ai-apiKey',
             appId: 'ai-appId',
-            assistantId: 'my-assistant-id',
+            agentId: 'my-assistant-id',
             searchParameters: {},
           },
         } satisfies AlgoliaInput;
@@ -405,24 +587,22 @@ describe('validateThemeConfig', () => {
           algolia: {
             ...DEFAULT_CONFIG,
             ...algolia,
-            askAi: {
-              ...algolia.askAi,
-              searchParameters: {
-                facetFilters: ['version:1.0'],
-              },
-            },
           },
         });
       });
 
-      it('falls back to algolia facet filters with AskAI string format (assistantId)', () => {
+      it('does not inherit Algolia facet filters with string format', () => {
         const algolia = {
           appId: 'BH4D9OD16A',
-          indexName: 'index',
+          indices: [
+            {
+              name: 'index',
+              searchParameters: {
+                facetFilters: ['version:1.0'],
+              },
+            },
+          ],
           apiKey: 'apiKey',
-          searchParameters: {
-            facetFilters: ['version:1.0'],
-          },
           askAi: 'my-assistant-id',
         } satisfies AlgoliaInput;
 
@@ -431,16 +611,213 @@ describe('validateThemeConfig', () => {
             ...DEFAULT_CONFIG,
             ...algolia,
             askAi: {
-              indexName: algolia.indexName,
               apiKey: algolia.apiKey,
               appId: algolia.appId,
-              assistantId: 'my-assistant-id',
+              agentId: 'my-assistant-id',
+            },
+          },
+        });
+      });
+
+      it.each([true, 2, 'url'] as const)(
+        'accepts all search parameters with distinct %j',
+        (distinct) => {
+          const algolia = {
+            appId: 'BH4D9OD16A',
+            indices: ['index'],
+            apiKey: 'apiKey',
+            askAi: {
+              agentId: 'my-agent-id',
               searchParameters: {
-                facetFilters: ['version:1.0'],
+                'ai-index': {
+                  facetFilters: ['language:en', 'version:current'],
+                  filters: 'type:docs',
+                  attributesToRetrieve: ['content', 'url'],
+                  restrictSearchableAttributes: ['content'],
+                  distinct,
+                },
+              },
+            },
+          } satisfies AlgoliaInput;
+
+          expect(testValidateThemeConfig(algolia)).toEqual({
+            algolia: {
+              ...DEFAULT_CONFIG,
+              ...algolia,
+              askAi: {
+                ...algolia.askAi,
+                apiKey: algolia.apiKey,
+                appId: algolia.appId,
+              },
+            },
+          });
+        },
+      );
+
+      it('rejects invalid facet filters', () => {
+        const algolia: AlgoliaInput = {
+          appId: 'BH4D9OD16A',
+          indices: ['index'],
+          apiKey: 'apiKey',
+          askAi: {
+            agentId: 'my-agent-id',
+            searchParameters: {
+              'ai-index': {
+                // @ts-expect-error: expected type error
+                facetFilters: [42],
+              },
+            },
+          },
+        };
+
+        expect(() => testValidateThemeConfig(algolia)).toThrowError(
+          'askAi must be either a string (agentId) or an object with apiKey, appId, and agentId',
+        );
+      });
+    });
+
+    describe('Ask AI memory', () => {
+      it('defaults enabled to false', () => {
+        const algolia: AlgoliaInput = {
+          appId: 'BH4D9OD16A',
+          indices: ['index'],
+          apiKey: 'apiKey',
+          askAi: {
+            agentId: 'my-agent-id',
+            memory: {userToken: 'user-token'},
+          },
+        };
+
+        expect(testValidateThemeConfig(algolia)).toEqual({
+          algolia: {
+            ...DEFAULT_CONFIG,
+            ...algolia,
+            askAi: {
+              agentId: 'my-agent-id',
+              apiKey: algolia.apiKey,
+              appId: algolia.appId,
+              memory: {
+                enabled: false,
+                userToken: 'user-token',
               },
             },
           },
         });
+      });
+
+      it('rejects an invalid enabled value', () => {
+        const algolia: AlgoliaInput = {
+          appId: 'BH4D9OD16A',
+          indices: ['index'],
+          apiKey: 'apiKey',
+          askAi: {
+            agentId: 'my-agent-id',
+            memory: {
+              // @ts-expect-error: expected type error
+              enabled: 'yes',
+            },
+          },
+        };
+
+        expect(() => testValidateThemeConfig(algolia)).toThrowError(
+          '"algolia.askAi.memory.enabled" must be a boolean',
+        );
+      });
+    });
+
+    describe('Ask AI prompt suggestions', () => {
+      it('defaults hitsPerPage to 3', () => {
+        const algolia: AlgoliaInput = {
+          appId: 'BH4D9OD16A',
+          indices: ['index'],
+          apiKey: 'apiKey',
+          askAi: {
+            agentId: 'my-agent-id',
+            promptSuggestions: {indexName: 'prompt-suggestions'},
+          },
+        };
+
+        expect(testValidateThemeConfig(algolia)).toEqual({
+          algolia: {
+            ...DEFAULT_CONFIG,
+            ...algolia,
+            askAi: {
+              agentId: 'my-agent-id',
+              apiKey: algolia.apiKey,
+              appId: algolia.appId,
+              promptSuggestions: {
+                indexName: 'prompt-suggestions',
+                hitsPerPage: 3,
+              },
+            },
+          },
+        });
+      });
+
+      it('preserves an explicit hitsPerPage', () => {
+        const algolia: AlgoliaInput = {
+          appId: 'BH4D9OD16A',
+          indices: ['index'],
+          apiKey: 'apiKey',
+          askAi: {
+            agentId: 'my-agent-id',
+            promptSuggestions: {
+              indexName: 'prompt-suggestions',
+              hitsPerPage: 5,
+            },
+          },
+        };
+
+        expect(testValidateThemeConfig(algolia)).toEqual({
+          algolia: {
+            ...DEFAULT_CONFIG,
+            ...algolia,
+            askAi: {
+              agentId: 'my-agent-id',
+              apiKey: algolia.apiKey,
+              appId: algolia.appId,
+              promptSuggestions: {
+                indexName: 'prompt-suggestions',
+                hitsPerPage: 5,
+              },
+            },
+          },
+        });
+      });
+
+      it('rejects an empty indexName', () => {
+        const algolia: AlgoliaInput = {
+          appId: 'BH4D9OD16A',
+          indices: ['index'],
+          apiKey: 'apiKey',
+          askAi: {
+            agentId: 'my-agent-id',
+            promptSuggestions: {indexName: ''},
+          },
+        };
+
+        expect(() => testValidateThemeConfig(algolia)).toThrowError(
+          '"algolia.askAi.promptSuggestions.indexName" is not allowed to be empty',
+        );
+      });
+
+      it('rejects a non-positive hitsPerPage', () => {
+        const algolia: AlgoliaInput = {
+          appId: 'BH4D9OD16A',
+          indices: ['index'],
+          apiKey: 'apiKey',
+          askAi: {
+            agentId: 'my-agent-id',
+            promptSuggestions: {
+              indexName: 'prompt-suggestions',
+              hitsPerPage: 0,
+            },
+          },
+        };
+
+        expect(() => testValidateThemeConfig(algolia)).toThrowError(
+          '"algolia.askAi.promptSuggestions.hitsPerPage" must be a positive number',
+        );
       });
     });
 
@@ -448,10 +825,10 @@ describe('validateThemeConfig', () => {
       it('accepts suggestedQuestions as true', () => {
         const algolia = {
           appId: 'BH4D9OD16A',
-          indexName: 'index',
+          indices: ['index'],
           apiKey: 'apiKey',
           askAi: {
-            assistantId: 'my-assistant-id',
+            agentId: 'my-assistant-id',
             suggestedQuestions: true,
           },
         } satisfies AlgoliaInput;
@@ -461,10 +838,9 @@ describe('validateThemeConfig', () => {
             ...DEFAULT_CONFIG,
             ...algolia,
             askAi: {
-              indexName: algolia.indexName,
               apiKey: algolia.apiKey,
               appId: algolia.appId,
-              assistantId: 'my-assistant-id',
+              agentId: 'my-assistant-id',
               suggestedQuestions: true,
             },
           },
@@ -474,10 +850,10 @@ describe('validateThemeConfig', () => {
       it('accepts suggestedQuestions as false', () => {
         const algolia = {
           appId: 'BH4D9OD16A',
-          indexName: 'index',
+          indices: ['index'],
           apiKey: 'apiKey',
           askAi: {
-            assistantId: 'my-assistant-id',
+            agentId: 'my-assistant-id',
             suggestedQuestions: false,
           },
         } satisfies AlgoliaInput;
@@ -487,10 +863,9 @@ describe('validateThemeConfig', () => {
             ...DEFAULT_CONFIG,
             ...algolia,
             askAi: {
-              indexName: algolia.indexName,
               apiKey: algolia.apiKey,
               appId: algolia.appId,
-              assistantId: 'my-assistant-id',
+              agentId: 'my-assistant-id',
               suggestedQuestions: false,
             },
           },
@@ -500,10 +875,10 @@ describe('validateThemeConfig', () => {
       it('rejects invalid suggestedQuestions type', () => {
         const algolia: AlgoliaInput = {
           appId: 'BH4D9OD16A',
-          indexName: 'index',
+          indices: ['index'],
           apiKey: 'apiKey',
           askAi: {
-            assistantId: 'my-assistant-id',
+            agentId: 'my-assistant-id',
             // @ts-expect-error: expected type error
             suggestedQuestions: 'invalid-string',
           },
@@ -518,10 +893,10 @@ describe('validateThemeConfig', () => {
       it('rejects suggestedQuestions as number', () => {
         const algolia: AlgoliaInput = {
           appId: 'BH4D9OD16A',
-          indexName: 'index',
+          indices: ['index'],
           apiKey: 'apiKey',
           askAi: {
-            assistantId: 'my-assistant-id',
+            agentId: 'my-assistant-id',
             // @ts-expect-error: expected type error
             suggestedQuestions: 123,
           },

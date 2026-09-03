@@ -34,7 +34,7 @@ catalog:
   '@babel/runtime': ^7.29.7
   '@babel/traverse': ^7.29.8
   '@crowdin/crowdin-api-client': ^1.57.0
-  '@docsearch/react': ^4.7.0
+  '@docsearch/react': ^5.0.4
   '@docusaurus/responsive-loader': ^1.7.1
   '@mdx-js/mdx': ^3.1.1
   '@mdx-js/react': ^3.1.1

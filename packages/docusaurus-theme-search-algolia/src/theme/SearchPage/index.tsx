@@ -32,6 +32,7 @@ import {
 } from '@docusaurus/theme-search-algolia/client';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import type {DocSearchIndex} from '@docsearch/react';
 import styles from './styles.module.css';
 
 // Very simple pluralization: probably good enough for now
@@ -232,12 +233,18 @@ function getSearchPageTitle(searchQuery: string | undefined): string {
       });
 }
 
+function getIndexName(indices: Array<string | DocSearchIndex>) {
+  const candidate = indices[0];
+
+  return typeof candidate === 'string' ? candidate : candidate?.name;
+}
+
 function SearchPageContent(): ReactNode {
   const {
     i18n: {currentLocale},
   } = useDocusaurusContext();
   const {
-    algolia: {appId, apiKey, indexName, contextualSearch},
+    algolia: {appId, apiKey, indices, contextualSearch},
   } = useAlgoliaThemeConfig();
   const processSearchResultUrl = useSearchResultUrlProcessor();
   const documentsFoundPlural = useDocumentsFoundPlural();
@@ -297,6 +304,18 @@ function SearchPageContent(): ReactNode {
   const disjunctiveFacets = contextualSearch
     ? ['language', 'docusaurus_tag']
     : [];
+
+  // The algoliasearch-helper only allows for a single index, here we just treat
+  // the FIRST index in the `indices` list as the "primary" index
+  const indexName = getIndexName(indices);
+
+  if (!indexName) {
+    throw new Error(
+      `Could not find a useable index in "algolia.indices" for the SearchPage.
+       Ensure you've added the correct index names in order for search to work.
+      `,
+    );
+  }
 
   const algoliaClient = liteClient(appId, apiKey);
   const algoliaHelper = algoliaSearchHelper(algoliaClient, indexName, {

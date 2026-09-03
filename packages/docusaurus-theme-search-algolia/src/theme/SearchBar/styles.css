@@ -23,3 +23,7 @@
 .DocSearch-Button-Key {
   padding: 0;
 }
+
+.DocSearch-Hit-AskAIButton {
+  height: var(--docsearch-hit-height);
+}
