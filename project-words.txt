@@ -17,6 +17,7 @@ appinstalled
 Applanga
 applescript
 Ashim
+askai
 astring
 atrule
 autogenerating

@@ -649,9 +649,8 @@ export default async function createConfigAsync() {
         apiKey: 'bf7211c161e8205da2f933a02534105a',
         indices: ['docusaurus-2'],
         // TODO Enable once there is an Agent Studio agent to use
-        // Search only -> 257.8kb
-        // Ask AI -> 554.7kb
         // askAi: {
+        // cSpell:ignore IMYF
         //   agentId: 'RgIMYFUmTfrN',
         //   suggestedQuestions: true,
         // },

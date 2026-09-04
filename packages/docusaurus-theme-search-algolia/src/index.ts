@@ -67,7 +67,7 @@ export default function themeSearchAlgolia(context: LoadContext): Plugin<void> {
     },
 
     // @ai-sdk/provider-utils contains a variable import within it,
-    // this just prevents noisey logs during every build.
+    // this just prevents noisy logs during every build.
     configureWebpack() {
       return {
         ignoreWarnings: [
