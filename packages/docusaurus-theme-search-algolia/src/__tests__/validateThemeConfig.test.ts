@@ -405,16 +405,12 @@ describe('validateThemeConfig', () => {
     });
   });
 
-  // TODO Enable once DocSearch releases fix for facets with multiple
-  // selected values. Currently the contextual search facets do no work.
-  // https://github.com/algolia/docsearch/issues/3037
-  describe.todo('facets config', () => {
+  describe('facets config', () => {
     it('accepts facets and a result badge key', () => {
       const algolia: AlgoliaInput = {
         appId: 'BH4D9OD16A',
         indices: ['index'],
         apiKey: 'apiKey',
-        // @ts-expect-error: expected type error
         facets: [{key: 'language', label: 'Language'}, {key: 'version'}],
         resultBadgeKey: 'language',
       };

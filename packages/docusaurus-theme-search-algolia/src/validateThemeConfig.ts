@@ -75,17 +75,14 @@ const Schema = Joi.object<ThemeConfig>({
       }).required(),
       to: Joi.string().required(),
     }).optional(),
-    // TODO Enable once DocSearch releases fix for facets with multiple
-    // selected values. Currently the contextual search facets do no work.
-    // https://github.com/algolia/docsearch/issues/3037
-    // facets: Joi.array()
-    //   .items(
-    //     Joi.object({
-    //       key: Joi.string().required(),
-    //       label: Joi.string().optional(),
-    //     }).unknown(false),
-    //   )
-    //   .optional(),
+    facets: Joi.array()
+      .items(
+        Joi.object({
+          key: Joi.string().required(),
+          label: Joi.string().optional(),
+        }).unknown(false),
+      )
+      .optional(),
     resultBadgeKey: Joi.string().optional(),
     // Optional Ask AI configuration
     askAi: Joi.alternatives()

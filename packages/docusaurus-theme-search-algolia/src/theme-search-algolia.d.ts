@@ -33,10 +33,7 @@ declare module '@docusaurus/theme-search-algolia' {
     | 'insights'
     | 'initialQuery'
     | 'indices'
-    // TODO Enable once DocSearch releases fix for facets with multiple
-    // selected values. Currently the contextual search facets do no work.
-    // https://github.com/algolia/docsearch/issues/3037
-    // | 'facets'
+    | 'facets'
     | 'resultBadgeKey'
   > & {
     // Docusaurus normalizes the AskAI config to an object
