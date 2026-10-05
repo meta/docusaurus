@@ -86,17 +86,82 @@ describe('validateThemeConfig', () => {
     );
   });
 
-  it('missing indices config', () => {
+  it('missing indexName and indices config', () => {
     // @ts-expect-error: expected type error!
     const algolia: AlgoliaInput = {
       apiKey: 'apiKey',
       appId: 'BH4D9OD16A',
     };
-    expect(() =>
-      testValidateThemeConfig(algolia),
-    ).toThrowErrorMatchingInlineSnapshot(
-      `[ValidationError: "algolia.indices" is required]`,
+    expect(() => testValidateThemeConfig(algolia)).toThrow(
+      '"themeConfig.algolia" must contain at least one of [indexName, indices]',
     );
+  });
+
+  describe('indexName config', () => {
+    it('normalizes indexName to indices', () => {
+      const algolia: AlgoliaInput = {
+        appId: 'BH4D9OD16A',
+        apiKey: 'apiKey',
+        indexName: 'index',
+      };
+      expect(testValidateThemeConfig(algolia)).toEqual({
+        algolia: {
+          ...DEFAULT_CONFIG,
+          appId: 'BH4D9OD16A',
+          apiKey: 'apiKey',
+          indices: [{name: 'index'}],
+        },
+      });
+    });
+
+    it('moves top-level searchParameters into the index', () => {
+      const algolia: AlgoliaInput = {
+        appId: 'BH4D9OD16A',
+        apiKey: 'apiKey',
+        indexName: 'index',
+        searchParameters: {facetFilters: ['language:en'], hitsPerPage: 5},
+      };
+      expect(testValidateThemeConfig(algolia)).toEqual({
+        algolia: {
+          ...DEFAULT_CONFIG,
+          appId: 'BH4D9OD16A',
+          apiKey: 'apiKey',
+          indices: [
+            {
+              name: 'index',
+              searchParameters: {
+                facetFilters: ['language:en'],
+                hitsPerPage: 5,
+              },
+            },
+          ],
+        },
+      });
+    });
+
+    it('rejects indexName together with indices', () => {
+      const algolia = {
+        appId: 'BH4D9OD16A',
+        apiKey: 'apiKey',
+        indexName: 'index',
+        indices: ['index'],
+      } as unknown as AlgoliaInput;
+      expect(() => testValidateThemeConfig(algolia)).toThrow(
+        '"themeConfig.algolia" contains a conflict between exclusive peers [indexName, indices]',
+      );
+    });
+
+    it('rejects top-level searchParameters together with indices', () => {
+      const algolia = {
+        appId: 'BH4D9OD16A',
+        apiKey: 'apiKey',
+        indices: ['index'],
+        searchParameters: {facetFilters: ['language:en']},
+      } as unknown as AlgoliaInput;
+      expect(() => testValidateThemeConfig(algolia)).toThrow(
+        '"themeConfig.algolia" contains a conflict between optional exclusive peers [searchParameters, indices]',
+      );
+    });
   });
 
   it('missing apiKey config', () => {

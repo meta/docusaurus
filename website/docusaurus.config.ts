@@ -647,7 +647,7 @@ export default async function createConfigAsync() {
       algolia: {
         appId: 'X1Z85QJPUV',
         apiKey: 'bf7211c161e8205da2f933a02534105a',
-        indices: ['docusaurus-2'],
+        indexName: 'docusaurus-2',
         // TODO Enable once there is an Agent Studio agent to use
         // askAi: {
         // cSpell:ignore IMYF

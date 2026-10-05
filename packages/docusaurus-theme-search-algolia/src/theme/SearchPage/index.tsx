@@ -8,7 +8,7 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 
 import {type ReactNode, useEffect, useReducer, useRef, useState} from 'react';
-import clsx from 'clsx';
+import {clsx} from 'clsx';
 
 import algoliaSearchHelper from 'algoliasearch-helper';
 import {liteClient} from 'algoliasearch/lite';
@@ -233,10 +233,9 @@ function getSearchPageTitle(searchQuery: string | undefined): string {
       });
 }
 
-function getIndexName(indices: Array<string | DocSearchIndex>) {
-  const candidate = indices[0];
-
-  return typeof candidate === 'string' ? candidate : candidate?.name;
+function getIndexName(indices: Array<string | DocSearchIndex>): string {
+  const first = indices[0]!;
+  return typeof first === 'string' ? first : first.name;
 }
 
 function SearchPageContent(): ReactNode {
@@ -305,17 +304,8 @@ function SearchPageContent(): ReactNode {
     ? ['language', 'docusaurus_tag']
     : [];
 
-  // The algoliasearch-helper only allows for a single index, here we just treat
-  // the FIRST index in the `indices` list as the "primary" index
+  // The algoliasearch-helper only allows a single index: use the first one
   const indexName = getIndexName(indices);
-
-  if (!indexName) {
-    throw new Error(
-      `Could not find a useable index in "algolia.indices" for the SearchPage.
-       Ensure you've added the correct index names in order for search to work.
-      `,
-    );
-  }
 
   const algoliaClient = liteClient(appId, apiKey);
   const algoliaHelper = algoliaSearchHelper(algoliaClient, indexName, {

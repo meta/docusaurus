@@ -11,6 +11,7 @@ declare module '@docusaurus/theme-search-algolia' {
   import type {
     DocSearchProps,
     DocSearchAskAi,
+    DocSearchIndex,
     AskAiSearchParameters,
   } from '@docsearch/react';
 
@@ -57,23 +58,37 @@ declare module '@docusaurus/theme-search-algolia' {
     algolia: ThemeConfigAlgolia;
   };
 
+  type UserAlgoliaConfig = Overwrite<
+    DeepPartial<Omit<ThemeConfigAlgolia, 'indices'>>,
+    {
+      // Required fields:
+      appId: ThemeConfigAlgolia['appId'];
+      apiKey: ThemeConfigAlgolia['apiKey'];
+      // askAi also accepts a shorter string form
+      askAi?:
+        | string
+        | Optional<
+            AskAiConfig,
+            'indices' | 'appId' | 'apiKey' | 'searchParameters'
+          >;
+    }
+  > &
+    // Single index shorthand, or multiple indices (exclusive)
+    (
+      | {
+          indexName: string;
+          searchParameters?: DocSearchIndex['searchParameters'];
+          indices?: never;
+        }
+      | {
+          indices: ThemeConfigAlgolia['indices'];
+          indexName?: never;
+          searchParameters?: never;
+        }
+    );
+
   export type UserThemeConfig = {
-    algolia?: Overwrite<
-      DeepPartial<ThemeConfigAlgolia>,
-      {
-        // Required fields:
-        appId: ThemeConfigAlgolia['appId'];
-        apiKey: ThemeConfigAlgolia['apiKey'];
-        indices: ThemeConfigAlgolia['indices'];
-        // askAi also accepts a shorter string form
-        askAi?:
-          | string
-          | Optional<
-              AskAiConfig,
-              'indices' | 'appId' | 'apiKey' | 'searchParameters'
-            >;
-      }
-    >;
+    algolia?: UserAlgoliaConfig;
   };
 }
 

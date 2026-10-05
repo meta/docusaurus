@@ -6,6 +6,7 @@
  */
 
 import {Joi} from '@docusaurus/utils-validation';
+import type {DocSearchIndex} from '@docsearch/react';
 import type {ThemeConfigValidationContext} from '@docusaurus/types';
 import type {
   ThemeConfig,
@@ -23,8 +24,17 @@ const FacetFiltersSchema = Joi.array().items(
   Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string())),
 );
 
+const SearchParametersSchema = Joi.object({
+  facetFilters: FacetFiltersSchema.optional(),
+}).unknown(true);
+
 const Schema = Joi.object<ThemeConfig>({
-  algolia: Joi.object<ThemeConfigAlgolia>({
+  algolia: Joi.object<
+    ThemeConfigAlgolia & {
+      indexName?: string;
+      searchParameters?: DocSearchIndex['searchParameters'];
+    }
+  >({
     // Docusaurus attributes
     contextualSearch: Joi.boolean().default(DEFAULT_CONFIG.contextualSearch),
     externalUrlRegex: Joi.string().optional(),
@@ -34,20 +44,20 @@ const Schema = Joi.object<ThemeConfig>({
         '"algolia.appId" is required. If you haven\'t migrated to the new DocSearch infra, please refer to the blog post for instructions: https://docusaurus.io/blog/2021/11/21/algolia-docsearch-migration',
     }),
     apiKey: Joi.string().required(),
+    // Single-index shorthand, normalized to `indices` below
+    indexName: Joi.string(),
+    searchParameters: SearchParametersSchema,
     indices: Joi.array()
       .items(
         Joi.alternatives().try(
           Joi.string(),
           Joi.object({
             name: Joi.string().required(),
-            searchParameters: Joi.object({
-              facetFilters: FacetFiltersSchema.optional(),
-            }).unknown(true),
+            searchParameters: SearchParametersSchema,
           }),
         ),
       )
-      .min(1)
-      .required(),
+      .min(1),
     searchPagePath: Joi.alternatives()
       .try(Joi.boolean().invalid(true), Joi.string())
       .allow(null)
@@ -152,6 +162,13 @@ const Schema = Joi.object<ThemeConfig>({
           'askAi must be either a string (agentId) or an object with apiKey, appId, and agentId',
       }),
   })
+    .xor('indexName', 'indices')
+    .oxor('searchParameters', 'indices')
+    .custom(({indexName, searchParameters, ...rest}) =>
+      indexName
+        ? {...rest, indices: [{name: indexName, searchParameters}]}
+        : rest,
+    )
     .label('themeConfig.algolia')
     .required()
     .unknown(),
