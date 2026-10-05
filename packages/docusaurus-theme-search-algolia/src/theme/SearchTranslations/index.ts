@@ -35,22 +35,22 @@ const translations: RuntimeDocSearchAITranslations = {
   modal: {
     searchBox: {
       clearButtonTitle: translate({
-        id: 'theme.SearchModal.searchBox.resetButtonTitle',
+        id: 'theme.SearchModal.searchBox.clearButtonTitle',
         message: 'Clear the query',
         description: 'The label and ARIA label for search box reset button',
       }),
       clearButtonAriaLabel: translate({
-        id: 'theme.SearchModal.searchBox.resetButtonTitle',
+        id: 'theme.SearchModal.searchBox.clearButtonTitle',
         message: 'Clear the query',
         description: 'The label and ARIA label for search box reset button',
       }),
       closeButtonText: translate({
-        id: 'theme.SearchModal.searchBox.cancelButtonText',
+        id: 'theme.SearchModal.searchBox.closeButtonText',
         message: 'Cancel',
         description: 'The label and ARIA label for search box cancel button',
       }),
       closeButtonAriaLabel: translate({
-        id: 'theme.SearchModal.searchBox.cancelButtonText',
+        id: 'theme.SearchModal.searchBox.closeButtonText',
         message: 'Cancel',
         description: 'The label and ARIA label for search box cancel button',
       }),
@@ -452,7 +452,7 @@ const translations: RuntimeDocSearchAITranslations = {
         description: 'The ARIA label for close key in footer',
       }),
       poweredByText: translate({
-        id: 'theme.SearchModal.footer.searchByText',
+        id: 'theme.SearchModal.footer.poweredByText',
         message: 'Powered by',
         description: "The 'Powered by' text for footer",
       }),
