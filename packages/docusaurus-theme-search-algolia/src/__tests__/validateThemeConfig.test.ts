@@ -428,7 +428,6 @@ describe('validateThemeConfig', () => {
         appId: 'BH4D9OD16A',
         indices: ['index'],
         apiKey: 'apiKey',
-        // @ts-expect-error: expected type error
         facets: [{label: 'Language'}],
       };
 
@@ -442,10 +441,10 @@ describe('validateThemeConfig', () => {
         appId: 'BH4D9OD16A',
         indices: ['index'],
         apiKey: 'apiKey',
-        // @ts-expect-error: expected type error
         facets: [
           {
             key: 'language',
+            // @ts-expect-error: expected type error
             unknown: true,
           },
         ],
