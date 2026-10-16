@@ -53,7 +53,7 @@ function quoteFilterValue(value: string): string {
 // into an equivalent clause of the `filters` grammar ("attr:"value"" /
 // "NOT attr:"value"").
 // Returns undefined for leaves that carry no meaning (empty strings).
-export function facetFilterToFilterClause(leaf: string): string | undefined {
+function facetFilterToFilterClause(leaf: string): string | undefined {
   const trimmed = leaf.trim();
   if (!trimmed) {
     return undefined;
