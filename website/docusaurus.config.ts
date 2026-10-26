@@ -442,6 +442,11 @@ export default async function createConfigAsync() {
             },
             {
               tagName: 'meta',
+              name: 'mobile-web-app-capable',
+              content: 'yes',
+            },
+            {
+              tagName: 'meta',
               name: 'apple-mobile-web-app-status-bar-style',
               content: '#000',
             },
