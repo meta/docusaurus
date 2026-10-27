@@ -76,4 +76,31 @@ describe('containsActiveItems', () => {
   it('returns false for an empty items array', () => {
     expect(containsActiveItems([], '/docs/getting-started')).toBe(false);
   });
+
+  it('returns false when activeBaseRegex does not match the current path', () => {
+    expect(
+      containsActiveItems(
+        [asItem({activeBaseRegex: '^/blog/'})],
+        '/docs/getting-started',
+      ),
+    ).toBe(false);
+  });
+
+  it('returns true when trailing slash differs but path matches via isSamePath', () => {
+    expect(
+      containsActiveItems(
+        [asItem({to: '/docs/getting-started/'})],
+        '/docs/getting-started',
+      ),
+    ).toBe(true);
+  });
+
+  it('returns true when item has both to (non-matching) and activeBasePath (matching)', () => {
+    expect(
+      containsActiveItems(
+        [asItem({to: '/docs', activeBasePath: '/docs'})],
+        '/docs/getting-started',
+      ),
+    ).toBe(true);
+  });
 });
