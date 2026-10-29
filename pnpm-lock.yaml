@@ -171,8 +171,8 @@ catalogs:
       specifier: ^2.3.0
       version: 2.3.0
     '@rspack/dev-server':
-      specifier: ^2.2.1
-      version: 2.2.1
+      specifier: ^2.2.2
+      version: 2.2.2
     '@slorber/remark-comment':
       specifier: ^1.0.0
       version: 1.0.0
@@ -1130,7 +1130,7 @@ importers:
         version: 2.3.0
       '@rspack/dev-server':
         specifier: 'catalog:'
-        version: 2.2.1(@rspack/core@2.3.0)(selfsigned@5.5.0)
+        version: 2.2.2(@rspack/core@2.3.0)(selfsigned@5.5.0)
       boxen:
         specifier: 'catalog:'
         version: 9.0.0
@@ -1336,7 +1336,7 @@ importers:
         version: 2.3.0
       '@rspack/dev-server':
         specifier: 'catalog:'
-        version: 2.2.1(@rspack/core@2.3.0)(selfsigned@5.5.0)
+        version: 2.2.2(@rspack/core@2.3.0)(selfsigned@5.5.0)
       '@swc/html':
         specifier: 'catalog:'
         version: 1.16.2
@@ -6280,8 +6280,8 @@ packages:
       '@swc/helpers':
         optional: true
 
-  '@rspack/dev-middleware@2.0.4':
-    resolution: {integrity: sha512-VCdT8hv9YvMPiBohhukD/OkGB+2GJ7mPRbeuDJ/jIT6hv5gvmJCnydMetJVARh6vXoBtfSHEd2gX78Dqaxh1NQ==}
+  '@rspack/dev-middleware@2.0.6':
+    resolution: {integrity: sha512-Rcx7dlDZQ9ddUJGuutFvnSeAKl+ZOc1fnC3htibs8yew3zMD9VgvSUe4MAwEn94Gb390l5heA+s/j5KhoSG5MQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       '@rspack/core': ^2.0.0
@@ -6289,8 +6289,8 @@ packages:
       '@rspack/core':
         optional: true
 
-  '@rspack/dev-server@2.2.1':
-    resolution: {integrity: sha512-Il8HbYGK3rH5rM0XmUOsOGZVw69BKRpBZ61P28Fy8ry35CtfniDBWtbo/rvJtIT/sK0qwijmNrhF498ltsV+uA==}
+  '@rspack/dev-server@2.2.2':
+    resolution: {integrity: sha512-pK4V9YJW8dkfjy6WYJ2T6DrPkcIn2yjA1HiaU146141j8UCxHok5lsplyqudLzerOhvwqMrNFmnsuXLnFbfn4Q==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       '@rspack/core': ^2.0.0
@@ -17331,14 +17331,14 @@ snapshots:
     dependencies:
       '@rspack/binding': 2.3.0
 
-  '@rspack/dev-middleware@2.0.4(@rspack/core@2.3.0)':
+  '@rspack/dev-middleware@2.0.6(@rspack/core@2.3.0)':
     optionalDependencies:
       '@rspack/core': 2.3.0
 
-  '@rspack/dev-server@2.2.1(@rspack/core@2.3.0)(selfsigned@5.5.0)':
+  '@rspack/dev-server@2.2.2(@rspack/core@2.3.0)(selfsigned@5.5.0)':
     dependencies:
       '@rspack/core': 2.3.0
-      '@rspack/dev-middleware': 2.0.4(@rspack/core@2.3.0)
+      '@rspack/dev-middleware': 2.0.6(@rspack/core@2.3.0)
     optionalDependencies:
       selfsigned: 5.5.0
 
