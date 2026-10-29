@@ -1,1 +1,0 @@
-"use strict";(globalThis.rspackChunkwebsite||=[]).push([[81668],{22330(r,e,s){s.r(e);var t=s(61058),u=s(39401),i=s(98614);function n(r){return(0,t.jsx)(i.A,{children:(0,u.v)(r.route.routes)})}s.d(e,{default:()=>n})}}]);
