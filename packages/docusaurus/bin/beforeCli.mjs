@@ -36,6 +36,24 @@ const {
 } = packageJson;
 
 /**
+ * We don't want to display update message for canary or prerelease versions.
+ * See https://github.com/facebook/docusaurus/issues/5378
+ * and https://github.com/facebook/docusaurus/issues/11013
+ * @param {import('update-notifier').UpdateInfo | undefined} update
+ */
+export function ignoreUpdate(update) {
+  const current = update?.current;
+  if (!current) {
+    return false;
+  }
+  const isCanaryRelease =
+    current.startsWith('0.0.0') ||
+    current.includes('canary') ||
+    Boolean(semver.prerelease(current));
+  return isCanaryRelease;
+}
+
+/**
  * Notify user if `@docusaurus` packages are outdated
  *
  * Note: this is a 2-step process to avoid delaying cli usage by awaiting a
@@ -73,16 +91,6 @@ export default async function beforeCli() {
   } catch (err) {
     // Do not stop cli if this fails, see https://github.com/facebook/docusaurus/issues/5400
     logger.error(err);
-  }
-
-  /**
-   * We don't want to display update message for canary releases.
-   * See https://github.com/facebook/docusaurus/issues/5378
-   * @param {import('update-notifier').UpdateInfo} update
-   */
-  function ignoreUpdate(update) {
-    const isCanaryRelease = update?.current?.startsWith('0.0.0');
-    return isCanaryRelease;
   }
 
   if (
