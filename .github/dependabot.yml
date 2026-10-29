@@ -68,3 +68,9 @@ updates:
       svgr:
         patterns:
           - '@svgr/*'
+      # Babel packages depend on each other
+      # Upgrading them independently duplicates Babel packages in the lockfile
+      # See https://github.com/facebook/docusaurus/pull/12704
+      babel:
+        patterns:
+          - '@babel/*'

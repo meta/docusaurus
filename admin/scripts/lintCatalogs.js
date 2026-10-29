@@ -25,6 +25,9 @@ const RuntimeDependencyTypes = [
 ];
 const AllDependencyTypes = [...RuntimeDependencyTypes, 'devDependencies'];
 
+// Babel only publishes the packages that changed: their versions differ
+const SameMajorVersionDependencyGroups = ['babel'];
+
 async function main() {
   const monorepo = await loadMonorepo();
 
@@ -216,7 +219,7 @@ function checkOverridesMatchCatalogs({catalogs, overrides}) {
 
 /**
  * The packages of a Dependabot group must be upgraded together, and must
- * use the same version.
+ * use the same version, or the same major version for some groups.
  * @param {Monorepo} monorepo
  * @returns {string[]}
  */
@@ -227,15 +230,25 @@ function checkDependencyGroups({catalogs, dependencyGroups}) {
     const members = catalogEntries.filter(([name]) =>
       matchesSomePattern(name, group.patterns),
     );
-    const versions = new Set(members.map(([, version]) => version));
+    const sameMajorVersion = SameMajorVersionDependencyGroups.includes(
+      group.name,
+    );
+    const versions = new Set(
+      members.map(([, version]) =>
+        sameMajorVersion ? getMajorVersion(version) : version,
+      ),
+    );
     if (versions.size <= 1) {
       return [];
     }
     const membersDescription = members
       .map(([name, version]) => `${name}@${version}`)
       .join(', ');
+    const expectedVersion = sameMajorVersion
+      ? 'the same major version'
+      : 'the same version';
     return [
-      `pnpm-workspace.yaml: the packages of the "${group.name}" Dependabot group must use the same version: ${membersDescription}`,
+      `pnpm-workspace.yaml: the packages of the "${group.name}" Dependabot group must use ${expectedVersion}: ${membersDescription}`,
     ];
   });
 }
@@ -268,6 +281,11 @@ function getCatalogVersion(catalogs, name) {
 function differsFromCatalogs(catalogs, name, version) {
   const catalogVersion = getCatalogVersion(catalogs, name);
   return catalogVersion !== undefined && catalogVersion !== version;
+}
+
+// "^7.29.7" => "7"
+function getMajorVersion(version) {
+  return version.match(/\d+/)?.[0];
 }
 
 // Dependabot patterns only support the "*" wildcard

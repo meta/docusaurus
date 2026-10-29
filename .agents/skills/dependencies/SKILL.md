@@ -40,7 +40,7 @@ Two checks enforce it:
 Some packages must always use the same version. They are declared as `groups` in `.github/dependabot.yml`:
 
 - Dependabot upgrades them atomically in a single PR, instead of opening broken intermediate PRs.
-- `pnpm lint:catalogs` fails if their catalog versions differ.
+- `pnpm lint:catalogs` fails if their catalog versions differ (only their major versions for the `babel` group, see `admin/scripts/lintCatalogs.js`).
 
 Packages belong to a group when, for example:
 
