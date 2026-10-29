@@ -5,19 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
-import os from 'os';
+import path from 'node:path';
+import os from 'node:os';
 import logger from '@docusaurus/logger';
-import shell from 'shelljs';
+import {execa} from 'execa';
 import {hasSSHProtocol, buildSshUrl, buildHttpsUrl} from '@docusaurus/utils';
+import {fs, realpath} from '@docusaurus/fs';
 import {loadContext, type LoadContextParams} from '../server/site';
-import {build} from './build';
+import {build} from './build/build';
 
-export type DeployCLIOptions = Pick<
-  LoadContextParams,
-  'config' | 'locale' | 'outDir'
-> & {
+export type DeployCLIOptions = Pick<LoadContextParams, 'config' | 'outDir'> & {
+  locale?: [string, ...string[]];
   skipBuild?: boolean;
   targetDir?: string;
 };
@@ -28,24 +26,55 @@ function obfuscateGitPass(str: string) {
   return gitPass ? str.replace(gitPass, 'GIT_PASS') : str;
 }
 
+const debugMode = !!process.env.DOCUSAURUS_DEPLOY_DEBUG;
+
 // Log executed commands so that user can figure out mistakes on his own
 // for example: https://github.com/facebook/docusaurus/issues/3875
-function shellExecLog(cmd: string) {
+async function exec(
+  file: string,
+  args: string[],
+  options?: {log?: boolean; failfast?: boolean},
+) {
+  const log = options?.log ?? true;
+  const failfast = options?.failfast ?? true;
+  const cmd = [file, ...args].join(' ');
   try {
-    const result = shell.exec(cmd);
-    logger.info`code=${obfuscateGitPass(cmd)} subdue=${`code: ${result.code}`}`;
+    const result = await execa(file, args, {reject: false});
+    if (log || debugMode) {
+      logger.info`code=${obfuscateGitPass(
+        cmd,
+      )} subdue=${`code: ${result.exitCode}`}`;
+    }
+    if (debugMode) {
+      console.log(result);
+    }
+    if (failfast && result.exitCode !== 0) {
+      throw new Error(
+        `Command returned unexpected exitCode ${result.exitCode}
+${result.stderr}`,
+      );
+    }
     return result;
   } catch (err) {
-    logger.error`code=${obfuscateGitPass(cmd)}`;
-    throw err;
+    throw new Error(
+      logger.interpolate`Error while executing command code=${obfuscateGitPass(
+        cmd,
+      )}
+In CWD code=${process.cwd()}`,
+      {cause: err},
+    );
   }
+}
+
+async function hasGit() {
+  return (await exec('git', ['--version'], {failfast: false})).exitCode === 0;
 }
 
 export async function deploy(
   siteDirParam: string = '.',
   cliOptions: Partial<DeployCLIOptions> = {},
 ): Promise<void> {
-  const siteDir = await fs.realpath(siteDirParam);
+  const siteDir = await realpath(siteDirParam);
 
   const {outDir, siteConfig, siteConfigPath} = await loadContext({
     siteDir,
@@ -61,19 +90,23 @@ This behavior can have SEO impacts and create relative link issues.
   }
 
   logger.info('Deploy command invoked...');
-  if (!shell.which('git')) {
-    throw new Error('Git not installed or on the PATH!');
+  if (!(await hasGit())) {
+    throw new Error('Git not installed or not added to PATH!');
   }
 
   // Source repo is the repo from where the command is invoked
-  const sourceRepoUrl = shell
-    .exec('git remote get-url origin', {silent: true})
-    .stdout.trim();
+  const sourceRepoUrl = (
+    await exec('git', ['remote', 'get-url', 'origin'], {
+      log: false,
+    })
+  ).stdout.trim();
 
   // The source branch; defaults to the currently checked out branch
   const sourceBranch =
     process.env.CURRENT_BRANCH ??
-    shell.exec('git rev-parse --abbrev-ref HEAD', {silent: true}).stdout.trim();
+    (
+      await exec('git', ['rev-parse', '--abbrev-ref', 'HEAD'], {log: false})
+    ).stdout.trim();
 
   const gitUser = process.env.GIT_USER;
 
@@ -93,9 +126,7 @@ This behavior can have SEO impacts and create relative link issues.
   }
 
   const organizationName =
-    process.env.ORGANIZATION_NAME ??
-    process.env.CIRCLE_PROJECT_USERNAME ??
-    siteConfig.organizationName;
+    process.env.ORGANIZATION_NAME ?? siteConfig.organizationName;
   if (!organizationName) {
     throw new Error(
       `Missing project organization name. Did you forget to define "organizationName" in ${siteConfigPath}? You may also export it via the ORGANIZATION_NAME environment variable.`,
@@ -103,24 +134,13 @@ This behavior can have SEO impacts and create relative link issues.
   }
   logger.info`organizationName: name=${organizationName}`;
 
-  const projectName =
-    process.env.PROJECT_NAME ??
-    process.env.CIRCLE_PROJECT_REPONAME ??
-    siteConfig.projectName;
+  const projectName = process.env.PROJECT_NAME ?? siteConfig.projectName;
   if (!projectName) {
     throw new Error(
       `Missing project name. Did you forget to define "projectName" in ${siteConfigPath}? You may also export it via the PROJECT_NAME environment variable.`,
     );
   }
   logger.info`projectName: name=${projectName}`;
-
-  // We never deploy on pull request.
-  const isPullRequest =
-    process.env.CI_PULL_REQUEST ?? process.env.CIRCLE_PULL_REQUEST;
-  if (isPullRequest) {
-    shell.echo('Skipping deploy on a pull request.');
-    shell.exit(0);
-  }
 
   // github.io indicates organization repos that deploy via default branch. All
   // others use gh-pages (either case can be configured actually, but we can
@@ -183,7 +203,9 @@ You can also set the deploymentBranch property in docusaurus.config.js .`);
 
   // Save the commit hash that triggers publish-gh-pages before checking
   // out to deployment branch.
-  const currentCommit = shellExecLog('git rev-parse HEAD').stdout.trim();
+  const currentCommit = (
+    await exec('git', ['rev-parse', 'HEAD'])
+  ).stdout.trim();
 
   const runDeploy = async (outputDirectory: string) => {
     const targetDirectory = cliOptions.targetDir ?? '.';
@@ -191,55 +213,77 @@ You can also set the deploymentBranch property in docusaurus.config.js .`);
     const toPath = await fs.mkdtemp(
       path.join(os.tmpdir(), `${projectName}-${deploymentBranch}`),
     );
-    shell.cd(toPath);
+    process.chdir(toPath);
 
     // Clones the repo into the temp folder and checks out the target branch.
     // If the branch doesn't exist, it creates a new one based on the
     // repository default branch.
-    if (
-      shellExecLog(
-        `git clone --depth 1 --branch ${deploymentBranch} ${deploymentRepoURL} "${toPath}"`,
-      ).code !== 0
-    ) {
-      shellExecLog(`git clone --depth 1 ${deploymentRepoURL} "${toPath}"`);
-      shellExecLog(`git checkout -b ${deploymentBranch}`);
+    const cloneResult = await exec(
+      'git',
+      [
+        'clone',
+        '--depth',
+        '1',
+        '--branch',
+        deploymentBranch,
+        deploymentRepoURL,
+        toPath,
+      ],
+      {failfast: false},
+    );
+    if (cloneResult.exitCode !== 0) {
+      await exec('git', ['clone', '--depth', '1', deploymentRepoURL, toPath]);
+      await exec('git', ['checkout', '-b', deploymentBranch]);
     }
 
     // Clear out any existing contents in the target directory
-    shellExecLog(`git rm -rf ${targetDirectory}`);
+    await exec('git', ['rm', '-rf', targetDirectory], {log: false});
 
     const targetPath = path.join(toPath, targetDirectory);
     try {
-      await fs.copy(fromPath, targetPath);
+      // verbatimSymlinks: keep relative symlinks relative
+      await fs.cp(fromPath, targetPath, {
+        recursive: true,
+        verbatimSymlinks: true,
+      });
     } catch (err) {
-      logger.error`Copying build assets from path=${fromPath} to path=${targetPath} failed.`;
-      throw err;
+      throw new Error(
+        `Failed to copy build assets from path=${fromPath} to path=${targetPath}.`,
+        {cause: err},
+      );
     }
-    shellExecLog('git add --all');
+    await exec('git', ['add', '--all']);
 
     const gitUserName = process.env.GIT_USER_NAME;
     if (gitUserName) {
-      shellExecLog(`git config user.name "${gitUserName}"`);
+      await exec('git', ['config', 'user.name', gitUserName]);
     }
 
     const gitUserEmail = process.env.GIT_USER_EMAIL;
     if (gitUserEmail) {
-      shellExecLog(`git config user.email "${gitUserEmail}"`);
+      await exec('git', ['config', 'user.email', gitUserEmail]);
     }
 
     const commitMessage =
       process.env.CUSTOM_COMMIT_MESSAGE ??
       `Deploy website - based on ${currentCommit}`;
-    const commitResults = shellExecLog(`git commit -m "${commitMessage}"`);
-    if (
-      shellExecLog(`git push --force origin ${deploymentBranch}`).code !== 0
-    ) {
+    // The commit might return a non-zero value when site is up to date.
+    const commitResults = await exec(
+      'git',
+      ['commit', '-m', commitMessage, '--allow-empty'],
+      {failfast: false},
+    );
+    const pushResult = await exec(
+      'git',
+      ['push', '--force', 'origin', deploymentBranch],
+      {failfast: false},
+    );
+    if (pushResult.exitCode !== 0) {
       throw new Error(
         'Running "git push" command failed. Does the GitHub user account you are using have push access to the repository?',
       );
-    } else if (commitResults.code === 0) {
-      // The commit might return a non-zero value when site is up to date.
-      let websiteURL = '';
+    } else if (commitResults.exitCode === 0) {
+      let websiteURL;
       if (githubHost === 'github.com') {
         websiteURL = projectName.includes('.github.io')
           ? `https://${organizationName}.github.io/`
@@ -248,15 +292,15 @@ You can also set the deploymentBranch property in docusaurus.config.js .`);
         // GitHub enterprise hosting.
         websiteURL = `https://${githubHost}/pages/${organizationName}/${projectName}/`;
       }
-      shell.echo(`Website is live at "${websiteURL}".`);
-      shell.exit(0);
+      logger.success`Website is live at url=${websiteURL}.`;
+      process.exit(0);
     }
   };
 
   if (!cliOptions.skipBuild) {
     // Build site, then push to deploymentBranch branch of specified repo.
     try {
-      await build(siteDir, cliOptions, false);
+      await build(siteDir, cliOptions);
       await runDeploy(outDir);
     } catch (err) {
       logger.error('Deployment of the build output failed.');

@@ -58,7 +58,7 @@ export function interpolate<Str extends string, Value extends ReactNode>(
 export default function Interpolate<Str extends string>({
   children,
   values,
-}: InterpolateProps<Str>): JSX.Element {
+}: InterpolateProps<Str>): ReactNode {
   if (typeof children !== 'string') {
     throw new Error(
       `The Docusaurus <Interpolate> component only accept simple string values. Received: ${

@@ -4,6 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+/* eslint-disable camelcase */
+
 import {
   JoiFrontMatter as Joi, // Custom instance for front matter
   URISchema,
@@ -19,7 +21,7 @@ import type {DocFrontMatter} from '@docusaurus/plugin-content-docs';
 // We don't want default values to magically appear in doc metadata and props
 // While the user did not provide those values explicitly
 // We use default values in code instead
-export const DocFrontMatterSchema = Joi.object<DocFrontMatter>({
+const DocFrontMatterSchema = Joi.object<DocFrontMatter>({
   id: Joi.string(),
   // See https://github.com/facebook/docusaurus/issues/4591#issuecomment-822372398
   title: Joi.string().allow(''),
@@ -30,6 +32,7 @@ export const DocFrontMatterSchema = Joi.object<DocFrontMatter>({
   // See https://github.com/facebook/docusaurus/issues/4591#issuecomment-822372398
   description: Joi.string().allow(''),
   slug: Joi.string(),
+  sidebar_key: Joi.string(),
   sidebar_label: Joi.string(),
   sidebar_position: Joi.number(),
   sidebar_class_name: Joi.string(),

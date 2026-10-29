@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {useCallback, useRef, type ComponentProps} from 'react';
+import type React from 'react';
+import {useCallback, useRef, type ComponentProps, type ReactNode} from 'react';
 import {useHistory} from '@docusaurus/router';
 import {translate} from '@docusaurus/Translate';
 import {useLocationChange} from './useLocationChange';
@@ -47,7 +48,7 @@ function useSkipToContent(): {
    * so that keyboard navigators can instantly interact with the link and jump
    * to content.
    */
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
   /**
    * Callback fired when the skip to content link has been clicked.
    * It will programmatically focus the main content.
@@ -85,7 +86,7 @@ const DefaultSkipToContentLabel = translate({
 
 type SkipToContentLinkProps = Omit<ComponentProps<'a'>, 'href' | 'onClick'>;
 
-export function SkipToContentLink(props: SkipToContentLinkProps): JSX.Element {
+export function SkipToContentLink(props: SkipToContentLinkProps): ReactNode {
   const linkLabel = props.children ?? DefaultSkipToContentLabel;
   const {containerRef, onClick} = useSkipToContent();
   return (

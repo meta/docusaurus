@@ -13,13 +13,15 @@ import type {
 } from '@docusaurus/types';
 import type {PluginOptions, Options} from './options';
 
-export default function pluginGoogleAnalytics(
+export default function pluginGoogleTagManager(
   context: LoadContext,
   options: PluginOptions,
-): Plugin {
-  const {containerId} = options;
-  const isProd = process.env.NODE_ENV === 'production';
+): Plugin | null {
+  if (process.env.NODE_ENV !== 'production') {
+    return null;
+  }
 
+  const {containerId} = options;
   return {
     name: 'docusaurus-plugin-google-tag-manager',
 
@@ -28,9 +30,6 @@ export default function pluginGoogleAnalytics(
     },
 
     injectHtmlTags() {
-      if (!isProd) {
-        return {};
-      }
       return {
         preBodyTags: [
           {

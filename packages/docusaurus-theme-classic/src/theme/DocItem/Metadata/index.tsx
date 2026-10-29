@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {PageMetadata} from '@docusaurus/theme-common';
-import {useDoc} from '@docusaurus/theme-common/internal';
+import {useDoc} from '@docusaurus/plugin-content-docs/client';
 
-export default function DocItemMetadata(): JSX.Element {
+export default function DocItemMetadata(): ReactNode {
   const {metadata, frontMatter, assets} = useDoc();
   return (
     <PageMetadata

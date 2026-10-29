@@ -14,7 +14,7 @@
   display: none;
 }
 
-@media (min-width: 997px) {
+@media (width >= 997px) {
   .docSidebarContainer {
     display: block;
     width: var(--doc-sidebar-width);

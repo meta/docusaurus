@@ -6,13 +6,13 @@ slug: /migration/translated-sites
 
 This page explains how migrate a translated Docusaurus v1 site to Docusaurus v2.
 
-## i18n differences {#i18n-differences}
+## i18n differences {/* #i18n-differences */}
 
 Docusaurus v2 i18n is conceptually quite similar to Docusaurus v1 i18n with a few differences.
 
 It is not tightly coupled to Crowdin, and you can use Git or another SaaS instead.
 
-### Different filesystem paths {#different-filesystem-paths}
+### Different filesystem paths {/* #different-filesystem-paths */}
 
 On Docusaurus v2, localized content is generally found at `website/i18n/[locale]`.
 
@@ -20,7 +20,7 @@ Docusaurus v2 is modular based on a plugin system, and each plugin is responsibl
 
 Each plugin has its own i18n subfolder, like: `website/i18n/fr/docusaurus-plugin-content-blog`
 
-### Updated translation APIs {#updated-translation-apis}
+### Updated translation APIs {/* #updated-translation-apis */}
 
 With Docusaurus v1, you translate your pages with `<translate>`:
 
@@ -54,7 +54,7 @@ The code translations are now added to `i18n/[locale]/code.json` using Chrome i1
 
 :::
 
-### Stricter Markdown parser {#stricter-markdown-parser}
+### Stricter Markdown parser {/* #stricter-markdown-parser */}
 
 Docusaurus v2 is using [MDX](https://mdxjs.com/) to parse Markdown files.
 
@@ -64,7 +64,7 @@ Also, the HTML elements must be replaced by JSX elements.
 
 This is particularly important for i18n because if your translations are not good on Crowdin and use invalid Markup, your v2 translated site might fail to build: you may need to do some translation cleanup to fix the errors.
 
-## Migration strategies {#migration-strategies}
+## Migration strategies {/* #migration-strategies */}
 
 This section will help you figure out how to **keep your existing v1 translations after you migrate to v2**.
 
@@ -88,7 +88,7 @@ Don't try to migrate without understanding both Crowdin and Docusaurus v2 i18n.
 
 :::
 
-### Create a new Crowdin project {#create-a-new-crowdin-project}
+### Create a new Crowdin project {/* #create-a-new-crowdin-project */}
 
 To avoid any **risk of breaking your v1 site in production**, one possible strategy is to duplicate the original v1 Crowdin project.
 
@@ -146,7 +146,7 @@ Crowdin has an "upload translations" feature, but in our experience it does not 
 
 :::
 
-### Use the existing Crowdin project {#use-the-existing-crowdin-project}
+### Use the existing Crowdin project {/* #use-the-existing-crowdin-project */}
 
 If you don't mind modifying your existing Crowdin project and risking to mess things up, it may be possible to use the Crowdin branch system.
 
@@ -160,7 +160,7 @@ This way, you wouldn't need to create a new Crowdin project, transfer the transl
 
 You could create a Crowdin branch for Docusaurus v2, where you upload the v2 sources, and merge the Crowdin branch to main once ready.
 
-### Use Git instead of Crowdin {#use-git-instead-of-crowdin}
+### Use Git instead of Crowdin {/* #use-git-instead-of-crowdin */}
 
 It is possible to migrate away of Crowdin, and add the translation files to Git instead.
 

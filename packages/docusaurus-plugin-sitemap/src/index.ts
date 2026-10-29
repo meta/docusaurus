@@ -5,21 +5,30 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import logger from '@docusaurus/logger';
+import {outputFile} from '@docusaurus/fs';
 import createSitemap from './createSitemap';
 import type {PluginOptions, Options} from './options';
 import type {LoadContext, Plugin} from '@docusaurus/types';
 
+const PluginName = 'docusaurus-plugin-sitemap';
+
 export default function pluginSitemap(
   context: LoadContext,
   options: PluginOptions,
-): Plugin<void> {
-  return {
-    name: 'docusaurus-plugin-sitemap',
+): Plugin<void> | null {
+  if (context.siteConfig.future.experimental_router === 'hash') {
+    logger.warn(
+      `${PluginName} does not support the Hash Router and will be disabled.`,
+    );
+    return null;
+  }
 
-    async postBuild({siteConfig, routes, outDir, head}) {
+  return {
+    name: PluginName,
+
+    async postBuild({siteConfig, routes, outDir, routesBuildMetadata}) {
       if (siteConfig.noIndex) {
         return;
       }
@@ -27,7 +36,7 @@ export default function pluginSitemap(
       const generatedSitemap = await createSitemap({
         siteConfig,
         routes,
-        head,
+        routesBuildMetadata,
         options,
       });
       if (!generatedSitemap) {
@@ -37,7 +46,7 @@ export default function pluginSitemap(
       // Write sitemap file.
       const sitemapPath = path.join(outDir, options.filename);
       try {
-        await fs.outputFile(sitemapPath, generatedSitemap);
+        await outputFile(sitemapPath, generatedSitemap);
       } catch (err) {
         logger.error('Writing sitemap failed.');
         throw err;

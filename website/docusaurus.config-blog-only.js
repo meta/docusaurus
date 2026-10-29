@@ -15,7 +15,6 @@ export default {
   url: 'https://docusaurus.io',
   // We can only warn now, since we have blog pages linking to non-blog pages...
   onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
   favicon: 'img/docusaurus.ico',
   themes: ['live-codeblock'],
   plugins: ['ideal-image'],

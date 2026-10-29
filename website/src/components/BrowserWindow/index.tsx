@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {type CSSProperties, type ReactNode} from 'react';
+import type {CSSProperties, ReactNode} from 'react';
 import clsx from 'clsx';
 
 import styles from './styles.module.css';
@@ -24,7 +24,7 @@ export default function BrowserWindow({
   url = 'http://localhost:3000',
   style,
   bodyStyle,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   return (
     <div className={styles.browserWindow} style={{...style, minHeight}}>
       <div className={styles.browserWindowHeader}>

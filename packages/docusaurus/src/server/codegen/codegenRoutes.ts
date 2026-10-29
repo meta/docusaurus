@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import query from 'querystring';
-import path from 'path';
+import query from 'node:querystring';
+import path from 'node:path';
 import _ from 'lodash';
 import {docuHash, simpleHash, escapePath, generate} from '@docusaurus/utils';
 import type {
@@ -131,7 +131,6 @@ ${indent(parts.join(',\n'))}
 const isModule = (value: unknown): value is Module =>
   typeof value === 'string' ||
   (typeof value === 'object' &&
-    // eslint-disable-next-line no-underscore-dangle
     !!(value as {[key: string]: unknown} | null)?.__import);
 
 /**
@@ -194,7 +193,12 @@ function genChunkNames(
  * config node, it returns the node's serialized form, and mutates `registry`,
  * `routesPaths`, and `routesChunkNames` accordingly.
  */
-function genRouteCode(routeConfig: RouteConfig, res: RoutesCode): string {
+function genRouteCode(
+  routeConfig: RouteConfig,
+  res: RoutesCode,
+  index: number,
+  level: number,
+): string {
   const {
     path: routePath,
     component,
@@ -216,8 +220,39 @@ ${JSON.stringify(routeConfig)}`,
     );
   }
 
-  const routeHash = simpleHash(JSON.stringify(routeConfig), 3);
-  res.routesChunkNames[`${routePath}-${routeHash}`] = {
+  // Because 2 routes with the same path could lead to hash collisions
+  // See https://github.com/facebook/docusaurus/issues/10718#issuecomment-2498516394
+  function generateUniqueRouteKey(): {
+    routeKey: string;
+    routeHash: string;
+  } {
+    const hashes = [
+      // // OG algo to keep former snapshots
+      () => simpleHash(JSON.stringify(routeConfig), 3),
+      // Other attempts, not ideal but good enough
+      // Technically we could use Math.random() here but it's annoying for tests
+      () => simpleHash(`${level}${index}`, 3),
+      () => simpleHash(JSON.stringify(routeConfig), 4),
+      () => simpleHash(`${level}${index}`, 4),
+    ];
+
+    for (const tryHash of hashes) {
+      const routeHash = tryHash();
+      const routeKey = `${routePath}-${routeHash}`;
+      if (!res.routesChunkNames[routeKey]) {
+        return {routeKey, routeHash};
+      }
+    }
+    throw new Error(
+      `Docusaurus couldn't generate a unique hash for route ${routeConfig.path} (level=${level} - index=${index}).
+This is a bug, please report it here!
+https://github.com/facebook/docusaurus/issues/10718`,
+    );
+  }
+
+  const {routeKey, routeHash} = generateUniqueRouteKey();
+
+  res.routesChunkNames[routeKey] = {
     // Avoid clash with a prop called "component"
     ...genChunkNames({__comp: component}, 'component', component, res),
     ...(context &&
@@ -228,7 +263,9 @@ ${JSON.stringify(routeConfig)}`,
   return serializeRouteConfig({
     routePath: routePath.replace(/'/g, "\\'"),
     routeHash,
-    subroutesCodeStrings: subroutes?.map((r) => genRouteCode(r, res)),
+    subroutesCodeStrings: subroutes?.map((r, i) =>
+      genRouteCode(r, res, i, level + 1),
+    ),
     exact,
     attributes,
   });
@@ -253,7 +290,7 @@ export function generateRoutesCode(routeConfigs: RouteConfig[]): RoutesCode {
 
   // `genRouteCode` would mutate `res`
   const routeConfigSerialized = routeConfigs
-    .map((r) => genRouteCode(r, res))
+    .map((r, i) => genRouteCode(r, res, i, 0))
     .join(',\n');
 
   res.routesConfig = `import React from 'react';
@@ -320,6 +357,22 @@ type GenerateRouteFilesParams = {
   baseUrl: string;
 };
 
+// The generated filename per route must be unique to avoid conflicts
+// See also https://github.com/facebook/docusaurus/issues/10125
+export function generateRoutePropFilename(route: RouteConfig): string {
+  // TODO if possible, we could try to shorten the filename by removing
+  //  the plugin routeBasePath prefix from the name
+  return `${docuHash(
+    route.path,
+    // Note: using hash(route.path + route.component) is not technically
+    // as robust as hashing the entire prop content object.
+    // But it's faster and should be good enough considering it's very unlikely
+    // anyone would have 2 routes on the same path also rendering the exact
+    // same component.
+    {hashExtra: route.component},
+  )}.json`;
+}
+
 async function generateRoutePropModule({
   generatedFilesDir,
   route,
@@ -339,7 +392,7 @@ async function generateRoutePropModule({
     plugin.name,
     plugin.id,
     'p',
-    `${docuHash(route.path)}.json`,
+    generateRoutePropFilename(route),
   );
   const modulePath = path.posix.join(generatedFilesDir, relativePath);
   const aliasedPath = path.posix.join('@generated', relativePath);
@@ -376,29 +429,31 @@ async function preprocessRouteProps({
   route: RouteConfig;
   plugin: PluginIdentifier;
 }): Promise<RouteConfig> {
-  const propsModulePathPromise = route.props
-    ? generateRoutePropModule({
-        generatedFilesDir,
-        route,
-        plugin,
-      })
-    : undefined;
+  const getPropsModulePathPromise = () =>
+    route.props
+      ? generateRoutePropModule({
+          generatedFilesDir,
+          route,
+          plugin,
+        })
+      : undefined;
 
-  const subRoutesPromise = route.routes
-    ? Promise.all(
-        route.routes.map((subRoute: RouteConfig) => {
-          return preprocessRouteProps({
-            generatedFilesDir,
-            route: subRoute,
-            plugin,
-          });
-        }),
-      )
-    : undefined;
+  const getSubRoutesPromise = () =>
+    route.routes
+      ? Promise.all(
+          route.routes.map((subRoute: RouteConfig) => {
+            return preprocessRouteProps({
+              generatedFilesDir,
+              route: subRoute,
+              plugin,
+            });
+          }),
+        )
+      : undefined;
 
   const [propsModulePath, subRoutes] = await Promise.all([
-    propsModulePathPromise,
-    subRoutesPromise,
+    getPropsModulePathPromise(),
+    getSubRoutesPromise(),
   ]);
 
   const newRoute: RouteConfig = {

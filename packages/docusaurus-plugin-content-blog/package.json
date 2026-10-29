@@ -1,6 +1,6 @@
 {
   "name": "@docusaurus/plugin-content-blog",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Blog plugin for Docusaurus.",
   "main": "lib/index.js",
   "types": "src/plugin-content-blog.d.ts",
@@ -19,7 +19,7 @@
   "scripts": {
     "build": "tsc --build",
     "watch": "tsc --build --watch",
-    "test:generate-build-snap": "yarn docusaurus build src/__tests__/__fixtures__/website --out-dir build-snap && yarn rimraf src/__tests__/__fixtures__/website/.docusaurus && yarn rimraf src/__tests__/__fixtures__/website/build-snap/assets && git add src/__tests__/__fixtures__/website/build-snap"
+    "test:generate-build-snap": "pnpm docusaurus build src/__tests__/__fixtures__/website --out-dir build-snap && pnpm rimraf src/__tests__/__fixtures__/website/.docusaurus && pnpm rimraf src/__tests__/__fixtures__/website/build-snap/assets && git add src/__tests__/__fixtures__/website/build-snap"
   },
   "repository": {
     "type": "git",
@@ -31,32 +31,42 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@docusaurus/core": "3.2.1",
-    "@docusaurus/logger": "3.2.1",
-    "@docusaurus/mdx-loader": "3.2.1",
-    "@docusaurus/types": "3.2.1",
-    "@docusaurus/utils": "3.2.1",
-    "@docusaurus/utils-common": "3.2.1",
-    "@docusaurus/utils-validation": "3.2.1",
-    "cheerio": "^1.0.0-rc.12",
-    "feed": "^4.2.2",
-    "fs-extra": "^11.1.1",
-    "lodash": "^4.17.21",
-    "reading-time": "^1.5.0",
-    "srcset": "^4.0.0",
-    "tslib": "^2.6.0",
-    "unist-util-visit": "^5.0.0",
-    "utility-types": "^3.10.0",
-    "webpack": "^5.88.1"
+    "@docusaurus/core": "workspace:*",
+    "@docusaurus/fs": "workspace:*",
+    "@docusaurus/glob": "workspace:*",
+    "@docusaurus/logger": "workspace:*",
+    "@docusaurus/mdx-loader": "workspace:*",
+    "@docusaurus/module-type-aliases": "workspace:*",
+    "@docusaurus/theme-common": "workspace:*",
+    "@docusaurus/types": "workspace:*",
+    "@docusaurus/utils": "workspace:*",
+    "@docusaurus/utils-common": "workspace:*",
+    "@docusaurus/utils-validation": "workspace:*",
+    "cheerio": "catalog:",
+    "combine-promises": "catalog:",
+    "feed": "catalog:",
+    "lodash": "catalog:",
+    "schema-dts": "catalog:",
+    "srcset": "catalog:",
+    "tslib": "catalog:",
+    "unist-util-visit": "catalog:",
+    "utility-types": "catalog:",
+    "webpack": "catalog:"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   },
   "devDependencies": {
-    "@total-typescript/shoehorn": "^0.1.2"
+    "@mdx-js/mdx": "catalog:",
+    "@total-typescript/shoehorn": "catalog:dev",
+    "@types/mdast": "catalog:",
+    "remark-gfm": "catalog:",
+    "to-vfile": "catalog:dev",
+    "tree-node-cli": "catalog:dev",
+    "unified": "catalog:"
   }
 }

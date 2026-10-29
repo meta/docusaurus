@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {visit} from 'unist-util-visit';
+import {toString} from 'mdast-util-to-string';
 import {
   addTocSliceImportIfNeeded,
   createTOCExportNodeAST,
@@ -14,13 +16,8 @@ import {
   isNamedExport,
 } from './utils';
 import type {Heading, Root} from 'mdast';
-// @ts-expect-error: TODO see https://github.com/microsoft/TypeScript/issues/49721
-import type {Transformer} from 'unified';
-import type {
-  MdxjsEsm,
-  MdxJsxFlowElement,
-  // @ts-expect-error: TODO see https://github.com/microsoft/TypeScript/issues/49721
-} from 'mdast-util-mdx';
+import type {Plugin, Transformer} from 'unified';
+import type {MdxjsEsm, MdxJsxFlowElement} from 'mdast-util-mdx';
 import type {TOCItems} from './types';
 import type {ImportDeclaration} from 'estree';
 
@@ -46,18 +43,16 @@ function createTocSliceImportName({
   return `__${tocExportName}${componentName}`;
 }
 
-async function collectImportsExports({
+function collectImportsExports({
   root,
   tocExportName,
 }: {
   root: Root;
   tocExportName: string;
-}): Promise<{
+}): {
   markdownImports: MarkdownImports;
   existingTocExport: ExistingTOCExport;
-}> {
-  const {visit} = await import('unist-util-visit');
-
+} {
   const markdownImports = new Map<string, {declaration: ImportDeclaration}>();
   let existingTocExport: MdxjsEsm | null = null;
 
@@ -86,7 +81,7 @@ async function collectImportsExports({
   return {markdownImports, existingTocExport};
 }
 
-async function collectTOCItems({
+function collectTOCItems({
   root,
   tocExportName,
   markdownImports,
@@ -94,13 +89,10 @@ async function collectTOCItems({
   root: Root;
   tocExportName: string;
   markdownImports: MarkdownImports;
-}): Promise<{
+}): {
   // The toc items we collected in the tree
   tocItems: TOCItems;
-}> {
-  const {toString} = await import('mdast-util-to-string');
-  const {visit} = await import('unist-util-visit');
-
+} {
   const tocItems: TOCItems = [];
 
   visit(root, (child) => {
@@ -155,11 +147,13 @@ async function collectTOCItems({
   }
 }
 
-export default function plugin(options: PluginOptions = {}): Transformer<Root> {
+const plugin: Plugin<PluginOptions[], Root> = function plugin(
+  options = {},
+): Transformer<Root> {
   const tocExportName = options.name || 'toc';
 
-  return async (root) => {
-    const {markdownImports, existingTocExport} = await collectImportsExports({
+  return (root) => {
+    const {markdownImports, existingTocExport} = collectImportsExports({
       root,
       tocExportName,
     });
@@ -171,17 +165,19 @@ export default function plugin(options: PluginOptions = {}): Transformer<Root> {
       return;
     }
 
-    const {tocItems} = await collectTOCItems({
+    const {tocItems} = collectTOCItems({
       root,
       tocExportName,
       markdownImports,
     });
 
     root.children.push(
-      await createTOCExportNodeAST({
+      createTOCExportNodeAST({
         tocExportName,
         tocItems,
       }),
     );
   };
-}
+};
+
+export default plugin;

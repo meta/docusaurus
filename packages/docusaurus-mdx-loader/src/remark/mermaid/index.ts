@@ -5,21 +5,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {visit} from 'unist-util-visit';
 import {transformNode} from '../utils';
 
-// @ts-expect-error: TODO see https://github.com/microsoft/TypeScript/issues/49721
 import type {Transformer} from 'unified';
-import type {Code} from 'mdast';
+import type {Root} from 'mdast';
 
 // TODO: this plugin shouldn't be in the core MDX loader
 // After we allow plugins to provide Remark/Rehype plugins (see
 // https://github.com/facebook/docusaurus/issues/6370), this should be provided
 // by theme-mermaid itself
-export default function plugin(): Transformer {
-  return async (root) => {
-    const {visit} = await import('unist-util-visit');
-
-    visit(root, 'code', (node: Code) => {
+export default function plugin(): Transformer<Root> {
+  return (root) => {
+    visit(root, 'code', (node) => {
       if (node.lang === 'mermaid') {
         // TODO migrate to mdxJsxFlowElement? cf admonitions
         transformNode(node, {

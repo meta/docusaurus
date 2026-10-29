@@ -10,11 +10,11 @@ import BrowserWindow from '@site/src/components/BrowserWindow';
 
 Mathematical equations can be rendered using [KaTeX](https://katex.org).
 
-## Usage {#usage}
+## Usage {/* #usage */}
 
 Please read [KaTeX](https://katex.org) documentation for more details.
 
-### Inline {#inline}
+### Inline {/* #inline */}
 
 Write inline math equations by wrapping LaTeX equations between `$`:
 
@@ -31,9 +31,15 @@ Let $f\colon[a,b] \to \R$ be Riemann integrable. Let $F\colon[a,b]\to\R$ be $F(x
 
 </BrowserWindow>
 
-### Blocks {#blocks}
+For equation block or display mode, use <code>```math</code> fenced code blocks.
 
-For equation block or display mode, use line breaks and `$$`:
+````latex
+```math
+I = \int_0^{2\pi} \sin(x)\,dx
+```
+````
+
+You can also use line breaks and `$$`, although this syntax relies on a [Markdown syntax extension](https://github.com/micromark/micromark-extension-math) and is less portable:
 
 ```latex
 $$
@@ -43,13 +49,13 @@ $$
 
 <BrowserWindow>
 
-$$
+```math
 I = \int_0^{2\pi} \sin(x)\,dx
-$$
+```
 
 </BrowserWindow>
 
-## Configuration {#configuration}
+## Configuration {/* #configuration */}
 
 To enable KaTeX, you need to install `remark-math` and `rehype-katex` plugins.
 
@@ -130,7 +136,7 @@ module.exports = {
 };
 ```
 
-## Self-hosting KaTeX assets {#self-hosting-katex-assets}
+## Self-hosting KaTeX assets {/* #self-hosting-katex-assets */}
 
 Loading stylesheets, fonts, and JavaScript libraries from CDN sources is a good practice for popular libraries and assets, since it reduces the amount of assets you have to host. In case you prefer to self-host the `katex.min.css` (along with required KaTeX fonts), you can download the latest version from [KaTeX GitHub releases](https://github.com/KaTeX/KaTeX/releases), extract and copy `katex.min.css` and `fonts` directory (only `.woff2` font types should be enough) to your site's `static` directory, and in `docusaurus.config.js`, replace the stylesheet's `href` from the CDN URL to your local path (say, `/katex/katex.min.css`).
 
@@ -145,7 +151,7 @@ module.exports = {
 };
 ```
 
-## Upgrading rehype-katex beyond recommended version {#upgrading-rehype-katex-beyond-recommended-version}
+## Upgrading rehype-katex beyond recommended version {/* #upgrading-rehype-katex-beyond-recommended-version */}
 
 :::tip
 

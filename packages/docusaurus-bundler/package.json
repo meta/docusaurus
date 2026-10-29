@@ -1,0 +1,56 @@
+{
+  "name": "@docusaurus/bundler",
+  "version": "4.0.0",
+  "description": "Docusaurus util package to abstract the current bundler.",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/facebook/docusaurus.git",
+    "directory": "packages/docusaurus-bundler"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "catalog:",
+    "@docusaurus/babel": "workspace:*",
+    "@docusaurus/logger": "workspace:*",
+    "@docusaurus/types": "workspace:*",
+    "@rspack/core": "catalog:",
+    "@rspack/dev-server": "catalog:",
+    "@swc/html": "catalog:",
+    "babel-loader": "catalog:",
+    "browserslist": "catalog:",
+    "css-loader": "catalog:",
+    "lightningcss": "catalog:",
+    "mini-css-extract-plugin": "catalog:",
+    "minimizer-webpack-plugin": "catalog:",
+    "postcss": "catalog:",
+    "postcss-loader": "catalog:",
+    "postcss-preset-env": "catalog:",
+    "semver": "catalog:",
+    "tslib": "catalog:",
+    "webpack": "catalog:",
+    "webpackbar": "catalog:"
+  },
+  "devDependencies": {
+    "@swc/core": "catalog:"
+  },
+  "peerDependencies": {
+    "@swc/core": "catalog:"
+  },
+  "peerDependenciesMeta": {
+    "@swc/core": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=24.21"
+  }
+}

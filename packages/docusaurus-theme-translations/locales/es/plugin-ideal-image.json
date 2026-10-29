@@ -3,5 +3,5 @@
   "theme.IdealImageMessage.error": "Error. Click para recargar",
   "theme.IdealImageMessage.load": "Click para recargar{sizeMessage}",
   "theme.IdealImageMessage.loading": "Cargando...",
-  "theme.IdealImageMessage.offline": "Tu navegador está desconectado. Image no cargada"
+  "theme.IdealImageMessage.offline": "Tu navegador está desconectado. Imagen no cargada"
 }

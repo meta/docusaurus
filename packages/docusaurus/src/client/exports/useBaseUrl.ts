@@ -9,17 +9,32 @@ import {useCallback} from 'react';
 import useDocusaurusContext from './useDocusaurusContext';
 import {hasProtocol} from './isInternalUrl';
 import type {BaseUrlOptions, BaseUrlUtils} from '@docusaurus/useBaseUrl';
+import type {RouterType} from '@docusaurus/types';
 
-function addBaseUrl(
-  siteUrl: string,
-  baseUrl: string,
-  url: string,
-  {forcePrependBaseUrl = false, absolute = false}: BaseUrlOptions = {},
-): string {
+export function addBaseUrl({
+  siteUrl,
+  baseUrl,
+  url,
+  options: {forcePrependBaseUrl = false, absolute = false} = {},
+  router,
+}: {
+  siteUrl: string;
+  baseUrl: string;
+  url: string;
+  router: RouterType;
+  options?: BaseUrlOptions;
+}): string {
   // It never makes sense to add base url to a local anchor url, or one with a
   // protocol
   if (!url || url.startsWith('#') || hasProtocol(url)) {
     return url;
+  }
+
+  // TODO hash router + /baseUrl/ is unlikely to work well in all situations
+  // This will support most cases, but not all
+  // See https://github.com/facebook/docusaurus/pull/9859
+  if (router === 'hash') {
+    return url.startsWith('/') ? `.${url}` : `./${url}`;
   }
 
   if (forcePrependBaseUrl) {
@@ -41,14 +56,14 @@ function addBaseUrl(
 }
 
 export function useBaseUrlUtils(): BaseUrlUtils {
-  const {
-    siteConfig: {baseUrl, url: siteUrl},
-  } = useDocusaurusContext();
+  const {siteConfig} = useDocusaurusContext();
+  const {baseUrl, url: siteUrl} = siteConfig;
+  const router = siteConfig.future.experimental_router;
 
   const withBaseUrl = useCallback(
     (url: string, options?: BaseUrlOptions) =>
-      addBaseUrl(siteUrl, baseUrl, url, options),
-    [siteUrl, baseUrl],
+      addBaseUrl({siteUrl, baseUrl, url, options, router}),
+    [siteUrl, baseUrl, router],
   );
 
   return {

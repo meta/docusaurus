@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import CodeBlock from '@theme-original/CodeBlock';
 import type {Props} from '@theme/CodeBlock';
 
 // This component does nothing on purpose
 // Dogfood: wrapping a theme component already enhanced by another theme
 // See https://github.com/facebook/docusaurus/pull/5983
-export default function CodeBlockWrapper(props: Props): JSX.Element {
+export default function CodeBlockWrapper(props: Props): ReactNode {
   return <CodeBlock {...props} />;
 }

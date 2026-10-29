@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import {translate} from '@docusaurus/Translate';
 import IconArrow from '@theme/Icon/Arrow';
@@ -13,7 +13,7 @@ import type {Props} from '@theme/DocSidebar/Desktop/CollapseButton';
 
 import styles from './styles.module.css';
 
-export default function CollapseButton({onClick}: Props): JSX.Element {
+export default function CollapseButton({onClick}: Props): ReactNode {
   return (
     <button
       type="button"

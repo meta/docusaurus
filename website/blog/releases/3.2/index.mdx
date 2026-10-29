@@ -12,15 +12,15 @@ The upgrade should be easy: as explained in our [release process documentation](
 
 ![Docusaurus blog post social card](./img/social-card.png)
 
-<!--truncate-->
+{/* truncate */}
 
 import BrowserWindow from '@site/src/components/BrowserWindow';
 import IframeWindow from '@site/src/components/BrowserWindow/IframeWindow';
 import ErrorBoundaryTestButton from '@site/src/components/ErrorBoundaryTestButton';
 
-## Highlights
+## Highlights {/* #highlights */}
 
-### Faster builds
+### Faster builds {/* #faster-builds */}
 
 We worked hard to reduce the time it takes to build a Docusaurus site in production mode.
 
@@ -44,7 +44,7 @@ An incremental build happens when you run another time the `docusaurus build` co
 
 </details>
 
-### Faster Dev Server
+### Faster Dev Server {/* #faster-dev-server */}
 
 We also worked on improving the performance of the dev server, so that you can get a faster feedback when editing Markdown/MDX files.
 
@@ -52,7 +52,7 @@ The way we initially implemented content reloading wasn't great. For example, ed
 
 We plan to keep improving the speed of our dev server, with even more granular hot reloads, ensuring we don't run useless computations that would always keep giving the same result.
 
-### MDX partials table-of-contents
+### MDX partials table-of-contents {/* #mdx-partials-table-of-contents */}
 
 With [#9684](https://github.com/facebook/docusaurus/pull/9684), Docusaurus is now able to render headings coming from an imported partial into the table-of-contents.
 
@@ -78,7 +78,7 @@ Some paragraph
 
 Previously, the heading `Partial heading` did not appear in the table-of-contents, but now it will!
 
-### Blog improvements
+### Blog improvements {/* #blog-improvements */}
 
 We improved the blog plugin with several new options to make it even more powerful and flexible:
 
@@ -86,7 +86,7 @@ We improved the blog plugin with several new options to make it even more powerf
 - [#9886](https://github.com/facebook/docusaurus/pull/9886): a new `processBlogPosts` option allow you to filter/transform/sort blog posts.
 - [#9838](https://github.com/facebook/docusaurus/pull/9838): a new `pageBasePath` option allows you to customize the blog pagination URL segment (`/blog/page/2`)
 
-### Sitemap lastmod
+### Sitemap lastmod {/* #sitemap-lastmod */}
 
 With [#9954](https://github.com/facebook/docusaurus/pull/9954), the sitemap plugin has a new `lastmod` option that can now emit a `<lastmod>` tag on the XML. The value is read from the Git history by default, but can be overridden with docs and blog `last_update` front matter.
 
@@ -102,7 +102,7 @@ We recommend using the following sitemap plugin config, that will become the def
 }
 ```
 
-## Other changes
+## Other changes {/* #other-changes */}
 
 - [#9687](https://github.com/facebook/docusaurus/pull/9687): new Vercel Analytics plugin
 - [#9681](https://github.com/facebook/docusaurus/pull/9681) and [#9442](https://github.com/facebook/docusaurus/pull/9442): `docusaurus swizzle` and `create-docusaurus` CLIs now ask users if they prefer to use TypeScript

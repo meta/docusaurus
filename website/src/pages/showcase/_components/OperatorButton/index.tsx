@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {useId} from 'react';
+import {useId} from 'react';
 import clsx from 'clsx';
 import {useOperator} from '../../_utils';
 

@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
 import {StaticRouter} from 'react-router-dom';
 import {HelmetProvider, type FilledContext} from 'react-helmet-async';
 import Loadable from 'react-loadable';
@@ -16,9 +15,10 @@ import {
   createStatefulBrokenLinks,
   BrokenLinksProvider,
 } from './BrokenLinksContext';
-import type {PageCollectedData, AppRenderer} from '../common';
+import {toPageCollectedMetadataInternal} from './serverHelmetUtils';
+import type {AppRenderer, PageCollectedDataInternal} from '../common';
 
-const render: AppRenderer = async ({pathname}) => {
+const render: AppRenderer['render'] = async ({pathname}) => {
   await preload(pathname);
 
   const modules = new Set<string>();
@@ -41,8 +41,12 @@ const render: AppRenderer = async ({pathname}) => {
 
   const html = await renderToHtml(app);
 
-  const collectedData: PageCollectedData = {
-    helmet: (helmetContext as FilledContext).helmet,
+  const {helmet} = helmetContext as FilledContext;
+
+  const metadata = toPageCollectedMetadataInternal({helmet});
+
+  const collectedData: PageCollectedDataInternal = {
+    metadata,
     anchors: statefulBrokenLinks.getCollectedAnchors(),
     links: statefulBrokenLinks.getCollectedLinks(),
     modules: Array.from(modules),

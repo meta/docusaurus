@@ -6,18 +6,9 @@
  */
 
 import rule from '../no-html-links';
-import {RuleTester} from './testUtils';
+import {ruleTester} from './testUtils';
 
 const errorsJSX = [{messageId: 'link'}] as const;
-
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-});
 
 ruleTester.run('prefer-docusaurus-link', rule, {
   valid: [
@@ -25,14 +16,14 @@ ruleTester.run('prefer-docusaurus-link', rule, {
       code: '<Link to="/test">test</Link>',
     },
     {
-      code: '<Link to="https://twitter.com/docusaurus">Twitter</Link>',
+      code: '<Link to="https://x.com/docusaurus">X</Link>',
     },
     {
-      code: '<a href="https://twitter.com/docusaurus">Twitter</a>',
+      code: '<a href="https://x.com/docusaurus">X</a>',
       options: [{ignoreFullyResolved: true}],
     },
     {
-      code: '<a href={`https://twitter.com/docusaurus`}>Twitter</a>',
+      code: '<a href={`https://x.com/docusaurus`}>X</a>',
       options: [{ignoreFullyResolved: true}],
     },
     {
@@ -50,11 +41,11 @@ ruleTester.run('prefer-docusaurus-link', rule, {
       errors: errorsJSX,
     },
     {
-      code: '<a href="https://twitter.com/docusaurus" target="_blank">test</a>',
+      code: '<a href="https://x.com/docusaurus" target="_blank">test</a>',
       errors: errorsJSX,
     },
     {
-      code: '<a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer">test</a>',
+      code: '<a href="https://x.com/docusaurus" target="_blank" rel="noopener noreferrer">test</a>',
       errors: errorsJSX,
     },
     {
@@ -82,7 +73,7 @@ ruleTester.run('prefer-docusaurus-link', rule, {
       // TODO we might want to make this test pass
       // Can template literals be statically pre-evaluated? (Babel can do it)
       // eslint-disable-next-line no-template-curly-in-string
-      code: '<a href={`https://twitter.com/${"docu" + "saurus"} ${"rex"}`}>Twitter</a>',
+      code: '<a href={`https://x.com/${"docu" + "saurus"} ${"rex"}`}>Twitter</a>',
       options: [{ignoreFullyResolved: true}],
       errors: errorsJSX,
     },

@@ -1,0 +1,62 @@
+---
+sidebar_label: Netlify
+description: Deploy your Docusaurus app for production on Netlify.
+---
+
+# Deploying to Netlify
+
+To deploy your Docusaurus sites to [Netlify](https://www.netlify.com/), first make sure the following options are properly configured:
+
+```js title="docusaurus.config.js"
+export default {
+  // highlight-start
+  url: 'https://docusaurus-2.netlify.app', // Url to your site with no trailing slash
+  baseUrl: '/', // Base directory of your site relative to your repo
+  // highlight-end
+  // ...
+};
+```
+
+Then, [create your site with Netlify](https://app.netlify.com/start).
+
+While you set up the site, specify the build commands and directories as follows:
+
+- build command: `npm run build`
+- publish directory: `build`
+
+If you did not configure these build options, you may still go to "Site settings" -> "Build & deploy" after your site is created.
+
+Once properly configured with the above options, your site should deploy and automatically redeploy upon merging to your deploy branch, which defaults to `main`.
+
+:::warning
+
+Some Docusaurus sites put the `docs` folder outside of `website` (most likely former Docusaurus v1 sites):
+
+```bash
+repo           # git root
+├── docs       # MD files
+└── website    # Docusaurus root
+```
+
+If you decide to use the `website` folder as Netlify's base directory, Netlify will not trigger builds when you update the `docs` folder, and you need to configure a [custom `ignore` command](https://docs.netlify.com/configure-builds/common-configurations/ignore-builds/):
+
+```toml title="website/netlify.toml"
+[build]
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF . ../docs/"
+```
+
+:::
+
+:::warning
+
+By default, Netlify adds trailing slashes to Docusaurus URLs.
+
+It is recommended to disable the Netlify setting `Post Processing > Asset Optimization > Pretty Urls` to prevent lowercase URLs, unnecessary redirects, and 404 errors.
+
+**Be very careful**: the `Disable asset optimization` global checkbox is broken and does not really disable the `Pretty URLs` setting in practice. Please make sure to **uncheck it independently**.
+
+If you want to keep the `Pretty Urls` Netlify setting on, adjust the `trailingSlash` Docusaurus config appropriately.
+
+Refer to [slorber/trailing-slash-guide](https://github.com/slorber/trailing-slash-guide) for more information.
+
+:::

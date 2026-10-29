@@ -1,0 +1,49 @@
+# test-bad-package
+
+This package declares a wrong React version on purpose (16.14.0)
+
+The goal is to test that the MD/MDX content of this package can still be imported/rendered by our website.
+
+See related issue https://github.com/facebook/docusaurus/issues/9027
+
+---
+
+import {version as ReactVersion} from 'react';
+import {version as ReactDOMVersion} from 'react-dom';
+
+export function TestComponent() {
+  const expectedVersion = 19;
+  if (!ReactVersion.startsWith(`${expectedVersion}`)) {
+    throw new Error(
+      `'test-bad-package/README.mdx' is rendered with bad React version: ${ReactVersion}`,
+    );
+  }
+  if (!ReactDOMVersion.startsWith(`${expectedVersion}`)) {
+    throw new Error(
+      `'test-bad-package/README.mdx' is rendered with bad React-DOM version: ${ReactDOMVersion}`,
+    );
+  }
+  return (
+    <>
+      <div>React version: {ReactVersion}</div>
+      <div>React DOM version: {ReactDOMVersion}</div>
+    </>
+  );
+}
+
+<TestComponent />
+
+---
+
+## MDX Components work:
+
+<details>
+  <summary>Summary</summary>
+
+Details
+
+</details>
+
+```js
+const age = 42;
+```

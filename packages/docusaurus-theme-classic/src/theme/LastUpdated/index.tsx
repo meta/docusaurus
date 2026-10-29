@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Translate from '@docusaurus/Translate';
 import {ThemeClassNames} from '@docusaurus/theme-common';
 import {useDateTimeFormat} from '@docusaurus/theme-common/internal';
@@ -15,7 +15,7 @@ function LastUpdatedAtDate({
   lastUpdatedAt,
 }: {
   lastUpdatedAt: number;
-}): JSX.Element {
+}): ReactNode {
   const atDate = new Date(lastUpdatedAt);
 
   const dateTimeFormat = useDateTimeFormat({
@@ -49,7 +49,7 @@ function LastUpdatedByUser({
   lastUpdatedBy,
 }: {
   lastUpdatedBy: string;
-}): JSX.Element {
+}): ReactNode {
   return (
     <Translate
       id="theme.lastUpdated.byUser"
@@ -65,7 +65,7 @@ function LastUpdatedByUser({
 export default function LastUpdated({
   lastUpdatedAt,
   lastUpdatedBy,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   return (
     <span className={ThemeClassNames.common.lastUpdated}>
       <Translate

@@ -5,13 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
+import {remark} from 'remark';
+import mdx from 'remark-mdx';
 import details from '..';
 
 async function process(content: string) {
-  const {remark} = await import('remark');
-
-  const {default: mdx} = await import('remark-mdx');
-
   const result = await remark().use(mdx).use(details).process(content);
 
   return result.value;

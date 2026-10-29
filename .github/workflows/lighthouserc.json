@@ -1,7 +1,7 @@
 {
   "ci": {
     "collect": {
-      "startServerCommand": "yarn serve:website",
+      "startServerCommand": "pnpm serve:website",
       "startServerReadyPattern": "Serving",
       "startServerReadyTimeout": 10000,
 

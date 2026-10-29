@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {useRef} from 'react';
+import {type ReactNode, useRef} from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 
-export default function LinkTest(): JSX.Element {
+export default function LinkTest(): ReactNode {
   const anchorRef = useRef<HTMLAnchorElement>(null);
   return (
     <Layout>

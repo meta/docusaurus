@@ -5,7 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {isValidPathname, DEFAULT_PLUGIN_ID, type Tag} from '@docusaurus/utils';
+import {
+  isValidPathname,
+  DEFAULT_PLUGIN_ID,
+  type FrontMatterLastUpdate,
+} from '@docusaurus/utils';
 import {addLeadingSlash} from '@docusaurus/utils-common';
 import Joi from './Joi';
 import {JoiFrontMatter} from './JoiFrontMatter';
@@ -32,6 +36,7 @@ const MarkdownPluginsSchema = Joi.array()
 
 export const RemarkPluginsSchema = MarkdownPluginsSchema;
 export const RehypePluginsSchema = MarkdownPluginsSchema;
+export const RecmaPluginsSchema = MarkdownPluginsSchema;
 
 export const AdmonitionsSchema = JoiFrontMatter.alternatives()
   .try(
@@ -43,11 +48,6 @@ export const AdmonitionsSchema = JoiFrontMatter.alternatives()
         // .required(),
       ),
       extendDefaults: JoiFrontMatter.boolean(),
-
-      // TODO Remove before 2024
-      tag: Joi.any().forbidden().messages({
-        'any.unknown': `It is not possible anymore to use a custom admonition tag. The only admonition tag supported is ':::' (Markdown Directive syntax)`,
-      }),
     }).required(),
   )
   .default(true)
@@ -66,13 +66,11 @@ export const URISchema = Joi.alternatives(
     if (typeof val !== 'string') {
       return helpers.error('any.invalid');
     }
-    try {
-      // eslint-disable-next-line no-new
-      new URL(String(val));
-      return val;
-    } catch {
+    const url = URL.parse(String(val));
+    if (url === null) {
       return helpers.error('any.invalid');
     }
+    return val;
   }),
 ).messages({
   'alternatives.match':
@@ -110,18 +108,12 @@ export const RouteBasePathSchema = Joi
     addLeadingSlash(value),
   );
 
-const FrontMatterTagSchema = JoiFrontMatter.alternatives()
-  .try(
-    JoiFrontMatter.string().required(),
-    JoiFrontMatter.object<Tag>({
-      label: JoiFrontMatter.string().required(),
-      permalink: JoiFrontMatter.string().required(),
-    }).required(),
-  )
-  .messages({
-    'alternatives.match': '{{#label}} does not look like a valid tag',
-    'alternatives.types': '{{#label}} does not look like a valid tag',
-  });
+// TODO Docusaurus v5: remove the tag objects migration hint from this message
+const FrontMatterTagSchema = JoiFrontMatter.string().messages({
+  'string.base': `{{#label}} does not look like a valid tag: front matter tags must be strings.
+Tag objects with a custom label or permalink are not supported anymore: declare tags in a tags file (usually tags.yml) and reference them by key instead.
+See https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs#tags-file`,
+});
 
 export const FrontMatterTagsSchema = JoiFrontMatter.array()
   .items(FrontMatterTagSchema)
@@ -146,12 +138,13 @@ export type ContentVisibility = {
   unlisted: boolean;
 };
 
-export const ContentVisibilitySchema = JoiFrontMatter.object<ContentVisibility>(
-  {
-    draft: JoiFrontMatter.boolean(),
-    unlisted: JoiFrontMatter.boolean(),
-  },
-)
+export const ContentVisibilitySchema = JoiFrontMatter.object<
+  ContentVisibility,
+  true
+>({
+  draft: JoiFrontMatter.boolean(),
+  unlisted: JoiFrontMatter.boolean(),
+})
   .custom((frontMatter: ContentVisibility, helpers) => {
     if (frontMatter.draft && frontMatter.unlisted) {
       return helpers.error('frontMatter.draftAndUnlistedError');
@@ -167,9 +160,14 @@ export const ContentVisibilitySchema = JoiFrontMatter.object<ContentVisibility>(
 export const FrontMatterLastUpdateErrorMessage =
   '{{#label}} does not look like a valid last update object. Please use an author key with a string or a date with a string or Date.';
 
-export const FrontMatterLastUpdateSchema = Joi.object({
+export const FrontMatterLastUpdateSchema = Joi.object<
+  FrontMatterLastUpdate,
+  true
+>({
   author: Joi.string(),
-  date: Joi.date().raw(),
+  // Joi doesn't like our "string | Date" union type
+  // It expects an "alternative" type, even when using date().raw()
+  date: Joi.alternatives().try(Joi.date().raw()),
 })
   .or('author', 'date')
   .messages({

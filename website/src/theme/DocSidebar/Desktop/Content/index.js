@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
 import {useLocation} from '@docusaurus/router';
 import Content from '@theme-original/DocSidebar/Desktop/Content';
 

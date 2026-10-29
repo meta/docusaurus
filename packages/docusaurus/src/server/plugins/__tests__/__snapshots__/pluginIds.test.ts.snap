@@ -1,20 +1,20 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ensureUniquePluginInstanceIds reject multi instance plugins with same id 1`] = `
-"Plugin "plugin-docs" is used 2 times with ID "sameId".
-To use the same plugin multiple times on a Docusaurus site, you need to assign a unique ID to each plugin instance."
+exports[`ensureUniquePluginInstanceIds > reject multi instance plugins with same id 1`] = `
+[Error: Plugin "plugin-docs" is used 2 times with ID "sameId".
+To use the same plugin multiple times on a Docusaurus site, you need to assign a unique ID to each plugin instance.]
 `;
 
-exports[`ensureUniquePluginInstanceIds reject multi instance plugins with some without id 1`] = `
-"Plugin "plugin-docs" is used 2 times with ID "default".
+exports[`ensureUniquePluginInstanceIds > reject multi instance plugins with some without id 1`] = `
+[Error: Plugin "plugin-docs" is used 2 times with ID "default".
 To use the same plugin multiple times on a Docusaurus site, you need to assign a unique ID to each plugin instance.
 
-The plugin ID is "default" by default. It's possible that the preset you are using already includes a plugin instance, in which case you either want to disable the plugin in the preset (to use a single instance), or assign another ID to your extra plugin instance (to use multiple instances)."
+The plugin ID is "default" by default. It's possible that the preset you are using already includes a plugin instance, in which case you either want to disable the plugin in the preset (to use a single instance), or assign another ID to your extra plugin instance (to use multiple instances).]
 `;
 
-exports[`ensureUniquePluginInstanceIds reject multi instance plugins without id 1`] = `
-"Plugin "plugin-docs" is used 2 times with ID "default".
+exports[`ensureUniquePluginInstanceIds > reject multi instance plugins without id 1`] = `
+[Error: Plugin "plugin-docs" is used 2 times with ID "default".
 To use the same plugin multiple times on a Docusaurus site, you need to assign a unique ID to each plugin instance.
 
-The plugin ID is "default" by default. It's possible that the preset you are using already includes a plugin instance, in which case you either want to disable the plugin in the preset (to use a single instance), or assign another ID to your extra plugin instance (to use multiple instances)."
+The plugin ID is "default" by default. It's possible that the preset you are using already includes a plugin instance, in which case you either want to disable the plugin in the preset (to use a single instance), or assign another ID to your extra plugin instance (to use multiple instances).]
 `;

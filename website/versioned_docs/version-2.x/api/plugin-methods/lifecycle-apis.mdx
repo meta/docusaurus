@@ -7,7 +7,7 @@ toc_max_heading_level: 4
 
 During the build, plugins are loaded in parallel to fetch their own contents and render them to routes. Plugins may also configure webpack or post-process the generated files.
 
-## `async loadContent()` {#loadContent}
+## `async loadContent()` {/* #loadContent */}
 
 Plugins should use this lifecycle to fetch from data sources (filesystem, remote API, headless CMS, etc.) or do some server processing. The return value is the content it needs.
 
@@ -26,19 +26,19 @@ module.exports = function (context, options) {
 };
 ```
 
-## `async contentLoaded({content, actions})` {#contentLoaded}
+## `async contentLoaded({content, actions})` {/* #contentLoaded */}
 
 The data that was loaded in `loadContent` will be consumed in `contentLoaded`. It can be rendered to routes, registered as global data, etc.
 
-### `content` {#content}
+### `content` {/* #content */}
 
 `contentLoaded` will be called _after_ `loadContent` is done. The return value of `loadContent()` will be passed to `contentLoaded` as `content`.
 
-### `actions` {#actions}
+### `actions` {/* #actions */}
 
 `actions` contain three functions:
 
-#### `addRoute(config: RouteConfig): void` {#addRoute}
+#### `addRoute(config: RouteConfig): void` {/* #addRoute */}
 
 Create a route to add to the website.
 
@@ -63,7 +63,7 @@ type Module =
   | string;
 ```
 
-#### `createData(name: string, data: any): Promise<string>` {#createData}
+#### `createData(name: string, data: any): Promise<string>` {/* #createData */}
 
 A declarative callback to create static data (generally JSON or string) which can later be provided to your routes as props. Takes the file name and data to be stored, and returns the actual data file's path.
 
@@ -107,7 +107,7 @@ export default function friendsPlugin(context, options) {
 }
 ```
 
-#### `setGlobalData(data: any): void` {#setGlobalData}
+#### `setGlobalData(data: any): void` {/* #setGlobalData */}
 
 This function permits one to create some global plugin data that can be read from any page, including the pages created by other plugins, and your theme layout.
 
@@ -153,7 +153,7 @@ export default function friendsPlugin(context, options) {
 }
 ```
 
-## `configureWebpack(config, isServer, utils, content)` {#configureWebpack}
+## `configureWebpack(config, isServer, utils, content)` {/* #configureWebpack */}
 
 Modifies the internal webpack config. If the return value is a JavaScript object, it will be merged into the final config using [`webpack-merge`](https://github.com/survivejs/webpack-merge). If it is a function, it will be called and receive `config` as the first argument and an `isServer` flag as the second argument.
 
@@ -163,15 +163,15 @@ The API of `configureWebpack` will be modified in the future to accept an object
 
 :::
 
-### `config` {#config}
+### `config` {/* #config */}
 
 `configureWebpack` is called with `config` generated according to client/server build. You may treat this as the base config to be merged with.
 
-### `isServer` {#isServer}
+### `isServer` {/* #isServer */}
 
 `configureWebpack` will be called both in server build and in client build. The server build receives `true` and the client build receives `false` as `isServer`.
 
-### `utils` {#utils}
+### `utils` {/* #utils */}
 
 `configureWebpack` also receives an util object:
 
@@ -205,11 +205,11 @@ module.exports = function (context, options) {
 };
 ```
 
-### `content` {#content-1}
+### `content` {/* #content-1 */}
 
 `configureWebpack` will be called both with the content loaded by the plugin.
 
-### Merge strategy {#merge-strategy}
+### Merge strategy {/* #merge-strategy */}
 
 We merge the Webpack configuration parts of plugins into the global Webpack config using [webpack-merge](https://github.com/survivejs/webpack-merge).
 
@@ -233,7 +233,7 @@ module.exports = function (context, options) {
 
 Read the [webpack-merge strategy doc](https://github.com/survivejs/webpack-merge#merging-with-strategies) for more details.
 
-### Configuring dev server {#configuring-dev-server}
+### Configuring dev server {/* #configuring-dev-server */}
 
 The dev server can be configured through returning a `devServer` field.
 
@@ -254,7 +254,7 @@ module.exports = function (context, options) {
 };
 ```
 
-## `configurePostCss(options)` {#configurePostCss}
+## `configurePostCss(options)` {/* #configurePostCss */}
 
 Modifies [`postcssOptions` of `postcss-loader`](https://webpack.js.org/loaders/postcss-loader/#postcssoptions) during the generation of the client bundle.
 
@@ -286,7 +286,7 @@ module.exports = function (context, options) {
 };
 ```
 
-## `postBuild(props)` {#postBuild}
+## `postBuild(props)` {/* #postBuild */}
 
 Called when a (production) build finishes.
 
@@ -324,7 +324,7 @@ module.exports = function (context, options) {
 };
 ```
 
-## `injectHtmlTags({content})` {#injectHtmlTags}
+## `injectHtmlTags({content})` {/* #injectHtmlTags */}
 
 Inject head and/or body HTML tags to Docusaurus generated HTML.
 
@@ -397,7 +397,7 @@ module.exports = function (context, options) {
 };
 ```
 
-## `getClientModules()` {#getClientModules}
+## `getClientModules()` {/* #getClientModules */}
 
 Returns an array of paths to the [client modules](../../advanced/client.mdx#client-modules) that are to be imported into the client bundle.
 

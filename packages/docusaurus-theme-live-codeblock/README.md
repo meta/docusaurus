@@ -1,4 +1,4 @@
-# Docusaurus Live Codeblock
+# `@docusaurus/theme-live-codeblock`
 
 You can create live code editors with a code block `live` meta string.
 

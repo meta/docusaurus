@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Head from '@docusaurus/Head';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-export default function SiteMetadataDefaults(): JSX.Element {
+export default function SiteMetadataDefaults(): ReactNode {
   const {
     siteConfig: {favicon, title, noIndex},
     i18n: {currentLocale, localeConfigs},

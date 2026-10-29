@@ -1,0 +1,39 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --docusaurus-blog-social-icon-size: 1rem;
+}
+
+.authorSocials {
+  /*
+  This ensures that container takes height even if there's no social link
+  This keeps author names aligned even if only some have socials
+   */
+  height: var(--docusaurus-blog-social-icon-size);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  line-height: 0;
+  overflow: hidden;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.authorSocialLink {
+  height: var(--docusaurus-blog-social-icon-size);
+  width: var(--docusaurus-blog-social-icon-size);
+  line-height: 0;
+  margin-right: 0.4rem;
+}
+
+.authorSocialIcon {
+  width: var(--docusaurus-blog-social-icon-size);
+  height: var(--docusaurus-blog-social-icon-size);
+}

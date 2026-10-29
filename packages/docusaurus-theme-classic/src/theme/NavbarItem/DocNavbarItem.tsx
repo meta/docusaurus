@@ -5,9 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-import {useActiveDocContext} from '@docusaurus/plugin-content-docs/client';
-import {useLayoutDoc} from '@docusaurus/theme-common/internal';
+import type {ReactNode} from 'react';
+import {
+  useActiveDocContext,
+  useLayoutDoc,
+} from '@docusaurus/plugin-content-docs/client';
 import DefaultNavbarItem from '@theme/NavbarItem/DefaultNavbarItem';
 import type {Props} from '@theme/NavbarItem/DocNavbarItem';
 
@@ -16,7 +18,7 @@ export default function DocNavbarItem({
   label: staticLabel,
   docsPluginId,
   ...props
-}: Props): JSX.Element | null {
+}: Props): ReactNode {
   const {activeDoc} = useActiveDocContext(docsPluginId);
   const doc = useLayoutDoc(docId, docsPluginId);
   const pageActive = activeDoc?.path === doc?.path;

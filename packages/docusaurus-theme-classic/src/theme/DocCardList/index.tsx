@@ -5,21 +5,34 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ComponentProps, ReactNode} from 'react';
 import clsx from 'clsx';
 import {
-  useCurrentSidebarCategory,
+  useCurrentSidebarSiblings,
   filterDocCardListItems,
-} from '@docusaurus/theme-common';
+} from '@docusaurus/plugin-content-docs/client';
 import DocCard from '@theme/DocCard';
 import type {Props} from '@theme/DocCardList';
+import styles from './styles.module.css';
 
 function DocCardListForCurrentSidebarCategory({className}: Props) {
-  const category = useCurrentSidebarCategory();
-  return <DocCardList items={category.items} className={className} />;
+  const items = useCurrentSidebarSiblings();
+  return <DocCardList items={items} className={className} />;
 }
 
-export default function DocCardList(props: Props): JSX.Element {
+function DocCardListItem({
+  item,
+}: {
+  item: ComponentProps<typeof DocCard>['item'];
+}) {
+  return (
+    <article className={clsx(styles.docCardListItem, 'col col--6')}>
+      <DocCard item={item} />
+    </article>
+  );
+}
+
+export default function DocCardList(props: Props): ReactNode {
   const {items, className} = props;
   if (!items) {
     return <DocCardListForCurrentSidebarCategory {...props} />;
@@ -28,9 +41,7 @@ export default function DocCardList(props: Props): JSX.Element {
   return (
     <section className={clsx('row', className)}>
       {filteredItems.map((item, index) => (
-        <article key={index} className="col col--6 margin-bottom--lg">
-          <DocCard item={item} />
-        </article>
+        <DocCardListItem key={index} item={item} />
       ))}
     </section>
   );

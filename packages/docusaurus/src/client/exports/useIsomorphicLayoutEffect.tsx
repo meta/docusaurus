@@ -5,23 +5,21 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {useEffect, useLayoutEffect} from 'react';
-import ExecutionEnvironment from './ExecutionEnvironment';
+import {useLayoutEffect} from 'react';
 
+// TODO Docusaurus v5: remove this deprecated hook
 /**
- * This hook is like `useLayoutEffect`, but without the SSR warning.
- * It seems hacky but it's used in many React libs (Redux, Formik...).
- * Also mentioned here: https://github.com/facebook/react/issues/16956
+ * This hook is now just React's `useLayoutEffect`.
  *
- * It is useful when you need to update a ref as soon as possible after a React
- * render (before `useEffect`).
+ * It used to fall back to `useEffect` on the server to avoid the
+ * `useLayoutEffect` SSR warning, which React 19 removed.
+ * See https://github.com/facebook/react/pull/26395
  *
- * TODO should become unnecessary in React v19?
- * https://github.com/facebook/react/pull/26395
- * This was added in core with Docusaurus v3 but kept undocumented on purpose
+ * We only keep it for retro-compatibility, because third-party code might
+ * import `@docusaurus/useIsomorphicLayoutEffect`.
+ *
+ * @deprecated Use React's `useLayoutEffect` instead.
  */
-const useIsomorphicLayoutEffect = ExecutionEnvironment.canUseDOM
-  ? useLayoutEffect
-  : useEffect;
+const useIsomorphicLayoutEffect = useLayoutEffect;
 
 export default useIsomorphicLayoutEffect;

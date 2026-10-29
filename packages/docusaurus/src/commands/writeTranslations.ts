@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
+import {globTranslatableSourceFiles} from '@docusaurus/glob';
+import {realpath} from '@docusaurus/fs';
 import {loadContext, type LoadContextParams} from '../server/site';
 import {initPlugins} from '../server/plugins/init';
 import {
@@ -16,11 +17,7 @@ import {
   loadPluginsDefaultCodeTranslationMessages,
   applyDefaultCodeTranslations,
 } from '../server/translations/translations';
-import {
-  extractSiteSourceCodeTranslations,
-  globSourceCodeFilePaths,
-} from '../server/translations/translationsExtractor';
-import {getCustomBabelConfigFilePath, getBabelOptions} from '../webpack/utils';
+import {extractSiteSourceCodeTranslations} from '../server/translations/translationsExtractor';
 import type {InitializedPlugin} from '@docusaurus/types';
 
 export type WriteTranslationsCLIOptions = Pick<
@@ -49,7 +46,7 @@ async function getExtraSourceCodeFilePaths(): Promise<string[]> {
   if (!themeCommonLibDir) {
     return []; // User may not use a Docusaurus official theme? Quite unlikely...
   }
-  return globSourceCodeFilePaths([themeCommonLibDir]);
+  return globTranslatableSourceFiles([themeCommonLibDir]);
 }
 
 async function writePluginTranslationFiles({
@@ -84,7 +81,7 @@ export async function writeTranslations(
   siteDirParam: string = '.',
   options: Partial<WriteTranslationsCLIOptions> = {},
 ): Promise<void> {
-  const siteDir = await fs.realpath(siteDirParam);
+  const siteDir = await realpath(siteDirParam);
 
   const context = await loadContext({
     siteDir,
@@ -103,20 +100,14 @@ Available locales are: ${context.i18n.locales.join(',')}.`,
     );
   }
 
-  const babelOptions = getBabelOptions({
-    isServer: true,
-    babelOptions: await getCustomBabelConfigFilePath(siteDir),
-  });
-  const extractedCodeTranslations = await extractSiteSourceCodeTranslations(
+  const extractedCodeTranslations = await extractSiteSourceCodeTranslations({
     siteDir,
     plugins,
-    babelOptions,
-    await getExtraSourceCodeFilePaths(),
-  );
+    extraSourceCodeFilePaths: await getExtraSourceCodeFilePaths(),
+  });
 
-  const defaultCodeMessages = await loadPluginsDefaultCodeTranslationMessages(
-    plugins,
-  );
+  const defaultCodeMessages =
+    await loadPluginsDefaultCodeTranslationMessages(plugins);
 
   const codeTranslations = applyDefaultCodeTranslations({
     extractedCodeTranslations,

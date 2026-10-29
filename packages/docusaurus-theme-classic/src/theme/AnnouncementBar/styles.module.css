@@ -50,7 +50,7 @@ html[data-announcement-bar-initially-dismissed='true'] .announcementBar {
   }
 }
 
-@media (min-width: 997px) {
+@media (width >= 997px) {
   :root {
     --docusaurus-announcement-bar-height: 30px;
   }

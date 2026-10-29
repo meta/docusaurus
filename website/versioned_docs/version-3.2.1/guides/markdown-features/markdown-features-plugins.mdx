@@ -29,7 +29,7 @@ Use plugins to introduce shorter syntax for the most commonly used JSX elements 
 
 :::
 
-## Default plugins {#default-plugins}
+## Default plugins {/* #default-plugins */}
 
 Docusaurus injects [some default Remark plugins](https://github.com/facebook/docusaurus/tree/main/packages/docusaurus-mdx-loader/src/remark) during Markdown processing. These plugins would:
 
@@ -40,7 +40,7 @@ Docusaurus injects [some default Remark plugins](https://github.com/facebook/doc
 
 These are all typical use-cases of Remark plugins, which can also be a source of inspiration if you want to implement your own plugin.
 
-## Installing plugins {#installing-plugins}
+## Installing plugins {/* #installing-plugins */}
 
 An MDX plugin is usually an npm package, so you install them like other npm packages using npm. Take the [math plugins](./markdown-features-math-equations.mdx) as an example.
 
@@ -120,7 +120,7 @@ module.exports = async function createConfigAsync() {
 
 </details>
 
-## Configuring plugins {#configuring-plugins}
+## Configuring plugins {/* #configuring-plugins */}
 
 Some plugins can be configured and accept their own options. In that case, use the `[plugin, pluginOptions]` syntax, like this:
 
@@ -147,7 +147,7 @@ export default {
 
 You should check your plugin's documentation for the options it supports.
 
-## Creating new rehype/remark plugins {#creating-new-rehyperemark-plugins}
+## Creating new rehype/remark plugins {/* #creating-new-rehyperemark-plugins */}
 
 If there isn't an existing package that satisfies your customization need, you can create your own MDX plugin.
 

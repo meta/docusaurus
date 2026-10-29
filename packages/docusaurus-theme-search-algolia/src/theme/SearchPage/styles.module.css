@@ -33,12 +33,20 @@
   font-weight: bold;
 }
 
-.algoliaLogo {
-  max-width: 150px;
+.searchLogoColumn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: flex-end;
 }
 
-.algoliaLogoPathFill {
-  fill: var(--ifm-font-color-base);
+.searchLogoColumn a {
+  display: flex;
+}
+
+.searchLogoColumn span {
+  color: var(--docsearch-muted-color);
+  font-weight: normal;
 }
 
 .searchResultItem {
@@ -62,7 +70,7 @@
   font-style: italic;
 }
 
-@media only screen and (max-width: 996px) {
+@media only screen and (width <= 996px) {
   .searchQueryColumn {
     max-width: 60% !important;
   }
@@ -81,7 +89,7 @@
   }
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (width <= 576px) {
   .searchQueryColumn {
     max-width: 100% !important;
   }

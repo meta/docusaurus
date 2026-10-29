@@ -5,15 +5,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
+import {remark} from 'remark';
+import mdx from 'remark-mdx';
+import {escapeMarkdownHeadingIds} from '@docusaurus/utils';
 import plugin from '../index';
 
 async function process(
   content: string,
   options: {removeContentTitle?: boolean} = {},
 ) {
-  const {remark} = await import('remark');
-  const processor = await remark().use({plugins: [[plugin, options]]});
-  return processor.process(content);
+  const result = await remark()
+    .use(mdx)
+    .use(plugin, options)
+    .process(escapeMarkdownHeadingIds(content));
+
+  return result;
 }
 
 describe('contentTitle remark plugin', () => {
@@ -33,7 +40,8 @@ some **markdown** *content*
     });
 
     it('extracts h1 heading alt syntax', async () => {
-      const result = await process(`
+      const result = await process(
+        `
 contentTitle alt
 ===
 
@@ -44,7 +52,8 @@ contentTitle alt
 # contentTitle 2
 
 some **markdown** *content*
-  `);
+  `,
+      );
 
       expect(result.data.contentTitle).toBe('contentTitle alt');
     });
@@ -98,7 +107,9 @@ some **markdown** *content*
   });
 
   describe('returns appropriate content', () => {
-    it('returns content unmodified', async () => {
+    it('returns heading wrapped in <header>', async () => {
+      // Test case for https://github.com/facebook/docusaurus/issues/8476
+
       const content = `
 # contentTitle 1
 
@@ -111,7 +122,19 @@ some **markdown** *content*
 
       const result = await process(content);
 
-      expect(result.toString().trim()).toEqual(content);
+      expect(result.toString().trim()).toEqual(
+        `
+<header>
+  # contentTitle 1
+</header>
+
+## Heading Two \\{#custom-heading-two}
+
+# contentTitle 2
+
+some **markdown** *content*
+`.trim(),
+      );
     });
 
     it('can strip contentTitle', async () => {
@@ -129,7 +152,7 @@ some **markdown** *content*
 
       expect(result.toString().trim()).toEqual(
         `
-## Heading Two {#custom-heading-two}
+## Heading Two \\{#custom-heading-two}
 
 # contentTitle 2
 
@@ -154,7 +177,7 @@ some **markdown** *content*
 
       expect(result.toString().trim()).toEqual(
         `
-## Heading Two {#custom-heading-two}
+## Heading Two \\{#custom-heading-two}
 
 # contentTitle 2
 

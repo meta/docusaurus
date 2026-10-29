@@ -110,6 +110,9 @@ html[data-theme='dark'] {
   --docsearch-container-background: rgb(94 100 112 / 70%);
   /* Modal */
   --docsearch-modal-background: var(--ifm-color-secondary-lighter);
+  /* Button */
+  --docsearch-search-button-background: var(--ifm-color-secondary);
+  --docsearch-search-button-text-color: var(--docsearch-muted-color);
   /* Search box */
   --docsearch-searchbox-background: var(--ifm-color-secondary);
   --docsearch-searchbox-focus-background: var(--ifm-color-white);
@@ -127,6 +130,9 @@ html[data-theme='dark'] {
   --docsearch-container-background: rgb(47 55 69 / 70%);
   /* Modal */
   --docsearch-modal-background: var(--ifm-background-color);
+  /* Button */
+  --docsearch-search-button-background: var(--ifm-background-color);
+  --docsearch-search-button-text-color: var(--docsearch-muted-color);
   /* Search box */
   --docsearch-searchbox-background: var(--ifm-background-color);
   --docsearch-searchbox-focus-background: var(--ifm-color-black);
@@ -143,7 +149,7 @@ html[data-theme='dark'] {
   );
 }
 
-div[class^='announcementBar_'] {
+.theme-announcement-bar {
   font-size: 20px;
 
   /*
@@ -169,7 +175,6 @@ div[class^='announcementBar_'] {
 
 .screen-reader-only {
   border: 0;
-  clip: rect(0 0 0 0);
   clip-path: polygon(0 0, 0 0, 0 0);
   height: 1px;
   margin: -1px;
@@ -221,15 +226,21 @@ div[class^='announcementBar_'] {
 }
 
 [data-rmiz-modal-overlay='visible'] {
-  background-color: rgba(255 255 255 / 95%);
+  background-color: rgb(255 255 255 / 95%);
 }
 
 [data-theme='dark'] [data-rmiz-modal-overlay='visible'] {
-  background-color: rgba(0 0 0 / 95%);
+  background-color: rgb(0 0 0 / 95%);
 }
 
-html[data-navbar='false'] .navbar {
-  display: none;
+html[data-navbar='false'] {
+  .navbar {
+    display: none;
+  }
+
+  .theme-announcement-bar {
+    display: none;
+  }
 }
 
 html[data-red-border] div#__docusaurus {

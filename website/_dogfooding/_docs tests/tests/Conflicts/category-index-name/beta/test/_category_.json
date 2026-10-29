@@ -1,0 +1,9 @@
+{
+  "key": "CategoryLabelTest beta",
+  "label": "CategoryLabelTest",
+  "link": {
+    "type": "generated-index",
+    "title": "test category in Beta",
+    "description": "Test description in Beta"
+  }
+}

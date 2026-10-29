@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-@media (min-width: 997px) {
+@media (width >= 997px) {
   .docMainContainer {
     flex-grow: 1;
     max-width: calc(100% - var(--doc-sidebar-width));

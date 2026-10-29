@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import type {Props} from '@theme/CodeInline';
 
 // Simple component used to render inline code blocks
 // its purpose is to be swizzled and customized
 // MDX 1 used to have a inlineCode comp, see https://mdxjs.com/migrating/v2/
-export default function CodeInline(props: Props): JSX.Element {
+export default function CodeInline(props: Props): ReactNode {
   return <code {...props} />;
 }

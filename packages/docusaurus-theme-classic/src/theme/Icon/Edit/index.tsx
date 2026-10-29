@@ -5,16 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import type {Props} from '@theme/Icon/Edit';
 
 import styles from './styles.module.css';
 
-export default function IconEdit({
-  className,
-  ...restProps
-}: Props): JSX.Element {
+export default function IconEdit({className, ...restProps}: Props): ReactNode {
   return (
     <svg
       fill="currentColor"

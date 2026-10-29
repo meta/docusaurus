@@ -1,0 +1,44 @@
+{
+  // Package tsconfigs exclude test files, and Vitest strips types without
+  // checking them: this config typechecks all the test files of the monorepo
+  // Requires packages to be built first (some imports resolve to lib/*.d.ts)
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true,
+    "composite": false,
+    "incremental": false,
+    // Tests cover both server and client code, and run through Vitest/Vite
+    "lib": ["DOM", "ESNext"],
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    // Mirror the Vitest aliases resolving some packages to their sources
+    "paths": {
+      "@docusaurus/utils": ["./packages/docusaurus-utils/src/index.ts"],
+      "@docusaurus/glob": ["./packages/docusaurus-glob/src/index.ts"],
+      "@docusaurus/fs": ["./packages/docusaurus-fs/src/index.ts"],
+      "@docusaurus/utils-validation": [
+        "./packages/docusaurus-utils-validation/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "test/*.d.ts",
+    "packages/*/src/**/*.d.ts",
+    "packages/*/src/**/*.d.mts",
+    "__tests__/**/*",
+    "packages/*/**/__tests__/**/*",
+    "packages/*/**/*.test.ts",
+    "packages/*/**/*.test.tsx"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/lib/**",
+    "**/__fixtures__/**",
+    "**/__mocks__/**",
+    "**/__snapshots__/**",
+    "packages/create-docusaurus/templates/**"
+  ]
+}

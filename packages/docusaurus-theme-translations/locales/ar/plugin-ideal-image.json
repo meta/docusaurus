@@ -1,7 +1,7 @@
 {
   "theme.IdealImageMessage.404error": "404. لم يتم العثور على الصورة",
-  "theme.IdealImageMessage.error": "خطا. قم بالضغط لاعادة التحميل",
-  "theme.IdealImageMessage.load": "قم بالضغط للتحميل{sizeMessage}",
+  "theme.IdealImageMessage.error": "خطأ. قم بالضغط لإعادة التحميل",
+  "theme.IdealImageMessage.load": "قم بالضغط للتحميل {sizeMessage}",
   "theme.IdealImageMessage.loading": "جاري التحميل...",
-  "theme.IdealImageMessage.offline": "متصفحك غير متصل, لم يتم تحميل الصورة"
+  "theme.IdealImageMessage.offline": "مُتصفحك غير مُتصل, لم يتم تحميل الصورة"
 }

@@ -64,6 +64,7 @@ function postProcessSidebarItem(
         .map((subItem) => postProcessSidebarItem(subItem, params))
         .filter((v): v is SidebarItem => Boolean(v)),
     };
+
     // If the current category doesn't have subitems, we render a normal link
     // instead.
     if (category.items.length === 0) {
@@ -76,10 +77,13 @@ function postProcessSidebarItem(
       ) {
         return null;
       }
+      const {label, className, customProps} = category;
       return {
         type: 'doc',
-        label: category.label,
         id: category.link.id,
+        label,
+        ...(className && {className}),
+        ...(customProps && {customProps}),
       };
     }
     // A non-collapsible category can't be collapsed!

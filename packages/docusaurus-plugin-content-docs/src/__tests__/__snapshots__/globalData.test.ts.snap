@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`toGlobalDataVersion generates the right docs, sidebars, and metadata 1`] = `
+exports[`toGlobalDataVersion > generates the right docs, sidebars, and metadata 1`] = `
 {
   "docs": [
     {

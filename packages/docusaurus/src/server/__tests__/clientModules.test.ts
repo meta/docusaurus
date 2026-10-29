@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {getAllClientModules} from '../clientModules';
 import type {LoadedPlugin} from '@docusaurus/types';
 

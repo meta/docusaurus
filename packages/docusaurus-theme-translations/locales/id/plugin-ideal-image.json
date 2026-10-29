@@ -1,0 +1,7 @@
+{
+  "theme.IdealImageMessage.404error": "404. Citra tak ditemukan",
+  "theme.IdealImageMessage.error": "Kesalahan. Klik untuk memuat ulang",
+  "theme.IdealImageMessage.load": "Klik untuk memuat{sizeMessage}",
+  "theme.IdealImageMessage.loading": "Memuat...",
+  "theme.IdealImageMessage.offline": "Perambah anda tak terhubung. Citra tak dimuat"
+}

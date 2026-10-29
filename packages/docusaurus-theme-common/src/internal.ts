@@ -19,30 +19,16 @@
 export * from './index';
 
 export {
-  DocSidebarItemsExpandedStateProvider,
-  useDocSidebarItemsExpandedState,
-} from './contexts/docSidebarItemsExpandedState';
-export {DocsVersionProvider, useDocsVersion} from './contexts/docsVersion';
-export {DocsSidebarProvider, useDocsSidebar} from './contexts/docsSidebar';
-
-export {DocProvider, useDoc, type DocContextValue} from './contexts/doc';
-export {
-  BlogPostProvider,
-  useBlogPost,
-  type BlogPostContextValue,
-} from './contexts/blogPost';
-
-export {
-  useDocsPreferredVersionByPluginId,
-  DocsPreferredVersionContextProvider,
-} from './contexts/docsPreferredVersion';
-
-export {
   AnnouncementBarProvider,
   useAnnouncementBar,
 } from './contexts/announcementBar';
 
-export {useTabs, sanitizeTabsChildren} from './utils/tabsUtils';
+export {
+  sanitizeTabsChildren,
+  TabsProvider,
+  useTabs,
+  useTabsContextValue,
+} from './utils/tabsUtils';
 export type {TabValue, TabsProps, TabItemProps} from './utils/tabsUtils';
 
 export {useNavbarMobileSidebar} from './contexts/navbarMobileSidebar';
@@ -53,53 +39,30 @@ export {ColorModeProvider} from './contexts/colorMode';
 export {useAlternatePageUtils} from './utils/useAlternatePageUtils';
 
 export {
-  parseCodeBlockTitle,
-  parseLanguage,
-  parseLines,
-  containsLineNumbers,
+  type CodeBlockMetadata,
+  createCodeBlockMetadata,
+  getPrismCssVariables,
+  CodeBlockContextProvider,
+  useCodeBlockContext,
 } from './utils/codeBlockUtils';
 
-export {docVersionSearchTag, DEFAULT_SEARCH_TAG} from './utils/searchUtils';
+export {DEFAULT_SEARCH_TAG} from './utils/searchUtils';
 
 export {
-  isDocsPluginEnabled,
-  useDocById,
-  findSidebarCategory,
-  findFirstSidebarItemLink,
-  isActiveSidebarItem,
-  isVisibleSidebarItem,
-  useVisibleSidebarItems,
-  useSidebarBreadcrumbs,
-  useDocsVersionCandidates,
-  useLayoutDoc,
-  useLayoutDocsSidebar,
-  useDocRootMetadata,
-} from './utils/docsUtils';
-
-export {useTitleFormatter} from './utils/generalUtils';
-
-export {useLocationChange} from './utils/useLocationChange';
+  TitleFormatterProvider,
+  useTitleFormatter,
+} from './utils/titleFormatterUtils';
 
 export {useLocalPathname} from './utils/useLocalPathname';
 
-export {
-  useHistoryPopHandler,
-  useHistorySelector,
-  useQueryStringValue,
-} from './utils/historyUtils';
+export {useQueryStringValue} from './utils/historyUtils';
 
-export {
-  useFilteredAndTreeifiedTOC,
-  useTreeifiedTOC,
-  type TOCTreeNode,
-} from './utils/tocUtils';
+export {useFilteredAndTreeifiedTOC, type TOCTreeNode} from './utils/tocUtils';
 
 export {
   ScrollControllerProvider,
-  useScrollController,
   useScrollPosition,
   useScrollPositionBlocker,
-  useSmoothScrollTo,
 } from './utils/scrollUtils';
 
 export {useHomePageRoute, isSamePath} from './utils/routesUtils';
@@ -108,20 +71,16 @@ export {PluginHtmlClassNameProvider} from './utils/metadataUtils';
 
 export {splitNavbarItems, NavbarProvider} from './utils/navbarUtils';
 
+export {extractLeadingEmoji} from './utils/emojiUtils';
+
 export {
   useTOCHighlight,
   type TOCHighlightConfig,
 } from './hooks/useTOCHighlight';
 
-export {useVisibleBlogSidebarItems} from './utils/blogUtils';
 export {useDateTimeFormat} from './utils/IntlUtils';
 
 export {useHideableNavbar} from './hooks/useHideableNavbar';
-export {
-  useKeyboardNavigation,
-  keyboardFocusedClassName,
-} from './hooks/useKeyboardNavigation';
 export {useLockBodyScroll} from './hooks/useLockBodyScroll';
 export {useCodeWordWrap} from './hooks/useCodeWordWrap';
-export {getPrismCssVariables} from './utils/codeBlockUtils';
 export {useBackToTopButton} from './hooks/useBackToTopButton';

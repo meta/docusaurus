@@ -5,51 +5,91 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import webpack, {type Compiler} from 'webpack';
+import type webpack from 'webpack';
+import type {Compiler} from 'webpack';
 
-const pluginName = 'chunk-asset-plugin';
+// Adds a custom Docusaurus Webpack runtime function `__webpack_require__.gca`
+// gca = Get Chunk Asset, it converts a chunkName to a JS asset URL
+// It is called in Core client/docusaurus.ts for chunk preloading/prefetching
+// Example: gca("814f3328") = "/baseUrl/assets/js/814f3328.03fcc178.js"
+// See also: https://github.com/facebook/docusaurus/pull/10485
 
-/**
- * We modify webpack runtime to add an extra function called
- * "__webpack_require__.gca" that will allow us to get the corresponding chunk
- * asset for a webpack chunk. Pass it the chunkName or chunkId you want to load.
- * For example: if you have a chunk named "my-chunk-name" that will map to
- * "/publicPath/0a84b5e7.c8e35c7a.js" as its corresponding output path
- * __webpack_require__.gca("my-chunk-name") will return
- * "/publicPath/0a84b5e7.c8e35c7a.js"
- *
- * "gca" stands for "get chunk asset"
+// The name of the custom Docusaurus Webpack runtime function
+const DocusaurusGetChunkAssetFn = '__webpack_require__.gca';
+
+const PluginName = 'Docusaurus-ChunkAssetPlugin';
+
+function generateGetChunkAssetRuntimeCode({
+  chunk,
+  bundler,
+}: {
+  chunk: webpack.Chunk;
+  bundler: typeof webpack;
+}): string {
+  const chunkIdToName = chunk.getChunkMaps(false).name;
+  const chunkNameToId = Object.fromEntries(
+    Object.entries(chunkIdToName).map(([chunkId, chunkName]) => [
+      chunkName,
+      chunkId,
+    ]),
+  );
+
+  const {
+    // publicPath = __webpack_require__.p
+    // Example: "/" or "/baseUrl/"
+    // https://github.com/webpack/webpack/blob/v5.94.0/lib/runtime/PublicPathRuntimeModule.js
+    publicPath,
+
+    // getChunkScriptFilename = __webpack_require__.u
+    // Example: getChunkScriptFilename("814f3328") = "814f3328.03fcc178.js"
+    // https://github.com/webpack/webpack/blob/v5.94.0/lib/runtime/GetChunkFilenameRuntimeModule.js
+    getChunkScriptFilename,
+  } = bundler.RuntimeGlobals;
+
+  const code = `// Docusaurus function to get chunk asset
+${DocusaurusGetChunkAssetFn} = function(chunkId) { chunkId = ${JSON.stringify(
+    chunkNameToId,
+  )}[chunkId]||chunkId; return ${publicPath} + ${getChunkScriptFilename}(chunkId); };`;
+
+  return bundler.Template.asString(code);
+}
+
+/*
+ Note: we previously used `MainTemplate.hooks.requireExtensions.tap()`
+ But it will be removed in Webpack 6 and is not supported by Rspack
+ So instead we use equivalent code inspired by:
+ - https://github.com/webpack/webpack/blob/v5.94.0/lib/RuntimePlugin.js#L462
+ - https://github.com/webpack/webpack/blob/v5.94.0/lib/runtime/CompatRuntimeModule.js
  */
 export default class ChunkAssetPlugin {
   apply(compiler: Compiler): void {
-    compiler.hooks.thisCompilation.tap(pluginName, ({mainTemplate}) => {
-      mainTemplate.hooks.requireExtensions.tap(pluginName, (source, chunk) => {
-        const chunkIdToName = chunk.getChunkMaps(false).name;
-        const chunkNameToId = Object.fromEntries(
-          Object.entries(chunkIdToName).map(([chunkId, chunkName]) => [
-            chunkName,
-            chunkId,
-          ]),
-        );
-        const buf = [source];
-        buf.push('// function to get chunk asset');
-        buf.push(
-          // If chunkName is passed, we convert it to chunk asset url
-          // .p => public path url ("/" or "/baseUrl/")
-          // .u(chunkId) =>
-          //   chunk asset url ("assets/js/x63b64xd.contentHash.js")
-          // not sure where this is documented, but this link was helpful:
-          // https://programmer.help/blogs/5d68849083e1a.html
-          //
-          // Note: __webpack_require__.gca() is called in docusaurus.ts for
-          // prefetching
-          // Note: we previously used jsonpScriptSrc (Webpack 4)
-          `__webpack_require__.gca = function(chunkId) { chunkId = ${JSON.stringify(
-            chunkNameToId,
-          )}[chunkId]||chunkId; return __webpack_require__.p + __webpack_require__.u(chunkId); };`,
-        );
-        return webpack.Template.asString(buf);
-      });
+    // Use the compiler's bundler instance (Webpack or Rspack)
+    // This avoids loading Webpack when using Rspack
+    const ChunkAssetRuntimeModule = createChunkAssetRuntimeModuleClass(
+      compiler.webpack,
+    );
+    compiler.hooks.thisCompilation.tap(PluginName, (compilation) => {
+      compilation.hooks.additionalTreeRuntimeRequirements.tap(
+        PluginName,
+        (chunk) => {
+          compilation.addRuntimeModule(chunk, new ChunkAssetRuntimeModule());
+        },
+      );
     });
   }
+}
+
+// Inspired by https://github.com/webpack/webpack/blob/v5.94.0/lib/runtime/CompatRuntimeModule.js
+// See also https://rspack.dev/api/javascript-api/compilation#addruntimemodule
+// See also https://rspack.dev/api/plugin-api/compilation-hooks#additionaltreeruntimerequirements
+function createChunkAssetRuntimeModuleClass(bundler: typeof webpack) {
+  return class ChunkAssetRuntimeModule extends bundler.RuntimeModule {
+    constructor() {
+      super('ChunkAssetRuntimeModule', bundler.RuntimeModule.STAGE_ATTACH);
+      this.fullHash = true;
+    }
+    override generate() {
+      return generateGetChunkAssetRuntimeCode({chunk: this.chunk!, bundler});
+    }
+  };
 }

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`docusaurus-plugin-content-pages loads simple pages 1`] = `
+exports[`docusaurus-plugin-content-pages > loads simple pages 1`] = `
 [
   {
     "permalink": "/",
@@ -32,11 +32,12 @@ exports[`docusaurus-plugin-content-pages loads simple pages 1`] = `
     "frontMatter": {
       "custom_frontMatter": "added by parseFrontMatter",
       "description": "my MDX page",
+      "slug": "/custom-mdx/slug",
       "title": "MDX page",
     },
     "lastUpdatedAt": undefined,
     "lastUpdatedBy": undefined,
-    "permalink": "/hello/mdxPage",
+    "permalink": "/custom-mdx/slug",
     "source": "@site/src/pages/hello/mdxPage.mdx",
     "title": "MDX page",
     "type": "mdx",
@@ -69,7 +70,7 @@ exports[`docusaurus-plugin-content-pages loads simple pages 1`] = `
 ]
 `;
 
-exports[`docusaurus-plugin-content-pages loads simple pages with french translations 1`] = `
+exports[`docusaurus-plugin-content-pages > loads simple pages with french translations (translate: false) 1`] = `
 [
   {
     "permalink": "/fr/",
@@ -101,11 +102,82 @@ exports[`docusaurus-plugin-content-pages loads simple pages with french translat
     "frontMatter": {
       "custom_frontMatter": "added by parseFrontMatter",
       "description": "my MDX page",
+      "slug": "/custom-mdx/slug",
       "title": "MDX page",
     },
     "lastUpdatedAt": undefined,
     "lastUpdatedBy": undefined,
-    "permalink": "/fr/hello/mdxPage",
+    "permalink": "/fr/custom-mdx/slug",
+    "source": "@site/src/pages/hello/mdxPage.mdx",
+    "title": "MDX page",
+    "type": "mdx",
+    "unlisted": false,
+  },
+  {
+    "permalink": "/fr/hello/translatedJs",
+    "source": "@site/src/pages/hello/translatedJs.js",
+    "type": "jsx",
+  },
+  {
+    "description": "translated Markdown page",
+    "editUrl": undefined,
+    "frontMatter": {
+      "custom_frontMatter": "added by parseFrontMatter",
+    },
+    "lastUpdatedAt": undefined,
+    "lastUpdatedBy": undefined,
+    "permalink": "/fr/hello/translatedMd",
+    "source": "@site/src/pages/hello/translatedMd.md",
+    "title": undefined,
+    "type": "mdx",
+    "unlisted": false,
+  },
+  {
+    "permalink": "/fr/hello/world",
+    "source": "@site/src/pages/hello/world.js",
+    "type": "jsx",
+  },
+]
+`;
+
+exports[`docusaurus-plugin-content-pages > loads simple pages with french translations 1`] = `
+[
+  {
+    "permalink": "/fr/",
+    "source": "@site/src/pages/index.js",
+    "type": "jsx",
+  },
+  {
+    "permalink": "/fr/typescript",
+    "source": "@site/src/pages/typescript.tsx",
+    "type": "jsx",
+  },
+  {
+    "description": "Markdown index page",
+    "editUrl": undefined,
+    "frontMatter": {
+      "custom_frontMatter": "added by parseFrontMatter",
+    },
+    "lastUpdatedAt": undefined,
+    "lastUpdatedBy": undefined,
+    "permalink": "/fr/hello/",
+    "source": "@site/src/pages/hello/index.md",
+    "title": "Index",
+    "type": "mdx",
+    "unlisted": false,
+  },
+  {
+    "description": "my MDX page",
+    "editUrl": undefined,
+    "frontMatter": {
+      "custom_frontMatter": "added by parseFrontMatter",
+      "description": "my MDX page",
+      "slug": "/custom-mdx/slug",
+      "title": "MDX page",
+    },
+    "lastUpdatedAt": undefined,
+    "lastUpdatedBy": undefined,
+    "permalink": "/fr/custom-mdx/slug",
     "source": "@site/src/pages/hello/mdxPage.mdx",
     "title": "MDX page",
     "type": "mdx",
@@ -138,7 +210,7 @@ exports[`docusaurus-plugin-content-pages loads simple pages with french translat
 ]
 `;
 
-exports[`docusaurus-plugin-content-pages loads simple pages with last update 1`] = `
+exports[`docusaurus-plugin-content-pages > loads simple pages with last update 1`] = `
 [
   {
     "permalink": "/",
@@ -170,11 +242,12 @@ exports[`docusaurus-plugin-content-pages loads simple pages with last update 1`]
     "frontMatter": {
       "custom_frontMatter": "added by parseFrontMatter",
       "description": "my MDX page",
+      "slug": "/custom-mdx/slug",
       "title": "MDX page",
     },
     "lastUpdatedAt": 1539502055000,
     "lastUpdatedBy": "Author",
-    "permalink": "/hello/mdxPage",
+    "permalink": "/custom-mdx/slug",
     "source": "@site/src/pages/hello/mdxPage.mdx",
     "title": "MDX page",
     "type": "mdx",

@@ -142,9 +142,8 @@ Multi-line text inside `pre` will turn into one-liner, but it's okay (https://gi
   <strong>Input: </strong>a = "abcd", b = "cdabcdab"
   <br />
   <strong>Output: </strong>3<br />
-  <strong>Explanation: </strong>a after three repetitions become "ab<strong>
-    cdabcdab
-  </strong>cd", at which time b is a substring.
+  <strong>Explanation: </strong>a after three repetitions become "ab
+  <strong>cdabcdab</strong>cd", at which time b is a substring.
   <br />
 </code>
 
@@ -182,10 +181,31 @@ Multi-line text inside `pre` will turn into one-liner, but it's okay (https://gi
   <strong>Input: </strong>a = "abcd", b = "cdabcdab"
   <br />
   <strong>Output: </strong>3<br />
-  <strong>Explanation: </strong>a after three repetitions become "ab<strong>
-    cdabcdab
-  </strong>cd", at which time b is a substring.
+  <strong>Explanation: </strong>a after three repetitions become "ab
+  <strong>cdabcdab</strong>cd", at which time b is a substring.
   <br />
+</CodeBlock>
+
+## Code blocks with `ReactNode` in title
+
+<CodeBlock
+  language="yaml"
+  title={
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}>
+      <span>
+        <code>ReactNode</code> title
+      </span>{' '}
+      <span className="badge badge--primary">YAML</span>
+    </div>
+  }>
+  {`link:
+  title: front page
+  path: /docs/`}
 </CodeBlock>
 
 ## Code blocks with line numbering tests
@@ -198,6 +218,13 @@ function PageLayout(props) {
 ```
 
 ```jsx showLineNumbers
+function PageLayout(props) {
+  // highlight-next-line
+  return <Layout title="Awesome Docusaurus page" description="Test Test Test Test Test Test Test Test Test Test Test Test Test Test ">;
+}
+```
+
+```jsx showLineNumbers=4
 function PageLayout(props) {
   // highlight-next-line
   return <Layout title="Awesome Docusaurus page" description="Test Test Test Test Test Test Test Test Test Test Test Test Test Test ">;
@@ -353,6 +380,19 @@ FROM orders
 WHERE customer_id IN (
   SELECT customer_id
   -- highlight-next-line
+  FROM customers
+  WHERE country = 'USA'
+)
+```
+
+```sql title="sql_query_block.sql"
+/* highlight-start */
+SELECT *
+FROM orders
+/* highlight-end */
+WHERE customer_id IN (
+  SELECT customer_id
+  /* highlight-next-line */
   FROM customers
   WHERE country = 'USA'
 )

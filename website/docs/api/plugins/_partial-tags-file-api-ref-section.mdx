@@ -1,0 +1,54 @@
+## Tags File {/* #tags-file */}
+
+Use the [`tags` plugin option](#tags) to configure the path of a YAML tags file.
+
+By convention, the plugin will look for a `tags.yml` file at the root of your content folder(s).
+
+This file can contain a list of predefined tags. You can reference these tags by their keys in Markdown files thanks to the [`tags` front matter](#markdown-front-matter).
+
+:::tip Keeping tags consistent
+
+Using a tags file, you can ensure that your tags usage is consistent across your plugin content set. Use the [`onInlineTags: 'throw'`](#onInlineTags) plugin option to enforce this consistency and prevent usage of inline tags declared on the fly.
+
+:::
+
+### Types {/* #tags-file-types */}
+
+The YAML content of the provided tags file should respect the following shape:
+
+```tsx
+type Tag = {
+  label?: string; // Tag display label
+  permalink?: string; // Tag URL pathname segment
+  description?: string; // Tag description displayed in the tag page
+};
+
+type TagsFileInput = Record<string, Partial<Tag> | null>;
+```
+
+### Example {/* #tags-file-example */}
+
+```yml title="tags.yml"
+releases:
+  label: 'Product releases'
+  permalink: '/product-releases'
+  description: 'Content related to product releases.'
+
+# A partial tag definition is also valid
+announcements:
+  label: 'Announcements'
+
+# An empty tag definition is also valid
+# Other attributes will be inferred from the key
+emptyTag:
+```
+
+```md title="content.md"
+---
+tags: [releases, announcements, emptyTag]
+---
+
+# Title
+
+Content
+```

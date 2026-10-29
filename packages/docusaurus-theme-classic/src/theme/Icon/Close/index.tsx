@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import type {Props} from '@theme/Icon/Close';
 
 export default function IconClose({
@@ -15,7 +15,7 @@ export default function IconClose({
   strokeWidth = 1.2,
   className,
   ...restProps
-}: Props): JSX.Element {
+}: Props): ReactNode {
   return (
     <svg viewBox="0 0 15 15" width={width} height={height} {...restProps}>
       <g stroke={color} strokeWidth={strokeWidth}>

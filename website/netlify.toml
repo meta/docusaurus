@@ -5,27 +5,31 @@
 # See also https://github.com/netlify/build/issues/2483
 
 [build]
-  command = "yarn --cwd .. build:packages && yarn build"
-  publish = "website/build"
+command = "pnpm --dir .. build:packages && pnpm build"
+publish = "website/build"
 
 [build.environment]
-  NETLIFY_USE_YARN = "true"
-  YARN_VERSION = "1.22.19"
-  NODE_VERSION = "18"
-  NODE_OPTIONS = "--max_old_space_size=8192"
+NODE_VERSION = "24"
+NODE_OPTIONS = "--max_old_space_size=8192"
+
+
+# Note, we run build:packages and git backfill in parallel to speed up builds
+# We run "git backfill" here to ensure the full Git history is available fast
+# See https://github.com/facebook/docusaurus/pull/11553
+# Only git backfill is backgrounded; build:packages runs in the foreground so
+# && catches its failure, and "wait $!" propagates the backfill's exit code
+# (bare "wait" always exits 0, which would swallow failures)
 
 [context.production]
-  command = "yarn --cwd .. build:packages && yarn netlify:build:production"
+command = "(echo 'Git backfill start' && git backfill && echo 'Git backfill end') & (echo 'Build packages start' && pnpm --dir .. build:packages && echo 'Build packages end') && wait $! && pnpm netlify:build:production"
 
 [context.branch-deploy]
-  command = "yarn --cwd .. build:packages && yarn netlify:build:branchDeploy"
+command = "(echo 'Git backfill start' && git backfill && echo 'Git backfill end') & (echo 'Build packages start' && pnpm --dir .. build:packages && echo 'Build packages end') && wait $! && pnpm netlify:build:branchDeploy"
 
 [context.deploy-preview]
-  command = "yarn --cwd .. build:packages && yarn netlify:build:deployPreview"
+command = "(echo 'Git backfill start' && git backfill && echo 'Git backfill end') & (echo 'Build packages start' && pnpm --dir .. build:packages && echo 'Build packages end') && wait $! && pnpm netlify:build:deployPreview"
 
 [[plugins]]
 package = "netlify-plugin-cache"
-  [plugins.inputs]
-  paths = [
-    "node_modules/.cache/webpack",
-  ]
+[plugins.inputs]
+paths = ["node_modules/.cache"]

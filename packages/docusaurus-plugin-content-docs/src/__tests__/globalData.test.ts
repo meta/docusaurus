@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {toGlobalDataVersion} from '../globalData';
 import {createSidebarsUtils} from '../sidebars/utils';
 import {getCategoryGeneratedIndexMetadataList} from '../categoryGeneratedIndex';
@@ -121,6 +122,7 @@ describe('toGlobalDataVersion', () => {
         contentPathLocalized: '',
         sidebarFilePath: '',
         routePriority: 0.5,
+        noIndex: false,
       }),
     ).toMatchSnapshot();
   });

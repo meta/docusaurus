@@ -14,13 +14,13 @@ This feature is only useful for [versioned documentation](./versioning.mdx). It 
 
 :::
 
-## Use-cases {#use-cases}
+## Use-cases {/* #use-cases */}
 
 Sometimes you want a Docusaurus site to host 2 distinct sets of documentation (or more).
 
 These documentations may even have different versioning/release lifecycles.
 
-### Mobile SDKs documentation {#mobile-sdks-documentation}
+### Mobile SDKs documentation {/* #mobile-sdks-documentation */}
 
 If you build a cross-platform mobile SDK, you may have 2 documentations:
 
@@ -37,7 +37,7 @@ If someone edits the iOS documentation, is it really useful to rebuild everythin
 
 :::
 
-### Versioned and unversioned doc {#versioned-and-unversioned-doc}
+### Versioned and unversioned doc {/* #versioned-and-unversioned-doc */}
 
 Sometimes, you want some documents to be versioned, while other documents are more "global", and it feels useless to version them.
 
@@ -46,7 +46,7 @@ We use this pattern on the Docusaurus website itself:
 - The [/docs/\*](/docs) section is versioned
 - The [/community/\*](/community/support) section is unversioned
 
-## Setup {#setup}
+## Setup {/* #setup */}
 
 Suppose you have 2 documentations:
 
@@ -139,7 +139,7 @@ We consider that the `product` instance is the most important one, and make it t
 
 :::
 
-## Versioned paths {#versioned-paths}
+## Versioned paths {/* #versioned-paths */}
 
 Each plugin instance will store versioned docs in a distinct folder.
 
@@ -163,7 +163,7 @@ The instance paths will be simpler, and retro-compatible with a single-instance 
 
 :::
 
-## Tagging new versions {#tagging-new-versions}
+## Tagging new versions {/* #tagging-new-versions */}
 
 Each plugin instance will have its own CLI command to tag a new version. They will be displayed if you run:
 
@@ -183,7 +183,7 @@ To version the non-default/community docs plugin instance:
 npm run docusaurus docs:version:community 1.0.0
 ```
 
-## Docs navbar items {#docs-navbar-items}
+## Docs navbar items {/* #docs-navbar-items */}
 
 Each docs-related [theme navbar items](../../api/themes/theme-configuration.mdx#navbar) take an optional `docsPluginId` attribute.
 

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
+import path from 'node:path';
 
 // Based on https://github.com/gatsbyjs/gatsby/pull/21518/files
 // macOS (APFS) and Windows (NTFS) filename length limit = 255 chars,

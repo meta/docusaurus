@@ -1,16 +1,8 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.client.json",
   "compilerOptions": {
-    "noEmit": false,
-    "incremental": true,
-    "tsBuildInfoFile": "./lib/.tsbuildinfo",
-    "moduleResolution": "bundler",
-    "module": "esnext",
-    "target": "esnext",
     "sourceMap": true,
-    "declarationMap": true,
-    "rootDir": "src",
-    "outDir": "lib"
+    "declarationMap": true
   },
   "include": ["src"],
   "exclude": ["**/__tests__/**"]

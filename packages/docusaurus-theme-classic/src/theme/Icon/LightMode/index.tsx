@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import type {Props} from '@theme/Icon/LightMode';
 
-export default function IconLightMode(props: Props): JSX.Element {
+export default function IconLightMode(props: Props): ReactNode {
   return (
     <svg viewBox="0 0 24 24" width={24} height={24} {...props}>
       <path

@@ -33,6 +33,13 @@ packages:
   '@docusaurus/*':
     access: $all
     publish: $all
+  # Our unscoped packages also exist on npm: Verdaccio 7 refuses to publish them if proxied (409)
+  'create-docusaurus':
+    access: $all
+    publish: $all
+  'stylelint-copyright':
+    access: $all
+    publish: $all
   '@*/*':
     access: $all
     publish: $authenticated

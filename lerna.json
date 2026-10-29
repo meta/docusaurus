@@ -1,7 +1,6 @@
 {
-  "version": "3.2.1",
-  "npmClient": "yarn",
-  "useWorkspaces": true,
+  "version": "4.0.0",
+  "npmClient": "pnpm",
   "useNx": false,
   "changelog": {
     "repo": "facebook/docusaurus",
@@ -9,11 +8,12 @@
       "pr: breaking change": ":boom: Breaking Change",
       "pr: new feature": ":rocket: New Feature",
       "pr: bug fix": ":bug: Bug Fix",
-      "pr: performance": ":running_woman: Performance",
+      "pr: performance": ":zap: Performance",
       "pr: polish": ":nail_care: Polish",
       "pr: documentation": ":memo: Documentation",
       "pr: dependencies": ":robot: Dependencies",
-      "pr: maintenance": ":wrench: Maintenance"
+      "pr: maintenance": ":wrench: Maintenance",
+      "pr: translations": ":globe_with_meridians: Translations"
     },
     "cacheDir": ".changelog"
   }

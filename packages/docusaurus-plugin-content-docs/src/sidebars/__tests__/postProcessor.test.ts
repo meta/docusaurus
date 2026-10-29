@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {
   postProcessSidebars,
   type SidebarPostProcessorParams,
@@ -31,6 +32,8 @@ describe('postProcess', () => {
               type: 'doc',
               id: 'doc ID',
             },
+            className: 'category-className',
+            customProps: {custom: true},
             items: [],
           },
         ],
@@ -62,7 +65,7 @@ describe('postProcess', () => {
         } as unknown as SidebarPostProcessorParams,
       );
     }).toThrowErrorMatchingInlineSnapshot(
-      `"Sidebar category Bad category has neither any subitem nor a link. This makes this item not able to link to anything."`,
+      `[Error: Sidebar category Bad category has neither any subitem nor a link. This makes this item not able to link to anything.]`,
     );
   });
 

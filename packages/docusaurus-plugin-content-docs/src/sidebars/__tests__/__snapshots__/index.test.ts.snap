@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`loadSidebars loads sidebars with index-only categories 1`] = `
+exports[`loadSidebars > loads sidebars with index-only categories 1`] = `
 {
   "docs": [
     {
@@ -26,7 +26,7 @@ exports[`loadSidebars loads sidebars with index-only categories 1`] = `
 }
 `;
 
-exports[`loadSidebars loads sidebars with interspersed draft items 1`] = `
+exports[`loadSidebars > loads sidebars with interspersed draft items 1`] = `
 {
   "sidebar": [
     {
@@ -51,7 +51,7 @@ exports[`loadSidebars loads sidebars with interspersed draft items 1`] = `
 }
 `;
 
-exports[`loadSidebars sidebars link 1`] = `
+exports[`loadSidebars > sidebars link 1`] = `
 {
   "docs": [
     {
@@ -72,7 +72,7 @@ exports[`loadSidebars sidebars link 1`] = `
 }
 `;
 
-exports[`loadSidebars sidebars with category.collapsed property 1`] = `
+exports[`loadSidebars > sidebars with category.collapsed property 1`] = `
 {
   "docs": [
     {
@@ -123,7 +123,7 @@ exports[`loadSidebars sidebars with category.collapsed property 1`] = `
 }
 `;
 
-exports[`loadSidebars sidebars with category.collapsed property at first level 1`] = `
+exports[`loadSidebars > sidebars with category.collapsed property at first level 1`] = `
 {
   "docs": [
     {
@@ -156,7 +156,7 @@ exports[`loadSidebars sidebars with category.collapsed property at first level 1
 }
 `;
 
-exports[`loadSidebars sidebars with deep level of category 1`] = `
+exports[`loadSidebars > sidebars with deep level of category 1`] = `
 {
   "docs": [
     {
@@ -228,7 +228,7 @@ exports[`loadSidebars sidebars with deep level of category 1`] = `
 }
 `;
 
-exports[`loadSidebars sidebars with first level not a category 1`] = `
+exports[`loadSidebars > sidebars with first level not a category 1`] = `
 {
   "docs": [
     {
@@ -252,7 +252,7 @@ exports[`loadSidebars sidebars with first level not a category 1`] = `
 }
 `;
 
-exports[`loadSidebars sidebars with known sidebar item type 1`] = `
+exports[`loadSidebars > sidebars with known sidebar item type 1`] = `
 {
   "docs": [
     {
@@ -298,7 +298,7 @@ exports[`loadSidebars sidebars with known sidebar item type 1`] = `
 }
 `;
 
-exports[`loadSidebars sidebars with some draft items 1`] = `
+exports[`loadSidebars > sidebars with some draft items 1`] = `
 {
   "docs": [
     {
@@ -323,7 +323,7 @@ exports[`loadSidebars sidebars with some draft items 1`] = `
 }
 `;
 
-exports[`loadSidebars undefined path 1`] = `
+exports[`loadSidebars > undefined path 1`] = `
 {
   "defaultSidebar": [
     {

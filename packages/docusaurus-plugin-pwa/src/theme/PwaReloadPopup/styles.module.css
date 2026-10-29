@@ -20,7 +20,7 @@
   margin: 0;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (width <= 500px) {
   .popup {
     width: 100%;
     bottom: 0;

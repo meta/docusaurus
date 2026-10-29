@@ -18,30 +18,55 @@ jobs:
     permissions:
       contents: write
 
+    # ⚠️ No GitHub Actions cache on purpose, enforced by GitHub for every step
+    # This job can push commits to the repository
+    # See https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax#cache-mode
+    cache-mode: none
+
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.head_ref }}
 
-      - name: Installation
-        run: yarn
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+        with:
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
 
-      - name: AutoFix Format
-        run: yarn format
+      - name: Set up Node LTS
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          check-latest: true
+
+      - name: Installation
+        run: pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || pnpm install --frozen-lockfile
+
+      - name: AutoFix Duplicated deps
+        run: pnpm lint:deps:fix
+
+      - name: AutoFix Formatting
+        run: pnpm format
 
       - name: AutoFix JS
-        run: yarn lint:js:fix
+        run: pnpm lint:js:fix
 
       - name: AutoFix Style
-        run: yarn lint:style:fix
+        run: pnpm lint:style:fix
 
       - name: AutoFix Spelling
-        run: yarn lint:spelling:fix
+        run: pnpm lint:spelling:fix
+
+      - name: AutoFix Dependency versions
+        run: pnpm lint:syncpack:fix
 
       - name: Print Diff
         run: git diff
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
+        if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           commit_message: 'refactor: apply lint autofix'

@@ -1,0 +1,7 @@
+{
+  "theme.IdealImageMessage.404error": "404. Təsvir tapılmadı",
+  "theme.IdealImageMessage.error": "Xəta. Yeniləmək üçün klik edin.",
+  "theme.IdealImageMessage.load": "Yükləmək üçün klik edin{sizeMessage}",
+  "theme.IdealImageMessage.loading": "Yüklənir...",
+  "theme.IdealImageMessage.offline": "Brauzer oflayndır. Təsvir yüklənmədi"
+}

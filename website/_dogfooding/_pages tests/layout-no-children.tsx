@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Layout from '@theme/Layout';
 
 // See https://github.com/facebook/docusaurus/issues/6337#issuecomment-1012913647
-export default function LayoutNoChildren(): JSX.Element {
+export default function LayoutNoChildren(): ReactNode {
   return <Layout />;
 }

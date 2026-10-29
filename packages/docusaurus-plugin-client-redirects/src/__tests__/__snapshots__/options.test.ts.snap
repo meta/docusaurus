@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`normalizePluginOptions rejects bad createRedirects user inputs 1`] = `""createRedirects" must be of type function"`;
+exports[`normalizePluginOptions > rejects bad createRedirects user inputs 1`] = `[ValidationError: "createRedirects" must be of type function]`;
 
-exports[`normalizePluginOptions rejects bad fromExtensions user inputs 1`] = `""fromExtensions[0]" contains an invalid value"`;
+exports[`normalizePluginOptions > rejects bad fromExtensions user inputs 1`] = `[ValidationError: "fromExtensions[0]" contains an invalid value]`;
 
-exports[`normalizePluginOptions rejects bad toExtensions user inputs 1`] = `""toExtensions[0]" contains an invalid value"`;
+exports[`normalizePluginOptions > rejects bad toExtensions user inputs 1`] = `[ValidationError: "toExtensions[0]" contains an invalid value]`;

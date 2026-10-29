@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
+import path from 'node:path';
+import {createMDXLoaderItem} from '@docusaurus/mdx-loader';
 import type {RuleSetRule} from 'webpack';
 import type {
   HtmlTagObject,
   LoadContext,
   InitializedPlugin,
 } from '@docusaurus/types';
-import type {Options as MDXLoaderOptions} from '@docusaurus/mdx-loader';
 
 /**
  * Make a synthetic plugin to:
@@ -75,10 +75,23 @@ export function createBootstrapPlugin({
  * content plugins. This allows to do things such as importing repo/README.md as
  * a partial from another doc. Not ideal solution, but good enough for now
  */
-export function createMDXFallbackPlugin({
+export async function createMDXFallbackPlugin({
   siteDir,
   siteConfig,
-}: LoadContext): InitializedPlugin {
+}: LoadContext): Promise<InitializedPlugin> {
+  const mdxLoaderItem = await createMDXLoaderItem({
+    admonitions: true,
+    staticDirs: siteConfig.staticDirectories.map((dir) =>
+      path.resolve(siteDir, dir),
+    ),
+    siteDir,
+    // External MDX files are always meant to be imported as partials
+    isMDXPartial: () => true,
+    // External MDX files might have front matter, just disable the warning
+    isMDXPartialFrontMatterWarningDisabled: true,
+    markdownConfig: siteConfig.markdown,
+  });
+
   return {
     name: 'docusaurus-mdx-fallback-plugin',
     options: {
@@ -99,18 +112,6 @@ export function createMDXFallbackPlugin({
           return isMDXRule ? (rule.include as string[]) : [];
         });
       }
-      const mdxLoaderOptions: MDXLoaderOptions = {
-        admonitions: true,
-        staticDirs: siteConfig.staticDirectories.map((dir) =>
-          path.resolve(siteDir, dir),
-        ),
-        siteDir,
-        // External MDX files are always meant to be imported as partials
-        isMDXPartial: () => true,
-        // External MDX files might have front matter, just disable the warning
-        isMDXPartialFrontMatterWarningDisabled: true,
-        markdownConfig: siteConfig.markdown,
-      };
 
       return {
         module: {
@@ -118,12 +119,8 @@ export function createMDXFallbackPlugin({
             {
               test: /\.mdx?$/i,
               exclude: getMDXFallbackExcludedPaths(),
-              use: [
-                {
-                  loader: require.resolve('@docusaurus/mdx-loader'),
-                  options: mdxLoaderOptions,
-                },
-              ],
+              with: {type: {not: 'text'}},
+              use: [mdxLoaderItem],
             },
           ],
         },

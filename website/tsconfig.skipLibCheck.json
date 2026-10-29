@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // There is no --skipLibCheck CLI option, so we have to create a config file
+    // Some CI workflows will run the following command:
+    // node node_modules/typescript/bin/tsc --project website/tsconfig.skipLibCheck.json
+    // See https://github.com/facebook/docusaurus/pull/10486
+    "skipLibCheck": true
+  }
+}

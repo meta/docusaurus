@@ -6,7 +6,7 @@
  */
 
 import logger from '@docusaurus/logger';
-import Yaml from 'js-yaml';
+import * as Yaml from 'js-yaml';
 import {PluginIdSchema} from './validationSchemas';
 import type {ValidationOptions} from 'joi';
 import type Joi from './Joi';

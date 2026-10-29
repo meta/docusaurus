@@ -1,4 +1,4 @@
-# Remark plugin npm2yarn
+# `@docusaurus/remark-plugin-npm2yarn`
 
 ## Motivation:
 
@@ -63,11 +63,11 @@ module.exports = {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `sync` | `boolean` | `false` | Syncing tab choices (Yarn and npm). See https://docusaurus.io/docs/markdown-features/#syncing-tab-choices for details. |
-| `converters` | `array` | `'yarn'`, `'pnpm'` | The list of converters to use. The order of the converters is important, as the first converter will be used as the default choice. |
+| `converters` | `array` | `['yarn', 'pnpm', 'bun']` | The list of converters to use. The order of the converters is important, as the first converter will be used as the default choice. |
 
 ## Custom converters
 
-In case you want to convert npm commands to something else than `yarn` or `pnpm`, you can use custom converters:
+In case you want to convert npm commands to something else than `yarn`, `pnpm` or `bun`, you can use custom converters:
 
 ```ts
 type CustomConverter = [name: string, cb: (npmCode: string) => string];
@@ -83,6 +83,7 @@ type CustomConverter = [name: string, cb: (npmCode: string) => string];
         converters: [
           'yarn',
           'pnpm',
+          'bun',
           ['Turbo', (code) => code.replace(/npm/g, 'turbo')],
         ],
       },

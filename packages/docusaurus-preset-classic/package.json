@@ -1,6 +1,6 @@
 {
   "name": "@docusaurus/preset-classic",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Classic preset for Docusaurus.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -18,25 +18,26 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@docusaurus/core": "3.2.1",
-    "@docusaurus/plugin-content-blog": "3.2.1",
-    "@docusaurus/plugin-content-docs": "3.2.1",
-    "@docusaurus/plugin-content-pages": "3.2.1",
-    "@docusaurus/plugin-debug": "3.2.1",
-    "@docusaurus/plugin-google-analytics": "3.2.1",
-    "@docusaurus/plugin-google-gtag": "3.2.1",
-    "@docusaurus/plugin-google-tag-manager": "3.2.1",
-    "@docusaurus/plugin-sitemap": "3.2.1",
-    "@docusaurus/theme-classic": "3.2.1",
-    "@docusaurus/theme-common": "3.2.1",
-    "@docusaurus/theme-search-algolia": "3.2.1",
-    "@docusaurus/types": "3.2.1"
+    "@docusaurus/core": "workspace:*",
+    "@docusaurus/plugin-content-blog": "workspace:*",
+    "@docusaurus/plugin-content-docs": "workspace:*",
+    "@docusaurus/plugin-content-pages": "workspace:*",
+    "@docusaurus/plugin-css-cascade-layers": "workspace:*",
+    "@docusaurus/plugin-debug": "workspace:*",
+    "@docusaurus/plugin-google-gtag": "workspace:*",
+    "@docusaurus/plugin-google-tag-manager": "workspace:*",
+    "@docusaurus/plugin-sitemap": "workspace:*",
+    "@docusaurus/plugin-svgr": "workspace:*",
+    "@docusaurus/theme-classic": "workspace:*",
+    "@docusaurus/theme-common": "workspace:*",
+    "@docusaurus/theme-search-algolia": "workspace:*",
+    "@docusaurus/types": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   }
 }

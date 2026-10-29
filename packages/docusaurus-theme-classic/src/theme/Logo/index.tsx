@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -46,7 +46,7 @@ function LogoThemedImage({
   );
 }
 
-export default function Logo(props: Props): JSX.Element {
+export default function Logo(props: Props): ReactNode {
   const {
     siteConfig: {title},
   } = useDocusaurusContext();

@@ -35,10 +35,10 @@
 **/__mocks__/**                           linguist-generated
 examples/**                               linguist-generated
 .husky/**                                 linguist-vendored
-jest/**                                   linguist-vendored
+test/**                                   linguist-vendored
 admin/**                                  linguist-documentation
 website/**                                linguist-documentation
 packages/create-docusaurus/templates/**   linguist-vendored
-.eslintrc.*                               linguist-vendored
-jest.config.*                             linguist-vendored
+eslint.config.*                           linguist-vendored
+vitest.config.*                           linguist-vendored
 .stylelintrc.*                            linguist-vendored

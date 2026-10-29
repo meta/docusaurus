@@ -1,5 +1,13 @@
 {
-  "*.{js,jsx,ts,tsx,mjs}": ["eslint --fix"],
-  "*.css": ["stylelint --allow-empty-input --fix"],
-  "*": ["prettier --ignore-unknown --write"]
+  "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": [
+    "eslint --fix",
+    "oxfmt --no-error-on-unmatched-pattern"
+  ],
+  "*.{css,scss,less}": [
+    "stylelint --allow-empty-input --fix",
+    "oxfmt --no-error-on-unmatched-pattern"
+  ],
+  "*.{json,jsonc,json5,md,mdx,html,yml,yaml,toml}": [
+    "oxfmt --no-error-on-unmatched-pattern"
+  ]
 }

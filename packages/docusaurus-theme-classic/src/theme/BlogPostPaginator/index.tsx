@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Translate, {translate} from '@docusaurus/Translate';
 import PaginatorNavLink from '@theme/PaginatorNavLink';
 import type {Props} from '@theme/BlogPostPaginator';
 
-export default function BlogPostPaginator(props: Props): JSX.Element {
+export default function BlogPostPaginator(props: Props): ReactNode {
   const {nextItem, prevItem} = props;
 
   return (
@@ -28,7 +28,7 @@ export default function BlogPostPaginator(props: Props): JSX.Element {
             <Translate
               id="theme.blog.post.paginator.newerPost"
               description="The blog post button label to navigate to the newer/previous post">
-              Newer Post
+              Newer post
             </Translate>
           }
         />
@@ -40,7 +40,7 @@ export default function BlogPostPaginator(props: Props): JSX.Element {
             <Translate
               id="theme.blog.post.paginator.olderPost"
               description="The blog post button label to navigate to the older/next post">
-              Older Post
+              Older post
             </Translate>
           }
           isNext

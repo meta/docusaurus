@@ -1,0 +1,1026 @@
+---
+slug: /migration/v3
+sidebar_label: To Docusaurus v3
+---
+
+# Upgrading to Docusaurus v3
+
+This documentation will help you upgrade your site from Docusaurus v2 to Docusaurus v3.
+
+Docusaurus v3 is a new **major version**, including **breaking changes** requiring you to adjust your site accordingly. We will guide to during this process, and also mention a few optional recommendations.
+
+This is not a full rewrite, and the breaking changes are relatively easy to handle. The simplest sites will eventually upgrade by simply updating their npm dependencies.
+
+The main breaking change is the upgrade from MDX v1 to MDX v3. Read the [**MDX v2**](https://mdxjs.com/blog/v2/) and [**MDX v3**](https://mdxjs.com/blog/v3/) release notes for details. MDX will now compile your Markdown content **more strictly** and with **subtle differences**.
+
+:::tip Before upgrading
+
+Before upgrading, we recommend [**preparing your site for Docusaurus v3**](/blog/preparing-your-site-for-docusaurus-v3). There are changes that you can already **handle incrementally, under Docusaurus v2**. Doing so will help reduce the work needed to finally upgrade to Docusaurus v3.
+
+For complex sites, we also recommend to set up [**visual regression tests**](/blog/upgrading-frontend-dependencies-with-confidence-using-visual-regression-testing), a good way to ensure your site stays visually identical. Docusaurus v3 mainly upgrades dependencies, and is not expected to produce any visual changes.
+
+:::
+
+:::note
+
+Check the release notes for [**Docusaurus v3.0.0**](https://github.com/facebook/docusaurus/releases/tag/v3.0.0), and browse the pull-requests for additional useful information and the motivation behind each change mentioned here.
+
+:::
+
+## Upgrading Dependencies {/* #upgrading-dependencies */}
+
+Upgrading to Docusaurus v3 requires upgrading core Docusaurus dependencies (`@docusaurus/name`), but also other related packages.
+
+Docusaurus v3 now uses the following dependencies:
+
+- Node.js v18.0+
+- React v18.0+
+- MDX v3.0+
+- TypeScript v5.1+
+- prism-react-renderer v2.0+
+- react-live v4.0+
+- remark-emoji v4.0+
+- mermaid v10.4+
+
+:::warning Upgrading community plugins
+
+If your site uses third-party community plugins and themes, you might need to upgrade them.
+
+Make sure those plugins are compatible with Docusaurus v3 before attempting an upgrade.
+
+:::
+
+A typical `package.json` dependency upgrade example:
+
+```diff title="package.json"
+ {
+   "dependencies": {
+     // upgrade to Docusaurus v3
+-    "@docusaurus/core": "2.4.3",
+-    "@docusaurus/preset-classic": "2.4.3",
++    "@docusaurus/core": "3.0.0",
++    "@docusaurus/preset-classic": "3.0.0",
+     // upgrade to MDX v3
+-    "@mdx-js/react": "^1.6.22",
++    "@mdx-js/react": "^3.0.0",
+     // upgrade to prism-react-renderer v2.0+
+-    "prism-react-renderer": "^1.3.5",
++    "prism-react-renderer": "^2.1.0",
+     // upgrade to React v18.0+
+-    "react": "^17.0.2",
+-    "react-dom": "^17.0.2"
++    "react": "^18.2.0",
++    "react-dom": "^18.2.0"
+   },
+   "devDependencies": {
+     // upgrade Docusaurus dev dependencies to v3
+-    "@docusaurus/module-type-aliases": "2.4.3",
+-    "@docusaurus/types": "2.4.3"
++    "@docusaurus/module-type-aliases": "3.0.0",
++    "@docusaurus/types": "3.0.0"
+   }
+   "engines": {
+     // require Node.js 18.0+
+-    "node": ">=16.14"
++    "node": ">=18.0"
+   }
+ }
+```
+
+For TypeScript users:
+
+```diff title="package.json"
+ {
+   "devDependencies": {
+     // swap the external TypeScript config package for the new official one
+-    "@tsconfig/docusaurus": "^1.0.7",
++    "@docusaurus/tsconfig": "3.0.0",
+     // upgrade React types to v18.0+
+-    "@types/react": "^17.0.69",
++    "@types/react": "^18.2.29",
+     // upgrade TypeScript to v5.1+
+-    "typescript": "~4.7.4"
++    "typescript": "~5.2.2"
+   }
+ }
+```
+
+## Upgrading MDX {/* #upgrading-mdx */}
+
+MDX is a major dependency of Docusaurus responsible for compiling your `.md` and `.mdx` files to React components.
+
+The transition from MDX v1 to MDX v3 is the **main challenge** to the adoption of Docusaurus v3. Most breaking changes come from MDX v2, and MDX v3 is a relatively small release.
+
+Some documents that compiled successfully under Docusaurus v2 might now **fail to compile** under Docusaurus v3.
+
+:::tip Find problematic content ahead of time
+
+Run [`npx docusaurus-mdx-checker`](https://github.com/slorber/docusaurus-mdx-checker) on your site to get a list of files that will now fail to compile under Docusaurus v3.
+
+This command is also a good way to estimate the amount of work to be done to make your content compatible. Remember most of this work can be executed ahead of the upgrade by [preparing your content for Docusaurus v3](/blog/preparing-your-site-for-docusaurus-v3).
+
+:::
+
+Other documents might also **render differently**.
+
+:::tip Use visual regression tests
+
+For large sites where a manual review of all pages is complicated, we recommend you to setup [visual regression tests](https://docusaurus.io/blog/upgrading-frontend-dependencies-with-confidence-using-visual-regression-testing).
+
+:::
+
+Upgrading MDX comes with all the breaking changes documented on the [MDX v2](https://mdxjs.com/blog/v2/) and [MDX v3](https://mdxjs.com/blog/v3/) release blog posts. Most breaking changes come from MDX v2, and MDX v3 is a relatively small release. The [MDX v2 migration guide](https://mdxjs.com/migrating/v2/) has a section on how to [update MDX files](https://mdxjs.com/migrating/v2/#update-mdx-files) that will be particularly relevant to us. Also make sure to read the [Troubleshooting MDX](https://mdxjs.com/docs/troubleshooting-mdx/) page that can help you interpret common MDX error messages.
+
+Make sure to also read our updated [**MDX and React**](../guides/markdown-features/markdown-features-react.mdx) documentation page.
+
+### Using the MDX playground {/* #using-the-mdx-playground */}
+
+The MDX playground is your new best friend. It permits to understand how your content is **compiled to React components**, and troubleshoot compilation or rendering issues in isolation.
+
+- [MDX playground - current version](https://mdxjs.com/playground/)
+- [MDX playground - v1](https://mdx-git-renovate-babel-monorepo-mdx.vercel.app/playground/)
+
+<details>
+  <summary>Configuring the MDX playground options for Docusaurus</summary>
+
+To obtain a compilation behavior similar to what Docusaurus v2 uses, please turn on these options on the [MDX playground](https://mdxjs.com/playground/):
+
+- Use `MDX`
+- Use `remark-gfm`
+- Use `remark-directive`
+
+![Screenshot of the MDX playground's options panel, with only the "Use `MDX`", "Use `remark-gfm`", and "Use `remark-directive`" options checked](@site/blog/2023/09-29-preparing-your-site-for-docusaurus-v3/img/mdx2-playground-options.png)
+
+</details>
+
+Using the two MDX playgrounds side-by-side, you will soon notice that some content is compiled differently or fails to compile in v2.
+
+:::tip Making your content future-proof
+
+The goal will be to refactor your problematic content so that it **works fine with both versions of MDX**. This way, when you upgrade to Docusaurus v3, this content will already work out-of-the-box.
+
+:::
+
+### Using the MDX checker CLI {/* #using-the-mdx-checker-cli */}
+
+We provide a [docusaurus-mdx-checker](https://github.com/slorber/docusaurus-mdx-checker) CLI that permits to easily spot problematic content. Run this command on your site to obtain a list of files that will fail to compile under MDX v3.
+
+```bash
+npx docusaurus-mdx-checker
+```
+
+For each compilation issue, the CLI will log the file path and a line number to look at.
+
+![Screenshot of the terminal showing an example MDX checker CLI output, with a few error messages](@site/blog/2023/09-29-preparing-your-site-for-docusaurus-v3/img/mdx-checker-output.png)
+
+:::tip
+
+Use this CLI to estimate of how much work will be required to make your content compatible with MDX v3.
+
+:::
+
+:::warning
+
+This CLI is a best effort, and will **only report compilation errors**.
+
+It will not report subtle compilation changes that do not produce errors but can affect how your content is displayed. To catch these problems, we recommend using [visual regression tests](/blog/upgrading-frontend-dependencies-with-confidence-using-visual-regression-testing).
+
+:::
+
+### Common MDX problems {/* #common-mdx-problems */}
+
+Docusaurus cannot document exhaustively all the changes coming with MDX. That's the responsibility of the [MDX v2](https://mdxjs.com/migrating/v2/) and [MDX v3](https://mdxjs.com/migrating/v3/) migration guides.
+
+However, by upgrading a few Docusaurus sites, we noticed that most of the issues come down to only a few cases that we have documented for you.
+
+#### Bad usage of `{` {/* #bad-usage-of- */}
+
+The `{` character is used for opening [JavaScript expressions](https://mdxjs.com/docs/what-is-mdx/#expressions). MDX will now fail if what you put inside `{expression}` is not a valid expression.
+
+```md title="example.md"
+The object shape looks like {username: string, age: number}
+```
+
+:::danger Error message
+
+> Could not parse expression with acorn: Unexpected content after expression
+
+:::
+
+:::tip How to upgrade
+
+Available options to fix this error:
+
+- Use inline code: `{username: string, age: number}`
+- Use the HTML code: `&#123;`
+- Escape it: `\{`
+
+:::
+
+#### Bad usage of `<` {/* #bad-usage-of--1 */}
+
+The `<` character is used for opening [JSX tags](https://mdxjs.com/docs/what-is-mdx/#jsx). MDX will now fail if it thinks your JSX is invalid.
+
+```md title="example.md"
+Use Android version <5
+
+You can use a generic type like Array<T>
+
+Follow the template "Road to <YOUR_MINOR_VERSION>"
+```
+
+:::danger Error messages
+
+> Unexpected character `5` (U+0035) before name, expected a character that can start a name, such as a letter, `$`, or `_`
+
+> Expected a closing tag for `<T>` (1:6-1:9) before the end of `paragraph` end-tag-mismatch mdast-util-mdx-jsx
+
+> Expected a closing tag for `<YOUR_MINOR_VERSION>` (134:19-134:39) before the end of `paragraph`
+
+:::
+
+:::tip How to upgrade
+
+Available options to fix this error:
+
+- Use inline code: `Array<T>`
+- Use the HTML code: `&lt;` or `&#60;`
+- Escape it: `\<`
+
+:::
+
+#### Bad usage of GFM Autolink {/* #bad-usage-of-gfm-autolink */}
+
+Docusaurus supports [GitHub Flavored Markdown (GFM)](https://github.github.com/gfm/), but [autolink](https://github.github.com/gfm/#autolinks) using the `<link>` syntax is not supported anymore by MDX.
+
+```md title="example.md"
+<sebastien@thisweekinreact.com>
+
+<http://localhost:3000>
+```
+
+:::danger Error messages
+
+> Unexpected character `@` (U+0040) in name, expected a name character such as letters, digits, `$`, or `_`; whitespace before attributes; or the end of the tag (note: to create a link in MDX, use `[text](url)`)
+
+> Unexpected character `/` (U+002F) before local name, expected a character that can start a name, such as a letter, `$`, or `_` (note: to create a link in MDX, use `[text](url)`)
+
+:::
+
+:::tip How to upgrade
+
+Use regular Markdown links, or remove the `<` and `>`. MDX and GFM are able to autolink literals already.
+
+{/* prettier-ignore */}
+```md title="example.md"
+sebastien@thisweekinreact.com
+[sebastien@thisweekinreact.com](mailto:sebastien@thisweekinreact.com)
+
+http://localhost:3000
+[http://localhost:3000](http://localhost:3000)
+```
+
+:::
+
+#### Lower-case MDXComponent mapping {/* #lower-case-mdxcomponent-mapping */}
+
+For users providing a [custom `MDXComponent` mapping](../guides/markdown-features/markdown-features-react.mdx#mdx-component-scope), components are now "sandboxed":
+
+- a `MDXComponent` mapping for `h1` only gets used for `# hi` but not for `<h1>hi</h1>`
+- a **lower-cased** custom element name will not be substituted by its respective `MDXComponent` component anymore
+
+:::danger visual difference
+
+Your [`MDXComponent` component mapping](../guides/markdown-features/markdown-features-react.mdx#mdx-component-scope) might not be applied as before, and your custom components might no longer be used.
+
+:::
+
+:::tip How to upgrade
+
+For native Markdown elements, you can keep using **lower-case**: `p`, `h1`, `img`, `a`...
+
+For any other element, **use upper-case names**.
+
+```diff title="src/theme/MDXComponents.js"
+ import MDXComponents from '@theme-original/MDXComponents';
+
+ export default {
+   ...MDXComponents,
+   p: (props) => <p {...props} className="my-paragraph"/>
+-  myElement: (props) => <div {...props} className="my-class" />,
++  MyElement: (props) => <div {...props} className="my-class" />,
+ };
+```
+
+:::
+
+#### Unintended extra paragraphs {/* #unintended-extra-paragraphs */}
+
+In MDX v3, it is now possible to interleave JSX and Markdown more easily without requiring extra line breaks. Writing content on multiple lines can also produce new expected `<p>` tags.
+
+:::danger visual difference
+
+See how this content is rendered differently by MDX v1 and v3.
+
+```md title="example.md"
+<div>Some **Markdown** content</div>
+<div>
+  Some **Markdown** content
+</div>
+```
+
+{/* prettier-ignore */}
+```html title="MDX v1 output"
+<div>Some **Markdown** content</div>
+<div>Some **Markdown** content</div>
+```
+
+{/* prettier-ignore */}
+```html title="MDX v3 output"
+<div>Some <strong>Markdown</strong> content</div>
+<div><p>Some <strong>Markdown</strong> content</p></div>
+```
+
+:::
+
+:::tip How to upgrade
+
+If you don't want an extra `<p>` tag, refactor content on a case by case basis to use a single-line JSX tag.
+
+```diff
+ <figure>
+   <img src="/img/myImage.png" alt="My alt" />
+-  <figcaption>
+-    My image caption
+-  </figcaption>
++  <figcaption>My image caption</figcaption>
+ </figure>
+```
+
+You can also wrap such content with `{` and `}` to avoid extra `<p>` tags if you don't intend to use Markdown syntax there yet.
+
+```diff
+-<figure>
++{<figure>
+   <img src="/img/myImage.png" alt="My alt" />
+   <figcaption>
+     My image caption
+   </figcaption>
+-</figure>
++</figure>}
+```
+
+:::
+
+#### Unintended usage of directives {/* #unintended-usage-of-directives */}
+
+Docusaurus v3 now uses [Markdown Directives](https://talk.commonmark.org/t/generic-directives-plugins-syntax/444) (implemented with [remark-directive](https://github.com/remarkjs/remark-directive)) as a generic way to provide support for admonitions, and other upcoming Docusaurus features.
+
+```md title="example.md"
+This is a :textDirective
+
+::leafDirective
+
+:::containerDirective
+
+Container directive content
+
+:::
+```
+
+:::danger Visual change
+
+Directives are parsed with the purpose of being handled by other Remark plugins. Unhandled directives will be ignored, and won't be rendered back in their original form.
+
+```md title="example.md"
+The AWS re:Invent conf is great
+```
+
+Due to `:Invent` being parsed as a text directive, this will now be rendered as:
+
+```
+The AWS re
+conf is great
+```
+
+:::
+
+:::tip How to upgrade
+
+- Use the HTML code: `&#58;`
+- Add a space after `:` (if it makes sense): `: text`
+- Escape it: `\:`
+
+:::
+
+#### Unsupported indented code blocks {/* #unsupported-indented-code-blocks */}
+
+MDX does not transform indented text as code blocks anymore.
+
+```md title="example.md"
+    console.log("hello");
+```
+
+:::danger Visual change
+
+The upgrade does not generally produce new MDX compilation errors, but can lead to content being rendered in an unexpected way because there isn't a code block anymore.
+
+:::
+
+:::tip How to upgrade
+
+Use the regular code block syntax instead of indentation:
+
+````md title="example.md"
+```js
+console.log('hello');
+```
+````
+
+:::
+
+### Other Markdown incompatibilities {/* #other-markdown-incompatibilities */}
+
+#### Emphasis starting or ending with a space or a punctuation {/* #emphasis-starting-or-ending-with-a-space-or-a-punctuation */}
+
+New MDX parser now strictly complies with the CommonMark spec. CommonMark spec has introduced rules for emphasis around spaces and punctuation, which are incompatible especially with languages that do not use a space to split words, since v0.14.
+
+Japanese and Chinese are most affected by this, but there are some other languages that can be affected (e.g. Thai and Khmer), for example when you try to emphasize an inline code or a link. Languages that use a space to split words are much less affected.
+
+`**` (other than `` `**` ``) in the following example were parsed as intended in Docusaurus 2, but are not now in Docusaurus 3.
+
+{/* For Chinese translators: you can translate the following Japanese into Chinese. */}
+
+{/* prettier-ignore */}
+```md title="example.md"
+**Do not end a range of emphasis with a space. **Or `**` will not work as intended.
+
+<!-- Japanese -->
+**「。」の後に文を続けると`**`が意図した動作をしません。**また、**[リンク](https://docusaurus.io/)**や**`コード`**のすぐ外側に`**`、そのさらに外側に句読点以外がある場合も同様です。
+```
+
+<details>
+<summary>See the detailed conditions and how to upgrade</summary>
+
+If `*` or `**` matches either of the following conditions, it will not work as the beginning of an emphasis mark anymore:
+
+- The next character is a space (e.g. `word* word`)
+- The previous character is a punctuation character and the next character is a letter (not a space or punctuation character) (e.g. `文**（文）`)
+
+On the contrary, if `*` or `**` matches either of the following conditions, it will not work as the end of an emphasis mark anymore:
+
+- The previous character is a space (e.g. `word *word`)
+- The next character is a punctuation character and the previous character is a letter (e.g. `文。**文`)
+
+“A punctuation character” includes non-ASCII ones, brackets, quotation marks and some symbols including `%` and `@`. More strictly speaking, a character whose 2-letters Unicode category starts with `P` is treated as a punctuation character here.
+
+:::tip How to upgrade
+
+If the offending emphasis mark is next to a space, move the space out of the range of emphasis:
+
+```md title="english.md"
+**Do not end a range of emphasis with a space.** Or `**` will not work.
+```
+
+If the offending emphasis mark is surrounded by both a punctuation character and a letter, you can fix it without modifying the content by:
+
+1. Convert the document to MDX if it is a vanilla Markdown.
+2. replace the offending emphasis mark with a raw HTML tag (`<em>` or `<strong>`) instead:
+
+{/* prettier-ignore */}
+```mdx title="japanese.mdx"
+<strong>「。」の後に文を続けると`**`が意図した動作をしません。</strong>また、<strong>[リンク](https://docusaurus.io/)</strong>や<strong>`コード`</strong>のすぐ外側に`**`、そのさらに外側に句読点以外がある場合も同様です。
+```
+
+While not an ideal solution, you can also use either of the following without converting the document to MDX:
+
+- Move the most outside punctuation character out of the emphasis mark.
+
+  {/* prettier-ignore */}
+  ```md title="japanese.md"
+  **「。」の後に文を続けると`**`が意図した動作をしません**。また、[**リンク**](https://docusaurus.io/)や・・・
+  ```
+
+- Put a space just outside of the offending `*` or `**`. This solution does not force you to convert the document to MDX.
+
+  {/* prettier-ignore */}
+  ```md title="japanese.md"
+  **「。」の後に文を続けると`**`が意図した動作をしません。** また、**[リンク](https://docusaurus.io/)** や **`コード`** のすぐ外側に`**`、そのさらに外側に句読点以外がある場合も同様です。
+  ```
+
+An unofficial remark plugin [remark-cjk-friendly](https://www.npmjs.com/package/remark-cjk-friendly) can fix this issue in most cases without modifying the Markdown source written in Chinese, Japanese, and Korean like the above.
+
+:::
+
+</details>
+
+### MDX plugins {/* #mdx-plugins */}
+
+All the official packages (Unified, Remark, Rehype...) in the MDX ecosystem are now [**ES Modules only**](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) and do not support [CommonJS](https://nodejs.org/api/modules.html#modules-commonjs-modules) anymore.
+
+In practice this means that you can't do `require("remark-plugin")` anymore.
+
+:::tip How to upgrade
+
+Docusaurus v3 now supports [**ES Modules**](https://flaviocopes.com/es-modules/) configuration files. We recommend that you migrate your config file to ES module, that enables you to import the Remark plugins easily:
+
+```js title="docusaurus.config.js"
+import remarkPlugin from 'remark-plugin';
+
+export default {
+  title: 'Docusaurus',
+  /* site config using remark plugins here */
+};
+```
+
+If you want to keep using CommonJS modules, you can use dynamic imports as a workaround that enables you to import ES modules inside a CommonJS module. Fortunately, the [Docusaurus config supports the usage of an async function](/docs/configuration#syntax-to-declare-docusaurus-config) to let you do so.
+
+```js title="docusaurus.config.js"
+module.exports = async function () {
+  const myPlugin = (await import('remark-plugin')).default;
+  return {
+    // site config...
+  };
+};
+```
+
+:::
+
+:::info For plugin authors
+
+If you created custom Remark or Rehype plugins, you may need to refactor those, or eventually rewrite them completely, due to how the new AST is structured. We have created a [dedicated support discussion](https://github.com/facebook/docusaurus/discussions/9337) to help plugin authors upgrade their code.
+
+:::
+
+### Formatters {/* #formatters */}
+
+Prettier, the most common formatter, supports only the legacy MDX v1, not v3 yet as of Docusaurus v3.0.0. You can add `{/* prettier-ignore */}` before the incompatible parts of your code to make it work with Prettier.
+
+```mdx
+{/* prettier-ignore */}
+<SomeComponent>Some long text in the component</SomeComponent>
+```
+
+If you get tired of too many `{/* prettier-ignore */}` insertions, you can consider disabling MDX formatting by Prettier by adding the following to your `.prettierignore` file, until it starts supporting MDX v3:
+
+```txt title=".prettierignore"
+*.mdx
+```
+
+## Other Breaking Changes {/* #other-breaking-changes */}
+
+Apart the MDX v3 upgrade, here is an exhaustive list of breaking changes coming with Docusaurus v3.
+
+### Node.js v18.0 {/* #nodejs-v180 */}
+
+Node.js 16 [reached End-of-Life](https://nodejs.org/en/blog/announcements/nodejs16-eol), and Docusaurus v3 now requires **Node.js >= 18.0**.
+
+:::tip How to upgrade
+
+Install Node.js 18.0+ on your computer.
+
+Eventually, configure your continuous integration, CDN or host to use this new Node.js version.
+
+You can also update your site `package.json` to prevent usage of an older unsupported version:
+
+```diff title="package.json"
+ {
+   "engines": {
+-     "node": ">=16.14"
++     "node": ">=18.0"
+   }
+ }
+```
+
+Upgrade your Docusaurus v2 site to Node.js 18 before upgrading to Docusaurus v3.
+
+:::
+
+### React v18.0+ {/* #react-v180 */}
+
+Docusaurus v3 now requires **React >= 18.0**.
+
+React 18 comes with its own breaking changes that should be relatively easy to handle, depending on the amount of custom React code you created for your site. The official themes and plugins are compatible with React 18.
+
+:::info How to upgrade
+
+Read the official [React v18.0](https://react.dev/blog/2022/03/29/react-v18) and [How to Upgrade to React 18](https://react.dev/blog/2022/03/08/react-18-upgrade-guide), and look at your own React code to figure out which components might be affected by this upgrade.
+
+We recommend to particularly look for:
+
+- Automatic batching for stateful components
+- New React hydration errors reported to the console
+
+:::
+
+:::danger Experimental support for React 18 features
+
+React 18 comes with new features:
+
+- `<Suspense>`
+- `React.lazy()`
+- `startTransition`
+
+Their Docusaurus support is considered as experimental. We might have to adjust the integration in the future, leading to a different runtime behavior.
+
+:::
+
+### Prism-React-Renderer v2.0+ {/* #prism-react-renderer-v20 */}
+
+Docusaurus v3 upgrades [`prism-react-renderer`](https://github.com/FormidableLabs/prism-react-renderer) to v2.0+. This library is used for code block syntax highlighting.
+
+:::info How to upgrade
+
+This is a new major library version containing breaking changes, and we can't guarantee a strict retro-compatibility. The [`prism-react-renderer` v2 release notes](https://github.com/FormidableLabs/prism-react-renderer/releases/tag/prism-react-renderer%402.0.0) are not super exhaustive, but there are 3 major changes to be aware of for Docusaurus users.
+
+The dependency should be upgraded:
+
+```diff title="package.json"
+ {
+   "dependencies": {
+-    "prism-react-renderer": "^1.3.5",
++    "prism-react-renderer": "^2.1.0",
+ }
+```
+
+The API to import themes in your Docusaurus config file has been updated:
+
+```diff title="docusaurus.config.js"
+- const lightTheme = require('prism-react-renderer/themes/github');
+- const darkTheme = require('prism-react-renderer/themes/dracula');
++ const {themes} = require('prism-react-renderer');
++ const lightTheme = themes.github;
++ const darkTheme = themes.dracula;
+```
+
+Previously, `react-prism-render` v1 [included more languages by default](https://github.com/FormidableLabs/prism-react-renderer/blob/v1.3.5/src/vendor/prism/includeLangs.js). From v2.0+, [fewer languages are included by default](https://github.com/FormidableLabs/prism-react-renderer/blob/prism-react-renderer%402.1.0/packages/generate-prism-languages/index.ts#L9). You may need to add extra languages to your Docusaurus config:
+
+```js title="docusaurus.config.js"
+const siteConfig = {
+  themeConfig: {
+    prism: {
+      // highlight-next-line
+      additionalLanguages: ['bash', 'diff', 'json'],
+    },
+  },
+};
+```
+
+:::
+
+### React-Live v4.0+ {/* #react-live-v40 */}
+
+For users of the `@docusaurus/theme-live-codeblock` package, Docusaurus v3 upgrades [`react-live`](https://github.com/FormidableLabs/react-live) to v4.0+.
+
+:::info How to upgrade
+
+In theory, you have nothing to do, and your existing interactive code blocks should keep working as before.
+
+However, this is a new major library version containing breaking changes, and we can't guarantee a strict retro-compatibility. Read the [v3](https://github.com/FormidableLabs/react-live/releases/tag/v3.0.0) and [v4](https://github.com/FormidableLabs/react-live/releases/tag/v4.0.0) changelogs in case of problems.
+
+:::
+
+### remark-emoji v4.0+ {/* #remark-emoji-v40 */}
+
+Docusaurus v3 upgrades [`remark-emoji`](https://github.com/rhysd/remark-emoji) to v4.0+. This library is to support `:emoji:` shortcuts in Markdown.
+
+:::info How to upgrade
+
+Most Docusaurus users have nothing to do. Users of emoji shortcodes should read the [changelog](https://github.com/rhysd/remark-emoji/blob/master/CHANGELOG.md) and double-check their emojis keep rendering as expected.
+
+> **Breaking Change** Update [node-emoji](https://www.npmjs.com/package/node-emoji) from v1 to v2. This change introduces support for many new emojis and removes old emoji short codes which are no longer valid on GitHub.
+
+:::
+
+### Mermaid v10.4+ {/* #mermaid-v104 */}
+
+For users of the `@docusaurus/theme-mermaid` package, Docusaurus v3 upgrades [`mermaid`](https://github.com/mermaid-js/mermaid) to v10.4+.
+
+:::info How to upgrade
+
+In theory, you have nothing to do, and your existing diagrams should keep working as before.
+
+However, this is a new major library version containing breaking changes, and we can't guarantee a strict retro-compatibility. Read the [v10](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0) changelog in case of problem.
+
+:::
+
+### TypeScript v5.1+ {/* #typescript-v51 */}
+
+Docusaurus v3 now requires **TypeScript >= 5.1**.
+
+:::info How to upgrade
+
+Upgrade your dependencies to use TypeScript 5+
+
+```diff title="package.json"
+ {
+   "devDependencies": {
+-    "typescript": "~4.7.4"
++    "typescript": "~5.2.2"
+   }
+ }
+```
+
+:::
+
+### TypeScript base config {/* #typescript-base-config */}
+
+The official Docusaurus TypeScript config has been re-internalized from the external package [`@tsconfig/docusaurus`](https://www.npmjs.com/package/@tsconfig/docusaurus) to our new monorepo package [`@docusaurus/tsconfig`](https://www.npmjs.com/package/@docusaurus/tsconfig).
+
+This new package is versioned alongside all the other Docusaurus core packages, and will be used to ensure TypeScript retro-compatibility and breaking changes on major version upgrades.
+
+:::info How to upgrade
+
+Swap the external TypeScript config package for the new official one
+
+```diff title="package.json"
+ {
+   "devDependencies": {
+-    "@tsconfig/docusaurus": "^1.0.7",
++    "@docusaurus/tsconfig": "3.0.0",
+   }
+ }
+```
+
+Use it in your `tsconfig.json` file:
+
+```diff title="tsconfig.json"
+ {
+-  "extends": "@tsconfig/docusaurus/tsconfig.json",
++  "extends": "@docusaurus/tsconfig",
+   "compilerOptions": {
+     "baseUrl": "."
+   }
+ }
+```
+
+:::
+
+### New Config Loader {/* #new-config-loader */}
+
+Docusaurus v3 changes its internal config loading library from [`import-fresh`](https://github.com/sindresorhus/import-fresh) to [`jiti`](https://github.com/unjs/jiti). It is responsible for loading files such as `docusaurus.config.js` or `sidebars.js`, and Docusaurus plugins.
+
+:::info How to upgrade
+
+In theory, you have nothing to do, and your existing config files should keep working as before.
+
+However, this is a major dependency swap and subtle behavior changes could occur.
+
+:::
+
+### Admonition Warning {/* #admonition-warning */}
+
+For historical reasons, we support an undocumented admonition `:::warning` that renders with a red color.
+
+:::danger Warning
+
+This is a Docusaurus v2 `:::warning` admonition.
+
+:::
+
+However, the color and icon have always been wrong. Docusaurus v3 re-introduces `:::warning` admonition officially, documents it, and fixes the color and icon.
+
+:::warning
+
+This is a Docusaurus v3 `:::warning` admonition.
+
+:::
+
+:::info How to upgrade
+
+If you previously used the undocumented `:::warning` admonition, make sure to verify for each usage if yellow is now an appropriate color. If you want to keep the red color, use `:::danger` instead.
+
+Docusaurus v3 also [deprecated the `:::caution`](https://github.com/facebook/docusaurus/pull/9308) admonition. Please refactor `:::caution` (yellow) to either `:::warning` (yellow) or `:::danger` (red).
+
+If you want to keep the title “caution”, you might want to refactor it to `:::warning[caution]` (yellow).
+
+:::
+
+### Versioned Sidebars {/* #versioned-sidebars */}
+
+This breaking change will only affect **Docusaurus v2 early adopters** who versioned their docs before `v2.0.0-beta.10` (December 2021).
+
+When creating version `v1.0.0`, the sidebar file contained a prefix `version-v1.0.0/` that [Docusaurus v3 does not support anymore](https://github.com/facebook/docusaurus/pull/9310).
+
+```json title="versioned_sidebars/version-v1.0.0-sidebars.json"
+{
+  "version-v1.0.0/docs": [
+    "version-v1.0.0/introduction",
+    "version-v1.0.0/prerequisites"
+  ]
+}
+```
+
+:::info How to upgrade
+
+Remove the useless versioned prefix from your versioned sidebars.
+
+```json title="versioned_sidebars/version-v1.0.0-sidebars.json"
+{
+  "docs": ["introduction", "prerequisites"]
+}
+```
+
+:::
+
+### Blog Feed Limit {/* #blog-feed-limit */}
+
+The `@docusaurus/plugin-content-blog` now limits the RSS feed to the last 20 entries by default. For large Docusaurus blogs, this is a more sensible default value to avoid an increasingly large RSS file.
+
+:::info How to upgrade
+
+In case you don't like this new default behavior, you can revert to the former "unlimited feed" behavior with the new `limit: false` feed option:
+
+```js title="docusaurus.config.js"
+const blogOptions = {
+  feedOptions: {
+    // highlight-next-line
+    limit: false,
+  },
+};
+```
+
+:::
+
+### Docs Theme Refactoring {/* #docs-theme-refactoring */}
+
+For users that swizzled docs-related theme components (like `@theme/DocPage`), these components have been significantly refactored to make it easier to customize.
+
+Technically, **this is not a breaking change** because these components are **flagged as unsafe to swizzle**, however many Docusaurus sites ejected docs-related components, and will be interested to know their customizations might break Docusaurus.
+
+:::info How to upgrade
+
+Delete all your swizzled components, re-swizzle them, and re-apply your customizations on top of the newly updated components.
+
+Alternatively, you can look at the [pull-request notes](https://github.com/facebook/docusaurus/pull/7966) to understand the new theme component tree structure, and eventually try to patch your swizzled components manually.
+
+:::
+
+## Optional Changes {/* #optional-changes */}
+
+Some changes are not mandatory, but remain useful to be aware of to plainly leverage Docusaurus v3.
+
+### Automatic JSX runtime {/* #automatic-jsx-runtime */}
+
+Docusaurus v3 now uses the React 18 ["automatic" JSX runtime](https://legacy.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html).
+
+It is not needed anymore to import React in JSX files that do not use any React API.
+
+```diff title="src/components/MyComponent.js"
+- import React from 'react';
+
+  export default function MyComponent() {
+    return <div>Hello</div>;
+  }
+```
+
+### ESM and TypeScript Configs {/* #esm-and-typescript-configs */}
+
+Docusaurus v3 supports ESM and TypeScript config files, and it might be a good idea to adopt those new options.
+
+```js title="docusaurus.config.js"
+export default {
+  title: 'Docusaurus',
+  url: 'https://docusaurus.io',
+  // your site config ...
+};
+```
+
+```ts title="docusaurus.config.ts"
+import type {Config} from '@docusaurus/types';
+import type * as Preset from '@docusaurus/preset-classic';
+
+const config: Config = {
+  title: 'My Site',
+  favicon: 'img/favicon.ico',
+  presets: [
+    [
+      'classic',
+      {
+        /* Your preset config here */
+      } satisfies Preset.Options,
+    ],
+  ],
+
+  themeConfig: {
+    /* Your theme config here */
+  } satisfies Preset.ThemeConfig,
+};
+
+export default config;
+```
+
+### Using the `.mdx` extension {/* #using-the-mdx-extension */}
+
+We recommend using the `.mdx` extension whenever you use JSX, `import`, or `export` (i.e. MDX features) inside a Markdown file. It is semantically more correct and improves compatibility with external tools (IDEs, formatters, linters, etc.).
+
+In future versions of Docusaurus, `.md` files will be parsed as standard [CommonMark](https://commonmark.org/), which does not support these features. In Docusaurus v3, `.md` files keep being compiled as MDX files, but it will be possible to [opt-in for CommonMark](https://github.com/facebook/docusaurus/issues/3018).
+
+### Upgrading math packages {/* #upgrading-math-packages */}
+
+If you use Docusaurus to render [Math Equations](../guides/markdown-features/markdown-features-math-equations.mdx), you should upgrade the MDX plugins.
+
+Make sure to use `remark-math 6` and `rehype-katex 7` for Docusaurus v3 (using MDX v3). We can't guarantee other versions will work.
+
+```diff package.json
+{
+-  "remark-math": "^3.0.0",
++  "remark-math": "^6.0.0",
+-  "rehype-katex": "^5.0.0"
++  "rehype-katex": "^7.0.0"
+}
+```
+
+`hast-util-is-element` is now unnecessary in Docusaurus v3. If you have installed it and don't use it somewhere else, you can just remove it by running `npm uninstall hast-util-is-element`.
+
+### Turn off MDX v1 compat {/* #turn-off-mdx-v1-compat */}
+
+Docusaurus v3 comes with [MDX v1 compatibility options](../api/docusaurus.config.js.mdx#markdown), that are turned on by default.
+
+```js title="docusaurus.config.js"
+export default {
+  markdown: {
+    mdx1Compat: {
+      comments: true,
+      admonitions: true,
+      headingIds: true,
+    },
+  },
+};
+```
+
+#### `comments` option {/* #comments-option */}
+
+This option allows the usage of HTML comments inside MDX, while HTML comments are officially not supported anymore.
+
+For MDX files, we recommend to progressively use MDX `{/* comments */}` instead of HTML `<!-- comments -->`, and then turn this compatibility option off.
+
+:::info Blog truncate marker
+
+The default blog truncate marker now supports both `<!-- truncate -->` and `{/* truncate */}`.
+
+:::
+
+#### `admonitions` option {/* #admonitions-option */}
+
+This option allows the usage of the Docusaurus v2 [admonition title](../guides/markdown-features/markdown-features-admonitions.mdx#specifying-title) syntax:
+
+```md
+:::note Your Title
+
+content
+
+:::
+```
+
+Docusaurus now implements admonitions with [Markdown Directives](https://talk.commonmark.org/t/generic-directives-plugins-syntax/444) (implemented with [remark-directive](https://github.com/remarkjs/remark-directive)), and the syntax to provide a directive label requires square brackets:
+
+```md
+:::note[Your Title]
+
+content
+
+:::
+```
+
+We recommend to progressively use the new Markdown directive label syntax, and then turn this compatibility option off.
+
+#### `headingIds` option {/* #headingids-option */}
+
+This option allows the usage of the Docusaurus v2 [explicit heading id](../guides/markdown-features/markdown-features-toc.mdx#heading-ids) syntax:
+
+```mdx-code-block
+<Code language="md">{'### Hello World \u007B#my-explicit-id}\n'}</Code>
+```
+
+This syntax is now invalid MDX, and would require to escape the `{` character: `\{#my-explicit-id}`.
+
+We recommend to keep this compatibility option on for now, until we provide a new syntax compatible with newer versions of MDX.
+
+## Troubleshooting {/* #troubleshooting */}
+
+In case of any upgrade problem, the first things to try are:
+
+- make sure all your docs compile in the [MDX playground](https://mdxjs.com/playground/), or using [`npx docusaurus-mdx-checker`](https://github.com/slorber/docusaurus-mdx-checker)
+- delete `node_modules` and `package-lock.json`, and then run `npm install` again
+- run `docusaurus clear` to clear the caches
+- remove third-party plugins that might not support Docusaurus v3
+- delete all your swizzled components
+
+Once you have tried that, you can ask for support through the following support channels:
+
+- [Docusaurus v3 - Upgrade Support](https://github.com/facebook/docusaurus/discussions/9336)
+- [Docusaurus v3 - Discord channel #migration-v2-to-v3](https://discord.com/channels/398180168688074762/1154771869094912090)
+- [MDX v3 - Upgrade Support](https://github.com/facebook/docusaurus/discussions/9053)
+- [MDX v3 - Remark/Rehype Plugins Support](https://github.com/facebook/docusaurus/discussions/9337)
+- [MDX v3 - Discord channel #migration-mdx-v3](https://discord.com/channels/398180168688074762/1116724556976111616)
+
+Please consider **our time is precious**. To ensure that your support request is not ignored, we kindly ask you to:
+
+- provide a **minimal** reproduction that we can easily run, ideally created with [docusaurus.new](https://docusaurus.new)
+- provide a live deployment url showing the problem in action (if your site can build)
+- explain clearly the problem, much more than an ambiguous "it doesn't work"
+- include as much relevant material as possible: code snippets, repo url, git branch urls, full stack traces, screenshots and videos
+- present your request clearly, concisely, showing us that you have made an effort to help us help you
+
+Alternatively, you can look for a paid [Docusaurus Service Provider](https://github.com/facebook/docusaurus/discussions/9281) to execute this upgrade for you. If your site is open source, you can also ask our community for [free, benevolent help](https://github.com/facebook/docusaurus/discussions/9283).

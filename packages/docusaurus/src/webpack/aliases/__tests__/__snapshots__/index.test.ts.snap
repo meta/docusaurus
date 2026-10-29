@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`getDocusaurusAliases returns appropriate webpack aliases 1`] = `
+exports[`getDocusaurusAliases > returns appropriate webpack aliases 1`] = `
 {
   "@docusaurus/BrowserOnly": "<PROJECT_ROOT>/packages/docusaurus/src/client/exports/BrowserOnly.tsx",
   "@docusaurus/ComponentCreator": "<PROJECT_ROOT>/packages/docusaurus/src/client/exports/ComponentCreator.tsx",
@@ -25,7 +25,7 @@ exports[`getDocusaurusAliases returns appropriate webpack aliases 1`] = `
 }
 `;
 
-exports[`loadThemeAliases next alias can override the previous alias 1`] = `
+exports[`loadThemeAliases > next alias can override the previous alias 1`] = `
 [
   [
     "@theme-init/Layout",
@@ -80,6 +80,10 @@ exports[`loadThemeAliases next alias can override the previous alias 1`] = `
     "<PROJECT_ROOT>/packages/docusaurus/src/client/theme-fallback/SiteMetadata/index.tsx",
   ],
   [
+    "@theme-original/ThemeProvider",
+    "<PROJECT_ROOT>/packages/docusaurus/src/client/theme-fallback/ThemeProvider/index.tsx",
+  ],
+  [
     "@theme/Error",
     "<PROJECT_ROOT>/packages/docusaurus/src/client/theme-fallback/Error/index.tsx",
   ],
@@ -126,6 +130,10 @@ exports[`loadThemeAliases next alias can override the previous alias 1`] = `
   [
     "@theme/SiteMetadata",
     "<PROJECT_ROOT>/packages/docusaurus/src/client/theme-fallback/SiteMetadata/index.tsx",
+  ],
+  [
+    "@theme/ThemeProvider",
+    "<PROJECT_ROOT>/packages/docusaurus/src/client/theme-fallback/ThemeProvider/index.tsx",
   ],
 ]
 `;

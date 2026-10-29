@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Logo from '@theme/Logo';
 
-export default function NavbarLogo(): JSX.Element {
+export default function NavbarLogo(): ReactNode {
   return (
     <Logo
       className="navbar__brand"

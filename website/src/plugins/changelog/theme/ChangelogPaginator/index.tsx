@@ -7,12 +7,12 @@
 
 // Changed the text labels.
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Translate, {translate} from '@docusaurus/Translate';
 import PaginatorNavLink from '@theme/PaginatorNavLink';
 import type {Props} from '@theme/BlogPostPaginator';
 
-export default function ChangelogPaginator(props: Props): JSX.Element {
+export default function ChangelogPaginator(props: Props): ReactNode {
   const {nextItem, prevItem} = props;
 
   return (

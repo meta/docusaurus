@@ -1,40 +1,40 @@
 {
     "version": "https://jsonfeed.org/version/1",
-    "title": "Docusaurus blog website fixture Blog",
-    "home_page_url": "https://docusaurus.io/blog/",
-    "description": "Docusaurus blog website fixture Blog",
+    "title": "Hello Blog",
+    "home_page_url": "https://docusaurus.io/myBaseUrl/blog",
+    "description": "Hello Blog",
     "items": [
         {
-            "id": "https://docusaurus.io/blog/blog-with-links",
-            "content_html": "<p><a href=\"https://github.com/facebook/docusaurus\" target=\"_blank\" rel=\"noopener noreferrer\">absolute full url</a></p>\n<p><a href=\"https://docusaurus.io/blog/heading-as-title\">absolute pathname</a></p>\n<p><a href=\"https://docusaurus.io/blog/heading-as-title\">relative pathname</a></p>\n<p><a href=\"https://docusaurus.io/blog/heading-as-title\">md link</a></p>\n<p><a href=\"https://docusaurus.io/blog/blog-with-links#title\">anchor</a></p>\n<p><a href=\"https://docusaurus.io/blog/heading-as-title#title\">relative pathname + anchor</a></p>\n<p><img loading=\"lazy\" src=\"https://docusaurus.io/assets/images/test-image-742d39e51f41482e8132e79c09ad4eea.png\" width=\"760\" height=\"160\" class=\"img_yGFe\"></p>\n<p><img loading=\"lazy\" src=\"https://docusaurus.io/assets/images/slash-introducing-411a16dd05086935b8e9ddae38ae9b45.svg\" alt=\"\" class=\"img_yGFe\"></p>\n<img srcset=\"https://docusaurus.io/img/test-image.png 300w, https://docusaurus.io/img/docusaurus-social-card.png 500w\">\n<img src=\"https://docusaurus.io/img/test-image.png\">",
-            "url": "https://docusaurus.io/blog/blog-with-links",
+            "id": "https://docusaurus.io/myBaseUrl/blog/blog-with-links",
+            "content_html": "<p><a href=\"https://github.com/facebook/docusaurus\" target=\"_blank\" rel=\"noopener noreferrer\">absolute full url</a></p>\n<p><a href=\"https://docusaurus.io/blog/heading-as-title\">absolute pathname</a></p>\n<p><a href=\"https://docusaurus.io/blog/heading-as-title\">relative pathname</a></p>\n<p><a href=\"https://docusaurus.io/blog/heading-as-title\">md link</a></p>\n<p><a href=\"https://docusaurus.io/myBaseUrl/blog/blog-with-links#title\">anchor</a></p>\n<p><a href=\"https://docusaurus.io/blog/heading-as-title#title\">relative pathname + anchor</a></p>\n<p><img loading=\"lazy\" src=\"https://docusaurus.io/assets/images/test-image-742d39e51f41482e8132e79c09ad4eea.png\" width=\"760\" height=\"160\" class=\"img_yGFe\"></p>\n<p><img loading=\"lazy\" src=\"https://docusaurus.io/assets/images/slash-introducing-411a16dd05086935b8e9ddae38ae9b45.svg\" alt=\"\" class=\"img_yGFe\"></p>\n<img srcset=\"https://docusaurus.io/img/test-image.png 300w, https://docusaurus.io/img/docusaurus-social-card.png 500w\">\n<img src=\"https://docusaurus.io/img/test-image.png\">",
+            "url": "https://docusaurus.io/myBaseUrl/blog/blog-with-links",
             "title": "test links",
             "summary": "absolute full url",
             "date_modified": "2023-07-23T00:00:00.000Z",
             "tags": []
         },
         {
-            "id": "https://docusaurus.io/blog/mdx-require-blog-post",
+            "id": "https://docusaurus.io/myBaseUrl/blog/mdx-require-blog-post",
             "content_html": "<p>Test MDX with require calls</p>\n<!-- -->\n<!-- -->\n<img src=\"https://docusaurus.io/img/test-image.png\">\n<img src=\"https://docusaurus.io/assets/images/test-image-742d39e51f41482e8132e79c09ad4eea.png\">\n<img src=\"https://docusaurus.io/assets/images/test-image-742d39e51f41482e8132e79c09ad4eea.png\">",
-            "url": "https://docusaurus.io/blog/mdx-require-blog-post",
+            "url": "https://docusaurus.io/myBaseUrl/blog/mdx-require-blog-post",
             "title": "MDX Blog Sample with require calls",
             "summary": "Test MDX with require calls",
             "date_modified": "2021-03-06T00:00:00.000Z",
             "tags": []
         },
         {
-            "id": "https://docusaurus.io/blog/mdx-blog-post",
-            "content_html": "<h1>HTML Heading 1</h1>\n<h2>HTML Heading 2</h2>\n<p>HTML Paragraph</p>\n<!-- -->\n<!-- -->\n<p>Import DOM</p>\n<h1>Heading 1</h1>\n<h2 class=\"anchor anchorWithHideOnScrollNavbar_G5V2\" id=\"heading-2\">Heading 2<a href=\"https://docusaurus.io/blog/mdx-blog-post#heading-2\" class=\"hash-link\" aria-label=\"Direct link to Heading 2\" title=\"Direct link to Heading 2\">​</a></h2>\n<h3 class=\"anchor anchorWithHideOnScrollNavbar_G5V2\" id=\"heading-3\">Heading 3<a href=\"https://docusaurus.io/blog/mdx-blog-post#heading-3\" class=\"hash-link\" aria-label=\"Direct link to Heading 3\" title=\"Direct link to Heading 3\">​</a></h3>\n<h4 class=\"anchor anchorWithHideOnScrollNavbar_G5V2\" id=\"heading-4\">Heading 4<a href=\"https://docusaurus.io/blog/mdx-blog-post#heading-4\" class=\"hash-link\" aria-label=\"Direct link to Heading 4\" title=\"Direct link to Heading 4\">​</a></h4>\n<h5 class=\"anchor anchorWithHideOnScrollNavbar_G5V2\" id=\"heading-5\">Heading 5<a href=\"https://docusaurus.io/blog/mdx-blog-post#heading-5\" class=\"hash-link\" aria-label=\"Direct link to Heading 5\" title=\"Direct link to Heading 5\">​</a></h5>\n<ul>\n<li>list1</li>\n<li>list2</li>\n<li>list3</li>\n</ul>\n<ul>\n<li>list1</li>\n<li>list2</li>\n<li>list3</li>\n</ul>\n<p>Normal Text <em>Italics Text</em> <strong>Bold Text</strong></p>\n<p><a href=\"https://v2.docusaurus.io/\" target=\"_blank\" rel=\"noopener noreferrer\">link</a> <img loading=\"lazy\" src=\"https://v2.docusaurus.io/\" alt=\"image\" class=\"img_yGFe\"></p>",
-            "url": "https://docusaurus.io/blog/mdx-blog-post",
+            "id": "https://docusaurus.io/myBaseUrl/blog/mdx-blog-post",
+            "content_html": "<h1>HTML Heading 1</h1>\n<h2>HTML Heading 2</h2>\n<p>HTML Paragraph</p>\n<!-- -->\n<!-- -->\n<p>Import DOM</p>\n<h1>Heading 1</h1>\n<h2 class=\"anchor anchorWithHideOnScrollNavbar_G5V2\" id=\"heading-2\">Heading 2<a href=\"https://docusaurus.io/myBaseUrl/blog/mdx-blog-post#heading-2\" class=\"hash-link\" aria-label=\"Direct link to Heading 2\" title=\"Direct link to Heading 2\">​</a></h2>\n<h3 class=\"anchor anchorWithHideOnScrollNavbar_G5V2\" id=\"heading-3\">Heading 3<a href=\"https://docusaurus.io/myBaseUrl/blog/mdx-blog-post#heading-3\" class=\"hash-link\" aria-label=\"Direct link to Heading 3\" title=\"Direct link to Heading 3\">​</a></h3>\n<h4 class=\"anchor anchorWithHideOnScrollNavbar_G5V2\" id=\"heading-4\">Heading 4<a href=\"https://docusaurus.io/myBaseUrl/blog/mdx-blog-post#heading-4\" class=\"hash-link\" aria-label=\"Direct link to Heading 4\" title=\"Direct link to Heading 4\">​</a></h4>\n<h5 class=\"anchor anchorWithHideOnScrollNavbar_G5V2\" id=\"heading-5\">Heading 5<a href=\"https://docusaurus.io/myBaseUrl/blog/mdx-blog-post#heading-5\" class=\"hash-link\" aria-label=\"Direct link to Heading 5\" title=\"Direct link to Heading 5\">​</a></h5>\n<ul>\n<li>list1</li>\n<li>list2</li>\n<li>list3</li>\n</ul>\n<ul>\n<li>list1</li>\n<li>list2</li>\n<li>list3</li>\n</ul>\n<p>Normal Text <em>Italics Text</em> <strong>Bold Text</strong></p>\n<p><a href=\"https://v2.docusaurus.io/\" target=\"_blank\" rel=\"noopener noreferrer\">link</a> <img loading=\"lazy\" src=\"https://v2.docusaurus.io/\" alt=\"image\" class=\"img_yGFe\"></p>",
+            "url": "https://docusaurus.io/myBaseUrl/blog/mdx-blog-post",
             "title": "Full Blog Sample",
             "summary": "HTML Heading 1",
             "date_modified": "2021-03-05T00:00:00.000Z",
             "tags": []
         },
         {
-            "id": "https://docusaurus.io/blog/hey/my super path/héllô",
+            "id": "https://docusaurus.io/myBaseUrl/blog/hey/my super path/héllô",
             "content_html": "<p>complex url slug</p>",
-            "url": "https://docusaurus.io/blog/hey/my super path/héllô",
+            "url": "https://docusaurus.io/myBaseUrl/blog/hey/my super path/héllô",
             "title": "Complex Slug",
             "summary": "complex url slug",
             "date_modified": "2020-08-16T00:00:00.000Z",
@@ -44,9 +44,9 @@
             ]
         },
         {
-            "id": "https://docusaurus.io/blog/simple/slug",
+            "id": "https://docusaurus.io/myBaseUrl/blog/simple/slug",
             "content_html": "<p>simple url slug</p>",
-            "url": "https://docusaurus.io/blog/simple/slug",
+            "url": "https://docusaurus.io/myBaseUrl/blog/simple/slug",
             "title": "Simple Slug",
             "summary": "simple url slug",
             "date_modified": "2020-08-15T00:00:00.000Z",
@@ -57,17 +57,17 @@
             "tags": []
         },
         {
-            "id": "https://docusaurus.io/blog/heading-as-title",
+            "id": "https://docusaurus.io/myBaseUrl/blog/heading-as-title",
             "content_html": "",
-            "url": "https://docusaurus.io/blog/heading-as-title",
+            "url": "https://docusaurus.io/myBaseUrl/blog/heading-as-title",
             "title": "some heading",
             "date_modified": "2019-01-02T00:00:00.000Z",
             "tags": []
         },
         {
-            "id": "https://docusaurus.io/blog/date-matter",
+            "id": "https://docusaurus.io/myBaseUrl/blog/date-matter",
             "content_html": "<p>date inside front matter</p>",
-            "url": "https://docusaurus.io/blog/date-matter",
+            "url": "https://docusaurus.io/myBaseUrl/blog/date-matter",
             "title": "date-matter",
             "summary": "date inside front matter",
             "date_modified": "2019-01-01T00:00:00.000Z",
@@ -76,16 +76,19 @@
             ]
         },
         {
-            "id": "https://docusaurus.io/blog/2018/12/14/Happy-First-Birthday-Slash",
+            "id": "https://docusaurus.io/myBaseUrl/blog/2018/12/14/Happy-First-Birthday-Slash",
             "content_html": "<p>Happy birthday! (translated)</p>",
-            "url": "https://docusaurus.io/blog/2018/12/14/Happy-First-Birthday-Slash",
+            "url": "https://docusaurus.io/myBaseUrl/blog/2018/12/14/Happy-First-Birthday-Slash",
             "title": "Happy 1st Birthday Slash! (translated)",
             "summary": "Happy birthday! (translated)",
             "date_modified": "2018-12-14T00:00:00.000Z",
             "author": {
                 "name": "Yangshun Tay (translated)"
             },
-            "tags": []
+            "tags": [
+                "inlineTag",
+                "Global Tag label (en)"
+            ]
         }
     ]
 }

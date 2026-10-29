@@ -1,8 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`blog plugin process blog posts load content 1`] = `
+exports[`blog plugin > process blog posts load content 1`] = `
 {
   "/blog/tags/tag-1": {
+    "description": undefined,
+    "inline": true,
     "items": [
       "/simple/slug/another",
       "/another/tags",
@@ -63,6 +65,8 @@ exports[`blog plugin process blog posts load content 1`] = `
     "unlisted": false,
   },
   "/blog/tags/tag-2": {
+    "description": undefined,
+    "inline": true,
     "items": [
       "/another/tags",
       "/another/tags2",
@@ -108,7 +112,7 @@ exports[`blog plugin process blog posts load content 1`] = `
 }
 `;
 
-exports[`blog plugin process blog posts load content 2`] = `
+exports[`blog plugin > process blog posts load content 2`] = `
 [
   {
     "content": "simple url slug",
@@ -117,7 +121,10 @@ exports[`blog plugin process blog posts load content 2`] = `
       "authors": [
         {
           "imageURL": undefined,
+          "key": null,
           "name": "Sébastien Lorber",
+          "page": null,
+          "socials": {},
           "title": "Docusaurus maintainer",
           "url": "https://sebastienlorber.com",
         },
@@ -126,10 +133,14 @@ exports[`blog plugin process blog posts load content 2`] = `
       "description": "simple url slug",
       "editUrl": "https://baseEditUrl.com/edit/blog/another-simple-slug-with-tags.md",
       "frontMatter": {
-        "author": "Sébastien Lorber",
-        "author_title": "Docusaurus maintainer",
-        "author_url": "https://sebastienlorber.com",
-        "date": 2020-08-15T00:00:00.000Z,
+        "authors": [
+          {
+            "name": "Sébastien Lorber",
+            "title": "Docusaurus maintainer",
+            "url": "https://sebastienlorber.com",
+          },
+        ],
+        "date": "2020-08-15",
         "slug": "/simple/slug/another",
         "tags": [
           "tag1",
@@ -144,10 +155,12 @@ exports[`blog plugin process blog posts load content 2`] = `
         "title": "Another With Tag",
       },
       "permalink": "/blog/simple/slug/another",
-      "readingTime": 0.015,
+      "readingTime": 0.02,
       "source": "@site/blog/another-simple-slug-with-tags.md",
       "tags": [
         {
+          "description": undefined,
+          "inline": true,
           "label": "tag1",
           "permalink": "/blog/tags/tag-1",
         },
@@ -165,7 +178,7 @@ exports[`blog plugin process blog posts load content 2`] = `
       "description": "with tag",
       "editUrl": "https://baseEditUrl.com/edit/blog/another-with-tags.md",
       "frontMatter": {
-        "date": 2020-08-15T00:00:00.000Z,
+        "date": "2020-08-15",
         "slug": "/another/tags",
         "tags": [
           "tag1",
@@ -189,10 +202,14 @@ exports[`blog plugin process blog posts load content 2`] = `
       "source": "@site/blog/another-with-tags.md",
       "tags": [
         {
+          "description": undefined,
+          "inline": true,
           "label": "tag1",
           "permalink": "/blog/tags/tag-1",
         },
         {
+          "description": undefined,
+          "inline": true,
           "label": "tag2",
           "permalink": "/blog/tags/tag-2",
         },
@@ -210,7 +227,7 @@ exports[`blog plugin process blog posts load content 2`] = `
       "description": "with tag",
       "editUrl": "https://baseEditUrl.com/edit/blog/another-with-tags2.md",
       "frontMatter": {
-        "date": 2020-08-15T00:00:00.000Z,
+        "date": "2020-08-15",
         "slug": "/another/tags2",
         "tags": [
           "tag1",
@@ -230,10 +247,14 @@ exports[`blog plugin process blog posts load content 2`] = `
       "source": "@site/blog/another-with-tags2.md",
       "tags": [
         {
+          "description": undefined,
+          "inline": true,
           "label": "tag1",
           "permalink": "/blog/tags/tag-1",
         },
         {
+          "description": undefined,
+          "inline": true,
           "label": "tag2",
           "permalink": "/blog/tags/tag-2",
         },
@@ -245,9 +266,11 @@ exports[`blog plugin process blog posts load content 2`] = `
 ]
 `;
 
-exports[`blog plugin works on blog tags without pagination 1`] = `
+exports[`blog plugin > works on blog tags without pagination 1`] = `
 {
   "/blog/tags/tag-1": {
+    "description": undefined,
+    "inline": true,
     "items": [
       "/simple/slug/another",
       "/another/tags",
@@ -278,6 +301,8 @@ exports[`blog plugin works on blog tags without pagination 1`] = `
     "unlisted": false,
   },
   "/blog/tags/tag-2": {
+    "description": undefined,
+    "inline": true,
     "items": [
       "/another/tags",
       "/another/tags2",
@@ -306,6 +331,8 @@ exports[`blog plugin works on blog tags without pagination 1`] = `
     "unlisted": false,
   },
   "/blog/tags/unlisted": {
+    "description": undefined,
+    "inline": true,
     "items": [
       "/another/blog-with-tags-unlisted",
     ],
@@ -334,9 +361,11 @@ exports[`blog plugin works on blog tags without pagination 1`] = `
 }
 `;
 
-exports[`blog plugin works with blog tags 1`] = `
+exports[`blog plugin > works with blog tags 1`] = `
 {
   "/blog/tags/tag-1": {
+    "description": undefined,
+    "inline": true,
     "items": [
       "/simple/slug/another",
       "/another/tags",
@@ -382,6 +411,8 @@ exports[`blog plugin works with blog tags 1`] = `
     "unlisted": false,
   },
   "/blog/tags/tag-2": {
+    "description": undefined,
+    "inline": true,
     "items": [
       "/another/tags",
       "/another/tags2",
@@ -410,6 +441,8 @@ exports[`blog plugin works with blog tags 1`] = `
     "unlisted": false,
   },
   "/blog/tags/unlisted": {
+    "description": undefined,
+    "inline": true,
     "items": [
       "/another/blog-with-tags-unlisted",
     ],

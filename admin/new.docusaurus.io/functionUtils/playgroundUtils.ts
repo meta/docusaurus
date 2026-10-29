@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {HandlerEvent, HandlerResponse} from '@netlify/functions';
-
 const CookieName = 'DocusaurusPlaygroundName';
 
 const PlaygroundConfigs = {
@@ -35,26 +33,27 @@ function isValidPlaygroundName(
   );
 }
 
-export function createPlaygroundDocumentationResponse(): HandlerResponse {
-  return {
-    statusCode: 302,
+export function createPlaygroundDocumentationResponse(): Response {
+  return new Response(null, {
+    status: 302,
     headers: {
       Location: PlaygroundDocumentationUrl,
     },
-  };
+  });
 }
 
 export function createPlaygroundResponse(
   playgroundName: PlaygroundName,
-): HandlerResponse {
+): Response {
   const playgroundUrl = PlaygroundConfigs[playgroundName];
-  return {
-    statusCode: 302,
+  // Not using Response.redirect(): its headers are immutable
+  return new Response(null, {
+    status: 302,
     headers: {
       Location: playgroundUrl,
       'Set-Cookie': `${CookieName}=${playgroundName}`,
     },
-  };
+  });
 }
 
 // Inspired by https://stackoverflow.com/a/3409200/82609
@@ -68,10 +67,11 @@ function parseCookieString(cookieString: string): {[key: string]: string} {
 }
 
 export function readPlaygroundName(
-  event: HandlerEvent,
+  request: Request,
 ): PlaygroundName | undefined {
-  const parsedCookie: {[key: string]: string} = event.headers.cookie
-    ? parseCookieString(event.headers.cookie)
+  const cookieString = request.headers.get('cookie');
+  const parsedCookie: {[key: string]: string} = cookieString
+    ? parseCookieString(cookieString)
     : {};
   const playgroundName: string | undefined = parsedCookie[CookieName];
 

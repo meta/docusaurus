@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import getSlug from '../slug';
 
 describe('getSlug', () => {
@@ -120,7 +121,7 @@ describe('getSlug', () => {
         frontMatterSlug: '//',
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
-      "We couldn't compute a valid slug for document with ID "my dôc" in "/dir with spâce/hey $hello" directory.
+      [Error: We couldn't compute a valid slug for document with ID "my dôc" in "/dir with spâce/hey $hello" directory.
       The slug we computed looks invalid: //.
       Maybe your slug front matter is incorrect or there are special characters in the file path?
       By using front matter to set a custom slug, you should be able to fix this error:
@@ -128,7 +129,7 @@ describe('getSlug', () => {
       ---
       slug: /my/customDocPath
       ---
-      "
+      ]
     `);
   });
 

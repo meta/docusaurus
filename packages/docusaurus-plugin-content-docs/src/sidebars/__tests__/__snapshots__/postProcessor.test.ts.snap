@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`postProcess corrects collapsed state inconsistencies 1`] = `
+exports[`postProcess > corrects collapsed state inconsistencies 1`] = `
 {
   "sidebar": [
     {
@@ -20,7 +20,7 @@ exports[`postProcess corrects collapsed state inconsistencies 1`] = `
 }
 `;
 
-exports[`postProcess corrects collapsed state inconsistencies 2`] = `
+exports[`postProcess > corrects collapsed state inconsistencies 2`] = `
 {
   "sidebar": [
     {
@@ -40,7 +40,7 @@ exports[`postProcess corrects collapsed state inconsistencies 2`] = `
 }
 `;
 
-exports[`postProcess corrects collapsed state inconsistencies 3`] = `
+exports[`postProcess > corrects collapsed state inconsistencies 3`] = `
 {
   "sidebar": [
     {
@@ -60,7 +60,7 @@ exports[`postProcess corrects collapsed state inconsistencies 3`] = `
 }
 `;
 
-exports[`postProcess filters draft items 1`] = `
+exports[`postProcess > filters draft items 1`] = `
 {
   "sidebar": [
     {
@@ -72,10 +72,14 @@ exports[`postProcess filters draft items 1`] = `
 }
 `;
 
-exports[`postProcess transforms category without subitems 1`] = `
+exports[`postProcess > transforms category without subitems 1`] = `
 {
   "sidebar": [
     {
+      "className": "category-className",
+      "customProps": {
+        "custom": true,
+      },
       "id": "doc ID",
       "label": "Category 2",
       "type": "doc",

@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Layout from '@theme/Layout';
 
-export default function zIndexTest(): JSX.Element {
+export default function zIndexTest(): ReactNode {
   return (
     <Layout>
       <p id="z-index-test">This should have a z-index of 100</p>

@@ -1,0 +1,36 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+.resetButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  background: var(--ifm-button-background-color);
+  color: var(--ifm-font-color-base);
+  cursor: pointer;
+  transition: all var(--ifm-transition-fast);
+}
+
+.resetButton:hover {
+  background: var(--ifm-color-emphasis-200);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+.resetButton:active {
+  background: var(--ifm-color-emphasis-300);
+}
+
+.resetButtonIcon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}

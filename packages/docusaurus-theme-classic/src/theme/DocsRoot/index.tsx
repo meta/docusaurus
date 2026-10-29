@@ -5,18 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-import clsx from 'clsx';
-import {ThemeClassNames, HtmlClassNameProvider} from '@docusaurus/theme-common';
+import type {ReactNode} from 'react';
 import renderRoutes from '@docusaurus/renderRoutes';
 import Layout from '@theme/Layout';
 
-import type {Props} from '@theme/DocVersionRoot';
+import type {Props} from '@theme/DocsRoot';
 
-export default function DocsRoot(props: Props): JSX.Element {
-  return (
-    <HtmlClassNameProvider className={clsx(ThemeClassNames.wrapper.docsPages)}>
-      <Layout>{renderRoutes(props.route.routes!)}</Layout>
-    </HtmlClassNameProvider>
-  );
+export default function DocsRoot(props: Props): ReactNode {
+  return <Layout>{renderRoutes(props.route.routes!)}</Layout>;
 }

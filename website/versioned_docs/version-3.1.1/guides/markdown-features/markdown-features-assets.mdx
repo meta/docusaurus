@@ -23,7 +23,7 @@ Let's imagine the following file structure:
 /website/docs/assets/docusaurus-asset-example.docx
 ```
 
-## Images {#images}
+## Images {/* #images */}
 
 You can display images in three different ways: Markdown syntax, CJS require, or ES imports syntax.
 
@@ -84,7 +84,7 @@ If you are using [@docusaurus/plugin-ideal-image](../../api/plugins/plugin-ideal
 
 :::
 
-## Files {#files}
+## Files {/* #files */}
 
 In the same way, you can link to existing assets by `require`'ing them and using the returned URL in `video`s, `a` anchor links, etc.
 
@@ -102,7 +102,7 @@ or
 
 <a
   target="_blank"
-  href={require('../../assets/docusaurus-asset-example.docx').default}>
+  href={require('../../assets/docusaurus-asset-example.docx')}>
   {'Download this docx'}
 </a>
 
@@ -116,7 +116,7 @@ If you use the Markdown image or link syntax, all asset paths will be resolved a
 
 :::
 
-## Inline SVGs {#inline-svgs}
+## Inline SVGs {/* #inline-svgs */}
 
 Docusaurus supports inlining SVGs out of the box.
 
@@ -156,7 +156,7 @@ import DocusaurusSvg from './docusaurus.svg';
   <DocusaurusSvg className="themedDocusaurus" />
 </BrowserWindow>
 
-## Themed Images {#themed-images}
+## Themed Images {/* #themed-images */}
 
 Docusaurus supports themed images: the `ThemedImage` component (included in the themes) allows you to switch the image source based on the current theme.
 
@@ -189,7 +189,7 @@ import ThemedImage from '@theme/ThemedImage';
 </BrowserWindow>
 ```
 
-### GitHub-style themed images {#github-style-themed-images}
+### GitHub-style themed images {/* #github-style-themed-images */}
 
 GitHub uses its own [image theming approach](https://github.blog/changelog/2021-11-24-specify-theme-context-for-images-in-markdown/) with path fragments, which you can easily implement yourself.
 
@@ -212,7 +212,7 @@ To toggle the visibility of an image using the path fragment (for GitHub, it's `
 
 </BrowserWindow>
 
-## Static assets {#static-assets}
+## Static assets {/* #static-assets */}
 
 If a Markdown link or image has an absolute path, the path will be seen as a file path and will be resolved from the static directories. For example, if you have configured [static directories](../../static-assets.mdx) to be `['public', 'static']`, then for the following image:
 

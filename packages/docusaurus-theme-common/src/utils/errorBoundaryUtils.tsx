@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {type ComponentProps} from 'react';
+import React, {type ComponentProps, type ReactNode} from 'react';
 import Translate from '@docusaurus/Translate';
 import {getErrorCausalChain} from '@docusaurus/utils-common';
 import type {Props as ErrorProps} from '@theme/Error';
@@ -13,7 +13,7 @@ import styles from './errorBoundaryUtils.module.css';
 
 export function ErrorBoundaryTryAgainButton(
   props: ComponentProps<'button'>,
-): JSX.Element {
+): ReactNode {
   return (
     <button type="button" {...props}>
       <Translate
@@ -29,7 +29,7 @@ export function ErrorBoundaryTryAgainButton(
 export function ErrorBoundaryErrorMessageFallback({
   error,
   tryAgain,
-}: ErrorProps): JSX.Element {
+}: ErrorProps): ReactNode {
   return (
     <div className={styles.errorBoundaryFallback}>
       <p>{error.message}</p>
@@ -38,7 +38,7 @@ export function ErrorBoundaryErrorMessageFallback({
   );
 }
 
-export function ErrorBoundaryError({error}: {error: Error}): JSX.Element {
+export function ErrorBoundaryError({error}: {error: Error}): ReactNode {
   const causalChain = getErrorCausalChain(error);
   const fullMessage = causalChain.map((e) => e.message).join('\n\nCause:\n');
   return <p className={styles.errorBoundaryError}>{fullMessage}</p>;

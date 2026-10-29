@@ -5,25 +5,30 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {devices} from '@playwright/test';
-import type {PlaywrightTestConfig} from '@playwright/test';
+import {defineConfig, devices} from '@playwright/test';
+import {createArgosReporterOptions} from '@argos-ci/playwright/reporter';
+
+const argosOptions = createArgosReporterOptions({
+  uploadToArgos: true, // for now, we always upload even outside of CI
+  buildName: 'screenshots',
+});
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const config: PlaywrightTestConfig = {
+export default defineConfig({
   testDir: './tests',
 
   timeout: 60000,
 
-  reporter: [['list'], ['@argos-ci/playwright/reporter']],
+  reporter: [['list'], ['@argos-ci/playwright/reporter', argosOptions]],
 
   // Run website production built
-  // Need to run "yarn website:build:fast" before
+  // Need to run "pnpm build:website:fast" before
   webServer: {
     cwd: '..',
     port: 3000,
-    command: 'yarn serve:website',
+    command: 'pnpm serve:website',
   },
 
   // Browsers: only Chrome for now
@@ -32,9 +37,12 @@ const config: PlaywrightTestConfig = {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        // Recommended by Argos
+        // See https://argos-ci.com/docs/learn/reliability-and-flakiness/flaky-tests/stabilize-text-rendering
+        launchOptions: {
+          args: ['--disable-lcd-text', '--font-render-hinting=none'],
+        },
       },
     },
   ],
-};
-
-export default config;
+});

@@ -18,7 +18,6 @@ module: {
     {
       test: /\.mdx?$/,
       use: [
-        'babel-loader',
         {
           loader: '@docusaurus/mdx-loader',
           options: {

@@ -1,0 +1,26 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+.exampleContainer {
+  border: solid thin;
+}
+
+.isolated:not(#a#b) {
+  &,
+  * {
+    @layer docusaurus {
+      all: revert-layer;
+    }
+    /*
+    Yes, unfortunately we need to revert sub-layers one by one
+    See https://bsky.app/profile/sebastienlorber.com/post/3lpqzuxat6s2v
+    */
+    @layer docusaurus.infima {
+      all: revert-layer;
+    }
+  }
+}

@@ -7,11 +7,12 @@
 
 // @ts-check
 
-import path from 'path';
-import {fileURLToPath} from 'url';
-import fs from 'fs-extra';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import fs from 'node:fs/promises';
 import _ from 'lodash';
-import logger from '@docusaurus/logger';
+import {logger} from '@docusaurus/logger';
+import {pathExists, outputFile, readJSON} from '@docusaurus/fs';
 import {getThemes, extractThemeCodeMessages} from './lib/utils.js';
 
 const LocalesDirPath = fileURLToPath(new URL('locales', import.meta.url));
@@ -51,11 +52,11 @@ function sortObjectKeys(obj) {
  * @returns {Promise<Record<string, string>>}
  */
 async function readMessagesFile(filePath) {
-  if (!(await fs.pathExists(filePath))) {
+  if (!(await pathExists(filePath))) {
     logger.info`File path=${filePath} not found. Creating new translation base file.`;
-    await fs.outputFile(filePath, '{}\n');
+    await outputFile(filePath, '{}\n');
   }
-  return fs.readJSON(filePath);
+  return /** @type {Promise<Record<string, string>>} */ (readJSON(filePath));
 }
 
 /**
@@ -66,7 +67,7 @@ async function writeMessagesFile(filePath, messages) {
   const sortedMessages = sortObjectKeys(messages);
 
   const content = `${JSON.stringify(sortedMessages, null, 2)}\n`; // \n makes prettier happy
-  await fs.outputFile(filePath, content);
+  await outputFile(filePath, content);
   logger.info`path=${path.basename(
     filePath,
   )} updated subdue=${logger.interpolate`(number=${
@@ -189,7 +190,7 @@ for (const theme of Themes) {
   if (newLocale) {
     const newLocalePath = getThemeLocalePath(newLocale, theme.name);
 
-    if (!(await fs.pathExists(newLocalePath))) {
+    if (!(await pathExists(newLocalePath))) {
       await writeMessagesFile(newLocalePath, baseFileMessages);
       logger.success`Locale file path=${path.basename(
         newLocalePath,
@@ -231,8 +232,8 @@ const messages = locales.map(([name, stat]) => {
     percentage > 0.99
       ? logger.green
       : percentage > 0.7
-      ? logger.yellow
-      : logger.red;
+        ? logger.yellow
+        : logger.red;
   const progress = color(
     `[${''.padStart(filled, '=')}${''.padStart(30 - filled, ' ')}]`,
   );

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {useState} from 'react';
+import {type ReactNode, useState} from 'react';
 import clsx from 'clsx';
 import {ThemeClassNames} from '@docusaurus/theme-common';
 import {
@@ -37,7 +37,7 @@ export default function DocSidebarDesktopContent({
   path,
   sidebar,
   className,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const showAnnouncementBar = useShowAnnouncementBar();
 
   return (

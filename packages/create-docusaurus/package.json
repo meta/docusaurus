@@ -1,6 +1,6 @@
 {
   "name": "create-docusaurus",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Create Docusaurus apps easily.",
   "type": "module",
   "repository": {
@@ -22,21 +22,18 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@docusaurus/logger": "3.2.1",
-    "@docusaurus/utils": "3.2.1",
-    "commander": "^5.1.0",
-    "fs-extra": "^11.1.1",
-    "lodash": "^4.17.21",
-    "prompts": "^2.4.2",
-    "semver": "^7.5.4",
-    "shelljs": "^0.8.5",
-    "supports-color": "^9.4.0",
-    "tslib": "^2.6.0"
+    "@docusaurus/fs": "workspace:*",
+    "@docusaurus/logger": "workspace:*",
+    "commander": "catalog:",
+    "cross-spawn": "catalog:",
+    "prompts": "catalog:",
+    "semver": "catalog:",
+    "tslib": "catalog:"
   },
   "devDependencies": {
-    "@types/supports-color": "^8.1.1"
+    "@types/cross-spawn": "catalog:dev"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   }
 }

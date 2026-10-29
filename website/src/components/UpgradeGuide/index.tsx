@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {
   useLatestVersion,
   useActiveDocContext,
@@ -51,7 +51,7 @@ function VersionNotice() {
       !location.includes('deploy-preview')
     ) {
       return (
-        <Admonition type="caution">
+        <Admonition type="warning">
           <p>
             <Translate
               id="upgradeGuide.archivedVersion.notice"
@@ -101,7 +101,7 @@ function VersionNotice() {
   }
   if (activeVersion.name !== latestVersion.name) {
     return (
-      <Admonition type="caution">
+      <Admonition type="warning">
         <p>
           <Translate id="upgradeGuide.outdatedVersion.notice">
             You are browsing the documentation of an outdated version. The
@@ -114,7 +114,7 @@ function VersionNotice() {
   return null;
 }
 
-export default function UpgradeGuide(): JSX.Element {
+export default function UpgradeGuide(): ReactNode {
   return (
     <>
       <VersionNotice />

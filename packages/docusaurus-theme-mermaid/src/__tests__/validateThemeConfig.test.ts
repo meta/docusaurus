@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {
   validateThemeConfig,
   DEFAULT_THEME_CONFIG,
@@ -47,10 +48,10 @@ describe('validateThemeConfig', () => {
   it('theme', () => {
     const mermaid = {
       theme: {
-        light: 'light',
+        light: 'default',
         dark: 'dark',
       },
-    };
+    } satisfies UserThemeConfig['mermaid'];
     expect(testValidateThemeConfig({mermaid})).toEqual({
       mermaid: {
         ...DEFAULT_THEME_CONFIG.mermaid,
@@ -59,12 +60,14 @@ describe('validateThemeConfig', () => {
     });
   });
 
-  it('mermaid options', () => {
+  it.each(['dagre', 'elk'])('mermaid options with %s layout', (layout) => {
     const mermaid = {
       options: {
         fontFamily: 'Ariel',
+        layout,
+        look: 'classic',
       },
-    };
+    } satisfies UserThemeConfig['mermaid'];
     expect(testValidateThemeConfig({mermaid})).toEqual({
       mermaid: {
         ...DEFAULT_THEME_CONFIG.mermaid,

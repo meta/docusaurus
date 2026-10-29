@@ -5,19 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import {
   PageMetadata,
   HtmlClassNameProvider,
   ThemeClassNames,
+  TagsPageLinkLabel,
   usePluralForm,
 } from '@docusaurus/theme-common';
-import Translate, {translate} from '@docusaurus/Translate';
+import {translate} from '@docusaurus/Translate';
 import SearchMetadata from '@theme/SearchMetadata';
 import type {Props} from '@theme/DocTagDocListPage';
-import Unlisted from '@theme/Unlisted';
+import Unlisted from '@theme/ContentVisibility/Unlisted';
 import Heading from '@theme/Heading';
 
 // Very simple pluralization: probably good enough for now
@@ -50,7 +51,7 @@ function usePageTitle(props: Props): string {
   );
 }
 
-function DocItem({doc}: {doc: Props['tag']['items'][number]}): JSX.Element {
+function DocItem({doc}: {doc: Props['tag']['items'][number]}): ReactNode {
   return (
     <article className="margin-vert--lg">
       <Link to={doc.permalink}>
@@ -63,10 +64,11 @@ function DocItem({doc}: {doc: Props['tag']['items'][number]}): JSX.Element {
 
 function DocTagDocListPageMetadata({
   title,
-}: Props & {title: string}): JSX.Element {
+  tag,
+}: Props & {title: string}): ReactNode {
   return (
     <>
-      <PageMetadata title={title} />
+      <PageMetadata title={title} description={tag.description} />
       <SearchMetadata tag="doc_tag_doc_list" />
     </>
   );
@@ -75,7 +77,7 @@ function DocTagDocListPageMetadata({
 function DocTagDocListPageContent({
   tag,
   title,
-}: Props & {title: string}): JSX.Element {
+}: Props & {title: string}): ReactNode {
   return (
     <HtmlClassNameProvider
       className={clsx(ThemeClassNames.page.docsTagDocListPage)}>
@@ -85,12 +87,9 @@ function DocTagDocListPageContent({
             {tag.unlisted && <Unlisted />}
             <header className="margin-bottom--xl">
               <Heading as="h1">{title}</Heading>
+              {tag.description && <p>{tag.description}</p>}
               <Link href={tag.allTagsPath}>
-                <Translate
-                  id="theme.tags.tagsPageLink"
-                  description="The label of the link targeting the tag list page">
-                  View All Tags
-                </Translate>
+                <TagsPageLinkLabel />
               </Link>
             </header>
             <section className="margin-vert--lg">
@@ -105,7 +104,7 @@ function DocTagDocListPageContent({
   );
 }
 
-export default function DocTagDocListPage(props: Props): JSX.Element {
+export default function DocTagDocListPage(props: Props): ReactNode {
   const title = usePageTitle(props);
   return (
     <>

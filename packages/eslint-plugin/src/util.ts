@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {ESLintUtils} from '@typescript-eslint/utils';
-import type {TSESTree} from '@typescript-eslint/types/dist/ts-estree';
+import {ESLintUtils, type TSESTree} from '@typescript-eslint/utils';
 
 type CheckTranslateChildOptions = {
   ignoredStrings?: string[];
@@ -61,7 +60,14 @@ export function isTextLabelChild(
   }
 }
 
-export const createRule = ESLintUtils.RuleCreator(
+// Not sure if we really need this
+// See https://typescript-eslint.io/blog/announcing-typescript-eslint-v8/#custom-rule-metadocs-types
+// See https://github.com/typescript-eslint/typescript-eslint/pull/9025
+export interface PluginDocs {
+  recommended: boolean | 'error';
+}
+
+export const createRule = ESLintUtils.RuleCreator<PluginDocs>(
   (name) =>
     `https://docusaurus.io/docs/api/misc/@docusaurus/eslint-plugin/${name}`,
 );

@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import type {Props} from '@theme/BlogPostItem/Container';
 
 export default function BlogPostItemContainer({
   children,
   className,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   return <article className={className}>{children}</article>;
 }

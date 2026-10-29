@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 
 import {isMultiColumnFooterLinks} from '@docusaurus/theme-common';
 import FooterLinksMultiColumn from '@theme/Footer/Links/MultiColumn';
 import FooterLinksSimple from '@theme/Footer/Links/Simple';
 import type {Props} from '@theme/Footer/Links';
 
-export default function FooterLinks({links}: Props): JSX.Element {
+export default function FooterLinks({links}: Props): ReactNode {
   return isMultiColumnFooterLinks(links) ? (
     <FooterLinksMultiColumn columns={links} />
   ) : (

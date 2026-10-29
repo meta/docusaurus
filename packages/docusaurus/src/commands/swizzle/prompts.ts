@@ -6,7 +6,7 @@
  */
 
 import logger from '@docusaurus/logger';
-import prompts from 'prompts';
+import prompts, {type Choice} from 'prompts';
 import {actionStatusSuffix, PartiallySafeHint} from './common';
 import type {ThemeComponents} from './components';
 import type {SwizzleAction, SwizzleComponentConfig} from '@docusaurus/types';
@@ -124,4 +124,34 @@ export async function askSwizzleAction(
   }
 
   return action;
+}
+
+export async function askSwizzlePreferredLanguage(): Promise<
+  'javascript' | 'typescript'
+> {
+  const choices: Choice[] = [
+    {title: logger.bold('JavaScript'), value: 'javascript'},
+    {title: logger.bold('TypeScript'), value: 'typescript'},
+    {title: logger.yellow('[Exit]'), value: '[Exit]'},
+  ];
+
+  const {language} = await prompts(
+    {
+      type: 'select',
+      name: 'language',
+      message: 'Which language do you want to use?',
+      choices,
+    },
+    {
+      onCancel() {
+        process.exit(0);
+      },
+    },
+  );
+
+  if (typeof language === 'undefined' || language === '[Exit]') {
+    process.exit(0);
+  }
+
+  return language;
 }

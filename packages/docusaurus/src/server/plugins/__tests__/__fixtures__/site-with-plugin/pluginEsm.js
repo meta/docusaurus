@@ -1,6 +1,6 @@
 import {Joi} from '@docusaurus/utils-validation';
 
-export default function (context, options) {
+export default function (_context, _options) {
   return {
     name: 'plugin-esm',
   };

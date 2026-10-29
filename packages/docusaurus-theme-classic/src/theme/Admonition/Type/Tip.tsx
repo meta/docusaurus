@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Translate from '@docusaurus/Translate';
 import type {Props} from '@theme/Admonition/Type/Tip';
@@ -25,7 +25,7 @@ const defaultProps = {
   ),
 };
 
-export default function AdmonitionTypeTip(props: Props): JSX.Element {
+export default function AdmonitionTypeTip(props: Props): ReactNode {
   return (
     <AdmonitionLayout
       {...defaultProps}

@@ -6,19 +6,10 @@
  */
 
 import rule from '../string-literal-i18n-messages';
-import {getCommonValidTests, RuleTester} from './testUtils';
+import {getCommonValidTests, ruleTester} from './testUtils';
 
 const errorsJSX = [{messageId: 'translateChildren'}] as const;
 const errorsFunc = [{messageId: 'translateArg'}] as const;
-
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-});
 
 ruleTester.run('string-literal-i18n-messages', rule, {
   valid: [...getCommonValidTests()],

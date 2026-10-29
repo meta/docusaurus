@@ -1,0 +1,59 @@
+import Integrations from './integrations.svg';
+import OpenSource from './open-source.svg';
+import Mascot from './mascot.svg';
+import GradientA from './_fixtures/a/gradient.svg';
+import GradientB from './_fixtures/b/gradient.svg';
+
+# Many inline SVGs
+
+Inline SVGs imported as React components share the same HTML document. Their ids (gradients, masks, clip paths...) must not clash with each other. See [#8297](https://github.com/facebook/docusaurus/issues/8297).
+
+Each inline SVG below must look like the `<img>` reference rendering of the same file.
+
+## Gradients {/* #gradients */}
+
+Two SVG files with the same name (`gradient.svg`) in different folders, each using its own `<linearGradient>` with a different id.
+
+Inline SVG components:
+
+<GradientA />
+<GradientB />
+
+Images (reference rendering):
+
+<img
+  src={new URL('./_fixtures/a/gradient.svg', import.meta.url).href}
+  alt="a/gradient.svg"
+/>
+<img
+  src={new URL('./_fixtures/b/gradient.svg', import.meta.url).href}
+  alt="b/gradient.svg"
+/>
+
+## Illustrations {/* #illustrations */}
+
+These SVGs use many gradients, masks and clip paths, with short ids that clash with each other when inlined on the same page.
+
+Inline SVG components:
+
+<Integrations height="20rem" />
+<OpenSource height="20rem" />
+<Mascot height="20rem" />
+
+Images (reference rendering):
+
+<img
+  src={new URL('./integrations.svg', import.meta.url).href}
+  alt="integrations.svg"
+  style={{height: '20rem'}}
+/>
+<img
+  src={new URL('./open-source.svg', import.meta.url).href}
+  alt="open-source.svg"
+  style={{height: '20rem'}}
+/>
+<img
+  src={new URL('./mascot.svg', import.meta.url).href}
+  alt="mascot.svg"
+  style={{height: '20rem'}}
+/>

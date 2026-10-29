@@ -12,11 +12,11 @@ The upgrade should be easy: as explained in our [release process documentation](
 
 ![Docusaurus 2.1 social card](./img/social-card.png)
 
-<!--truncate-->
+{/* truncate */}
 
-## Highlights
+## Highlights {/* #highlights */}
 
-### DocCardList improvements
+### DocCardList improvements {/* #doccardlist-improvements */}
 
 In [#8008](https://github.com/facebook/docusaurus/pull/8008), we simplified the usage of the`<DocCardList>` component, that is notably used on sidebar category generated index pages.
 
@@ -34,7 +34,7 @@ Also, we made it possible to use it on any document, including regular docs not 
 
 ![simplified DocCardList component](./img/doc-card-list.png)
 
-### `noindex` improvements
+### `noindex` improvements {/* #noindex-improvements */}
 
 We improved the support of the [`noindex` meta `robots` directive](https://developers.google.com/search/docs/advanced/crawling/block-indexing), a way to signal search engines you don't want a specific page to be indexed.
 
@@ -60,7 +60,7 @@ In practice, Docusaurus will add the following meta to each page of that version
 
 In [#7964](https://github.com/facebook/docusaurus/pull/7964), we also fixed a bug where the sitemap plugin would still contain pages that have a `noindex` directive. Now the sitemap plugin will reliably filter out all the pages containing `noindex` directives.
 
-### Overriding default meta tags
+### Overriding default meta tags {/* #overriding-default-meta-tags */}
 
 In [#7952](https://github.com/facebook/docusaurus/pull/7952), it becomes possible to override default html meta tags you couldn't before:
 
@@ -76,10 +76,10 @@ It is now possible to use `<Head>` or `themeConfig.metadata`:
 - to override the `viewport` meta
 - to override the `robots` meta: you could mark your site as `noIndex`, but except for specific pages that should be indexed
 
-### Ukrainian translations
+### Ukrainian translations {/* #ukrainian-translations */}
 
 In [#7953](https://github.com/facebook/docusaurus/pull/7953), we added default classic theme translations for the Ukrainian language.
 
-## Other changes
+## Other changes {/* #other-changes */}
 
 Check the [2.1.0 changelog entry](/changelog/2.1.0) for an exhaustive list of changes.

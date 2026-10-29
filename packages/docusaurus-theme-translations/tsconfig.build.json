@@ -1,14 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "tsBuildInfoFile": "${configDir}/lib/.tsbuildinfo-build",
     "noEmit": false,
-    "composite": true,
-    "incremental": true,
-    "tsBuildInfoFile": "./lib/.tsbuildinfo",
     "sourceMap": true,
-    "declarationMap": true,
-    "rootDir": "src",
-    "outDir": "lib"
+    "declarationMap": true
   },
   "include": ["src"],
   "exclude": ["**/__tests__/**"]

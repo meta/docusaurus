@@ -13,15 +13,14 @@ export async function sitemapItemsToXmlString(
   options: {lastmod: LastModOption | null},
 ): Promise<string> {
   if (items.length === 0) {
-    // Note: technically we could, but there is a bug in the lib code
-    // and the code below would never resolve, so it's better to fail fast
+    // Fail fast with a clearer error than the lib's EmptySitemap error
     throw new Error("Can't generate a sitemap with no items");
   }
 
-  // TODO remove sitemap lib dependency?
-  //  https://github.com/ekalinin/sitemap.js
-  //  it looks like an outdated confusion super old lib
-  //  we might as well achieve the same result with a pure xml lib
+  // We could generate the XML ourselves, but we keep using the lib on purpose
+  // Users can return undocumented fields from createSitemapItems()
+  // (links, img, video, news...) that the lib serializes
+  // See https://github.com/ekalinin/sitemap.js
   const sitemapStream = new SitemapStream({
     // WTF is this lib reformatting the string YYYY-MM-DD to datetime...
     lastmodDateOnly: options?.lastmod === 'date',

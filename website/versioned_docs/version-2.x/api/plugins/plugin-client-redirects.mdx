@@ -25,13 +25,13 @@ Before using this plugin, you should look if your hosting provider doesn't offer
 
 :::
 
-## Installation {#installation}
+## Installation {/* #installation */}
 
 ```bash npm2yarn
 npm install --save @docusaurus/plugin-client-redirects
 ```
 
-## Configuration {#configuration}
+## Configuration {/* #configuration */}
 
 Accepted fields:
 
@@ -56,9 +56,9 @@ This plugin will also read the [`siteConfig.onDuplicateRoutes`](../docusaurus.co
 
 :::
 
-### Types {#types}
+### Types {/* #types */}
 
-#### `RedirectRule` {#RedirectRule}
+#### `RedirectRule` {/* #RedirectRule */}
 
 ```ts
 type RedirectRule = {
@@ -75,7 +75,7 @@ This is why you can have multiple "from" for the same "to": we will create multi
 
 :::
 
-#### `CreateRedirectsFn` {#CreateRedirectsFn}
+#### `CreateRedirectsFn` {/* #CreateRedirectsFn */}
 
 ```ts
 // The parameter `path` is a route that Docusaurus has already created. It can
@@ -84,7 +84,7 @@ This is why you can have multiple "from" for the same "to": we will create multi
 type CreateRedirectsFn = (path: string) => string[] | string | null | undefined;
 ```
 
-### Example configuration {#ex-config}
+### Example configuration {/* #ex-config */}
 
 Here's an example configuration:
 

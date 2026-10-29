@@ -1,1 +1,3 @@
-export default function JsComponent(props: {}): JSX.Element;
+import type {ReactNode} from 'react';
+
+export default function JsComponent(props: {}): ReactNode;

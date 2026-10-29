@@ -5,31 +5,50 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import {md5Hash, getFileLoaderUtils} from '@docusaurus/utils';
+import path from 'node:path';
 import {
-  getCustomizableJSLoader,
-  getStyleLoaders,
-  getCustomBabelConfigFilePath,
-} from './utils';
-import {getMinimizer} from './minification';
-import {loadThemeAliases, loadDocusaurusAliases} from './aliases';
-import type {Configuration} from 'webpack';
-import type {Props} from '@docusaurus/types';
+  createJsLoaderFactory,
+  getCSSExtractPlugin,
+  getMinimizers,
+  getTargets,
+} from '@docusaurus/bundler';
+import {
+  ASSET_INLINE_MAX_SIZE,
+  getAssetRuleUtils,
+  md5Hash,
+} from '@docusaurus/utils';
+import {realpath} from '@docusaurus/fs';
+import {loadDocusaurusAliases, loadThemeAliases} from './aliases';
+import {BundlerCPUProfilerPlugin} from './plugins/BundlerCPUProfilerPlugin';
+import type {Configuration, RuleSetRule} from 'webpack';
+import type {Configuration as RspackConfiguration} from '@rspack/core';
+import type {ConfigureWebpackUtils, Props} from '@docusaurus/types';
 
 const CSS_REGEX = /\.css$/i;
 const CSS_MODULE_REGEX = /\.module\.css$/i;
 export const clientDir = path.join(__dirname, '..', 'client');
 
-const LibrariesToTranspile = [
-  'copy-text-to-clipboard', // Contains optional catch binding, incompatible with recent versions of Edge
-];
+// The RealContentHashPlugin replaces every occurrence of a provisional chunk
+// hash in all assets, even inside unrelated hex strings (asset file
+// names, colors, numbers...). The client and server compilations do it
+// independently, so a false positive can make the SSG HTML reference a missing
+// file. 10 chars instead of 8 makes it ~256x less likely.
+// See https://github.com/web-infra-dev/rspack/issues/8474
+const contentHash = '[contenthash:10]';
 
-const LibrariesToTranspileRegex = new RegExp(
-  LibrariesToTranspile.map((libName) => `(node_modules/${libName})`).join('|'),
-);
+function getReactAliases(siteDir: string): Record<string, string> {
+  // Escape hatch
+  if (process.env.DOCUSAURUS_NO_REACT_ALIASES) {
+    return {};
+  }
+  const resolveSitePkg = (id: string) =>
+    require.resolve(id, {paths: [siteDir]});
+  return {
+    react: path.dirname(resolveSitePkg('react/package.json')),
+    'react-dom': path.dirname(resolveSitePkg('react-dom/package.json')),
+    '@mdx-js/react': path.dirname(resolveSitePkg('@mdx-js/react')),
+  };
+}
 
 export function excludeJS(modulePath: string): boolean {
   // Always transpile client dir
@@ -39,8 +58,7 @@ export function excludeJS(modulePath: string): boolean {
   // Don't transpile node_modules except any docusaurus npm package
   return (
     modulePath.includes('node_modules') &&
-    !/docusaurus(?:(?!node_modules).)*\.jsx?$/.test(modulePath) &&
-    !LibrariesToTranspileRegex.test(modulePath)
+    !/docusaurus(?:(?!node_modules).)*\.jsx?$/.test(modulePath)
   );
 }
 
@@ -48,10 +66,12 @@ export async function createBaseConfig({
   props,
   isServer,
   minify,
+  configureWebpackUtils,
 }: {
   props: Props;
   isServer: boolean;
   minify: boolean;
+  configureWebpackUtils: ConfigureWebpackUtils;
 }): Promise<Configuration> {
   const {
     outDir,
@@ -68,51 +88,106 @@ export async function createBaseConfig({
   const isProd = process.env.NODE_ENV === 'production';
   const minimizeEnabled = minify && isProd;
 
-  const fileLoaderUtils = getFileLoaderUtils();
+  const assetRuleUtils = getAssetRuleUtils(isServer);
 
   const name = isServer ? 'server' : 'client';
   const mode = isProd ? 'production' : 'development';
 
   const themeAliases = await loadThemeAliases({siteDir, plugins});
 
+  const createJsLoader = await createJsLoaderFactory({siteDir, siteConfig});
+
+  const CSSExtractPlugin = await getCSSExtractPlugin({
+    currentBundler: props.currentBundler,
+  });
+
+  // Can we share the same cache across locales?
+  // Exploring that question at https://github.com/webpack/webpack/issues/13034
+  function getCacheName() {
+    return `${name}-${mode}-${props.i18n.currentLocale}`;
+  }
+
+  // When the version string changes, the cache is evicted
+  function getCacheVersion() {
+    const versionParts: unknown[] = [
+      siteMetadata.docusaurusVersion,
+      // Because Webpack does not evict the cache on alias/swizzle changes,
+      // See https://github.com/webpack/webpack/issues/13627
+      themeAliases,
+      // Loader and minimizer options are not part of the cache key
+      // Changing the target browsers or Node.js version must evict the cache
+      // The same Browserslist queries can match other browsers over time and
+      // after data upgrades, for example "baseline widely available"
+      getTargets({isServer}),
+      // The plugin code computing loader options is not a build dependency
+      // Upgrading a third-party plugin must evict the cache
+      siteMetadata.pluginVersions,
+      // Asset module parser options are not part of the cache key
+      // Changing the asset inline max size must evict the cache
+      ASSET_INLINE_MAX_SIZE,
+    ];
+    return md5Hash(JSON.stringify(versionParts));
+  }
+
+  // When one of those modules/dependencies change (including transitive
+  // deps), cache is invalidated
+  function getCacheBuildDependencies(): string[] {
+    return [
+      __filename,
+      path.join(__dirname, isServer ? 'server.js' : 'client.js'),
+      // Docusaurus config changes can affect MDX/JSX compilation, so we'd
+      // rather evict the cache.
+      // See https://github.com/questdb/questdb.io/issues/493
+      siteConfigPath,
+    ];
+  }
+
+  function getCache(): Configuration['cache'] {
+    // Use default: memory cache in dev, nothing in prod
+    // See https://rspack.dev/config/cache#cache
+    const disabledPersistentCacheValue = undefined;
+
+    if (process.env.DOCUSAURUS_NO_PERSISTENT_CACHE) {
+      return disabledPersistentCacheValue;
+    }
+    if (props.currentBundler.name === 'rspack') {
+      const rspackCache: RspackConfiguration['cache'] = {
+        type: 'persistent',
+        // Rspack doesn't have "cache.name" like Webpack
+        // This is not ideal but work around is to merge name/version
+        // See https://github.com/web-infra-dev/rspack/pull/8920#issuecomment-2658938695
+        version: `${getCacheName()}-${getCacheVersion()}`,
+        buildDependencies: getCacheBuildDependencies(),
+      };
+      // Docusaurus bundler configs are typed with Webpack types
+      return rspackCache as unknown as Configuration['cache'];
+    }
+
+    return {
+      type: 'filesystem',
+      name: getCacheName(),
+      version: getCacheVersion(),
+      buildDependencies: {
+        config: getCacheBuildDependencies(),
+      },
+    };
+  }
+
+  const notTextImport: RuleSetRule['with'] = {type: {not: 'text'}};
+
   return {
     mode,
     name,
-    cache: {
-      type: 'filesystem',
-      // Can we share the same cache across locales?
-      // Exploring that question at https://github.com/webpack/webpack/issues/13034
-      // name: `${name}-${mode}`,
-      name: `${name}-${mode}-${props.i18n.currentLocale}`,
-      // When version string changes, cache is evicted
-      version: [
-        siteMetadata.docusaurusVersion,
-        // Webpack does not evict the cache correctly on alias/swizzle change,
-        // so we force eviction.
-        // See https://github.com/webpack/webpack/issues/13627
-        md5Hash(JSON.stringify(themeAliases)),
-      ].join('-'),
-      // When one of those modules/dependencies change (including transitive
-      // deps), cache is invalidated
-      buildDependencies: {
-        config: [
-          __filename,
-          path.join(__dirname, isServer ? 'server.js' : 'client.js'),
-          // Docusaurus config changes can affect MDX/JSX compilation, so we'd
-          // rather evict the cache.
-          // See https://github.com/questdb/questdb.io/issues/493
-          siteConfigPath,
-        ],
-      },
-    },
+    cache: getCache(),
     output: {
       pathinfo: false,
       path: outDir,
-      filename: isProd ? 'assets/js/[name].[contenthash:8].js' : '[name].js',
+      filename: isProd ? `assets/js/[name].${contentHash}.js` : '[name].js',
       chunkFilename: isProd
-        ? 'assets/js/[name].[contenthash:8].js'
+        ? `assets/js/[name].${contentHash}.js`
         : '[name].js',
-      publicPath: baseUrl,
+      publicPath:
+        siteConfig.future.experimental_router === 'hash' ? 'auto' : baseUrl,
       hashFunction: 'xxhash64',
     },
     // Don't throw warning when asset created is over 250kb
@@ -121,7 +196,6 @@ export async function createBaseConfig({
     },
     devtool: isProd ? undefined : 'eval-cheap-module-source-map',
     resolve: {
-      unsafeCache: false, // Not enabled, does not seem to improve perf much
       extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
       symlinks: true, // See https://github.com/facebook/docusaurus/issues/3272
       roots: [
@@ -135,6 +209,7 @@ export async function createBaseConfig({
         process.cwd(),
       ],
       alias: {
+        ...getReactAliases(siteDir),
         '@site': siteDir,
         '@generated': generatedFilesDir,
         ...(await loadDocusaurusAliases()),
@@ -148,18 +223,26 @@ export async function createBaseConfig({
       modules: [
         path.resolve(__dirname, '..', '..', 'node_modules'),
         'node_modules',
-        path.resolve(await fs.realpath(process.cwd()), 'node_modules'),
+        path.resolve(await realpath(process.cwd()), 'node_modules'),
       ],
     },
     resolveLoader: {
       modules: ['node_modules', path.join(siteDir, 'node_modules')],
     },
     optimization: {
-      removeAvailableModules: false,
+      // The optimization.mergeDuplicateChunks is expensive
+      // - On the server, it's not useful to run it at all
+      // - On the client, we compared assets/js before/after and see 0 change
+      //   `du -sk js-before js-after` => the JS assets have the exact same size
+      // See also https://github.com/facebook/docusaurus/pull/11176
+      mergeDuplicateChunks: false,
+
       // Only minimize client bundle in production because server bundle is only
       // used for static site generation
       minimize: minimizeEnabled,
-      minimizer: minimizeEnabled ? getMinimizer() : undefined,
+      minimizer: minimizeEnabled
+        ? await getMinimizers({currentBundler: props.currentBundler})
+        : undefined,
       splitChunks: isServer
         ? false
         : {
@@ -190,26 +273,29 @@ export async function createBaseConfig({
           },
     },
     module: {
+      parser: {
+        javascript: {
+          // Allow referencing assets with the standard and portable syntax:
+          // new URL('./img.png', import.meta.url)
+          // Relative URLs are needed for SSR: absolute URLs would otherwise
+          // be resolved against the server bundle file:// URL
+          // See https://github.com/facebook/docusaurus/pull/12655
+          url: 'relative',
+        },
+      },
       rules: [
-        fileLoaderUtils.rules.images(),
-        fileLoaderUtils.rules.fonts(),
-        fileLoaderUtils.rules.media(),
-        fileLoaderUtils.rules.svg(),
-        fileLoaderUtils.rules.otherAssets(),
+        assetRuleUtils.rules.assets(),
         {
           test: /\.[jt]sx?$/i,
           exclude: excludeJS,
-          use: [
-            getCustomizableJSLoader(siteConfig.webpack?.jsLoader)({
-              isServer,
-              babelOptions: await getCustomBabelConfigFilePath(siteDir),
-            }),
-          ],
+          with: notTextImport,
+          use: [createJsLoader({isServer})],
         },
         {
           test: CSS_REGEX,
           exclude: CSS_MODULE_REGEX,
-          use: getStyleLoaders(isServer, {
+          with: notTextImport,
+          use: configureWebpackUtils.getStyleLoaders(isServer, {
             importLoaders: 1,
             sourceMap: !isProd,
           }),
@@ -218,12 +304,17 @@ export async function createBaseConfig({
         // using the extension .module.css
         {
           test: CSS_MODULE_REGEX,
-          use: getStyleLoaders(isServer, {
+          with: notTextImport,
+          use: configureWebpackUtils.getStyleLoaders(isServer, {
             modules: {
-              localIdentName: isProd
-                ? `[local]_[contenthash:base64:4]`
-                : `[local]_[path][name]`,
+              // Using the same CSS Module class pattern in dev/prod on purpose
+              // See https://github.com/facebook/docusaurus/pull/10423
+              localIdentName: `[local]_[contenthash:base64:4]`,
               exportOnlyLocals: isServer,
+              // Export CSS module class names compatible with css-loader v6
+              // export ".themedComponent--dark" instead of .themedComponentDark
+              // See https://github.com/webpack/css-loader/releases/tag/v7.0.0
+              exportLocalsConvention: 'as-is',
             },
             importLoaders: 1,
             sourceMap: !isProd,
@@ -232,18 +323,20 @@ export async function createBaseConfig({
       ],
     },
     plugins: [
-      new MiniCssExtractPlugin({
+      new CSSExtractPlugin({
         filename: isProd
-          ? 'assets/css/[name].[contenthash:8].css'
+          ? `assets/css/[name].${contentHash}.css`
           : '[name].css',
         chunkFilename: isProd
-          ? 'assets/css/[name].[contenthash:8].css'
+          ? `assets/css/[name].${contentHash}.css`
           : '[name].css',
         // Remove css order warnings if css imports are not sorted
         // alphabetically. See https://github.com/webpack-contrib/mini-css-extract-plugin/pull/422
         // for more reasoning
         ignoreOrder: true,
       }),
-    ],
+      process.env.DOCUSAURUS_BUNDLER_CPU_PROFILE &&
+        new BundlerCPUProfilerPlugin(),
+    ].filter(Boolean),
   };
 }

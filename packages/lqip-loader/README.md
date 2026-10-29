@@ -4,7 +4,7 @@ Low Quality Image Placeholders (LQIP) loader for webpack.
 
 ## Installation
 
-```
+```bash
 npm install --save-dev @docusaurus/lqip-loader
 ```
 
@@ -16,31 +16,22 @@ Generating Base64 for a jpeg image imported in your JS bundle:
 
 ### `webpack.config.js`
 
+The LQIP loader must be chained after a loader exporting the image URL as a JS module, such as [`@docusaurus/responsive-loader`](https://github.com/slorber/responsive-loader):
+
 ```js
 {
-  // OPTION A: default file-loader fallback
-  test: /\.jpe?g$/,
-  loaders: [
-    {
-      loader: '@docusaurus/lqip-loader',
-      options: {
-        path: '/media', // your image going to be in media folder in the output dir
-        name: '[name].[ext]', // you can use [contenthash].[ext] too if you wish,
-      }
-    }
-  ]
-
-  // OPTION B: Chained with your own url-loader or file-loader
   test: /\.(png|jpe?g)$/,
-  loaders: [
+  // Loaders produce a JS module, not an asset
+  type: 'javascript/auto',
+  use: [
     '@docusaurus/lqip-loader',
     {
-      loader: 'url-loader',
+      loader: '@docusaurus/responsive-loader',
       options: {
-        limit: 8000
-      }
-    }
-  ]
+        adapter: require('@docusaurus/responsive-loader/sharp'),
+      },
+    },
+  ],
 }
 ```
 

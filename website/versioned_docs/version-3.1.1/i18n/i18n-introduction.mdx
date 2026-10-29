@@ -7,13 +7,13 @@ slug: /i18n/introduction
 
 It is **easy to translate a Docusaurus website** with its internationalization ([i18n](https://en.wikipedia.org/wiki/Internationalization_and_localization)) support.
 
-## Goals {#goals}
+## Goals {/* #goals */}
 
 It is important to understand the **design decisions** behind the Docusaurus i18n support.
 
 For more context, you can read the initial [RFC](https://github.com/facebook/docusaurus/issues/3317) and [PR](https://github.com/facebook/docusaurus/pull/3325).
 
-### i18n goals {#i18n-goals}
+### i18n goals {/* #i18n-goals */}
 
 The goals of the Docusaurus i18n system are:
 
@@ -30,7 +30,7 @@ The goals of the Docusaurus i18n system are:
 - **RTL support**: locales reading right-to-left (Arabic, Hebrew, etc.) are supported and easy to implement
 - **Default translations**: classic theme labels are translated for you in [many languages](https://github.com/facebook/docusaurus/tree/main/packages/docusaurus-theme-translations/locales)
 
-### i18n non-goals {#i18n-non-goals}
+### i18n non-goals {/* #i18n-non-goals */}
 
 We don't provide support for:
 
@@ -38,9 +38,9 @@ We don't provide support for:
 - **Translation SaaS software**: you are responsible to understand the external tools of your choice
 - **Translation of slugs**: technically complicated, little SEO value
 
-## Translation workflow {#translation-workflow}
+## Translation workflow {/* #translation-workflow */}
 
-### Overview {#overview}
+### Overview {/* #overview */}
 
 Overview of the workflow to create a translated Docusaurus website:
 
@@ -48,17 +48,17 @@ Overview of the workflow to create a translated Docusaurus website:
 2. **Translate**: put the translation files at the correct filesystem location
 3. **Deploy**: build and deploy your site using a single or multi-domain strategy
 
-### Translation files {#translation-files}
+### Translation files {/* #translation-files */}
 
 You will work with three kinds of translation files.
 
-#### Markdown files {#markdown-files}
+#### Markdown files {/* #markdown-files */}
 
 This is the main content of your Docusaurus website.
 
 Markdown and MDX documents are translated as a whole, to fully preserve the translation context, instead of splitting each sentence as a separate string.
 
-#### JSON files {#json-files}
+#### JSON files {/* #json-files */}
 
 JSON is used to translate:
 
@@ -86,11 +86,11 @@ The choice was made for 2 reasons:
 - **Description attribute**: to help translators with additional context
 - **Widely supported**: [Chrome extensions](https://developer.chrome.com/docs/extensions/mv2/i18n-messages/), [Crowdin](https://support.crowdin.com/file-formats/chrome-json/), [Transifex](https://docs.transifex.com/formats/chrome-json), [Phrase](https://help.phrase.com/help/chrome-json-messages), [Applanga](https://www.applanga.com/docs/formats/chrome_i18n_json), etc.
 
-#### Data files {#data-files}
+#### Data files {/* #data-files */}
 
 Some plugins may read from external data files that are localized as a whole. For example, the blog plugin uses an [`authors.yml`](../blog.mdx#global-authors) file that can be translated by creating a copy under `i18n/[locale]/docusaurus-plugin-content-blog/authors.yml`.
 
-### Translation files location {#translation-files-location}
+### Translation files location {/* #translation-files-location */}
 
 The translation files should be created at the correct filesystem location.
 

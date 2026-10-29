@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {jest} from '@jest/globals';
+import {describe, expect, it, vi} from 'vitest';
 import Joi from '../Joi';
 import {JoiFrontMatter} from '../JoiFrontMatter';
 import {
@@ -43,14 +43,15 @@ describe('normalizePluginOptions', () => {
     const options = {foo: 1};
     expect(() =>
       normalizePluginOptions(Joi.object<object>({foo: Joi.string()}), options),
-    ).toThrowErrorMatchingInlineSnapshot(`""foo" must be a string"`);
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: "foo" must be a string]`,
+    );
   });
 
   it('warns', () => {
+    using warn = vi.spyOn(console, 'warn');
+
     const options = {foo: 'a'};
-    const consoleMock = jest
-      .spyOn(console, 'warn')
-      .mockImplementation(() => {});
     expect(
       normalizePluginOptions(
         Joi.object({foo: Joi.string().warning('deprecated', {})}).messages({
@@ -59,7 +60,7 @@ describe('normalizePluginOptions', () => {
         options,
       ),
     ).toEqual({foo: 'a', id: 'default'});
-    expect(consoleMock).toHaveBeenCalledWith(
+    expect(warn).toHaveBeenCalledWith(
       expect.stringMatching(/"foo" deprecated/),
     );
   });
@@ -94,14 +95,15 @@ describe('normalizeThemeConfig', () => {
         Joi.object<object>({foo: Joi.string()}),
         themeConfig,
       ),
-    ).toThrowErrorMatchingInlineSnapshot(`""foo" must be a string"`);
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: "foo" must be a string]`,
+    );
   });
 
   it('warns', () => {
+    using warn = vi.spyOn(console, 'warn');
+
     const themeConfig = {foo: 'a', bar: 1};
-    const consoleMock = jest
-      .spyOn(console, 'warn')
-      .mockImplementation(() => {});
     expect(
       normalizeThemeConfig(
         Joi.object({foo: Joi.string().warning('deprecated', {})}).messages({
@@ -110,7 +112,7 @@ describe('normalizeThemeConfig', () => {
         themeConfig,
       ),
     ).toEqual(themeConfig);
-    expect(consoleMock).toHaveBeenCalledWith(
+    expect(warn).toHaveBeenCalledWith(
       expect.stringMatching(/"foo" deprecated/),
     );
   });
@@ -128,9 +130,8 @@ describe('validateFrontMatter', () => {
   });
 
   it('rejects bad values', () => {
-    const consoleError = jest
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
+    using error = vi.spyOn(console, 'error');
+
     const schema = Joi.object<{test: string}>({
       test: Joi.string(),
     });
@@ -139,8 +140,10 @@ describe('validateFrontMatter', () => {
     };
     expect(() =>
       validateFrontMatter(frontMatter, schema),
-    ).toThrowErrorMatchingInlineSnapshot(`""test" must be a string"`);
-    expect(consoleError).toHaveBeenCalledWith(
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: "test" must be a string]`,
+    );
+    expect(error).toHaveBeenCalledWith(
       expect.stringContaining('The following front matter'),
     );
   });

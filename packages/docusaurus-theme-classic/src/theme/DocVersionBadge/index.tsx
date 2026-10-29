@@ -5,16 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Translate from '@docusaurus/Translate';
 import {ThemeClassNames} from '@docusaurus/theme-common';
-import {useDocsVersion} from '@docusaurus/theme-common/internal';
+import {useDocsVersion} from '@docusaurus/plugin-content-docs/client';
 import type {Props} from '@theme/DocVersionBadge';
 
-export default function DocVersionBadge({
-  className,
-}: Props): JSX.Element | null {
+export default function DocVersionBadge({className}: Props): ReactNode {
   const versionMetadata = useDocsVersion();
   if (versionMetadata.badge) {
     return (

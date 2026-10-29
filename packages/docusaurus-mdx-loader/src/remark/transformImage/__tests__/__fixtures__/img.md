@@ -29,3 +29,13 @@ in paragraph ![img](static/img.png)
 ```md
 ![img](./static/img.png)
 ```
+
+## Images with spaces
+
+![img](</img with spaces.png>)
+
+![img](<@site/static/img with spaces.png>)
+
+![img](</img with one encoded%2520space.png>)
+
+![img](<@site/static/img with one encoded%2520space.png>)

@@ -6,21 +6,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ```
 
-## Tabs with dynamic default value
-
-This can cause [bugs](https://github.com/facebook/react-native-website/issues/2771) when default value is different between SSR and client:
-
-```mdx-code-block
-export const isMacOS = typeof window !== 'undefined' && navigator.platform.startsWith('Mac');
-
-<BrowserWindow>
-  <Tabs defaultValue={isMacOS ? "ios" : "android"}>
-    <TabItem value="android" label="Android">Android content</TabItem>
-    <TabItem value="ios" label="iOS">iOS content</TabItem>
-  </Tabs>
-</BrowserWindow>
-```
-
 ## Tabs sync with different heights
 
 ```mdx-code-block
@@ -46,3 +31,51 @@ export const isMacOS = typeof window !== 'undefined' && navigator.platform.start
 ```
 
 When clicking tabs above, they should stay under cursor and we should adjust the scroll position.
+
+## Tabs with className and lazy loading
+
+<Tabs lazy>
+  <TabItem value="apple" label="Apple" className="alert alert--primary" default>
+    This is an apple 🍎
+  </TabItem>
+  <TabItem value="orange" label="Orange" className="alert alert--secondary">
+    This is an orange 🍊
+  </TabItem>
+  <TabItem value="banana" label="Banana" className="alert alert--success">
+    This is a banana 🍌
+  </TabItem>
+</Tabs>
+
+## Tabs with wrappers
+
+export function Local(props) {
+  return (
+    <TabItem value="local" {...props}>
+      Local content
+    </TabItem>
+  );
+}
+
+export function PaaS(props) {
+  return (
+    <TabItem value="paas" {...props}>
+      PaaS content
+    </TabItem>
+  );
+}
+
+export function InstallationTabs() {
+  return (
+    <Tabs
+      groupId="installation"
+      values={[
+        {value: 'local', label: 'Local Installation'},
+        {value: 'paas', label: 'Platform as a Service'},
+      ]}>
+      <Local />
+      <PaaS />
+    </Tabs>
+  );
+}
+
+<InstallationTabs />

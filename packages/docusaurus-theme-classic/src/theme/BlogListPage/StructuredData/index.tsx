@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Head from '@docusaurus/Head';
-import {useBlogListPageStructuredData} from '@docusaurus/theme-common';
+import {useBlogListPageStructuredData} from '@docusaurus/plugin-content-blog/client';
 import type {Props} from '@theme/BlogListPage/StructuredData';
 
-export default function BlogListPageStructuredData(props: Props): JSX.Element {
+export default function BlogListPageStructuredData(props: Props): ReactNode {
   const structuredData = useBlogListPageStructuredData(props);
   return (
     <Head>

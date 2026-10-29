@@ -1,6 +1,6 @@
 tasks:
-  - init: yarn install
-    command: yarn start
+  - init: pnpm install
+    command: pnpm start
 ports:
   - port: 3000
     onOpen: open-preview

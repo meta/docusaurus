@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
+import fs from 'node:fs/promises';
 
 // See comment in src/internal.ts
 // This script should be run by CI tests to remove:
@@ -14,9 +14,11 @@ import fs from 'fs-extra';
 const filePath = 'lib/internal.js';
 const lineToRemove = "export * from './index';\n";
 
-if (!(await fs.pathExists(filePath))) {
-  throw new Error(`internal entrypoint file not found at ${filePath}`);
-}
+await fs.access(filePath).catch((err) => {
+  throw new Error(`internal entrypoint file not found at ${filePath}`, {
+    cause: err,
+  });
+});
 
 const fileContent = await fs.readFile(filePath, 'utf8');
 

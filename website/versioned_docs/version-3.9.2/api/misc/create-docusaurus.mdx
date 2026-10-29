@@ -1,0 +1,58 @@
+---
+sidebar_position: 0
+slug: /api/misc/create-docusaurus
+---
+
+# 📦 create-docusaurus
+
+A scaffolding utility to help you instantly set up a functional Docusaurus app.
+
+## Usage {/* #usage */}
+
+```bash
+npx create-docusaurus@latest [name] [template] [rootDir]
+```
+
+The `name` argument will be used as the site's path as well as the `name` field in the created app's package.json. It can be an absolute path, or a path relative to `rootDir`.
+
+The `template` argument can be one of the following:
+
+- `classic`: Uses the classic template (recommended)
+- `facebook`: Uses the Facebook/Meta template, which contains some Meta-specific setup
+- A git repo URL (beginning with `https://` or `git@`), which can be cloned to the destination
+- A local file path relative to CWD, which contains the files to be copied to destination
+
+The `rootDir` will be used to resolve the absolute path to the site directory. The default is CWD.
+
+:::warning
+
+This command should be preferably used in an interactive shell so all features are available.
+
+:::
+
+## Options {/* #options */}
+
+### `-t, --typescript` {/* #typescript */}
+
+Used when the template argument is a recognized name. Currently, only `classic` provides a TypeScript variant.
+
+### `-g, --git-strategy` {/* #git-strategy */}
+
+Used when the template argument is a git repo. It needs to be one of:
+
+- `deep`: preserves full git history
+- `shallow`: clones with `--depth=1`
+- `copy`: does a shallow clone, but does not create a git repo
+- `custom`: enter your custom git clone command. We will prompt you for it. You can write something like `git clone --depth 10`, and we will append the repository URL and destination directory.
+
+### `-p, --package-manager` {/* #package-manager */}
+
+Value should be one of `npm`, `yarn`, `pnpm`, or `bun`. If it's not explicitly provided, Docusaurus will infer one based on:
+
+- The lockfile already present in the CWD (e.g. if you are setting up website in an existing project)
+- The command used to invoke `create-docusaurus` (e.g. `npm init`, `npx`, `yarn create`, `bunx`, etc.)
+- Interactive prompting, in case all heuristics are not present
+
+### `-s, --skip-install` {/* #skip-install */}
+
+If provided, Docusaurus will not automatically install dependencies after creating the app. The `--package-manager` option is only useful when you are actually installing dependencies.

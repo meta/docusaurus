@@ -1,32 +1,38 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
-  "settings": {
-    "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode",
-      "editor.formatOnSave": true
-    },
-    "[json]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode",
-      "editor.formatOnSave": true
-    },
-    "[jsonc]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode",
-      "editor.formatOnSave": true
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "[typescript]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        },
+        "[json]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        },
+        "[jsonc]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        }
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "oxc.oxc-vscode",
+        "streetsidesoftware.code-spell-checker"
+      ]
     }
   },
-  "extensions": [
-    "dbaeumer.vscode-eslint",
-    "orta.vscode-jest",
-    "esbenp.prettier-vscode",
-    "streetsidesoftware.code-spell-checker"
-  ],
   "forwardPorts": [3000],
   "containerUser": "vscode",
-  "postCreateCommand": "yarn install",
-  "waitFor": "postCreateCommand", // otherwise automated jest tests fail
+  "containerEnv": {
+    "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0" // Avoid waiting for a prompt in the postCreateCommand
+  },
+  "postCreateCommand": "pnpm install",
+  "waitFor": "postCreateCommand", // The Oxc formatter needs the installed oxfmt
   "features": {
     "node": {
-      "version": "18"
+      "version": "24"
     },
     "github-cli": "latest"
   }

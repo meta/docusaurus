@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {useLocation} from '@docusaurus/router';
 import Head from '@docusaurus/Head';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
@@ -32,8 +32,8 @@ function createInlineHtmlBanner(baseUrl: string) {
    <p style="font-weight: bold; font-size: 30px;">Your Docusaurus site did not load properly.</p>
    <p>A very common reason is a wrong site <a href="https://docusaurus.io/docs/docusaurus.config.js/#baseUrl" style="font-weight: bold;">baseUrl configuration</a>.</p>
    <p>Current configured baseUrl = <span style="font-weight: bold; color: red;">${baseUrl}</span> ${
-    baseUrl === '/' ? ' (default value)' : ''
-  }</p>
+     baseUrl === '/' ? ' (default value)' : ''
+   }</p>
    <p>We suggest trying baseUrl = <span id="${SuggestionContainerId}" style="font-weight: bold; color: green;"></span></p>
 </div>
 `;
@@ -61,7 +61,7 @@ function insertBanner() {
   var suggestedBaseUrl = actualHomePagePath.substr(-1) === '/'
         ? actualHomePagePath
         : actualHomePagePath + '/';
-  suggestionContainer.innerHTML = suggestedBaseUrl;
+  suggestionContainer.textContent = suggestedBaseUrl;
 }
 `;
 }
@@ -95,7 +95,7 @@ function BaseUrlIssueBanner() {
  *
  * @see https://github.com/facebook/docusaurus/pull/3621
  */
-export default function MaybeBaseUrlIssueBanner(): JSX.Element | null {
+export default function MaybeBaseUrlIssueBanner(): ReactNode {
   const {
     siteConfig: {baseUrl, baseUrlIssueBanner},
   } = useDocusaurusContext();

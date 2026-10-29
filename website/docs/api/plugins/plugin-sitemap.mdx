@@ -15,7 +15,7 @@ This plugin is always inactive in development and **only active in production** 
 
 :::
 
-## Installation {#installation}
+## Installation {/* #installation */}
 
 ```bash npm2yarn
 npm install --save @docusaurus/plugin-sitemap
@@ -29,7 +29,7 @@ You can configure this plugin through the [preset options](../../using-plugins.m
 
 :::
 
-## Configuration {#configuration}
+## Configuration {/* #configuration */}
 
 Accepted fields:
 
@@ -39,15 +39,47 @@ Accepted fields:
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `lastmod` | `'date' \| 'datetime' \| null` | `null` | `date` is YYYY-MM-DD. `datetime` is a ISO 8601 datetime. `null` is disabled. See [sitemap docs](https://www.sitemaps.org/protocol.html#xmlTagDefinitions). |
-| `changefreq` | `string \| null` | `'weekly'` | See [sitemap docs](https://www.sitemaps.org/protocol.html#xmlTagDefinitions) |
-| `priority` | `number \| null` | `0.5` | See [sitemap docs](https://www.sitemaps.org/protocol.html#xmlTagDefinitions) |
+| `lastmod` | `'date' \| 'datetime' \| null` | `'date'` | `date` is YYYY-MM-DD. `datetime` is a ISO 8601 datetime. `null` is disabled. See [sitemap docs](https://www.sitemaps.org/protocol.html#xmlTagDefinitions). |
 | `ignorePatterns` | `string[]` | `[]` | A list of glob patterns; matching route paths will be filtered from the sitemap. Note that you may need to include the base URL in here. |
 | `filename` | `string` | `sitemap.xml` | The path to the created sitemap file, relative to the output directory. Useful if you have two plugin instances outputting two files. |
+| `createSitemapItems` | <code>[CreateSitemapItemsFn](#CreateSitemapItemsFn) \| undefined</code> | `undefined` | An optional function which can be used to transform and / or filter the items in the sitemap. |
 
 ```mdx-code-block
 </APITable>
 ```
+
+### Types {/* #types */}
+
+#### `CreateSitemapItemsFn` {/* #CreateSitemapItemsFn */}
+
+```ts
+type CreateSitemapItemsFn = (params: {
+  siteConfig: DocusaurusConfig;
+  routes: RouteConfig[];
+  defaultCreateSitemapItems: CreateSitemapItemsFn;
+}) => Promise<SitemapItem[]>;
+```
+
+#### `SitemapItem` {/* #SitemapItem */}
+
+```ts
+type SitemapItem = {
+  url: string;
+  lastmod?: string | null;
+  changefreq?:
+    | 'always'
+    | 'hourly'
+    | 'daily'
+    | 'weekly'
+    | 'monthly'
+    | 'yearly'
+    | 'never'
+    | null;
+  priority?: number | null;
+};
+```
+
+See the [sitemap protocol docs](https://www.sitemaps.org/protocol.html#xmlTagDefinitions) for the meaning of each field.
 
 :::info
 
@@ -66,7 +98,7 @@ All the official content plugins provide the metadata for routes backed by a con
 
 :::
 
-### Example configuration {#ex-config}
+### Example configuration {/* #ex-config */}
 
 You can configure this plugin through preset options or plugin options.
 
@@ -82,11 +114,35 @@ Most Docusaurus users configure this plugin through the preset options.
 
 const config = {
   lastmod: 'date',
-  changefreq: 'weekly',
-  priority: 0.5,
   ignorePatterns: ['/tags/**'],
   filename: 'sitemap.xml',
+  createSitemapItems: async (params) => {
+    const {defaultCreateSitemapItems, ...rest} = params;
+    const items = await defaultCreateSitemapItems(rest);
+    return items.filter((item) => !item.url.includes('/page/'));
+  },
 };
 ```
 
 You can find your sitemap at `/sitemap.xml`.
+
+### Emitting `changefreq` and `priority` {/* #changefreq-priority */}
+
+The plugin doesn't emit `<changefreq>` and `<priority>` tags, which [Google ignores](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap). If you need them, use `createSitemapItems` to emit distinct values per URL:
+
+```js config-tabs
+// Preset Options: sitemap
+// Plugin Options: @docusaurus/plugin-sitemap
+
+const config = {
+  createSitemapItems: async (params) => {
+    const {defaultCreateSitemapItems, ...rest} = params;
+    const items = await defaultCreateSitemapItems(rest);
+    return items.map((item) => ({
+      ...item,
+      changefreq: item.url.includes('/blog/') ? 'weekly' : 'monthly',
+      priority: item.url.includes('/docs/') ? 0.8 : 0.5,
+    }));
+  },
+};
+```

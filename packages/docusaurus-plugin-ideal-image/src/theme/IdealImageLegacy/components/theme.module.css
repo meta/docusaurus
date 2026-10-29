@@ -1,0 +1,35 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+.placeholder {
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  /* TODO: fix bug in styles */
+  margin-bottom: -4px;
+  transform: translate3d(0, 0, 0);
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.noscript {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

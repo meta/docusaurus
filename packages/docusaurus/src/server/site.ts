@@ -5,26 +5,29 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
+import path from 'node:path';
 import {
-  localizePath,
   DEFAULT_BUILD_DIR_NAME,
   GENERATED_FILES_DIR_NAME,
+  getLocaleConfig,
 } from '@docusaurus/utils';
+import {PerfLogger} from '@docusaurus/logger';
 import combinePromises from 'combine-promises';
+import {getCurrentBundler} from '@docusaurus/bundler';
 import {loadSiteConfig} from './config';
 import {getAllClientModules} from './clientModules';
 import {loadPlugins, reloadPlugin} from './plugins/plugins';
 import {loadHtmlTags} from './htmlTags';
-import {createSiteMetadata, loadSiteVersion} from './siteMetadata';
+import {createSiteMetadata, tryLoadSitePackageJson} from './siteMetadata';
 import {loadI18n} from './i18n';
 import {
   loadSiteCodeTranslations,
   getPluginsDefaultCodeTranslations,
 } from './translations/translations';
-import {PerfLogger} from '../utils';
 import {generateSiteFiles} from './codegen/codegen';
 import {getRoutesPaths, handleDuplicateRoutes} from './routes';
+import {createSiteStorage} from './storage';
+import {emitSiteMessages} from './siteMessages';
 import type {LoadPluginsResult} from './plugins/plugins';
 import type {
   DocusaurusConfig,
@@ -43,16 +46,26 @@ export type LoadContextParams = {
   config?: string;
   /** Default is `i18n.defaultLocale` */
   locale?: string;
+
   /**
-   * `true` means the paths will have the locale prepended; `false` means they
-   * won't (useful for `yarn build -l zh-Hans` where the output should be
-   * emitted into `build/` instead of `build/zh-Hans/`); `undefined` is like the
-   * "smart" option where only non-default locale paths are localized
+   * By default, we try to automatically infer a localized baseUrl.
+   * We prepend `/<siteBaseUrl>/` with a `/<locale>/` path segment,
+   * except for the default locale.
+   *
+   * This option permits opting out of this baseUrl localization process.
+   * It is mostly useful to simplify config for multi-domain i18n deployments.
+   * See https://docusaurus.io/docs/i18n/tutorial#multi-domain-deployment
+   *
+   * In all cases, this process doesn't happen if an explicit localized baseUrl
+   * has been provided using `i18n.localeConfigs[].baseUrl`. We always use the
+   * provided value over the inferred one, letting you override it.
    */
-  localizePath?: boolean;
+  automaticBaseUrlLocalizationDisabled?: boolean;
 };
 
-export type LoadSiteParams = LoadContextParams;
+export type LoadSiteParams = LoadContextParams & {
+  isReload?: boolean;
+};
 
 export type Site = {
   props: Props;
@@ -73,6 +86,7 @@ export async function loadContext(
     outDir: baseOutDir = DEFAULT_BUILD_DIR_NAME,
     locale,
     config: customConfigFilePath,
+    automaticBaseUrlLocalizationDisabled,
   } = params;
   const generatedFilesDir = path.resolve(siteDir, GENERATED_FILES_DIR_NAME);
 
@@ -80,40 +94,73 @@ export async function loadContext(
     siteVersion,
     loadSiteConfig: {siteConfig: initialSiteConfig, siteConfigPath},
   } = await combinePromises({
-    siteVersion: loadSiteVersion(siteDir),
+    siteVersion: tryLoadSitePackageJson(siteDir).then((pkg) => pkg?.version),
     loadSiteConfig: loadSiteConfig({
       siteDir,
       customConfigFilePath,
     }),
   });
 
-  const i18n = await loadI18n(initialSiteConfig, {locale});
+  // Not sure where is the best place to put this VCS initialization call?
+  // The sooner is probably the better
+  // Note: we don't await the result on purpose!
+  // VCS initialization can be slow for large repos, and we don't want to block
+  // VCS integrations should be carefully designed to avoid blocking
+  PerfLogger.async('VCS init', () => {
+    return initialSiteConfig.vcs.initialize({siteDir});
+  });
 
-  const baseUrl = localizePath({
-    path: initialSiteConfig.baseUrl,
-    i18n,
-    options: params,
-    pathType: 'url',
+  const currentBundler = await getCurrentBundler({
+    siteConfig: initialSiteConfig,
   });
-  const outDir = localizePath({
-    path: path.resolve(siteDir, baseOutDir),
-    i18n,
-    options: params,
-    pathType: 'fs',
+
+  const i18n = await loadI18n({
+    siteDir,
+    config: initialSiteConfig,
+    currentLocale: locale ?? initialSiteConfig.i18n.defaultLocale,
+    automaticBaseUrlLocalizationDisabled:
+      automaticBaseUrlLocalizationDisabled ?? false,
   });
+
+  const localeConfig = getLocaleConfig(i18n);
+
+  // We use the baseUrl from the locale config.
+  // By default, it is inferred as /<siteConfig.baseUrl>/
+  // eventually including the /<locale>/ suffix
+  const baseUrl = localeConfig.baseUrl;
+
+  // TODO not ideal: we should allow configuring a custom outDir for each locale
+  // The site baseUrl should be 100% decoupled from the file system output shape
+  // We added this logic to restore v3 retro-compatibility, because by default
+  // Docusaurus always wrote to ./build for sites having a baseUrl
+  // See also https://github.com/facebook/docusaurus/issues/11433
+  // This logic assumes the locale baseUrl will start with the site baseUrl
+  // which is the case if an explicit locale baseUrl is not provided
+  // but in practice a custom locale baseUrl could be anything now
+  const outDirBaseUrl = baseUrl.replace(initialSiteConfig.baseUrl, '/');
+
+  const outDir = path.join(path.resolve(siteDir, baseOutDir), outDirBaseUrl);
+
   const localizationDir = path.resolve(
     siteDir,
     i18n.path,
-    i18n.localeConfigs[i18n.currentLocale]!.path,
+    getLocaleConfig(i18n).path,
   );
 
-  const siteConfig: DocusaurusConfig = {...initialSiteConfig, baseUrl};
+  const siteConfig: DocusaurusConfig = {
+    ...initialSiteConfig,
+    url: localeConfig.url,
+    baseUrl,
+  };
 
   const codeTranslations = await loadSiteCodeTranslations({localizationDir});
+
+  const siteStorage = createSiteStorage(siteConfig);
 
   return {
     siteDir,
     siteVersion,
+    siteStorage,
     generatedFilesDir,
     localizationDir,
     siteConfig,
@@ -122,6 +169,7 @@ export async function loadContext(
     baseUrl,
     i18n,
     codeTranslations,
+    currentBundler,
   };
 }
 
@@ -135,14 +183,19 @@ function createSiteProps(
     siteVersion,
     siteConfig,
     siteConfigPath,
+    siteStorage,
     outDir,
     baseUrl,
     i18n,
     localizationDir,
     codeTranslations: siteCodeTranslations,
+    currentBundler,
   } = context;
 
-  const {headTags, preBodyTags, postBodyTags} = loadHtmlTags(plugins);
+  const {headTags, preBodyTags, postBodyTags} = loadHtmlTags({
+    plugins,
+    router: siteConfig.future.experimental_router,
+  });
 
   const siteMetadata = createSiteMetadata({plugins, siteVersion});
 
@@ -159,6 +212,7 @@ function createSiteProps(
     siteConfigPath,
     siteMetadata,
     siteVersion,
+    siteStorage,
     siteDir,
     outDir,
     baseUrl,
@@ -172,6 +226,7 @@ function createSiteProps(
     preBodyTags,
     postBodyTags,
     codeTranslations,
+    currentBundler,
   };
 }
 
@@ -190,6 +245,7 @@ async function createSiteFiles({
         generatedFilesDir,
         siteConfig,
         siteMetadata,
+        siteStorage,
         i18n,
         codeTranslations,
         routes,
@@ -202,6 +258,7 @@ async function createSiteFiles({
       clientModules,
       siteConfig,
       siteMetadata,
+      siteStorage,
       i18n,
       codeTranslations,
       globalData,
@@ -217,14 +274,14 @@ async function createSiteFiles({
  * lifecycles to generate content and other data. It is side-effect-ful because
  * it generates temp files in the `.docusaurus` folder for the bundler.
  */
-export async function loadSite(params: LoadContextParams): Promise<Site> {
+export async function loadSite(params: LoadSiteParams): Promise<Site> {
   const context = await PerfLogger.async('Load context', () =>
     loadContext(params),
   );
 
   const {plugins, routes, globalData} = await loadPlugins(context);
 
-  const props = await createSiteProps({plugins, routes, globalData, context});
+  const props = createSiteProps({plugins, routes, globalData, context});
 
   const site: Site = {props, params};
 
@@ -233,6 +290,11 @@ export async function loadSite(params: LoadContextParams): Promise<Site> {
     globalData,
   });
 
+  // For now, we don't re-emit messages on site reloads, it's too verbose
+  if (!params.isReload) {
+    await emitSiteMessages({site});
+  }
+
   return site;
 }
 
@@ -240,7 +302,10 @@ export async function reloadSite(site: Site): Promise<Site> {
   // TODO this can be optimized, for example:
   //  - plugins loading same data as before should not recreate routes/bundles
   //  - codegen does not need to re-run if nothing changed
-  return loadSite(site.params);
+  return loadSite({
+    ...site.params,
+    isReload: true,
+  });
 }
 
 export async function reloadSitePlugin(
@@ -253,7 +318,7 @@ export async function reloadSitePlugin(
     context: site.props,
   });
 
-  const newProps = await createSiteProps({
+  const newProps = createSiteProps({
     plugins,
     routes,
     globalData,

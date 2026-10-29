@@ -14,6 +14,7 @@ import {visit} from 'unist-util-visit';
 export default function plugin() {
   /** @type {import("unified").Transformer} */
   const transformer = (root) => {
+    let hasConfigTabs = false;
     visit(root, 'code', (node, index, parent) => {
       if (!node.meta?.includes('config-tabs')) {
         return;
@@ -38,6 +39,35 @@ export default function plugin() {
         .replace(/^.*?= /, '')
         .replace(/;$/, '');
 
+      const jsxNode = {
+        type: 'mdxJsxFlowElement',
+        name: 'ConfigTabs',
+        attributes: [
+          {
+            type: 'mdxJsxAttribute',
+            name: 'pluginName',
+            value: pluginName.trim(),
+          },
+          {
+            type: 'mdxJsxAttribute',
+            name: 'presetOptionName',
+            value: presetOptionName.trim(),
+          },
+          {
+            type: 'mdxJsxAttribute',
+            name: 'code',
+            value: config,
+          },
+        ],
+        children: [],
+      };
+
+      parent.children.splice(index, 1, jsxNode);
+      hasConfigTabs = true;
+    });
+
+    // Import ConfigTabs once, even if the file has multiple config-tabs blocks
+    if (hasConfigTabs) {
       const importNode = {
         type: 'mdxjsEsm',
         value: 'import ConfigTabs from "@site/src/components/ConfigTabs"',
@@ -64,32 +94,8 @@ export default function plugin() {
           },
         },
       };
-
-      const jsxNode = {
-        type: 'mdxJsxFlowElement',
-        name: 'ConfigTabs',
-        attributes: [
-          {
-            type: 'mdxJsxAttribute',
-            name: 'pluginName',
-            value: pluginName.trim(),
-          },
-          {
-            type: 'mdxJsxAttribute',
-            name: 'presetOptionName',
-            value: presetOptionName.trim(),
-          },
-          {
-            type: 'mdxJsxAttribute',
-            name: 'code',
-            value: config,
-          },
-        ],
-        children: [],
-      };
-
-      parent.children.splice(index, 1, importNode, jsxNode);
-    });
+      root.children.unshift(importNode);
+    }
   };
   return transformer;
 }

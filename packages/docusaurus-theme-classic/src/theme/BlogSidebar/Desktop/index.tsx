@@ -5,16 +5,32 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import {memo} from 'react';
 import clsx from 'clsx';
-import Link from '@docusaurus/Link';
 import {translate} from '@docusaurus/Translate';
-import {useVisibleBlogSidebarItems} from '@docusaurus/theme-common/internal';
+import {
+  useVisibleBlogSidebarItems,
+  BlogSidebarItemList,
+} from '@docusaurus/plugin-content-blog/client';
+import BlogSidebarContent from '@theme/BlogSidebar/Content';
+import type {Props as BlogSidebarContentProps} from '@theme/BlogSidebar/Content';
 import type {Props} from '@theme/BlogSidebar/Desktop';
 
 import styles from './styles.module.css';
 
-export default function BlogSidebarDesktop({sidebar}: Props): JSX.Element {
+const ListComponent: BlogSidebarContentProps['ListComponent'] = ({items}) => {
+  return (
+    <BlogSidebarItemList
+      items={items}
+      ulClassName={clsx(styles.sidebarItemList, 'clean-list')}
+      liClassName={styles.sidebarItem}
+      linkClassName={styles.sidebarItemLink}
+      linkActiveClassName={styles.sidebarItemLinkActive}
+    />
+  );
+};
+
+function BlogSidebarDesktop({sidebar}: Props) {
   const items = useVisibleBlogSidebarItems(sidebar.items);
   return (
     <aside className="col col--3">
@@ -28,20 +44,14 @@ export default function BlogSidebarDesktop({sidebar}: Props): JSX.Element {
         <div className={clsx(styles.sidebarItemTitle, 'margin-bottom--md')}>
           {sidebar.title}
         </div>
-        <ul className={clsx(styles.sidebarItemList, 'clean-list')}>
-          {items.map((item) => (
-            <li key={item.permalink} className={styles.sidebarItem}>
-              <Link
-                isNavLink
-                to={item.permalink}
-                className={styles.sidebarItemLink}
-                activeClassName={styles.sidebarItemLinkActive}>
-                {item.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <BlogSidebarContent
+          items={items}
+          ListComponent={ListComponent}
+          yearGroupHeadingClassName={styles.yearGroupHeading}
+        />
       </nav>
     </aside>
   );
 }
+
+export default memo(BlogSidebarDesktop);

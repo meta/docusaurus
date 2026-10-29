@@ -11,9 +11,9 @@ import APITable from '@site/src/components/APITable';
 
 This configuration applies to all [main themes](./overview.mdx).
 
-## Common {#common}
+## Common {/* #common */}
 
-### Color mode {#color-mode---dark-mode}
+### Color mode {/* #color-mode---dark-mode */}
 
 The classic theme provides by default light and dark mode support, with a navbar switch for the user.
 
@@ -59,7 +59,7 @@ If you only want to support one color mode, you likely want to ignore user syste
 
 :::
 
-### Meta image {#meta-image}
+### Meta image {/* #meta-image */}
 
 You can configure a default image that will be used for your meta tag, in particular `og:image` and `twitter:image`.
 
@@ -88,7 +88,7 @@ export default {
 };
 ```
 
-### Metadata {#metadata}
+### Metadata {/* #metadata */}
 
 You can configure additional HTML metadata (and override existing ones).
 
@@ -117,7 +117,7 @@ export default {
 };
 ```
 
-### Announcement bar {#announcement-bar}
+### Announcement bar {/* #announcement-bar */}
 
 Sometimes you want to announce something in your website. Just for such a case, you can add an announcement bar. This is a non-fixed and optionally dismissible panel above the navbar. All configuration are in the `announcementBar` object.
 
@@ -158,7 +158,7 @@ export default {
 };
 ```
 
-## Navbar {#navbar}
+## Navbar {/* #navbar */}
 
 Accepted fields:
 
@@ -178,7 +178,7 @@ Accepted fields:
 </APITable>
 ```
 
-### Navbar logo {#navbar-logo}
+### Navbar logo {/* #navbar-logo */}
 
 The logo can be placed in [static folder](static-assets.mdx). Logo URL is set to base URL of your site by default. Although you can specify your own URL for the logo, if it is an external link, it will open in a new tab. In addition, you can override a value for the target attribute of logo link, it can come in handy if you are hosting docs website in a subdirectory of your main website, and in which case you probably do not need a link in the logo to the main website will open in a new tab.
 
@@ -231,7 +231,7 @@ export default {
 };
 ```
 
-### Navbar items {#navbar-items}
+### Navbar items {/* #navbar-items */}
 
 You can add items to the navbar via `themeConfig.navbar.items`.
 
@@ -271,7 +271,7 @@ export default {
 
 The items can have different behaviors based on the `type` field. The sections below will introduce you to all the types of navbar items available.
 
-#### Navbar link {#navbar-link}
+#### Navbar link {/* #navbar-link */}
 
 By default, Navbar items are regular links (internal or external).
 
@@ -334,7 +334,7 @@ export default {
 };
 ```
 
-#### Navbar dropdown {#navbar-dropdown}
+#### Navbar dropdown {/* #navbar-dropdown */}
 
 Navbar items of the type `dropdown` has the additional `items` field, an inner array of navbar items.
 
@@ -397,7 +397,7 @@ export default {
 };
 ```
 
-#### Navbar doc link {#navbar-doc-link}
+#### Navbar doc link {/* #navbar-doc-link */}
 
 If you want to link to a specific doc, this special navbar item type will render the link to the doc of the provided `docId`. It will get the class `navbar__link--active` as long as you browse a doc of the same sidebar.
 
@@ -440,7 +440,7 @@ export default {
 };
 ```
 
-#### Navbar linked to a sidebar {#navbar-doc-sidebar}
+#### Navbar linked to a sidebar {/* #navbar-doc-sidebar */}
 
 You can link a navbar item to the first document link (which can be a doc link or a generated category index) of a given sidebar without having to hardcode a doc ID.
 
@@ -509,7 +509,7 @@ export default {
 };
 ```
 
-#### Navbar docs version dropdown {#navbar-docs-version-dropdown}
+#### Navbar docs version dropdown {/* #navbar-docs-version-dropdown */}
 
 If you use docs with versioning, this special navbar item type that will render a dropdown with all your site's available versions.
 
@@ -555,7 +555,7 @@ export default {
 };
 ```
 
-#### Navbar docs version {#navbar-docs-version}
+#### Navbar docs version {/* #navbar-docs-version */}
 
 If you use docs with versioning, this special navbar item type will link to the active/browsed version of your doc (depends on the current URL), and fallback to the latest version.
 
@@ -598,7 +598,7 @@ export default {
 };
 ```
 
-#### Navbar locale dropdown {#navbar-locale-dropdown}
+#### Navbar locale dropdown {/* #navbar-locale-dropdown */}
 
 If you use the [i18n feature](../../i18n/i18n-introduction.mdx), this special navbar item type will render a dropdown with all your site's available locales.
 
@@ -647,7 +647,7 @@ export default {
 };
 ```
 
-#### Navbar search {#navbar-search}
+#### Navbar search {/* #navbar-search */}
 
 If you use the [search](../../search.mdx), the search bar will be the rightmost element in the navbar.
 
@@ -684,7 +684,7 @@ export default {
 };
 ```
 
-#### Navbar with custom HTML {#navbar-with-custom-html}
+#### Navbar with custom HTML {/* #navbar-with-custom-html */}
 
 You can also render your own HTML markup inside a navbar item using this navbar item type.
 
@@ -721,7 +721,7 @@ export default {
 };
 ```
 
-### Auto-hide sticky navbar {#auto-hide-sticky-navbar}
+### Auto-hide sticky navbar {/* #auto-hide-sticky-navbar */}
 
 You can enable this cool UI feature that automatically hides the navbar when a user starts scrolling down the page, and show it again when the user scrolls up.
 
@@ -736,7 +736,7 @@ export default {
 };
 ```
 
-### Navbar style {#navbar-style}
+### Navbar style {/* #navbar-style */}
 
 You can set the static Navbar style without disabling the theme switching ability. The selected style will always apply no matter which theme user have selected.
 
@@ -753,7 +753,7 @@ export default {
 };
 ```
 
-## CodeBlock {#codeblock}
+## CodeBlock {/* #codeblock */}
 
 Docusaurus uses [Prism React Renderer](https://github.com/FormidableLabs/prism-react-renderer) to highlight code blocks. All configuration are in the `prism` object.
 
@@ -792,7 +792,7 @@ const defaultMagicComments = [
 ];
 ```
 
-### Theme {#theme}
+### Theme {/* #theme */}
 
 By default, we use [Palenight](https://github.com/FormidableLabs/prism-react-renderer/blob/master/packages/prism-react-renderer/src/themes/palenight.ts) as syntax highlighting theme. You can specify a custom theme from the [list of available themes](https://github.com/FormidableLabs/prism-react-renderer/tree/master/packages/prism-react-renderer/src/themes). You may also use a different syntax highlighting theme when the site is in dark mode.
 
@@ -819,7 +819,7 @@ If you use the line highlighting Markdown syntax, you might need to specify a di
 
 :::
 
-### Default language {#default-language}
+### Default language {/* #default-language */}
 
 You can set a default language for code blocks if no language is added after the opening triple backticks (i.e. ```). Note that a valid [language name](https://prismjs.com/#supported-languages) must be passed.
 
@@ -836,7 +836,7 @@ export default {
 };
 ```
 
-## Footer {#footer-1}
+## Footer {/* #footer-1 */}
 
 You can add logo and a copyright to the footer via `themeConfig.footer`. Logo can be placed in [static folder](static-assets.mdx). Logo URL works in the same way of the navbar logo.
 
@@ -878,7 +878,7 @@ export default {
 };
 ```
 
-### Footer Links {#footer-links}
+### Footer Links {/* #footer-links */}
 
 You can add links to the footer via `themeConfig.footer.links`. There are two types of footer configurations: **multi-column footers** and **simple footers**.
 
@@ -946,8 +946,8 @@ export default {
             href: 'https://discordapp.com/invite/docusaurus',
           },
           {
-            label: 'Twitter',
-            href: 'https://twitter.com/docusaurus',
+            label: 'X',
+            href: 'https://x.com/docusaurus',
           },
           {
             html: `
@@ -982,8 +982,8 @@ export default {
         href: 'https://discordapp.com/invite/docusaurus',
       },
       {
-        label: 'Twitter',
-        href: 'https://twitter.com/docusaurus',
+        label: 'X',
+        href: 'https://x.com/docusaurus',
       },
       {
         html: `
@@ -998,7 +998,7 @@ export default {
 };
 ```
 
-## Table of Contents {#table-of-contents}
+## Table of Contents {/* #table-of-contents */}
 
 You can adjust the default table of contents via `themeConfig.tableOfContents`.
 
@@ -1030,9 +1030,9 @@ export default {
 };
 ```
 
-## Hooks {#hooks}
+## Hooks {/* #hooks */}
 
-### `useColorMode` {#use-color-mode}
+### `useColorMode` {/* #use-color-mode */}
 
 A React hook to access the color context. This context contains functions for setting light and dark mode and exposes boolean variable, indicating which mode is currently in use.
 
@@ -1067,18 +1067,18 @@ function ExamplePage() {
 
 :::
 
-## i18n {#i18n}
+## i18n {/* #i18n */}
 
 Read the [i18n introduction](../../i18n/i18n-introduction.mdx) first.
 
-### Translation files location {#translation-files-location}
+### Translation files location {/* #translation-files-location */}
 
 - **Base path**: `website/i18n/[locale]/docusaurus-theme-[themeName]`
 - **Multi-instance path**: N/A
 - **JSON files**: extracted with [`docusaurus write-translations`](../../cli.mdx#docusaurus-write-translations-sitedir)
 - **Markdown files**: N/A
 
-### Example file-system structure {#example-file-system-structure}
+### Example file-system structure {/* #example-file-system-structure */}
 
 ```bash
 website/i18n/[locale]/docusaurus-theme-classic

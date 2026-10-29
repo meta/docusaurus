@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {ComponentProps} from 'react';
-import React from 'react';
+import type {ComponentProps, ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 
@@ -16,7 +15,7 @@ export default function ProductHuntCard({
 }: {
   className?: string;
   style?: ComponentProps<'a'>['style'];
-}): JSX.Element {
+}): ReactNode {
   return (
     <Link
       to="https://www.producthunt.com/posts/docusaurus-2-0?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-docusaurus-2-0"

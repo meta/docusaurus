@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {escapeRegexp} from '@docusaurus/utils';
+import {describe, expect, it} from 'vitest';
 import {validateBlogPostFrontMatter} from '../frontMatter';
 import type {BlogPostFrontMatter} from '@docusaurus/plugin-content-blog';
 
@@ -52,9 +52,9 @@ function testField(params: {
             )}`,
           );
         } catch (err) {
-          // eslint-disable-next-line jest/no-conditional-expect
+          // eslint-disable-next-line vitest/no-conditional-expect
           expect((err as Error).message).toMatch(
-            new RegExp(escapeRegexp(message)),
+            new RegExp(RegExp.escape(message)),
           );
         }
       });
@@ -79,6 +79,7 @@ describe('validateBlogPostFrontMatter description', () => {
     prefix: 'description',
     validFrontMatters: [
       // See https://github.com/facebook/docusaurus/issues/4591#issuecomment-822372398
+      {description: undefined},
       {description: ''},
       {description: 'description'},
     ],
@@ -90,31 +91,71 @@ describe('validateBlogPostFrontMatter title', () => {
     prefix: 'title',
     validFrontMatters: [
       // See https://github.com/facebook/docusaurus/issues/4591#issuecomment-822372398
+      {title: undefined},
       {title: ''},
       {title: 'title'},
+    ],
+    invalidFrontMatters: [
+      [{title: null}, 'must be a string'],
+      [{title: false}, 'must be a string'],
     ],
   });
 });
 
-describe('validateBlogPostFrontMatter id', () => {
+describe('validateBlogPostFrontMatter title_meta', () => {
   testField({
-    prefix: 'id',
-    validFrontMatters: [{id: '123'}, {id: 'id'}],
-    invalidFrontMatters: [[{id: ''}, 'not allowed to be empty']],
+    prefix: 'title_meta',
+    validFrontMatters: [
+      {title_meta: undefined},
+      {title_meta: ''},
+      {title_meta: 'title'},
+    ],
+    invalidFrontMatters: [
+      [{title_meta: null}, 'must be a string'],
+      [{title_meta: false}, 'must be a string'],
+    ],
   });
 });
 
-describe('validateBlogPostFrontMatter handles legacy/new author front matter', () => {
-  it('allow legacy author front matter', () => {
-    const frontMatter: BlogPostFrontMatter = {
-      author: 'Sebastien',
-      author_url: 'https://sebastienlorber.com',
-      author_title: 'maintainer',
-      author_image_url: 'https://github.com/slorber.png',
-    };
-    expect(validateBlogPostFrontMatter(frontMatter)).toEqual(frontMatter);
+describe('validateBlogPostFrontMatter sidebar_label', () => {
+  testField({
+    prefix: 'title_meta',
+    validFrontMatters: [
+      {sidebar_label: undefined},
+      {sidebar_label: ''},
+      {sidebar_label: 'title'},
+    ],
+    invalidFrontMatters: [
+      [{sidebar_label: null}, 'must be a string'],
+      [{sidebar_label: false}, 'must be a string'],
+    ],
+  });
+});
+
+describe('validateBlogPostFrontMatter legacy author front matter', () => {
+  it('rejects legacy author front matter', () => {
+    expect(() =>
+      validateBlogPostFrontMatter({author: 'Sébastien Lorber'}),
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: "author" blog post front matter is not supported anymore. Use the "authors" front matter instead, with an inline author object (with name, title, url and imageURL attributes) or an author key declared in the authors map file (authors.yml).]`,
+    );
   });
 
+  it.each([
+    'author_title',
+    'authorTitle',
+    'author_url',
+    'authorURL',
+    'author_image_url',
+    'authorImageURL',
+  ])('rejects legacy %s front matter', (key) => {
+    expect(() => validateBlogPostFrontMatter({[key]: 'value'})).toThrow(
+      `"${key}" blog post front matter is not supported anymore.`,
+    );
+  });
+});
+
+describe('validateBlogPostFrontMatter new authors front matter', () => {
   it('allow new authors front matter', () => {
     const frontMatter: BlogPostFrontMatter = {
       authors: [
@@ -124,96 +165,6 @@ describe('validateBlogPostFrontMatter handles legacy/new author front matter', (
       ],
     };
     expect(validateBlogPostFrontMatter(frontMatter)).toEqual(frontMatter);
-  });
-});
-
-describe('validateBlogPostFrontMatter author', () => {
-  testField({
-    prefix: 'author',
-    validFrontMatters: [{author: '123'}, {author: 'author'}],
-    invalidFrontMatters: [[{author: ''}, 'not allowed to be empty']],
-  });
-});
-
-describe('validateBlogPostFrontMatter author_title', () => {
-  testField({
-    prefix: 'author_title',
-    validFrontMatters: [
-      {author: '123', author_title: '123'},
-      {author: '123', author_title: 'author_title'},
-    ],
-    invalidFrontMatters: [[{author_title: ''}, 'not allowed to be empty']],
-  });
-
-  testField({
-    prefix: 'authorTitle',
-    validFrontMatters: [{authorTitle: '123'}, {authorTitle: 'authorTitle'}],
-    invalidFrontMatters: [[{authorTitle: ''}, 'not allowed to be empty']],
-  });
-});
-
-describe('validateBlogPostFrontMatter author_url', () => {
-  testField({
-    prefix: 'author_url',
-    validFrontMatters: [
-      {author_url: 'https://docusaurus.io'},
-      {author_url: '../../relative'},
-      {author_url: '/absolute'},
-    ],
-    invalidFrontMatters: [
-      [
-        {author_url: ''},
-        '"author_url" does not look like a valid url (value=\'\')',
-      ],
-    ],
-  });
-
-  testField({
-    prefix: 'authorURL',
-    validFrontMatters: [
-      {authorURL: 'https://docusaurus.io'},
-      {authorURL: '../../relative'},
-      {authorURL: '/absolute'},
-    ],
-
-    invalidFrontMatters: [
-      [
-        {authorURL: ''},
-        '"authorURL" does not look like a valid url (value=\'\')',
-      ],
-    ],
-  });
-});
-
-describe('validateBlogPostFrontMatter author_image_url', () => {
-  testField({
-    prefix: 'author_image_url',
-    validFrontMatters: [
-      {author_image_url: 'https://docusaurus.io/asset/image.png'},
-      {author_image_url: '../../relative'},
-      {author_image_url: '/absolute'},
-    ],
-    invalidFrontMatters: [
-      [
-        {author_image_url: ''},
-        '"author_image_url" does not look like a valid url (value=\'\')',
-      ],
-    ],
-  });
-
-  testField({
-    prefix: 'authorImageURL',
-    validFrontMatters: [
-      {authorImageURL: 'https://docusaurus.io/asset/image.png'},
-      {authorImageURL: '../../relative'},
-      {authorImageURL: '/absolute'},
-    ],
-    invalidFrontMatters: [
-      [
-        {authorImageURL: ''},
-        '"authorImageURL" does not look like a valid url (value=\'\')',
-      ],
-    ],
   });
 });
 
@@ -310,7 +261,6 @@ describe('validateBlogPostFrontMatter tags', () => {
       {tags: ['hello']},
       {tags: ['hello', 'world']},
       {tags: ['hello', 'world']},
-      {tags: ['hello', {label: 'tagLabel', permalink: '/tagPermalink'}]},
     ],
     invalidFrontMatters: [
       [
@@ -318,15 +268,13 @@ describe('validateBlogPostFrontMatter tags', () => {
         '"tags" does not look like a valid front matter Yaml array.',
       ],
       [{tags: ['']}, 'not allowed to be empty'],
-    ],
-    // See https://github.com/facebook/docusaurus/issues/4642
-    convertibleFrontMatter: [
-      [{tags: [42]}, {tags: ['42']}],
       [
-        {tags: [{label: 84, permalink: '/tagPermalink'}]},
-        {tags: [{label: '84', permalink: '/tagPermalink'}]},
+        {tags: ['hello', {label: 'tagLabel', permalink: '/tagPermalink'}]},
+        '"tags[1]" does not look like a valid tag: front matter tags must be strings.',
       ],
     ],
+    // See https://github.com/facebook/docusaurus/issues/4642
+    convertibleFrontMatter: [[{tags: [42]}, {tags: ['42']}]],
   });
 });
 

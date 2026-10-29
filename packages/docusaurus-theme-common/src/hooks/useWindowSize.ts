@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {useEffect, useState} from 'react';
+import {useSyncExternalStore} from 'react';
 
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 
@@ -35,6 +35,13 @@ function getWindowSize(desktopBreakpoint: number): WindowSize {
     : windowSizes.mobile;
 }
 
+function subscribeToWindowResize(onChange: () => void): () => void {
+  window.addEventListener('resize', onChange);
+  return () => {
+    window.removeEventListener('resize', onChange);
+  };
+}
+
 /**
  * Gets the current window size as an enum value. We don't want it to return the
  * actual width value, so that it only re-renders once a breakpoint is crossed.
@@ -50,26 +57,11 @@ export function useWindowSize({
 }: {
   desktopBreakpoint?: number;
 } = {}): WindowSize {
-  const [windowSize, setWindowSize] = useState<WindowSize>(
-    () =>
-      // super important to return a constant value to avoid hydration mismatch
-      // see https://github.com/facebook/docusaurus/issues/9379
-      'ssr',
+  return useSyncExternalStore(
+    subscribeToWindowResize,
+    () => getWindowSize(desktopBreakpoint),
+    // super important to return a constant value to avoid hydration mismatch
+    // see https://github.com/facebook/docusaurus/issues/9379
+    () => windowSizes.ssr,
   );
-
-  useEffect(() => {
-    function updateWindowSize() {
-      setWindowSize(getWindowSize(desktopBreakpoint));
-    }
-
-    updateWindowSize();
-
-    window.addEventListener('resize', updateWindowSize);
-
-    return () => {
-      window.removeEventListener('resize', updateWindowSize);
-    };
-  }, [desktopBreakpoint]);
-
-  return windowSize;
 }

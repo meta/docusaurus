@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type {ReactNode} from 'react';
 import Translate, {translate} from '@docusaurus/Translate';
 
 import Link from '@docusaurus/Link';
@@ -35,7 +36,7 @@ function ShowcaseHeader() {
   );
 }
 
-export default function Showcase(): JSX.Element {
+export default function Showcase(): ReactNode {
   return (
     <Layout title={TITLE} description={DESCRIPTION}>
       <main className="margin-vert--lg">

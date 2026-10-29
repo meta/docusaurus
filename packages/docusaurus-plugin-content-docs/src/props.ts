@@ -7,7 +7,7 @@
 
 import _ from 'lodash';
 import {createDocsByIdIndex} from './docs';
-import type {VersionTag, VersionTags} from './types';
+import type {FullVersion, VersionTag, VersionTags} from './types';
 import type {
   SidebarItemDoc,
   SidebarItem,
@@ -25,6 +25,7 @@ import type {
   PropSidebarItemLink,
   PropVersionDocs,
   DocMetadata,
+  DocMetadataBase,
   LoadedVersion,
 } from '@docusaurus/plugin-content-docs';
 
@@ -38,31 +39,26 @@ export function toSidebarDocItemLinkProp({
     'id' | 'title' | 'permalink' | 'unlisted' | 'frontMatter'
   >;
 }): PropSidebarItemLink {
-  const {
-    id,
-    title,
-    permalink,
-    frontMatter: {
-      sidebar_label: sidebarLabel,
-      sidebar_custom_props: customProps,
-    },
-    unlisted,
-  } = doc;
+  const {id, title, permalink, frontMatter, unlisted} = doc;
   return {
     type: 'link',
-    label: sidebarLabel ?? item.label ?? title,
+    ...(item.key && {key: item.key}),
     href: permalink,
-    className: item.className,
-    customProps: item.customProps ?? customProps,
+    // Front Matter data takes precedence over sidebars.json
+    label: frontMatter.sidebar_label ?? item.label ?? title,
+    className: frontMatter.sidebar_class_name ?? item.className,
+    customProps: frontMatter.sidebar_custom_props ?? item.customProps,
     docId: id,
     unlisted,
   };
 }
 
-export function toSidebarsProp(loadedVersion: LoadedVersion): PropSidebars {
+export function toSidebarsProp(
+  loadedVersion: Pick<LoadedVersion, 'docs' | 'sidebars'>,
+): PropSidebars {
   const docsById = createDocsByIdIndex(loadedVersion.docs);
 
-  function getDocById(docId: string): DocMetadata {
+  function getDocById(docId: string): DocMetadataBase {
     const docMetadata = docsById[docId];
     if (!docMetadata) {
       throw new Error(
@@ -148,9 +144,9 @@ Available document ids are:
   );
 }
 
-function toVersionDocsProp(loadedVersion: LoadedVersion): PropVersionDocs {
+function toVersionDocsProp(version: FullVersion): PropVersionDocs {
   return Object.fromEntries(
-    loadedVersion.docs.map((doc) => [
+    version.docs.map((doc) => [
       doc.id,
       {
         id: doc.id,
@@ -164,19 +160,19 @@ function toVersionDocsProp(loadedVersion: LoadedVersion): PropVersionDocs {
 
 export function toVersionMetadataProp(
   pluginId: string,
-  loadedVersion: LoadedVersion,
+  version: FullVersion,
 ): PropVersionMetadata {
   return {
     pluginId,
-    version: loadedVersion.versionName,
-    label: loadedVersion.label,
-    banner: loadedVersion.banner,
-    badge: loadedVersion.badge,
-    noIndex: loadedVersion.noIndex,
-    className: loadedVersion.className,
-    isLast: loadedVersion.isLast,
-    docsSidebars: toSidebarsProp(loadedVersion),
-    docs: toVersionDocsProp(loadedVersion),
+    version: version.versionName,
+    label: version.label,
+    banner: version.banner,
+    badge: version.badge,
+    noIndex: version.noIndex,
+    className: version.className,
+    isLast: version.isLast,
+    docsSidebars: toSidebarsProp(version),
+    docs: toVersionDocsProp(version),
   };
 }
 
@@ -206,6 +202,7 @@ export function toTagDocListProp({
   return {
     label: tag.label,
     permalink: tag.permalink,
+    description: tag.description,
     allTagsPath,
     count: tag.docIds.length,
     items: toDocListProp(),
@@ -221,6 +218,7 @@ export function toTagsListTagsProp(
     .map((tagValue) => ({
       label: tagValue.label,
       permalink: tagValue.permalink,
+      description: tagValue.description,
       count: tagValue.docIds.length,
     }));
 }

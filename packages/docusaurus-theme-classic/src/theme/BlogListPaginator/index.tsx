@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Translate, {translate} from '@docusaurus/Translate';
 import PaginatorNavLink from '@theme/PaginatorNavLink';
 import type {Props} from '@theme/BlogListPaginator';
 
-export default function BlogListPaginator(props: Props): JSX.Element {
+export default function BlogListPaginator(props: Props): ReactNode {
   const {metadata} = props;
   const {previousPage, nextPage} = metadata;
 
@@ -29,7 +29,7 @@ export default function BlogListPaginator(props: Props): JSX.Element {
             <Translate
               id="theme.blog.paginator.newerEntries"
               description="The label used to navigate to the newer blog posts page (previous page)">
-              Newer Entries
+              Newer entries
             </Translate>
           }
         />
@@ -41,7 +41,7 @@ export default function BlogListPaginator(props: Props): JSX.Element {
             <Translate
               id="theme.blog.paginator.olderEntries"
               description="The label used to navigate to the older blog posts page (next page)">
-              Older Entries
+              Older entries
             </Translate>
           }
           isNext

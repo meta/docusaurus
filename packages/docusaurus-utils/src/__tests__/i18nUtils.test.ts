@@ -5,13 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
+import {describe, expect, it} from 'vitest';
 import {
   mergeTranslations,
   updateTranslationFileMessages,
   getPluginI18nPath,
-  localizePath,
+  getLocaleConfig,
 } from '../i18nUtils';
+import type {I18n, I18nLocaleConfig} from '@docusaurus/types';
 
 describe('mergeTranslations', () => {
   it('works', () => {
@@ -95,87 +96,80 @@ describe('getPluginI18nPath', () => {
   });
 });
 
-describe('localizePath', () => {
-  it('localizes url path with current locale', () => {
+describe('getLocaleConfig', () => {
+  const localeConfigEn: I18nLocaleConfig = {
+    path: 'path',
+    direction: 'rtl',
+    htmlLang: 'en',
+    calendar: 'calendar',
+    label: 'EN',
+    translate: true,
+    url: 'https://example.com',
+    baseUrl: '/',
+  };
+  const localeConfigFr: I18nLocaleConfig = {
+    path: 'path',
+    direction: 'rtl',
+    htmlLang: 'fr',
+    calendar: 'calendar',
+    label: 'FR',
+    translate: true,
+    url: 'https://example.com',
+    baseUrl: '/fr/',
+  };
+
+  function i18n(params: Partial<I18n>): I18n {
+    return {
+      defaultLocale: 'en',
+      localeConfigs: {},
+      locales: ['en'],
+      path: 'path',
+      currentLocale: 'en',
+      ...params,
+    };
+  }
+
+  it('returns single locale config', () => {
     expect(
-      localizePath({
-        pathType: 'url',
-        path: '/baseUrl',
-        i18n: {
-          defaultLocale: 'en',
-          path: 'i18n',
-          locales: ['en', 'fr'],
+      getLocaleConfig(
+        i18n({currentLocale: 'en', localeConfigs: {en: localeConfigEn}}),
+      ),
+    ).toEqual(localeConfigEn);
+  });
+
+  it('returns correct locale config among 2', () => {
+    expect(
+      getLocaleConfig(
+        i18n({
           currentLocale: 'fr',
-          localeConfigs: {},
-        },
-        options: {localizePath: true},
-      }),
-    ).toBe('/baseUrl/fr/');
+          localeConfigs: {en: localeConfigEn, fr: localeConfigFr},
+        }),
+      ),
+    ).toEqual(localeConfigFr);
   });
 
-  it('localizes fs path with current locale', () => {
+  it('accepts locale to look for as param', () => {
     expect(
-      localizePath({
-        pathType: 'fs',
-        path: '/baseFsPath',
-        i18n: {
-          defaultLocale: 'en',
-          path: 'i18n',
-          locales: ['en', 'fr'],
+      getLocaleConfig(
+        i18n({
           currentLocale: 'fr',
-          localeConfigs: {fr: {path: 'fr'}, en: {path: 'en'}},
-        },
-        options: {localizePath: true},
-      }),
-    ).toBe(`${path.sep}baseFsPath${path.sep}fr`);
+          localeConfigs: {en: localeConfigEn, fr: localeConfigFr},
+        }),
+        'en',
+      ),
+    ).toEqual(localeConfigEn);
   });
 
-  it('localizes path for default locale, if requested', () => {
-    expect(
-      localizePath({
-        pathType: 'url',
-        path: '/baseUrl/',
-        i18n: {
-          defaultLocale: 'en',
-          path: 'i18n',
-          locales: ['en', 'fr'],
-          currentLocale: 'en',
-          localeConfigs: {fr: {path: 'fr'}, en: {path: 'en'}},
-        },
-        options: {localizePath: true},
-      }),
-    ).toBe('/baseUrl/en/');
-  });
-
-  it('does not localize path for default locale by default', () => {
-    expect(
-      localizePath({
-        pathType: 'url',
-        path: '/baseUrl/',
-        i18n: {
-          defaultLocale: 'en',
-          path: 'i18n',
-          locales: ['en', 'fr'],
-          currentLocale: 'en',
-          localeConfigs: {fr: {path: 'fr'}, en: {path: 'en'}},
-        },
-      }),
-    ).toBe('/baseUrl/');
-  });
-
-  it('localizes path for non-default locale by default', () => {
-    expect(
-      localizePath({
-        pathType: 'url',
-        path: '/baseUrl/',
-        i18n: {
-          defaultLocale: 'en',
-          path: 'i18n',
-          locales: ['en', 'fr'],
-          currentLocale: 'en',
-          localeConfigs: {fr: {path: 'fr'}, en: {path: 'en'}},
-        },
-      }),
-    ).toBe('/baseUrl/');
+  it('throws for locale config that does not exist', () => {
+    expect(() =>
+      getLocaleConfig(
+        i18n({
+          currentLocale: 'fr',
+          localeConfigs: {en: localeConfigEn},
+        }),
+      ),
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[Error: Can't find locale config for locale \`fr\`]`,
+    );
   });
 });

@@ -1,0 +1,63 @@
+name: Continuous Releases
+
+on:
+  push:
+    branches:
+      - main
+      - docusaurus-v**
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+# ⚠️ No GitHub Actions cache on purpose, enforced by GitHub for every step
+# A poisoned cache increases the chance of a compromised release being published
+# See https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax#cache-mode
+cache-mode: none
+
+jobs:
+  release:
+    name: Continuous Releases
+    if: github.repository == 'facebook/docusaurus'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+        with:
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          check-latest: true
+          #  ⚠️ Do not use any cache on purpose
+          # It increases the chance of a compromised release being publish
+          # See https://github.com/actions/setup-node/issues/1445#issuecomment-4040130833
+          # cache: pnpm
+          package-manager-cache: false
+
+      - name: Installation
+        run: pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build:packages
+
+      - name: Initialize fresh templates
+        run: |
+          node ./packages/create-docusaurus/bin/index.js template/docusaurus-classic-js classic --javascript -p npm
+          node ./packages/create-docusaurus/bin/index.js template/docusaurus-classic-ts classic --typescript -p npm
+
+      - name: Release
+        # --pnpm: use pnpm pack, which replaces the catalog: protocol with versions
+        run: pnpm pkg-pr-new publish './packages/*' --template './template/*' --compact --comment=off --pnpm

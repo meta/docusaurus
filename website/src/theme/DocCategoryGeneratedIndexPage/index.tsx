@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-import {useLayoutDoc} from '@docusaurus/theme-common/internal';
+import type {ReactNode} from 'react';
+import {useLayoutDoc} from '@docusaurus/plugin-content-docs/client';
 import Link from '@docusaurus/Link';
 import Translate from '@docusaurus/Translate';
 import DocCategoryGeneratedIndexPage from '@theme-original/DocCategoryGeneratedIndexPage';
@@ -34,7 +34,7 @@ function HintFooter() {
 
 export default function DocCategoryGeneratedIndexPageWrapper(
   props: Props,
-): JSX.Element {
+): ReactNode {
   return (
     <>
       <DocCategoryGeneratedIndexPage {...props} />

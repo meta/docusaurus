@@ -1,0 +1,50 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`loadVersion > minimal site > can load current version 1`] = `
+{
+  "badge": false,
+  "banner": null,
+  "className": "docs-version-current",
+  "contentPath": "<PROJECT_ROOT>/packages/docusaurus-plugin-content-docs/src/versions/__tests__/__fixtures__/site-minimal/docs",
+  "contentPathLocalized": "<PROJECT_ROOT>/packages/docusaurus-plugin-content-docs/src/versions/__tests__/__fixtures__/site-minimal/i18n/en/docusaurus-plugin-content-docs/current",
+  "docs": [
+    {
+      "description": "World",
+      "draft": false,
+      "editUrl": undefined,
+      "frontMatter": {},
+      "id": "hello",
+      "lastUpdatedAt": undefined,
+      "lastUpdatedBy": undefined,
+      "permalink": "/docs/hello",
+      "sidebarPosition": undefined,
+      "slug": "/hello",
+      "source": "@site/docs/hello.md",
+      "sourceDirName": ".",
+      "tags": [],
+      "title": "Hello",
+      "unlisted": false,
+      "version": "current",
+    },
+  ],
+  "drafts": [],
+  "editUrl": undefined,
+  "editUrlLocalized": undefined,
+  "isLast": true,
+  "label": "Next",
+  "noIndex": false,
+  "path": "/docs",
+  "routePriority": -1,
+  "sidebarFilePath": undefined,
+  "sidebars": {
+    "defaultSidebar": [
+      {
+        "id": "hello",
+        "type": "doc",
+      },
+    ],
+  },
+  "tagsPath": "/docs/tags",
+  "versionName": "current",
+}
+`;

@@ -5,59 +5,28 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-import clsx from 'clsx';
-import Translate, {translate} from '@docusaurus/Translate';
+import type {ReactNode} from 'react';
 import {
   PageMetadata,
   HtmlClassNameProvider,
+  TagsPageLinkLabel,
   ThemeClassNames,
-  usePluralForm,
 } from '@docusaurus/theme-common';
+import {useBlogTagsPostsPageTitle} from '@docusaurus/plugin-content-blog/client';
 import Link from '@docusaurus/Link';
 import BlogLayout from '@theme/BlogLayout';
 import BlogListPaginator from '@theme/BlogListPaginator';
 import SearchMetadata from '@theme/SearchMetadata';
 import type {Props} from '@theme/BlogTagsPostsPage';
 import BlogPostItems from '@theme/BlogPostItems';
-import Unlisted from '@theme/Unlisted';
+import Unlisted from '@theme/ContentVisibility/Unlisted';
 import Heading from '@theme/Heading';
 
-// Very simple pluralization: probably good enough for now
-function useBlogPostsPlural() {
-  const {selectMessage} = usePluralForm();
-  return (count: number) =>
-    selectMessage(
-      count,
-      translate(
-        {
-          id: 'theme.blog.post.plurals',
-          description:
-            'Pluralized label for "{count} posts". Use as much plural forms (separated by "|") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)',
-          message: 'One post|{count} posts',
-        },
-        {count},
-      ),
-    );
-}
-
-function useBlogTagsPostsPageTitle(tag: Props['tag']): string {
-  const blogPostsPlural = useBlogPostsPlural();
-  return translate(
-    {
-      id: 'theme.blog.tagTitle',
-      description: 'The title of the page for a blog tag',
-      message: '{nPosts} tagged with "{tagName}"',
-    },
-    {nPosts: blogPostsPlural(tag.count), tagName: tag.label},
-  );
-}
-
-function BlogTagsPostsPageMetadata({tag}: Props): JSX.Element {
+function BlogTagsPostsPageMetadata({tag}: Props): ReactNode {
   const title = useBlogTagsPostsPageTitle(tag);
   return (
     <>
-      <PageMetadata title={title} />
+      <PageMetadata title={title} description={tag.description} />
       <SearchMetadata tag="blog_tags_posts" />
     </>
   );
@@ -68,19 +37,16 @@ function BlogTagsPostsPageContent({
   items,
   sidebar,
   listMetadata,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const title = useBlogTagsPostsPageTitle(tag);
   return (
     <BlogLayout sidebar={sidebar}>
       {tag.unlisted && <Unlisted />}
       <header className="margin-bottom--xl">
         <Heading as="h1">{title}</Heading>
+        {tag.description && <p>{tag.description}</p>}
         <Link href={tag.allTagsPath}>
-          <Translate
-            id="theme.tags.tagsPageLink"
-            description="The label of the link targeting the tag list page">
-            View All Tags
-          </Translate>
+          <TagsPageLinkLabel />
         </Link>
       </header>
       <BlogPostItems items={items} />
@@ -88,13 +54,9 @@ function BlogTagsPostsPageContent({
     </BlogLayout>
   );
 }
-export default function BlogTagsPostsPage(props: Props): JSX.Element {
+export default function BlogTagsPostsPage(props: Props): ReactNode {
   return (
-    <HtmlClassNameProvider
-      className={clsx(
-        ThemeClassNames.wrapper.blogPages,
-        ThemeClassNames.page.blogTagPostListPage,
-      )}>
+    <HtmlClassNameProvider className={ThemeClassNames.page.blogTagPostListPage}>
       <BlogTagsPostsPageMetadata {...props} />
       <BlogTagsPostsPageContent {...props} />
     </HtmlClassNameProvider>

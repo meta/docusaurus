@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {ComponentProps} from 'react';
+import type {ComponentProps, ReactNode} from 'react';
 import React from 'react';
 import CodeBlock from '@theme/CodeBlock';
 import CodeInline from '@theme/CodeInline';
@@ -22,7 +22,7 @@ function shouldBeInline(props: Props) {
   );
 }
 
-export default function MDXCode(props: Props): JSX.Element {
+export default function MDXCode(props: Props): ReactNode {
   return shouldBeInline(props) ? (
     <CodeInline {...props} />
   ) : (

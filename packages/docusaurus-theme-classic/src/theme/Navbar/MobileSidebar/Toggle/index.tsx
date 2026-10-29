@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {useNavbarMobileSidebar} from '@docusaurus/theme-common/internal';
 import {translate} from '@docusaurus/Translate';
 import IconMenu from '@theme/Icon/Menu';
 
-export default function MobileSidebarToggle(): JSX.Element {
+export default function MobileSidebarToggle(): ReactNode {
   const {toggle, shown} = useNavbarMobileSidebar();
   return (
     <button

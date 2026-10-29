@@ -1,4 +1,5 @@
 {
+  "theme.Playground.buttons.reset": "Reset",
   "theme.Playground.liveEditor": "Urejanje kode v živo",
   "theme.Playground.result": "Rezultat"
 }

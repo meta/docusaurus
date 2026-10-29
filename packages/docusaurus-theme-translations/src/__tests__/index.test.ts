@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
-import fs from 'fs-extra';
+import {describe, expect, it} from 'vitest';
+import path from 'node:path';
+import {readJSON} from '@docusaurus/fs';
 import {
   codeTranslationLocalesToTry,
   readDefaultCodeTranslationMessages,
@@ -72,7 +73,7 @@ describe('readDefaultCodeTranslationMessages', () => {
   async function readAsJSON(locale: string, filename: string = name) {
     console.log(path.resolve(dirPath, locale, `${filename}.json`));
 
-    return fs.readJSON(path.resolve(dirPath, locale, `${filename}.json`));
+    return readJSON(path.resolve(dirPath, locale, `${filename}.json`));
   }
 
   it('for empty locale', async () => {
@@ -83,7 +84,7 @@ describe('readDefaultCodeTranslationMessages', () => {
         dirPath,
       }),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `"First argument to Intl.Locale constructor can't be empty or missing"`,
+      `[RangeError: First argument to Intl.Locale constructor can't be empty or missing]`,
     );
   });
 

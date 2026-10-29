@@ -28,13 +28,13 @@ The simplest sites will only need to upgrade a few npm dependencies. For more co
 
 :::info About Docusaurus v2
 
-According to our [release process](/community/release-process#stable-version), Docusaurus v2 has now entered **maintenance mode**. It will only receive support for major security issues for 3 months, until 31 January 2024. It is recommended to upgrade within that time frame to v3.
+According to our [release process](/community/release-process), Docusaurus v2 has now entered **maintenance mode**. It will only receive support for major security issues for 3 months, until 31 January 2024. It is recommended to upgrade within that time frame to v3.
 
 :::
 
 import IframeWindow from '@site/src/components/BrowserWindow/IframeWindow';
 
-## Breaking changes
+## Breaking changes {/* #breaking-changes */}
 
 This section only gives you a quick glance. All the breaking changes are thoroughly documented in the [**v3 upgrade guide**](/docs/migration/v3).
 
@@ -94,11 +94,11 @@ Apart from MDX v3, most breaking changes coming with those upgraded dependencies
 - [#9310](https://github.com/facebook/docusaurus/pull/9310): remove the legacy versioned sidebar id prefix, used for sites versioned before `v2.0.0-beta.10` (December 2021)
 - [#7966](https://github.com/facebook/docusaurus/pull/7966): refactor docs theme components, eventually requiring to you re-swizzle them
 
-## Highlights
+## Highlights {/* #highlights */}
 
 Below is a non-exhaustive list of new useful features coming with this new version. All the features are listed in the [**Docusaurus v3.0.0 release notes**](https://github.com/facebook/docusaurus/releases/tag/v3.0.0).
 
-### Markdown
+### Markdown {/* #markdown */}
 
 Docusaurus v3 upgraded from MDX v1 to MDX v3:
 
@@ -144,7 +144,7 @@ export default {
 
 Docusaurus now uses the [remark-directive](https://github.com/remarkjs/remark-directive) plugin to support admonitions. This also offers you the ability to create your own Remark plugins to extend Markdown with your own [custom directives](https://talk.commonmark.org/t/generic-directives-plugins-syntax/444) such as `:textDirective`, `::leafDirective` or `:::containerDirective`.
 
-### ESM and TypeScript configs {#esm-ts-configs}
+### ESM and TypeScript configs {/* #esm-ts-configs */}
 
 In [#9317](https://github.com/facebook/docusaurus/pull/9317), we added support for ES Modules and TypeScript config files, including site config, docs sidebars, plugins and presets.
 
@@ -184,7 +184,7 @@ const sidebars: SidebarsConfig = {
 export default sidebars;
 ```
 
-### Unlisted content
+### Unlisted content {/* #unlisted-content */}
 
 Docusaurus already supported a `draft: true` front matter option in our 3 content plugins (docs, blog, pages), which allows you to remove some pages from your production builds.
 
@@ -202,7 +202,7 @@ Unlisted content will also display a banner so that you don't forget to turn it 
 
 <IframeWindow url="/tests/blog/unlisted-post" />
 
-### React 18
+### React 18 {/* #react-18 */}
 
 In [#8961](https://github.com/facebook/docusaurus/pull/8961), we upgraded to React 18. This is important, notably for the [gradual adoption of Concurrent React features](https://react.dev/blog/2022/03/29/react-v18#gradually-adopting-concurrent-features), as well as upcoming exciting features such as [build-time React Server Components](https://github.com/facebook/docusaurus/issues/9089).
 
@@ -220,7 +220,7 @@ Their Docusaurus support is considered as **experimental**. We might have to adj
 
 :::
 
-### Automatic JSX runtime
+### Automatic JSX runtime {/* #automatic-jsx-runtime */}
 
 Docusaurus now uses the ["automatic" JSX runtime](https://legacy.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html).
 
@@ -234,7 +234,7 @@ It is not needed anymore to import React in JSX files that do not use any React 
   }
 ```
 
-### Debug builds
+### Debug builds {/* #debug-builds */}
 
 It is now possible to build your static site in dev mode.
 
@@ -250,7 +250,7 @@ This new build mode is particularly helpful for **troubleshooting React problems
 
 :::
 
-### TypeScript
+### TypeScript {/* #typescript */}
 
 Docusaurus v3 now requires a minimum version of TypeScript 5.0.
 
@@ -274,7 +274,7 @@ import type {Options, ThemeConfig} from '@docusaurus/preset-classic';
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 ```
 
-### Code blocks
+### Code blocks {/* #code-blocks */}
 
 In [#9316](https://github.com/facebook/docusaurus/pull/9316), we improved on syntax highlighting thanks to the [prism-react-renderer](https://github.com/FormidableLabs/prism-react-renderer) v2 upgrade. For example, a bash param `--save` is now colored:
 
@@ -311,7 +311,7 @@ x = 10;
 y = times2(x);
 ```
 
-### Mermaid diagrams
+### Mermaid diagrams {/* #mermaid-diagrams */}
 
 In [#9305](https://github.com/facebook/docusaurus/pull/9305), we upgraded to Mermaid v10.4 and added support for async diagram rendering. Docusaurus is now able to render new types of diagrams.
 
@@ -354,7 +354,7 @@ quadrantChart
 
 </details>
 
-### Query-string data attributes
+### Query-string data attributes {/* #query-string-data-attributes */}
 
 In [#9028](https://github.com/facebook/docusaurus/pull/9028), we made it possible to set custom HTML [data attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/data-*) though `docusaurus-data-x` query-string parameters. This makes it easier to embed a Docusaurus iframe on another site, and lets you customize the appearance of the embedded version with CSS.
 
@@ -370,7 +370,7 @@ html[data-red-border] div#__docusaurus {
 
 <IframeWindow url="/docs/?docusaurus-data-navbar=false&docusaurus-data-red-border" />
 
-### Other features
+### Other features {/* #other-features */}
 
 Other new features worth mentioning:
 
@@ -382,7 +382,7 @@ Other new features worth mentioning:
 
 Read [**Docusaurus v3.0.0 release notes**](https://github.com/facebook/docusaurus/releases/tag/v3.0.0) for an exhaustive list of changes.
 
-## Conclusion
+## Conclusion {/* #conclusion */}
 
 This release comes with a few features, but more importantly **upgrades many pieces of the Docusaurus infrastructure**.
 

@@ -1,34 +1,49 @@
 JMarcey:
   name: Joel Marcey
   title: Developer Advocate at Meta
-  url: https://twitter.com/JoelMarcey
+  url: https://x.com/JoelMarcey
   image_url: https://github.com/JoelMarcey.png
-  email: jimarcey@gmail.com
-  twitter: JoelMarcey
+  page: true
+  socials:
+    x: joelmarcey
+    github: JoelMarcey
 
 zpao:
   name: Paul O’Shannessy
   title: Engineering Manager at Meta
-  url: https://twitter.com/zpao
+  url: https://x.com/zpao
   image_url: https://github.com/zpao.png
-  email: jimarcey@gmail.com
-  twitter: zpao
+  page: true
+  socials:
+    x: zpao
+    github: zpao
 
 slorber:
   name: Sébastien Lorber
   title: Docusaurus maintainer, This Week In React editor
   url: https://thisweekinreact.com
   image_url: https://github.com/slorber.png
-  twitter: sebastienlorber
-  email: sebastien@thisweekinreact.com
+  page: true
+  description: A freelance React and React-Native developer near Paris and Docusaurus maintainer. Also runs ThisWeekInReact.com, a newsletter to stay updated with the React ecosystem.
+  socials:
+    bluesky: sebastienlorber.com
+    x: sebastienlorber
+    linkedin: sebastienlorber
+    github: slorber
+    instagram: thisweekinreact
+    newsletter: https://thisweekinreact.com
 
 yangshun:
   name: Yangshun Tay
-  title: Front End Engineer at Meta
-  url: https://github.com/yangshun
+  title: Ex-Meta Staff Engineer, Co-founder GreatFrontEnd
+  url: https://linkedin.com/in/yangshun
   image_url: https://github.com/yangshun.png
-  twitter: yangshunz
-  email: tay.yang.shun@gmail.com
+  page: true
+  socials:
+    x: yangshunz
+    linkedin: yangshun
+    github: yangshun
+    newsletter: https://www.greatfrontend.com
 
 lex111:
   name: Alexey Pyltsyn
@@ -36,6 +51,7 @@ lex111:
   url: https://github.com/lex111
   image_url: https://github.com/lex111.png
   email: lex@php.net
+  page: true
 
 Josh-Cena:
   name: Joshua Chen
@@ -43,3 +59,26 @@ Josh-Cena:
   url: https://joshcena.com/
   image_url: https://github.com/josh-cena.png
   email: sidachen2003@gmail.com
+  page: true
+
+endiliey:
+  name: Endilie Yacop Sucipto
+  title: Maintainer of Docusaurus
+  url: https://github.com/endiliey
+  image_url: https://github.com/endiliey.png
+
+abernathyca:
+  name: Christine Abernathy
+  url: http://x.com/abernathyca
+  image_url: https://github.com/caabernathy.png
+  socials:
+    x: abernathyca
+
+shortcuts:
+  name: Clément Vannicatte
+  title: Software Engineer @ Algolia
+  url: https://github.com/shortcuts
+  image_url: https://github.com/shortcuts.png
+  socials:
+    x: sh0rtcts
+    github: shortcuts

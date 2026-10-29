@@ -5,10 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import logger from '@docusaurus/logger';
 import {Joi} from '@docusaurus/utils-validation';
-import {ChangeFreqList, LastModOptionList} from './types';
+import {LastModOptionList} from './types';
 import type {OptionValidationContext} from '@docusaurus/types';
-import type {ChangeFreq, LastModOption} from './types';
+import type {
+  LastModOption,
+  SitemapItem,
+  CreateSitemapItemsFn,
+  CreateSitemapItemsParams,
+} from './types';
 
 export type PluginOptions = {
   /**
@@ -33,70 +39,58 @@ export type PluginOptions = {
    */
   lastmod: LastModOption | null;
 
-  /**
-   * TODO Docusaurus v4 breaking change: remove useless option
-   * @see https://www.sitemaps.org/protocol.html#xmlTagDefinitions
-   */
-  changefreq: ChangeFreq | null;
-
-  /**
-   * TODO Docusaurus v4 breaking change: remove useless option
-   * @see https://www.sitemaps.org/protocol.html#xmlTagDefinitions
-   */
-  priority: number | null;
+  /** Allow control over the construction of SitemapItems */
+  createSitemapItems?: CreateSitemapItemsOption;
 };
+
+type CreateSitemapItemsOption = (
+  params: CreateSitemapItemsParams & {
+    defaultCreateSitemapItems: CreateSitemapItemsFn;
+  },
+) => Promise<SitemapItem[]>;
 
 export type Options = Partial<PluginOptions>;
 
 export const DEFAULT_OPTIONS: PluginOptions = {
   filename: 'sitemap.xml',
   ignorePatterns: [],
-
-  // TODO Docusaurus v4 breaking change
-  //  change default to "date" if no bug or perf issue reported
-  lastmod: null,
-
-  // TODO Docusaurus v4 breaking change
-  //  those options are useless and should be removed
-  changefreq: 'weekly',
-  priority: 0.5,
+  lastmod: 'date',
 };
+
+// TODO Docusaurus v5: remove these migration errors
+// Removed in Docusaurus v4: Google ignores <changefreq> and <priority>,
+// and the same value for all routes does not make sense anyway
+// Users can still emit them per-route with createSitemapItems()
+// See also https://github.com/facebook/docusaurus/issues/2604
+function removedOptionSchema(option: 'changefreq' | 'priority') {
+  return Joi.any()
+    .forbidden()
+    .messages({
+      'any.unknown': `The sitemap plugin ${logger.code(
+        option,
+      )} option has been removed in Docusaurus v4. Please remove it from your config.
+If you still want to emit this sitemap tag, use the ${logger.code(
+        'createSitemapItems',
+      )} option instead: ${logger.url(
+        'https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-sitemap#changefreq-priority',
+      )}`,
+    });
+}
 
 const PluginOptionSchema = Joi.object<PluginOptions>({
   // @ts-expect-error: forbidden
-  cacheTime: Joi.forbidden().messages({
-    'any.unknown':
-      'Option `cacheTime` in sitemap config is deprecated. Please remove it.',
-  }),
-
-  // TODO remove for Docusaurus v4 breaking changes?
-  //  This is not even used by Google crawlers
-  //  See also https://github.com/facebook/docusaurus/issues/2604
-  changefreq: Joi.string()
-    .valid(null, ...ChangeFreqList)
-    .default(DEFAULT_OPTIONS.changefreq),
-
-  // TODO remove for Docusaurus v4 breaking changes?
-  //  This is not even used by Google crawlers
-  //  The priority is "relative", and using the same priority for all routes
-  //  does not make sense according to the spec
-  //  See also https://github.com/facebook/docusaurus/issues/2604
-  //  See also https://www.sitemaps.org/protocol.html
-  priority: Joi.alternatives()
-    .try(Joi.valid(null), Joi.number().min(0).max(1))
-    .default(DEFAULT_OPTIONS.priority),
+  changefreq: removedOptionSchema('changefreq'),
+  priority: removedOptionSchema('priority'),
 
   lastmod: Joi.string()
     .valid(null, ...LastModOptionList)
     .default(DEFAULT_OPTIONS.lastmod),
 
+  createSitemapItems: Joi.function(),
+
   ignorePatterns: Joi.array()
     .items(Joi.string())
     .default(DEFAULT_OPTIONS.ignorePatterns),
-  trailingSlash: Joi.forbidden().messages({
-    'any.unknown':
-      'Please use the new Docusaurus global trailingSlash config instead, and the sitemaps plugin will use it.',
-  }),
   filename: Joi.string().default(DEFAULT_OPTIONS.filename),
 });
 

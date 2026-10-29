@@ -15,9 +15,9 @@ In this post, we will present you the **translation workflow**, explain some **d
 
 We also **dogfood** the i18n support on the **Docusaurus 2 site itself**, and this post is already available in [English](https://docusaurus.io/blog/2021/03/09/releasing-docusaurus-i18n) and [French](https://docusaurus.io/fr/blog/2021/03/09/releasing-docusaurus-i18n)!
 
-<!--truncate-->
+{/* truncate */}
 
-## Translate your site
+## Translate your site {/* #translate-your-site */}
 
 You can translate a Docusaurus site in **3 simple steps**:
 
@@ -29,7 +29,7 @@ The i18n support is **very flexible** and based on the **filesystem**.
 
 The **[i18n tutorial](https://docusaurus.io/docs/i18n/tutorial)** is the best way to get started, and we provide help to use **[Git](https://docusaurus.io/docs/i18n/git)** or **[Crowdin](https://docusaurus.io/docs/i18n/crowdin)**.
 
-## Design decisions
+## Design decisions {/* #design-decisions */}
 
 The goals of the Docusaurus i18n system are:
 
@@ -46,11 +46,11 @@ The goals of the Docusaurus i18n system are:
 - **RTL support**: locales reading right-to-left (Arabic, Hebrew, etc.) are supported and easy to implement
 - **Default translations**: classic theme labels are translated for you in [many languages](https://github.com/facebook/docusaurus/tree/main/packages/docusaurus-theme-translations/locales)
 
-## Showcase
+## Showcase {/* #showcase */}
 
 We worked with a few volunteers to **dogfood the i18n support** before releasing it.
 
-### Jest: upgrading Docusaurus
+### Jest: upgrading Docusaurus {/* #jest-upgrading-docusaurus */}
 
 We have made it possible to **upgrade** a **translated Docusaurus 1 site** to Docusaurus 2.
 
@@ -60,7 +60,7 @@ The Docusaurus 2 migration was successful and the new site is now deployed in pr
 
 [![Jest's website front page in Japanese](/img/blog/2021-03-09-releasing-docusaurus-i18n/jest.png)](https://jestjs.io)
 
-### Redwood: adopting Docusaurus
+### Redwood: adopting Docusaurus {/* #redwood-adopting-docusaurus */}
 
 [Redwood](https://redwoodjs.com/) is a React full-stack Jamstack framework.
 
@@ -68,7 +68,7 @@ They were looking for a solution to create an **internationalized learning platf
 
 [![Redwood's doc page in French](/img/blog/2021-03-09-releasing-docusaurus-i18n/redwood.png)](https://learn.redwoodjs.com/)
 
-### Datagit: using LTR support
+### Datagit: using LTR support {/* #datagit-using-ltr-support */}
 
 The i18n system should work with any language, including **Right-to-Left languages**.
 
@@ -76,7 +76,7 @@ The i18n system should work with any language, including **Right-to-Left languag
 
 [![Datagit's website in Persian, a right-to-left language. The sidebar appears on the right of the window and the TOC appears on the left.](/img/blog/2021-03-09-releasing-docusaurus-i18n/datagit.png)](https://datagit.ir/)
 
-## Conclusion
+## Conclusion {/* #conclusion */}
 
 We sincerely hope you will adopt and like the new i18n support.
 

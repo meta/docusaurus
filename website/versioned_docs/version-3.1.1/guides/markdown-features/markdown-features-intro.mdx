@@ -30,7 +30,7 @@ It is a very helpful debugging tool that shows how the MDX compiler transforms M
 
 :::
 
-## MDX vs. CommonMark {#mdx-vs-commonmark}
+## MDX vs. CommonMark {/* #mdx-vs-commonmark */}
 
 Docusaurus compiles both `.md` and `.mdx` files to React components using the MDX compiler, but **the syntax can be interpreted differently** depending on your settings.
 
@@ -41,7 +41,7 @@ The MDX compiler supports [2 formats](https://mdxjs.com/packages/mdx/#optionsfor
 
 By default, **Docusaurus v3 uses the MDX format for all files** (including `.md` files) for historical reasons.
 
-It is possible to **opt-in for CommonMark** using the [`siteConfig.markdown.format`](../../api/docusaurus.config.js.mdx#markdown) setting or the `format: md` front matter.
+It is possible to **opt-in for CommonMark** using the [`siteConfig.markdown.format`](../../api/docusaurus.config.js.mdx#markdown) setting or the `mdx.format: md` front matter.
 
 :::tip how to use CommonMark
 
@@ -52,7 +52,7 @@ If you plan to use CommonMark, we recommend the [`siteConfig.markdown.format: 'd
 
 :::
 
-## Standard features {#standard-features}
+## Standard features {/* #standard-features */}
 
 Markdown is a syntax that enables you to write formatted content in a readable syntax.
 
@@ -88,7 +88,7 @@ In general, you should only assume the _semantics_ of the markup (` ``` ` fences
 
 </details>
 
-## Front matter {#front-matter}
+## Front matter {/* #front-matter */}
 
 Front matter is used to add metadata to your Markdown file. All content plugins have their own front matter schema, and use the front matter to enrich the default metadata inferred from the content or other configuration.
 
@@ -153,7 +153,7 @@ export default {
 
 :::
 
-## Quotes {#quotes}
+## Quotes {/* #quotes */}
 
 Markdown quotes are beautifully styled:
 
@@ -171,7 +171,7 @@ Markdown quotes are beautifully styled:
 
 </BrowserWindow>
 
-## Details {#details}
+## Details {/* #details */}
 
 Markdown can embed HTML elements, and [`details`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details) HTML elements are beautifully styled:
 

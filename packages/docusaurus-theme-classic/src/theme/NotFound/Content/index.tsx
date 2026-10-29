@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Translate from '@docusaurus/Translate';
 import type {Props} from '@theme/NotFound/Content';
 import Heading from '@theme/Heading';
 
-export default function NotFoundContent({className}: Props): JSX.Element {
+export default function NotFoundContent({className}: Props): ReactNode {
   return (
     <main className={clsx('container margin-vert--xl', className)}>
       <div className="row">

@@ -1,0 +1,104 @@
+---
+sidebar_position: 9
+slug: /api/plugins/@docusaurus/plugin-css-cascade-layers
+---
+
+# 📦 plugin-css-cascade-layers
+
+import APITable from '@site/src/components/APITable';
+
+:::warning Experimental
+
+This plugin is mostly designed to be used internally by the classic preset, although it can also be used as a standalone plugin. Please [let us know here](https://github.com/facebook/docusaurus/pull/11142) if you have a use case for it and help us design an API that makes sense for the future of Docusaurus.
+
+:::
+
+A plugin for wrapping CSS modules of your Docusaurus site in [CSS Cascade Layers](https://css-tricks.com/css-cascade-layers/). This modern CSS feature is widely supported by all browsers. It allows grouping CSS rules in layers of specificity and gives you more control over the CSS cascade.
+
+Use this plugin to:
+
+- apply a top-level `@layer myLayer { ... }` block rule around any CSS module, including un-layered third-party CSS.
+- define an explicit layer ordering
+
+:::warning
+
+To use this plugin properly, it's recommended to have a solid understanding of [CSS Cascade Layers](https://css-tricks.com/css-cascade-layers/), the [CSS Cascade](https://developer.mozilla.org/docs/Web/CSS/CSS_cascade/Cascade) and [specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascade/Specificity).
+
+:::
+
+## Installation {/* #installation */}
+
+```bash npm2yarn
+npm install --save @docusaurus/plugin-css-cascade-layers
+```
+
+:::tip
+
+If you use the preset `@docusaurus/preset-classic`, you don't need to install it as a dependency: this plugin is enabled by default. Use the `cssCascadeLayers` preset option to configure it, or `cssCascadeLayers: false` to disable it.
+
+:::
+
+## Configuration {/* #configuration */}
+
+Accepted fields:
+
+```mdx-code-block
+<APITable>
+```
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `layers` | `Layers` | **Built-in layers** | An object representing all the CSS cascade layers you want to use, and whether the layer should be applied to a given file path. See examples and types below. |
+
+```mdx-code-block
+</APITable>
+```
+
+### Types {/* #types */}
+
+#### `Layers` {/* #EditUrlFunction */}
+
+```ts
+type Layers = Record<
+  string, // layer name
+  (filePath: string) => boolean // layer matcher
+>;
+```
+
+The `layers` object is defined by:
+
+- key: the name of a layer
+- value: a function to define if a given CSS module file should be in that layer
+
+:::warning Order matters
+
+The object order matters:
+
+- the keys order defines an explicit CSS layer order
+- when multiple layers match a file path, only the first layer will apply
+
+:::
+
+### Example configuration {/* #ex-config */}
+
+You can configure this plugin through preset options or plugin options.
+
+:::tip
+
+Most Docusaurus users configure this plugin through the preset options.
+
+:::
+
+```js config-tabs
+// Preset Options: cssCascadeLayers
+// Plugin Options: @docusaurus/plugin-css-cascade-layers
+
+const config = {
+  layers: {
+    'docusaurus.infima': (filePath) =>
+      filePath.includes('/node_modules/infima/dist'),
+    'docusaurus.theme-classic': (filePath) =>
+      filePath.includes('/node_modules/@docusaurus/theme-classic/lib'),
+  },
+};
+```

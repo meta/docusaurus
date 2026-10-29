@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-import clsx from 'clsx';
+import type {ReactNode} from 'react';
 import {
   PageMetadata,
   HtmlClassNameProvider,
@@ -20,7 +19,7 @@ import ChangelogItem from '@theme/ChangelogItem';
 import ChangelogListHeader from '@theme/ChangelogList/Header';
 import type {Props} from '@theme/BlogListPage';
 
-function ChangelogListMetadata(props: Props): JSX.Element {
+function ChangelogListMetadata(props: Props): ReactNode {
   const {metadata} = props;
   const {blogTitle, blogDescription} = metadata;
   return (
@@ -31,7 +30,7 @@ function ChangelogListMetadata(props: Props): JSX.Element {
   );
 }
 
-function ChangelogListContent(props: Props): JSX.Element {
+function ChangelogListContent(props: Props): ReactNode {
   const {metadata, items, sidebar} = props;
   const {blogTitle} = metadata;
   return (
@@ -43,13 +42,9 @@ function ChangelogListContent(props: Props): JSX.Element {
   );
 }
 
-export default function ChangelogList(props: Props): JSX.Element {
+export default function ChangelogList(props: Props): ReactNode {
   return (
-    <HtmlClassNameProvider
-      className={clsx(
-        ThemeClassNames.wrapper.blogPages,
-        ThemeClassNames.page.blogListPage,
-      )}>
+    <HtmlClassNameProvider className={ThemeClassNames.page.blogListPage}>
       <ChangelogListMetadata {...props} />
       <ChangelogListContent {...props} />
     </HtmlClassNameProvider>

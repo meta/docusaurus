@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-@media (min-width: 997px) {
+@media (width >= 997px) {
   .menu {
     flex-grow: 1;
     padding: 0.5rem;
   }
+
   @supports (scrollbar-gutter: stable) {
     .menu {
       padding: 0.5rem 0 0.5rem 0.5rem;

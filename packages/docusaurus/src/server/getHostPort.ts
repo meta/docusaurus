@@ -5,7 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {execSync, type ExecSyncOptionsWithStringEncoding} from 'child_process';
+import {
+  execSync,
+  type ExecSyncOptionsWithStringEncoding,
+} from 'node:child_process';
 import logger from '@docusaurus/logger';
 import detect from 'detect-port';
 import {DEFAULT_PORT} from '@docusaurus/utils';
@@ -85,8 +88,10 @@ Would you like to run the app on another port instead?`),
     })) as {shouldChangePort: boolean};
     return shouldChangePort ? port : null;
   } catch (err) {
-    logger.error`Could not find an open port at ${host}.`;
-    throw err;
+    throw new Error(
+      logger.interpolate`Could not find an open port at ${host}.`,
+      {cause: err},
+    );
   }
 }
 

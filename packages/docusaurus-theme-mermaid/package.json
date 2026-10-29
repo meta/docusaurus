@@ -1,6 +1,6 @@
 {
   "name": "@docusaurus/theme-mermaid",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Mermaid components for Docusaurus.",
   "main": "lib/index.js",
   "types": "src/theme-mermaid.d.ts",
@@ -27,28 +27,25 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "tsc --build && node ../../admin/scripts/copyUntypedFiles.js && prettier --config ../../.prettierrc --write \"lib/theme/**/*.js\"",
+    "build": "tsc --build && copy-untyped-files && format-gitignored-files \"lib/theme/**/*.js\"",
     "watch": "run-p -c copy:watch build:watch",
     "build:watch": "tsc --build --watch",
-    "copy:watch": "node ../../admin/scripts/copyUntypedFiles.js --watch"
+    "copy:watch": "copy-untyped-files --watch"
   },
   "dependencies": {
-    "@docusaurus/core": "3.2.1",
-    "@docusaurus/module-type-aliases": "3.2.1",
-    "@docusaurus/theme-common": "3.2.1",
-    "@docusaurus/types": "3.2.1",
-    "@docusaurus/utils-validation": "3.2.1",
-    "mermaid": "^10.4.0",
-    "tslib": "^2.6.0"
-  },
-  "devDependencies": {
-    "react-test-renderer": "^18.0.0"
+    "@docusaurus/core": "workspace:*",
+    "@docusaurus/module-type-aliases": "workspace:*",
+    "@docusaurus/theme-common": "workspace:*",
+    "@docusaurus/types": "workspace:*",
+    "@docusaurus/utils-validation": "workspace:*",
+    "mermaid": "catalog:",
+    "tslib": "catalog:"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   }
 }

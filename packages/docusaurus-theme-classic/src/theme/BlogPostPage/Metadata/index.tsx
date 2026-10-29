@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {PageMetadata} from '@docusaurus/theme-common';
-import {useBlogPost} from '@docusaurus/theme-common/internal';
+import {useBlogPost} from '@docusaurus/plugin-content-blog/client';
 
-export default function BlogPostPageMetadata(): JSX.Element {
+export default function BlogPostPageMetadata(): ReactNode {
   const {assets, metadata} = useBlogPost();
   const {title, description, date, tags, authors, frontMatter} = metadata;
 
@@ -17,7 +17,7 @@ export default function BlogPostPageMetadata(): JSX.Element {
   const image = assets.image ?? frontMatter.image;
   return (
     <PageMetadata
-      title={title}
+      title={frontMatter.title_meta ?? title}
       description={description}
       keywords={keywords}
       image={image}>

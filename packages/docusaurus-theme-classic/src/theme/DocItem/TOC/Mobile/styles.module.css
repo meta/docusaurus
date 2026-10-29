@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-@media (min-width: 997px) {
+@media (width >= 997px) {
   /* Prevent hydration FOUC, as the mobile TOC needs to be server-rendered */
   .tocMobile {
     display: none;

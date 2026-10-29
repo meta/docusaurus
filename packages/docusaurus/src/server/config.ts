@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
-import fs from 'fs-extra';
+import path from 'node:path';
 import logger from '@docusaurus/logger';
 import {
   DEFAULT_CONFIG_FILE_NAME,
   findAsyncSequential,
   loadFreshModule,
 } from '@docusaurus/utils';
+import {pathExists} from '@docusaurus/fs';
 import {validateConfig} from './configValidation';
 import type {LoadContext} from '@docusaurus/types';
 
@@ -23,13 +23,14 @@ async function findConfig(siteDir: string) {
   );
   const configPath = await findAsyncSequential(
     candidates.map((file) => path.join(siteDir, file)),
-    fs.pathExists,
+    pathExists,
   );
   if (!configPath) {
-    logger.error('No config file found.');
-    logger.info`Expected one of:${candidates}
-You can provide a custom config path with the code=${'--config'} option.`;
-    throw new Error();
+    const relativeSiteDir = path.relative(process.cwd(), siteDir);
+    throw new Error(logger.interpolate`No config file found in site dir code=${relativeSiteDir}.
+Expected one of:${candidates.map(logger.code)}
+You can provide a custom config path with the code=${'--config'} option.
+    `);
   }
   return configPath;
 }
@@ -45,11 +46,11 @@ export async function loadSiteConfig({
     ? path.resolve(siteDir, customConfigFilePath)
     : await findConfig(siteDir);
 
-  if (!(await fs.pathExists(siteConfigPath))) {
+  if (!(await pathExists(siteConfigPath))) {
     throw new Error(`Config file at "${siteConfigPath}" not found.`);
   }
 
-  const importedConfig = await loadFreshModule(siteConfigPath);
+  const importedConfig = await loadFreshModule(siteConfigPath, {default: true});
 
   const loadedConfig: unknown =
     typeof importedConfig === 'function'

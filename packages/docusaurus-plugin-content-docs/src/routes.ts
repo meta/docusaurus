@@ -11,19 +11,20 @@ import {
   docuHash,
   normalizeUrl,
   aliasedSitePathToRelativePath,
+  groupTaggedItems,
+  getTagVisibility,
 } from '@docusaurus/utils';
 import {
   toTagDocListProp,
   toTagsListTagsProp,
   toVersionMetadataProp,
 } from './props';
-import {getVersionTags} from './tags';
 import type {
   PluginContentLoadedActions,
   RouteConfig,
   RouteMetadata,
 } from '@docusaurus/types';
-import type {FullVersion, VersionTag} from './types';
+import type {FullVersion, VersionTag, VersionTags} from './types';
 import type {
   CategoryGeneratedIndexMetadata,
   DocMetadata,
@@ -112,6 +113,23 @@ async function buildVersionSidebarRoute(param: BuildVersionRoutesParam) {
     routes: subRoutes,
   };
 }
+function getVersionTags(docs: DocMetadata[]): VersionTags {
+  const groups = groupTaggedItems(docs, (doc) => doc.tags);
+  return _.mapValues(groups, ({tag, items: tagDocs}) => {
+    const tagVisibility = getTagVisibility({
+      items: tagDocs,
+      isUnlisted: (item) => item.unlisted,
+    });
+    return {
+      inline: tag.inline,
+      label: tag.label,
+      permalink: tag.permalink,
+      description: tag.description,
+      docIds: tagVisibility.listedItems.map((item) => item.id),
+      unlisted: tagVisibility.unlisted,
+    };
+  });
+}
 
 async function buildVersionTagsRoutes(
   param: BuildVersionRoutesParam,
@@ -120,8 +138,9 @@ async function buildVersionTagsRoutes(
   const versionTags = getVersionTags(version.docs);
 
   async function buildTagsListRoute(): Promise<RouteConfig | null> {
+    const tags = toTagsListTagsProp(versionTags);
     // Don't create a tags list page if there's no tag
-    if (Object.keys(versionTags).length === 0) {
+    if (tags.length === 0) {
       return null;
     }
     return {
@@ -129,7 +148,7 @@ async function buildVersionTagsRoutes(
       exact: true,
       component: options.docTagsListComponent,
       props: {
-        tags: toTagsListTagsProp(versionTags),
+        tags,
       },
     };
   }
@@ -164,7 +183,7 @@ type BuildVersionRoutesParam = Omit<BuildAllRoutesParam, 'versions'> & {
 async function buildVersionRoutes(
   param: BuildVersionRoutesParam,
 ): Promise<RouteConfig> {
-  const {version, options} = param;
+  const {version, options, actions, aliasedSource} = param;
 
   async function buildVersionSubRoutes() {
     const [sidebarRoute, tagsRoutes] = await Promise.all([
@@ -175,16 +194,28 @@ async function buildVersionRoutes(
     return [sidebarRoute, ...tagsRoutes];
   }
 
+  // The version metadata is provided to the whole version subtree through the
+  // route context, see useDocsVersion()
+  async function createVersionMetadataModule(): Promise<string> {
+    const modulePath = await actions.createData(
+      `version-${docuHash(version.versionName)}.json`,
+      toVersionMetadataProp(options.id, version),
+    );
+    return aliasedSource(modulePath);
+  }
+
   async function doBuildVersionRoutes(): Promise<RouteConfig> {
+    const [versionMetadataModulePath, subRoutes] = await Promise.all([
+      createVersionMetadataModule(),
+      buildVersionSubRoutes(),
+    ]);
     return {
       path: version.path,
       exact: false,
       component: options.docVersionRootComponent,
-      routes: await buildVersionSubRoutes(),
-      props: {
-        // TODO Docusaurus v4 breaking change?
-        //  expose version metadata as route context instead of props
-        version: toVersionMetadataProp(options.id, version),
+      routes: subRoutes,
+      context: {
+        docsVersion: versionMetadataModulePath,
       },
       priority: version.routePriority,
     };

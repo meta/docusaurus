@@ -16,7 +16,7 @@ import {
 
 Docusaurus has a canary releases system.
 
-It permits you to **test new unreleased features** as soon as the pull requests are merged on the [next version](./5-release-process.mdx#next-version) of Docusaurus.
+It permits you to **test new unreleased features** as soon as the pull requests are merged.
 
 It is a good way to **give feedback to maintainers**, ensuring the newly implemented feature works as intended.
 
@@ -53,7 +53,7 @@ The canary version shown below is directly fetched from npm and **is up-to-date*
 </InsertIfCanaryVersionKnown>
 ```
 
-## Canary npm dist tag
+## Canary npm dist tag {/* #canary-npm-dist-tag */}
 
 For any code-related commit on `main`, the continuous integration will publish a canary release under the `@canary` npm dist tag. It generally takes up to 10 minutes.
 
@@ -74,7 +74,7 @@ Canary versions follow the naming convention `0.0.0-commitNumber`.
 
 :::
 
-## Using a canary release
+## Using a canary release {/* #using-a-canary-release */}
 
 Take the latest version published under the [canary npm dist tag](https://www.npmjs.com/package/@docusaurus/core?activeTab=versions) (<CanaryVersion />).
 
@@ -107,4 +107,40 @@ For canary releases, prefer using an exact version instead of a semver range (av
 
 ```mdx-code-block
 </VersionsProvider>
+```
+
+:::warning package manager security
+
+Some package managers have security options enabled by default to mitigate supply chain attacks, notably [requiring npm packages to reach a minimum age](https://github.com/lirantal/npm-security-best-practices#31-npm--pnpm--bun--yarn-minimumreleaseage-cooldown).
+
+To ensure the most recent canary release can install successfully, try the following options env variables:
+
+```bash
+# npm
+# if it doesn't work, try "npm_config_min_release_age=0"
+# see https://github.com/facebook/docusaurus/pull/12437
+npm_config_min_release_age_exclude='create-docusaurus,@docusaurus/*'
+
+# pnpm
+PNPM_CONFIG_MINIMUM_RELEASE_AGE_EXCLUDE='["create-docusaurus","@docusaurus/*"]'
+
+# Yarn Berry
+yarn config set --json npmPreapprovedPackages '["create-docusaurus","@docusaurus/*"]'
+```
+
+:::
+
+## Creating a new canary website
+
+Here's a full example script to initialize a new Docusaurus site with our most recent canary release:
+
+```bash
+PNPM_CONFIG_MINIMUM_RELEASE_AGE_EXCLUDE='["create-docusaurus","@docusaurus/*"]' pnpm dlx create-docusaurus@canary my-canary-website classic --typescript
+
+cd my-canary-website
+
+pnpm config set --location=project --json minimumReleaseAgeExclude '["create-docusaurus","@docusaurus/*"]'
+pnpm install
+
+pnpm build
 ```

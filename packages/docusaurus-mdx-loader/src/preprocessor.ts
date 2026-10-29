@@ -11,7 +11,7 @@ import {
   admonitionTitleToDirectiveLabel,
 } from '@docusaurus/utils';
 import {normalizeAdmonitionOptions} from './remark/admonitions';
-import type {Options} from './loader';
+import type {Options} from './options';
 
 /**
  * Preprocess the string before passing it to MDX

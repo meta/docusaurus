@@ -18,6 +18,7 @@ import type {
   I18n,
   PluginRouteConfig,
   SiteMetadata,
+  SiteStorage,
 } from '@docusaurus/types';
 
 function genWarning({generatedFilesDir}: {generatedFilesDir: string}) {
@@ -131,6 +132,20 @@ function genSiteMetadata({
   );
 }
 
+function genSiteStorage({
+  generatedFilesDir,
+  siteStorage,
+}: {
+  generatedFilesDir: string;
+  siteStorage: SiteStorage;
+}) {
+  return generate(
+    generatedFilesDir,
+    'site-storage.json',
+    JSON.stringify(siteStorage, null, 2),
+  );
+}
+
 type CodegenParams = {
   generatedFilesDir: string;
   siteConfig: DocusaurusConfig;
@@ -140,6 +155,7 @@ type CodegenParams = {
   i18n: I18n;
   codeTranslations: CodeTranslations;
   siteMetadata: SiteMetadata;
+  siteStorage: SiteStorage;
   routes: PluginRouteConfig[];
 };
 
@@ -151,6 +167,7 @@ export async function generateSiteFiles(params: CodegenParams): Promise<void> {
     generateRouteFiles(params),
     genGlobalData(params),
     genSiteMetadata(params),
+    genSiteStorage(params),
     genI18n(params),
     genCodeTranslations(params),
   ]);

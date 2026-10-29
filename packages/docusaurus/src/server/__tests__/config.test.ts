@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
+import {describe, expect, it} from 'vitest';
+import path from 'node:path';
 import {loadSiteConfig} from '../config';
 
 describe('loadSiteConfig', () => {
@@ -109,9 +110,9 @@ describe('loadSiteConfig', () => {
         customConfigFilePath: 'incomplete.config.js',
       }),
     ).rejects.toThrowErrorMatchingInlineSnapshot(`
-            ""url" is required
-            "
-          `);
+      [Error: "url" is required
+      ]
+    `);
   });
 
   it('website with useless field (wrong field) in siteConfig', async () => {
@@ -121,10 +122,10 @@ describe('loadSiteConfig', () => {
         customConfigFilePath: 'wrong.config.js',
       }),
     ).rejects.toThrowErrorMatchingInlineSnapshot(`
-            "These field(s) ("useLessField",) are not recognized in wrong.config.js.
-            If you still want these fields to be in your configuration, put them in the "customFields" field.
-            See https://docusaurus.io/docs/api/docusaurus-config/#customfields"
-          `);
+      [Error: These field(s) ("useLessField",) are not recognized in wrong.config.js.
+      If you still want these fields to be in your configuration, put them in the "customFields" field.
+      See https://docusaurus.io/docs/api/docusaurus-config/#customfields]
+    `);
   });
 
   it('website with no siteConfig', async () => {
@@ -134,7 +135,7 @@ describe('loadSiteConfig', () => {
         customConfigFilePath: 'nonExistent.config.js',
       }),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `"Config file at "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/config/nonExistent.config.js" not found."`,
+      `[Error: Config file at "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/config/nonExistent.config.js" not found.]`,
     );
   });
 });

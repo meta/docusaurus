@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import _ from 'lodash';
 import logger from '@docusaurus/logger';
 import {normalizeUrl} from '@docusaurus/utils';
 
+import {pathExists, outputFile} from '@docusaurus/fs';
 import createRedirectPageContent from './createRedirectPageContent';
 
 import type {PluginContext, RedirectItem} from './types';
@@ -87,15 +87,15 @@ export function toRedirectFiles(
   return redirects.map(createFileMetadata);
 }
 
-export async function writeRedirectFile(file: RedirectFile): Promise<void> {
+async function writeRedirectFile(file: RedirectFile): Promise<void> {
   try {
     // User-friendly security to prevent file overrides
-    if (await fs.pathExists(file.fileAbsolutePath)) {
+    if (await pathExists(file.fileAbsolutePath)) {
       throw new Error(
         'The redirect plugin is not supposed to override existing files.',
       );
     }
-    await fs.outputFile(
+    await outputFile(
       file.fileAbsolutePath,
       file.fileContent,
       // Hard security to prevent file overrides

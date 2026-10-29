@@ -1,0 +1,47 @@
+---
+image: ./img/oss_logo.png
+---
+
+# Image Tests
+
+import Image from '@theme/IdealImage';
+
+import docusaurusImport from '@site/static/img/docusaurus.png';
+
+export const docusaurusRequire = require('@site/static/img/docusaurus.png');
+
+![URL encoded image](./img/oss_logo%20%282%29.png)
+
+## Regular images
+
+Those only render in DEV when IdealImage plugin is disabled.
+
+<img src={docusaurusImport} />
+
+<img src={docusaurusRequire} />
+
+## Ideal images
+
+<Image img={docusaurusImport} />
+
+<Image img={docusaurusRequire} />
+
+## `new URL()` images
+
+Those always render: images referenced with `new URL()` are not transformed by the IdealImage and SVGR plugins.
+
+- Relative path: <img id="new-url-relative" alt="OSS logo" src={new URL('./img/oss_logo.png', import.meta.url).href} />
+- Relative path with spaces: <img id="new-url-spaces" alt="OSS logo" src={new URL('./img/oss_logo (2).png', import.meta.url).href} />
+- `@site` alias: <img id="new-url-site-alias" alt="Docusaurus social card" width={300} src={new URL('@site/static/img/docusaurus-social-card.png', import.meta.url).href} />
+- SVG: <img id="new-url-svg" alt="Docusaurus logo" width={100} src={new URL('@site/static/img/docusaurus.svg', import.meta.url).href} />
+- IdealImage: <Image img={new URL('@site/static/img/docusaurus.png', import.meta.url).href} />
+
+## CSS Image
+
+import './img-tests.css';
+
+This should display a div with have a background image
+
+<div
+  className="dogfood-image-test-css"
+  style={{border: 'solid', height: '10rem'}}></div>

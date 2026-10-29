@@ -1,0 +1,7 @@
+{
+  "theme.IdealImageMessage.404error": "404. Сликата не е пронајдена",
+  "theme.IdealImageMessage.error": "Грешка. Кликнете за повторно вчитување",
+  "theme.IdealImageMessage.load": "Кликнете за вчитување{sizeMessage}",
+  "theme.IdealImageMessage.loading": "Се вчитува...",
+  "theme.IdealImageMessage.offline": "Вашиот прелистувач не е поврзан. Сликата не е вчитана"
+}

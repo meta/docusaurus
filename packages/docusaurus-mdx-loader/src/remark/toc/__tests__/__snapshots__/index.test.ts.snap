@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`toc remark plugin does not overwrite TOC var if no TOC 1`] = `
+exports[`toc remark plugin > does not overwrite TOC var if no TOC 1`] = `
 "import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 export const toc = 1;
 function _createMdxContent(props) {
@@ -37,7 +37,7 @@ export default function MDXContent(props = {}) {
 "
 `;
 
-exports[`toc remark plugin escapes inline code 1`] = `
+exports[`toc remark plugin > escapes inline code 1`] = `
 "import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 export const toc = [{
   "value": "<code>&lt;Head /&gt;</code>",
@@ -121,7 +121,7 @@ export default function MDXContent(props = {}) {
 "
 `;
 
-exports[`toc remark plugin exports even with existing name 1`] = `
+exports[`toc remark plugin > exports even with existing name 1`] = `
 "import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 export const toc = ['replaceMe'];
 function _createMdxContent(props) {
@@ -155,7 +155,7 @@ export default function MDXContent(props = {}) {
 "
 `;
 
-exports[`toc remark plugin handles empty headings 1`] = `
+exports[`toc remark plugin > handles empty headings 1`] = `
 "import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 export const toc = [];
 function _createMdxContent(props) {
@@ -192,7 +192,7 @@ export default function MDXContent(props = {}) {
 "
 `;
 
-exports[`toc remark plugin inserts below imports 1`] = `
+exports[`toc remark plugin > inserts below imports 1`] = `
 "import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 import something from 'something';
 import somethingElse from 'something-else';
@@ -243,7 +243,7 @@ export default function MDXContent(props = {}) {
 "
 `;
 
-exports[`toc remark plugin outputs empty array for no TOC 1`] = `
+exports[`toc remark plugin > outputs empty array for no TOC 1`] = `
 "import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 export const toc = [];
 function _createMdxContent(props) {
@@ -280,7 +280,7 @@ export default function MDXContent(props = {}) {
 "
 `;
 
-exports[`toc remark plugin works on non text phrasing content 1`] = `
+exports[`toc remark plugin > works on non text phrasing content 1`] = `
 "import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 export const toc = [{
   "value": "<em>Emphasis</em>",
@@ -373,7 +373,7 @@ export default function MDXContent(props = {}) {
 "
 `;
 
-exports[`toc remark plugin works on text content 1`] = `
+exports[`toc remark plugin > works on text content 1`] = `
 "import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 export const c = 1;
 export const toc = [{
@@ -439,7 +439,7 @@ export default function MDXContent(props = {}) {
 "
 `;
 
-exports[`toc remark plugin works with imported markdown 1`] = `
+exports[`toc remark plugin > works with imported markdown 1`] = `
 "import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 import Partial1, {toc as __tocPartial1} from './_partial1.md';
 import SomeComponent from './SomeComponent';
@@ -524,7 +524,7 @@ export default function MDXContent(props = {}) {
 "
 `;
 
-exports[`toc remark plugin works with partial imported after its usage 1`] = `
+exports[`toc remark plugin > works with partial imported after its usage 1`] = `
 "import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 import Partial, {toc as __tocPartial} from './_partial.md';
 export const toc = [...__tocPartial];
@@ -555,7 +555,7 @@ export default function MDXContent(props = {}) {
 "
 `;
 
-exports[`toc remark plugin works with partials importing other partials 1`] = `
+exports[`toc remark plugin > works with partials importing other partials 1`] = `
 "import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 import Partial2Nested, {toc as __tocPartial2Nested} from './partial2-nested.md';
 export const toc = [{

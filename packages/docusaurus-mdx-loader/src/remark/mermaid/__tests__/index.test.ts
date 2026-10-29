@@ -5,16 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
+import {remark} from 'remark';
 import remark2rehype from 'remark-rehype';
 import stringify from 'rehype-stringify';
 import mermaid from '..';
 
 async function process(content: string) {
-  const {remark} = await import('remark');
-
-  // const {default: mdx} = await import('remark-mdx');
-  // const result = await remark().use(mermaid).use(mdx).process(content);
-
   const result = await remark()
     .use(mermaid)
     .use(remark2rehype)

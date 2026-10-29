@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import logger from '@docusaurus/logger';
-import Yaml from 'js-yaml';
+import * as Yaml from 'js-yaml';
+import {fs, pathExists} from '@docusaurus/fs';
 import {findAsyncSequential} from './index';
 import type {ContentPaths} from './markdownLinks';
 
@@ -43,30 +43,28 @@ export async function getDataFilePath({
 }
 
 /**
- * Looks up for a data file in the content paths, returns the object validated
- * and normalized according to the `validate` callback.
+ * Looks up for a data file in the content paths
+ * Favors the localized content path over the base content path
+ * Currently supports Yaml and JSON data files
+ * It is the caller responsibility to validate and normalize the resulting data
  *
  * @returns `undefined` when file not found
- * @throws Throws when validation fails, displaying a helpful context message.
+ * @throws Throws when data file can't be parsed
  */
-export async function getDataFileData<T>(
-  params: DataFileParams & {
-    /** Used for the "The X file looks invalid" message. */
-    fileType: string;
-  },
-  validate: (content: unknown) => T,
-): Promise<T | undefined> {
+export async function readDataFile(params: DataFileParams): Promise<unknown> {
   const filePath = await getDataFilePath(params);
   if (!filePath) {
     return undefined;
   }
   try {
     const contentString = await fs.readFile(filePath, {encoding: 'utf8'});
-    const unsafeContent = Yaml.load(contentString);
-    return validate(unsafeContent);
+    return Yaml.load(contentString);
   } catch (err) {
-    logger.error`The ${params.fileType} file at path=${filePath} looks invalid.`;
-    throw err;
+    const msg = logger.interpolate`The file at path=${path.relative(
+      process.cwd(),
+      filePath,
+    )} looks invalid (not Yaml nor JSON).`;
+    throw new Error(msg, {cause: err});
   }
 }
 
@@ -76,7 +74,9 @@ export async function getDataFileData<T>(
  * in priority.
  */
 export function getContentPathList(contentPaths: ContentPaths): string[] {
-  return [contentPaths.contentPathLocalized, contentPaths.contentPath];
+  return [contentPaths.contentPathLocalized, contentPaths.contentPath].filter(
+    (p) => p !== undefined,
+  );
 }
 
 /**
@@ -90,7 +90,7 @@ export async function findFolderContainingFile(
   relativeFilePath: string,
 ): Promise<string | undefined> {
   return findAsyncSequential(folderPaths, (folderPath) =>
-    fs.pathExists(path.join(folderPath, relativeFilePath)),
+    pathExists(path.join(folderPath, relativeFilePath)),
   );
 }
 

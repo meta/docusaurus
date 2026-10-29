@@ -1,12 +1,15 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`loadSiteConfig website with .cjs siteConfig 1`] = `
+exports[`loadSiteConfig > website with .cjs siteConfig 1`] = `
 {
   "siteConfig": {
     "baseUrl": "/",
     "baseUrlIssueBanner": true,
     "clientModules": [],
     "customFields": {},
+    "future": {
+      "experimental_router": "browser",
+    },
     "headTags": [],
     "i18n": {
       "defaultLocale": "en",
@@ -17,11 +20,20 @@ exports[`loadSiteConfig website with .cjs siteConfig 1`] = `
       "path": "i18n",
     },
     "markdown": {
+      "anchors": {
+        "maintainCase": false,
+      },
+      "emoji": true,
       "format": "mdx",
+      "hooks": {
+        "onBrokenMarkdownImages": "throw",
+        "onBrokenMarkdownLinks": "warn",
+        "onUnusedMarkdownDirectives": "warn",
+      },
       "mdx1Compat": {
-        "admonitions": true,
-        "comments": true,
-        "headingIds": true,
+        "admonitions": false,
+        "comments": false,
+        "headingIds": false,
       },
       "mermaid": false,
       "parseFrontMatter": [Function],
@@ -29,9 +41,8 @@ exports[`loadSiteConfig website with .cjs siteConfig 1`] = `
       "remarkRehypeOptions": undefined,
     },
     "noIndex": false,
-    "onBrokenAnchors": "warn",
+    "onBrokenAnchors": "throw",
     "onBrokenLinks": "throw",
-    "onBrokenMarkdownLinks": "warn",
     "onDuplicateRoutes": "warn",
     "plugins": [],
     "presets": [],
@@ -39,6 +50,10 @@ exports[`loadSiteConfig website with .cjs siteConfig 1`] = `
     "staticDirectories": [
       "static",
     ],
+    "storage": {
+      "namespace": true,
+      "type": "localStorage",
+    },
     "stylesheets": [],
     "tagline": "",
     "themeConfig": {},
@@ -46,18 +61,26 @@ exports[`loadSiteConfig website with .cjs siteConfig 1`] = `
     "title": "title",
     "titleDelimiter": "|",
     "url": "https://example.com",
+    "vcs": {
+      "getFileCreationInfo": [Function],
+      "getFileLastUpdateInfo": [Function],
+      "initialize": [Function],
+    },
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/config/docusaurus.config.cjs",
 }
 `;
 
-exports[`loadSiteConfig website with ts + js config 1`] = `
+exports[`loadSiteConfig > website with ts + js config 1`] = `
 {
   "siteConfig": {
     "baseUrl": "/",
     "baseUrlIssueBanner": true,
     "clientModules": [],
     "customFields": {},
+    "future": {
+      "experimental_router": "browser",
+    },
     "headTags": [],
     "i18n": {
       "defaultLocale": "en",
@@ -68,11 +91,20 @@ exports[`loadSiteConfig website with ts + js config 1`] = `
       "path": "i18n",
     },
     "markdown": {
+      "anchors": {
+        "maintainCase": false,
+      },
+      "emoji": true,
       "format": "mdx",
+      "hooks": {
+        "onBrokenMarkdownImages": "throw",
+        "onBrokenMarkdownLinks": "warn",
+        "onUnusedMarkdownDirectives": "warn",
+      },
       "mdx1Compat": {
-        "admonitions": true,
-        "comments": true,
-        "headingIds": true,
+        "admonitions": false,
+        "comments": false,
+        "headingIds": false,
       },
       "mermaid": false,
       "parseFrontMatter": [Function],
@@ -80,9 +112,8 @@ exports[`loadSiteConfig website with ts + js config 1`] = `
       "remarkRehypeOptions": undefined,
     },
     "noIndex": false,
-    "onBrokenAnchors": "warn",
+    "onBrokenAnchors": "throw",
     "onBrokenLinks": "throw",
-    "onBrokenMarkdownLinks": "warn",
     "onDuplicateRoutes": "warn",
     "plugins": [],
     "presets": [],
@@ -90,6 +121,10 @@ exports[`loadSiteConfig website with ts + js config 1`] = `
     "staticDirectories": [
       "static",
     ],
+    "storage": {
+      "namespace": true,
+      "type": "localStorage",
+    },
     "stylesheets": [],
     "tagline": "",
     "themeConfig": {},
@@ -97,18 +132,26 @@ exports[`loadSiteConfig website with ts + js config 1`] = `
     "title": "TS title",
     "titleDelimiter": "|",
     "url": "https://example.com",
+    "vcs": {
+      "getFileCreationInfo": [Function],
+      "getFileLastUpdateInfo": [Function],
+      "initialize": [Function],
+    },
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/config/sites/ts-and-js-site/docusaurus.config.ts",
 }
 `;
 
-exports[`loadSiteConfig website with valid JS CJS config 1`] = `
+exports[`loadSiteConfig > website with valid JS CJS config 1`] = `
 {
   "siteConfig": {
     "baseUrl": "/",
     "baseUrlIssueBanner": true,
     "clientModules": [],
     "customFields": {},
+    "future": {
+      "experimental_router": "browser",
+    },
     "headTags": [],
     "i18n": {
       "defaultLocale": "en",
@@ -119,11 +162,20 @@ exports[`loadSiteConfig website with valid JS CJS config 1`] = `
       "path": "i18n",
     },
     "markdown": {
+      "anchors": {
+        "maintainCase": false,
+      },
+      "emoji": true,
       "format": "mdx",
+      "hooks": {
+        "onBrokenMarkdownImages": "throw",
+        "onBrokenMarkdownLinks": "warn",
+        "onUnusedMarkdownDirectives": "warn",
+      },
       "mdx1Compat": {
-        "admonitions": true,
-        "comments": true,
-        "headingIds": true,
+        "admonitions": false,
+        "comments": false,
+        "headingIds": false,
       },
       "mermaid": false,
       "parseFrontMatter": [Function],
@@ -131,9 +183,8 @@ exports[`loadSiteConfig website with valid JS CJS config 1`] = `
       "remarkRehypeOptions": undefined,
     },
     "noIndex": false,
-    "onBrokenAnchors": "warn",
+    "onBrokenAnchors": "throw",
     "onBrokenLinks": "throw",
-    "onBrokenMarkdownLinks": "warn",
     "onDuplicateRoutes": "warn",
     "plugins": [],
     "presets": [],
@@ -141,6 +192,10 @@ exports[`loadSiteConfig website with valid JS CJS config 1`] = `
     "staticDirectories": [
       "static",
     ],
+    "storage": {
+      "namespace": true,
+      "type": "localStorage",
+    },
     "stylesheets": [],
     "tagline": "",
     "themeConfig": {},
@@ -148,18 +203,26 @@ exports[`loadSiteConfig website with valid JS CJS config 1`] = `
     "title": "title",
     "titleDelimiter": "|",
     "url": "https://example.com",
+    "vcs": {
+      "getFileCreationInfo": [Function],
+      "getFileLastUpdateInfo": [Function],
+      "initialize": [Function],
+    },
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/config/configCJS.js",
 }
 `;
 
-exports[`loadSiteConfig website with valid JS ESM config 1`] = `
+exports[`loadSiteConfig > website with valid JS ESM config 1`] = `
 {
   "siteConfig": {
     "baseUrl": "/",
     "baseUrlIssueBanner": true,
     "clientModules": [],
     "customFields": {},
+    "future": {
+      "experimental_router": "browser",
+    },
     "headTags": [],
     "i18n": {
       "defaultLocale": "en",
@@ -170,11 +233,20 @@ exports[`loadSiteConfig website with valid JS ESM config 1`] = `
       "path": "i18n",
     },
     "markdown": {
+      "anchors": {
+        "maintainCase": false,
+      },
+      "emoji": true,
       "format": "mdx",
+      "hooks": {
+        "onBrokenMarkdownImages": "throw",
+        "onBrokenMarkdownLinks": "warn",
+        "onUnusedMarkdownDirectives": "warn",
+      },
       "mdx1Compat": {
-        "admonitions": true,
-        "comments": true,
-        "headingIds": true,
+        "admonitions": false,
+        "comments": false,
+        "headingIds": false,
       },
       "mermaid": false,
       "parseFrontMatter": [Function],
@@ -182,9 +254,8 @@ exports[`loadSiteConfig website with valid JS ESM config 1`] = `
       "remarkRehypeOptions": undefined,
     },
     "noIndex": false,
-    "onBrokenAnchors": "warn",
+    "onBrokenAnchors": "throw",
     "onBrokenLinks": "throw",
-    "onBrokenMarkdownLinks": "warn",
     "onDuplicateRoutes": "warn",
     "plugins": [],
     "presets": [],
@@ -192,6 +263,10 @@ exports[`loadSiteConfig website with valid JS ESM config 1`] = `
     "staticDirectories": [
       "static",
     ],
+    "storage": {
+      "namespace": true,
+      "type": "localStorage",
+    },
     "stylesheets": [],
     "tagline": "",
     "themeConfig": {},
@@ -199,18 +274,26 @@ exports[`loadSiteConfig website with valid JS ESM config 1`] = `
     "title": "title",
     "titleDelimiter": "|",
     "url": "https://example.com",
+    "vcs": {
+      "getFileCreationInfo": [Function],
+      "getFileLastUpdateInfo": [Function],
+      "initialize": [Function],
+    },
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/config/configESM.js",
 }
 `;
 
-exports[`loadSiteConfig website with valid TypeScript CJS config 1`] = `
+exports[`loadSiteConfig > website with valid TypeScript CJS config 1`] = `
 {
   "siteConfig": {
     "baseUrl": "/",
     "baseUrlIssueBanner": true,
     "clientModules": [],
     "customFields": {},
+    "future": {
+      "experimental_router": "browser",
+    },
     "headTags": [],
     "i18n": {
       "defaultLocale": "en",
@@ -221,11 +304,20 @@ exports[`loadSiteConfig website with valid TypeScript CJS config 1`] = `
       "path": "i18n",
     },
     "markdown": {
+      "anchors": {
+        "maintainCase": false,
+      },
+      "emoji": true,
       "format": "mdx",
+      "hooks": {
+        "onBrokenMarkdownImages": "throw",
+        "onBrokenMarkdownLinks": "warn",
+        "onUnusedMarkdownDirectives": "warn",
+      },
       "mdx1Compat": {
-        "admonitions": true,
-        "comments": true,
-        "headingIds": true,
+        "admonitions": false,
+        "comments": false,
+        "headingIds": false,
       },
       "mermaid": false,
       "parseFrontMatter": [Function],
@@ -233,9 +325,8 @@ exports[`loadSiteConfig website with valid TypeScript CJS config 1`] = `
       "remarkRehypeOptions": undefined,
     },
     "noIndex": false,
-    "onBrokenAnchors": "warn",
+    "onBrokenAnchors": "throw",
     "onBrokenLinks": "throw",
-    "onBrokenMarkdownLinks": "warn",
     "onDuplicateRoutes": "warn",
     "plugins": [],
     "presets": [],
@@ -243,6 +334,10 @@ exports[`loadSiteConfig website with valid TypeScript CJS config 1`] = `
     "staticDirectories": [
       "static",
     ],
+    "storage": {
+      "namespace": true,
+      "type": "localStorage",
+    },
     "stylesheets": [],
     "tagline": "",
     "themeConfig": {},
@@ -250,18 +345,26 @@ exports[`loadSiteConfig website with valid TypeScript CJS config 1`] = `
     "title": "title",
     "titleDelimiter": "|",
     "url": "https://example.com",
+    "vcs": {
+      "getFileCreationInfo": [Function],
+      "getFileLastUpdateInfo": [Function],
+      "initialize": [Function],
+    },
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/config/configCJS.ts",
 }
 `;
 
-exports[`loadSiteConfig website with valid TypeScript ESM config 1`] = `
+exports[`loadSiteConfig > website with valid TypeScript ESM config 1`] = `
 {
   "siteConfig": {
     "baseUrl": "/",
     "baseUrlIssueBanner": true,
     "clientModules": [],
     "customFields": {},
+    "future": {
+      "experimental_router": "browser",
+    },
     "headTags": [],
     "i18n": {
       "defaultLocale": "en",
@@ -272,11 +375,20 @@ exports[`loadSiteConfig website with valid TypeScript ESM config 1`] = `
       "path": "i18n",
     },
     "markdown": {
+      "anchors": {
+        "maintainCase": false,
+      },
+      "emoji": true,
       "format": "mdx",
+      "hooks": {
+        "onBrokenMarkdownImages": "throw",
+        "onBrokenMarkdownLinks": "warn",
+        "onUnusedMarkdownDirectives": "warn",
+      },
       "mdx1Compat": {
-        "admonitions": true,
-        "comments": true,
-        "headingIds": true,
+        "admonitions": false,
+        "comments": false,
+        "headingIds": false,
       },
       "mermaid": false,
       "parseFrontMatter": [Function],
@@ -284,9 +396,8 @@ exports[`loadSiteConfig website with valid TypeScript ESM config 1`] = `
       "remarkRehypeOptions": undefined,
     },
     "noIndex": false,
-    "onBrokenAnchors": "warn",
+    "onBrokenAnchors": "throw",
     "onBrokenLinks": "throw",
-    "onBrokenMarkdownLinks": "warn",
     "onDuplicateRoutes": "warn",
     "plugins": [],
     "presets": [],
@@ -294,6 +405,10 @@ exports[`loadSiteConfig website with valid TypeScript ESM config 1`] = `
     "staticDirectories": [
       "static",
     ],
+    "storage": {
+      "namespace": true,
+      "type": "localStorage",
+    },
     "stylesheets": [],
     "tagline": "",
     "themeConfig": {},
@@ -301,18 +416,26 @@ exports[`loadSiteConfig website with valid TypeScript ESM config 1`] = `
     "title": "title",
     "titleDelimiter": "|",
     "url": "https://example.com",
+    "vcs": {
+      "getFileCreationInfo": [Function],
+      "getFileLastUpdateInfo": [Function],
+      "initialize": [Function],
+    },
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/config/configESM.ts",
 }
 `;
 
-exports[`loadSiteConfig website with valid async config 1`] = `
+exports[`loadSiteConfig > website with valid async config 1`] = `
 {
   "siteConfig": {
     "baseUrl": "/",
     "baseUrlIssueBanner": true,
     "clientModules": [],
     "customFields": {},
+    "future": {
+      "experimental_router": "browser",
+    },
     "headTags": [],
     "i18n": {
       "defaultLocale": "en",
@@ -323,11 +446,20 @@ exports[`loadSiteConfig website with valid async config 1`] = `
       "path": "i18n",
     },
     "markdown": {
+      "anchors": {
+        "maintainCase": false,
+      },
+      "emoji": true,
       "format": "mdx",
+      "hooks": {
+        "onBrokenMarkdownImages": "throw",
+        "onBrokenMarkdownLinks": "warn",
+        "onUnusedMarkdownDirectives": "warn",
+      },
       "mdx1Compat": {
-        "admonitions": true,
-        "comments": true,
-        "headingIds": true,
+        "admonitions": false,
+        "comments": false,
+        "headingIds": false,
       },
       "mermaid": false,
       "parseFrontMatter": [Function],
@@ -335,9 +467,8 @@ exports[`loadSiteConfig website with valid async config 1`] = `
       "remarkRehypeOptions": undefined,
     },
     "noIndex": false,
-    "onBrokenAnchors": "warn",
+    "onBrokenAnchors": "throw",
     "onBrokenLinks": "throw",
-    "onBrokenMarkdownLinks": "warn",
     "onDuplicateRoutes": "warn",
     "organizationName": "endiliey",
     "plugins": [],
@@ -347,6 +478,10 @@ exports[`loadSiteConfig website with valid async config 1`] = `
     "staticDirectories": [
       "static",
     ],
+    "storage": {
+      "namespace": true,
+      "type": "localStorage",
+    },
     "stylesheets": [],
     "tagline": "Hello World",
     "themeConfig": {},
@@ -354,18 +489,26 @@ exports[`loadSiteConfig website with valid async config 1`] = `
     "title": "Hello",
     "titleDelimiter": "|",
     "url": "https://docusaurus.io",
+    "vcs": {
+      "getFileCreationInfo": [Function],
+      "getFileLastUpdateInfo": [Function],
+      "initialize": [Function],
+    },
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/config/configAsync.config.js",
 }
 `;
 
-exports[`loadSiteConfig website with valid async config creator function 1`] = `
+exports[`loadSiteConfig > website with valid async config creator function 1`] = `
 {
   "siteConfig": {
     "baseUrl": "/",
     "baseUrlIssueBanner": true,
     "clientModules": [],
     "customFields": {},
+    "future": {
+      "experimental_router": "browser",
+    },
     "headTags": [],
     "i18n": {
       "defaultLocale": "en",
@@ -376,11 +519,20 @@ exports[`loadSiteConfig website with valid async config creator function 1`] = `
       "path": "i18n",
     },
     "markdown": {
+      "anchors": {
+        "maintainCase": false,
+      },
+      "emoji": true,
       "format": "mdx",
+      "hooks": {
+        "onBrokenMarkdownImages": "throw",
+        "onBrokenMarkdownLinks": "warn",
+        "onUnusedMarkdownDirectives": "warn",
+      },
       "mdx1Compat": {
-        "admonitions": true,
-        "comments": true,
-        "headingIds": true,
+        "admonitions": false,
+        "comments": false,
+        "headingIds": false,
       },
       "mermaid": false,
       "parseFrontMatter": [Function],
@@ -388,9 +540,8 @@ exports[`loadSiteConfig website with valid async config creator function 1`] = `
       "remarkRehypeOptions": undefined,
     },
     "noIndex": false,
-    "onBrokenAnchors": "warn",
+    "onBrokenAnchors": "throw",
     "onBrokenLinks": "throw",
-    "onBrokenMarkdownLinks": "warn",
     "onDuplicateRoutes": "warn",
     "organizationName": "endiliey",
     "plugins": [],
@@ -400,6 +551,10 @@ exports[`loadSiteConfig website with valid async config creator function 1`] = `
     "staticDirectories": [
       "static",
     ],
+    "storage": {
+      "namespace": true,
+      "type": "localStorage",
+    },
     "stylesheets": [],
     "tagline": "Hello World",
     "themeConfig": {},
@@ -407,18 +562,26 @@ exports[`loadSiteConfig website with valid async config creator function 1`] = `
     "title": "Hello",
     "titleDelimiter": "|",
     "url": "https://docusaurus.io",
+    "vcs": {
+      "getFileCreationInfo": [Function],
+      "getFileLastUpdateInfo": [Function],
+      "initialize": [Function],
+    },
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/config/createConfigAsync.config.js",
 }
 `;
 
-exports[`loadSiteConfig website with valid config creator function 1`] = `
+exports[`loadSiteConfig > website with valid config creator function 1`] = `
 {
   "siteConfig": {
     "baseUrl": "/",
     "baseUrlIssueBanner": true,
     "clientModules": [],
     "customFields": {},
+    "future": {
+      "experimental_router": "browser",
+    },
     "headTags": [],
     "i18n": {
       "defaultLocale": "en",
@@ -429,11 +592,20 @@ exports[`loadSiteConfig website with valid config creator function 1`] = `
       "path": "i18n",
     },
     "markdown": {
+      "anchors": {
+        "maintainCase": false,
+      },
+      "emoji": true,
       "format": "mdx",
+      "hooks": {
+        "onBrokenMarkdownImages": "throw",
+        "onBrokenMarkdownLinks": "warn",
+        "onUnusedMarkdownDirectives": "warn",
+      },
       "mdx1Compat": {
-        "admonitions": true,
-        "comments": true,
-        "headingIds": true,
+        "admonitions": false,
+        "comments": false,
+        "headingIds": false,
       },
       "mermaid": false,
       "parseFrontMatter": [Function],
@@ -441,9 +613,8 @@ exports[`loadSiteConfig website with valid config creator function 1`] = `
       "remarkRehypeOptions": undefined,
     },
     "noIndex": false,
-    "onBrokenAnchors": "warn",
+    "onBrokenAnchors": "throw",
     "onBrokenLinks": "throw",
-    "onBrokenMarkdownLinks": "warn",
     "onDuplicateRoutes": "warn",
     "organizationName": "endiliey",
     "plugins": [],
@@ -453,6 +624,10 @@ exports[`loadSiteConfig website with valid config creator function 1`] = `
     "staticDirectories": [
       "static",
     ],
+    "storage": {
+      "namespace": true,
+      "type": "localStorage",
+    },
     "stylesheets": [],
     "tagline": "Hello World",
     "themeConfig": {},
@@ -460,12 +635,17 @@ exports[`loadSiteConfig website with valid config creator function 1`] = `
     "title": "Hello",
     "titleDelimiter": "|",
     "url": "https://docusaurus.io",
+    "vcs": {
+      "getFileCreationInfo": [Function],
+      "getFileLastUpdateInfo": [Function],
+      "initialize": [Function],
+    },
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/config/createConfig.config.js",
 }
 `;
 
-exports[`loadSiteConfig website with valid siteConfig 1`] = `
+exports[`loadSiteConfig > website with valid siteConfig 1`] = `
 {
   "siteConfig": {
     "baseUrl": "/",
@@ -475,6 +655,9 @@ exports[`loadSiteConfig website with valid siteConfig 1`] = `
     ],
     "customFields": {},
     "favicon": "img/docusaurus.ico",
+    "future": {
+      "experimental_router": "browser",
+    },
     "headTags": [],
     "i18n": {
       "defaultLocale": "en",
@@ -485,11 +668,20 @@ exports[`loadSiteConfig website with valid siteConfig 1`] = `
       "path": "i18n",
     },
     "markdown": {
+      "anchors": {
+        "maintainCase": false,
+      },
+      "emoji": true,
       "format": "mdx",
+      "hooks": {
+        "onBrokenMarkdownImages": "throw",
+        "onBrokenMarkdownLinks": "warn",
+        "onUnusedMarkdownDirectives": "warn",
+      },
       "mdx1Compat": {
-        "admonitions": true,
-        "comments": true,
-        "headingIds": true,
+        "admonitions": false,
+        "comments": false,
+        "headingIds": false,
       },
       "mermaid": false,
       "parseFrontMatter": [Function],
@@ -497,9 +689,8 @@ exports[`loadSiteConfig website with valid siteConfig 1`] = `
       "remarkRehypeOptions": undefined,
     },
     "noIndex": false,
-    "onBrokenAnchors": "warn",
+    "onBrokenAnchors": "throw",
     "onBrokenLinks": "throw",
-    "onBrokenMarkdownLinks": "warn",
     "onDuplicateRoutes": "warn",
     "organizationName": "endiliey",
     "plugins": [
@@ -517,6 +708,10 @@ exports[`loadSiteConfig website with valid siteConfig 1`] = `
     "staticDirectories": [
       "static",
     ],
+    "storage": {
+      "namespace": true,
+      "type": "localStorage",
+    },
     "stylesheets": [],
     "tagline": "Hello World",
     "themeConfig": {},
@@ -524,6 +719,11 @@ exports[`loadSiteConfig website with valid siteConfig 1`] = `
     "title": "Hello",
     "titleDelimiter": "|",
     "url": "https://docusaurus.io",
+    "vcs": {
+      "getFileCreationInfo": [Function],
+      "getFileLastUpdateInfo": [Function],
+      "initialize": [Function],
+    },
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/simple-site/docusaurus.config.js",
 }

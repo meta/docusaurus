@@ -1,0 +1,131 @@
+name: Security
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # every day at 03:00 UTC
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - docusaurus-v**
+  pull_request:
+    branches:
+      - main
+      - docusaurus-v**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+# No GitHub Actions cache on purpose, enforced by GitHub for every step
+# We want SFW to fetch packages
+# See https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax#cache-mode
+cache-mode: none
+
+jobs:
+  # Check our monorepo for new supply chain compromissions
+  supply-chain-monorepo:
+    name: Supply Chain - Monorepo
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+        with:
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
+      - name: Use Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          check-latest: true
+          # No cache on purpose! We want SFW to fetch packages
+          package-manager-cache: false
+
+      # See https://socket.dev/blog/introducing-socket-firewall
+      - name: Install Socket Firewall Free
+        run: npm install -g sfw@2.0.6
+
+      # Ensure our monorepo gets scanned by SFW
+      - name: Install monorepo dependencies with SFW
+        run: sfw pnpm install --frozen-lockfile || sfw pnpm install --frozen-lockfile || sfw pnpm install --frozen-lockfile
+
+  # Check our init template deps for new supply chain compromissions
+  # This workflow is not ideal but good enough for now
+  # See why https://github.com/facebook/docusaurus/pull/12448
+  supply-chain-site-template:
+    name: Supply Chain - Site Template @${{ matrix.npm_dist_tag }}
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # We check on various npm dist tags
+        npm_dist_tag: ['latest', 'canary']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+        with:
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
+
+      - name: Use Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          check-latest: true
+          # No cache on purpose! We want SFW to fetch packages
+          package-manager-cache: false
+
+      # See https://socket.dev/blog/introducing-socket-firewall
+      - name: Install Socket Firewall Free
+        run: npm install -g sfw@2.0.6
+
+      # Generate the init template from a given npm dist tag
+      - name: Generate published template
+        run: sfw pnpm create docusaurus@${{matrix.npm_dist_tag}} ../test-website classic --typescript --skip-install
+        env:
+          # We want to use the freshest "create-docusaurus" initializer
+          PNPM_CONFIG_MINIMUM_RELEASE_AGE: 0
+
+      # Ensure no unexpected lifecycle (preintall/postinstall scripts)
+      # pnpm has options to fail a build on suspicious lifecycles
+      - name: Install test-website project with SFW and secure pnpm config
+        working-directory: ../test-website
+        run: |
+          cat > pnpm-workspace.yaml <<'YAML'
+
+          # SFW should check the newest possible release + transitive deps
+          minimumReleaseAge: 0
+
+          blockExoticSubdeps: true
+          strictDepBuilds: true
+
+          # Only needed for published v3 sites (latest dist tag)
+          # TODO remove when v4 is released: v4 sites don't need any
+          allowBuilds:
+            '@swc/core': false
+            core-js: false
+
+          trustPolicy: no-downgrade
+          trustPolicyExclude:
+            - 'detect-port@1.6.1'
+            - 'semver@6.3.1'
+            - 'webpack-dev-middleware@7.4.6'
+            - 'undici-types@6.21.0'
+          YAML
+
+          sfw pnpm install || sfw pnpm install || sfw pnpm install
+          pnpm build

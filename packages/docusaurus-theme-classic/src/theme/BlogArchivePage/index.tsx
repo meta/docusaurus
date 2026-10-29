@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import {translate} from '@docusaurus/Translate';
 import {PageMetadata} from '@docusaurus/theme-common';
@@ -76,7 +76,7 @@ function listPostsByYears(blogPosts: readonly ArchiveBlogPost[]): YearProp[] {
   }));
 }
 
-export default function BlogArchive({archive}: Props): JSX.Element {
+export default function BlogArchive({archive}: Props): ReactNode {
   const title = translate({
     id: 'theme.blog.archive.title',
     message: 'Archive',

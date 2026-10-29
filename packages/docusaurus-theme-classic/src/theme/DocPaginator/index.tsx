@@ -5,16 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
+import clsx from 'clsx';
 import Translate, {translate} from '@docusaurus/Translate';
 import PaginatorNavLink from '@theme/PaginatorNavLink';
 import type {Props} from '@theme/DocPaginator';
 
-export default function DocPaginator(props: Props): JSX.Element {
-  const {previous, next} = props;
+export default function DocPaginator(props: Props): ReactNode {
+  const {className, previous, next} = props;
   return (
     <nav
-      className="pagination-nav docusaurus-mt-lg"
+      className={clsx(className, 'pagination-nav')}
       aria-label={translate({
         id: 'theme.docs.paginator.navAriaLabel',
         message: 'Docs pages',

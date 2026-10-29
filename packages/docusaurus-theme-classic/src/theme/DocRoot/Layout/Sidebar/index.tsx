@@ -8,7 +8,7 @@
 import React, {type ReactNode, useState, useCallback} from 'react';
 import clsx from 'clsx';
 import {prefersReducedMotion, ThemeClassNames} from '@docusaurus/theme-common';
-import {useDocsSidebar} from '@docusaurus/theme-common/internal';
+import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
 import {useLocation} from '@docusaurus/router';
 import DocSidebar from '@theme/DocSidebar';
 import ExpandButton from '@theme/DocRoot/Layout/Sidebar/ExpandButton';
@@ -32,7 +32,7 @@ export default function DocRootLayoutSidebar({
   sidebar,
   hiddenSidebarContainer,
   setHiddenSidebarContainer,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const {pathname} = useLocation();
 
   const [hiddenSidebar, setHiddenSidebar] = useState(false);

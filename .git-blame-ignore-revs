@@ -1,0 +1,14 @@
+# Commits ignored by git blame, used automatically by GitHub
+# Local usage: git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# chore: fix line endings in v2, CRLF to LF only
+a1de6dab040dc4b01a928fb304cd380bef1c9968
+
+# misc: add command to run prettier on docs (#2102), first Prettier run on Markdown files
+55e676cb2544af00c49b5d95d23fb68aca82a7af
+
+# chore: migrate from Prettier to oxfmt for code formatting (#11824), includes the repo-wide reformat
+190ef6fa5d63bb041d614ad5bb2471ab2f38a7b2
+
+# chore(deps): upgrade oxfmt to v0.70 (#12571), includes the repo-wide reformat
+f144233f5cc2f67155afdd249f00d12ba08337ac

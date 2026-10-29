@@ -4,6 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+/* eslint-disable camelcase */
+
 import {
   ContentVisibilitySchema,
   FrontMatterLastUpdateSchema,
@@ -13,6 +15,7 @@ import {
   URISchema,
   validateFrontMatter,
 } from '@docusaurus/utils-validation';
+import {AuthorSocialsSchema} from './authorsSocials';
 import type {BlogPostFrontMatter} from '@docusaurus/plugin-content-blog';
 
 const BlogPostFrontMatterAuthorSchema = Joi.object({
@@ -21,6 +24,7 @@ const BlogPostFrontMatterAuthorSchema = Joi.object({
   title: Joi.string(),
   url: URISchema,
   imageURL: Joi.string(),
+  socials: AuthorSocialsSchema,
 })
   .or('key', 'name', 'imageURL')
   .rename('image_url', 'imageURL', {alias: true});
@@ -28,9 +32,15 @@ const BlogPostFrontMatterAuthorSchema = Joi.object({
 const FrontMatterAuthorErrorMessage =
   '{{#label}} does not look like a valid blog post author. Please use an author key or an author object (with a key and/or name).';
 
+const LegacyAuthorFrontMatterSchema = Joi.any().forbidden().messages({
+  'any.unknown':
+    '{{#label}} blog post front matter is not supported anymore. Use the "authors" front matter instead, with an inline author object (with name, title, url and imageURL attributes) or an author key declared in the authors map file (authors.yml).',
+});
+
 const BlogFrontMatterSchema = Joi.object<BlogPostFrontMatter>({
-  id: Joi.string(),
   title: Joi.string().allow(''),
+  title_meta: Joi.string().allow(''),
+  sidebar_label: Joi.string().allow(''),
   description: Joi.string().allow(''),
   tags: FrontMatterTagsSchema,
   date: Joi.date().raw(),
@@ -50,18 +60,16 @@ const BlogFrontMatterSchema = Joi.object<BlogPostFrontMatter>({
     .messages({
       'alternatives.match': FrontMatterAuthorErrorMessage,
     }),
-  // Legacy author front matter
-  author: Joi.string(),
-  author_title: Joi.string(),
-  author_url: URISchema,
-  author_image_url: URISchema,
-  // TODO enable deprecation warnings later
-  authorURL: URISchema,
-  // .warning('deprecate.error', { alternative: '"author_url"'}),
-  authorTitle: Joi.string(),
-  // .warning('deprecate.error', { alternative: '"author_title"'}),
-  authorImageURL: URISchema,
-  // .warning('deprecate.error', { alternative: '"author_image_url"'}),
+  // Legacy single-author front matter, removed in Docusaurus v4
+  // TODO Docusaurus v5: remove these migration errors
+  // @ts-expect-error: forbidden
+  author: LegacyAuthorFrontMatterSchema,
+  author_title: LegacyAuthorFrontMatterSchema,
+  authorTitle: LegacyAuthorFrontMatterSchema,
+  author_url: LegacyAuthorFrontMatterSchema,
+  authorURL: LegacyAuthorFrontMatterSchema,
+  author_image_url: LegacyAuthorFrontMatterSchema,
+  authorImageURL: LegacyAuthorFrontMatterSchema,
 
   slug: Joi.string(),
   image: URISchema,
@@ -70,12 +78,7 @@ const BlogFrontMatterSchema = Joi.object<BlogPostFrontMatter>({
 
   ...FrontMatterTOCHeadingLevels,
   last_update: FrontMatterLastUpdateSchema,
-})
-  .messages({
-    'deprecate.error':
-      '{#label} blog frontMatter field is deprecated. Please use {#alternative} instead.',
-  })
-  .concat(ContentVisibilitySchema);
+}).concat(ContentVisibilitySchema);
 
 export function validateBlogPostFrontMatter(frontMatter: {
   [key: string]: unknown;

@@ -1,0 +1,5 @@
+date: 2000-07-23
+defaults: &defaults
+  title: Default title
+page:
+  <<: *defaults

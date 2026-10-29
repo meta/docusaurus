@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
-import {useDocsSidebar} from '@docusaurus/theme-common/internal';
+import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
 import type {Props} from '@theme/DocRoot/Layout/Main';
 
 import styles from './styles.module.css';
@@ -15,7 +15,7 @@ import styles from './styles.module.css';
 export default function DocRootLayoutMain({
   hiddenSidebarContainer,
   children,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const sidebar = useDocsSidebar();
   return (
     <main

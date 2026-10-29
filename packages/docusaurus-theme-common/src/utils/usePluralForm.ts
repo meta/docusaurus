@@ -10,7 +10,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 // We want to ensurer a stable plural form order in all cases
 // It is more convenient and natural to handle "small values" first
-// See https://twitter.com/sebastienlorber/status/1366820663261077510
+// See https://x.com/sebastienlorber/status/1366820663261077510
 const OrderedPluralForms: Intl.LDMLPluralRule[] = [
   'zero',
   'one',

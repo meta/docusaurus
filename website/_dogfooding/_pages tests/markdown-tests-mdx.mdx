@@ -50,23 +50,18 @@ import TabItem from '@theme/TabItem';
 
 ## Comments
 
-Html comment: <!-- comment -->
-
-Html comment multi-line:
-
-<!--
-comment
--->
-
-<!-- prettier-ignore -->
 MDX comment: {/* comment */}
 
-MDX comment multi-line:
+MDX comment in JSX:
 
-<!-- prettier-ignore -->
-{/*
-comment
-*/}
+<>
+  {/* comment */}
+  <div>
+    {/* comment */}
+    TEST
+    {/* comment */}
+  </div>
+</>
 
 ## Import code block from source code file
 
@@ -90,19 +85,19 @@ import MyComponent from './myComponent';
 
 </BrowserWindow>
 
-But you can also display its source code directly in MDX, thanks to [Webpack raw-loader](https://webpack.js.org/loaders/raw-loader/)
+But you can also display its source code directly in MDX, thanks to [import attributes](https://github.com/tc39/proposal-import-attributes)
 
 ```jsx title="myMarkdownFile.mdx"
 import CodeBlock from '@theme/CodeBlock';
 
-import MyComponentSource from '!!raw-loader!./myComponent';
+import MyComponentSource from './myComponent.js' with {type: 'text'};
 
 <CodeBlock className="language-jsx">{MyComponentSource}</CodeBlock>;
 ```
 
 import CodeBlock from '@theme/CodeBlock';
 
-import MyComponentSource from '!!raw-loader!@site/src/pages/examples/_myComponent';
+import MyComponentSource from '@site/src/pages/examples/_myComponent.tsx' with {type: 'text'};
 
 <BrowserWindow>
 
@@ -188,17 +183,19 @@ sequenceDiagram
     Bob-->>John: Jolly good!
 ```
 
-## Custom heading ID {#custom}
+## Classic heading ID syntax \{#classic-heading-id-syntax}
 
-### Weird heading {#你好}
+Dogfood that the classic heading ID syntax `{#id}` remains supported on MDX docs. It requires manual escaping with `\{#id}` since we disabled the MDX v1 compat layer (`markdown.mdx1Compat.headingIds`).
 
-### Weird heading {#2022.1.1}
+### Weird heading \{#你好}
 
-### Weird heading {#a#b}
+### Weird heading \{#2022.1.1}
 
-### Weird heading {#a b}
+### Weird heading \{#a#b}
 
-### Weird heading {#a\{b}
+### Weird heading \{#a b}
+
+### Weird heading \{#a\{b}
 
 ## Pipe
 
@@ -206,13 +203,17 @@ Code tag + double pipe: <code>&#124;&#124;</code>
 
 Code tag + double pipe: <code>||</code>
 
-## Images edge cases
+## Images
 
 ![](/新控制器空间/图片.png)
 
 ![](/4/图片.png)
 
 ![](/4/docu.png)
+
+![](</image with spaces.png>)
+
+![](<@site/_dogfooding/_asset-tests/image with spaces.png>)
 
 ## Details
 
@@ -283,12 +284,6 @@ Admonition body
 
 :::
 
-:::important
-
-Admonition alias `:::important` should have Important title
-
-:::
-
 :::::note title
 
 Some **content** with _Markdown_ `syntax`.
@@ -333,6 +328,20 @@ test
 
 ::::
 
+```mdx-code-block
+import Admonition from '@theme/Admonition';
+
+export function AdmonitionWithoutHeading(props) {
+  return (
+    <Admonition {...props} type="info" icon={null} title={null}>
+      Admonition content without heading
+    </Admonition>
+  );
+}
+```
+
+<AdmonitionWithoutHeading />
+
 ## Linking
 
 This is a test page to see if Docusaurus Markdown features are working properly
@@ -342,24 +351,26 @@ This is a test page to see if Docusaurus Markdown features are working properly
 See [#3337](https://github.com/facebook/docusaurus/issues/3337)
 
 - [/someFile.pdf](/someFile.pdf)
-
 - [/someFile.xyz](/someFile.xyz)
-
+- [/image with space.png](</image with spaces.png>)
 - [@site/\_dogfooding/\_asset-tests/someFile.pdf](@site/_dogfooding/_asset-tests/someFile.pdf)
-
 - [@site/\_dogfooding/\_asset-tests/someFile.xyz](@site/_dogfooding/_asset-tests/someFile.xyz)
+- [@site/\_dogfooding/\_asset-tests/image with space.png](<@site/_dogfooding/_asset-tests/image with spaces.png>)
 
 ### Linking to non-SPA page hosted within website
 
 See [#3309](https://github.com/facebook/docusaurus/issues/3309)
 
 - [pathname:///dogfooding/javadoc](pathname:///dogfooding/javadoc)
-
 - [pathname:///dogfooding/javadoc/index.html](pathname:///dogfooding/javadoc/index.html)
-
 - [pathname://../dogfooding/javadoc](pathname://../dogfooding/javadoc)
-
 - [pathname://../dogfooding/javadoc/index.html](pathname://../dogfooding/javadoc/index.html)
+
+### Linking to non-SPA paths with custom schemes
+
+- [customScheme://whatever](customScheme://whatever)
+- [custom-scheme://whatever](custom-scheme://whatever)
+- [custom-sch.eme+-.://whatever](custom-sch.eme+-.://whatever)
 
 ### Linking to non-SPA page with Link component
 

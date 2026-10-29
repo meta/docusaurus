@@ -1,6 +1,6 @@
 {
   "name": "@docusaurus/module-type-aliases",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Docusaurus module type aliases.",
   "types": "./src/index.d.ts",
   "publishConfig": {
@@ -12,18 +12,18 @@
     "directory": "packages/docusaurus-module-type-aliases"
   },
   "dependencies": {
-    "@docusaurus/react-loadable": "5.5.2",
-    "@docusaurus/types": "3.2.1",
-    "@types/history": "^4.7.11",
-    "@types/react": "*",
-    "@types/react-router-config": "*",
-    "@types/react-router-dom": "*",
-    "react-helmet-async": "*",
-    "react-loadable": "npm:@docusaurus/react-loadable@5.5.2"
+    "@docusaurus/types": "workspace:*",
+    "@types/history": "catalog:",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "catalog:",
+    "@types/react-router-config": "catalog:",
+    "@types/react-router-dom": "catalog:",
+    "react-helmet-async": "catalog:",
+    "react-loadable": "catalog:"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "license": "MIT"
 }

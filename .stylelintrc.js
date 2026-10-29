@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
+  extends: ['stylelint-config-standard'],
   plugins: ['stylelint-copyright'],
   rules: {
     'docusaurus/copyright-header': [

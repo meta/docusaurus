@@ -6,7 +6,6 @@
  */
 
 import {createPlaygroundResponse} from '../functionUtils/playgroundUtils';
-import type {Handler} from '@netlify/functions';
 
-export const handler: Handler = () =>
-  Promise.resolve(createPlaygroundResponse('codesandbox'));
+export default async (): Promise<Response> =>
+  createPlaygroundResponse('codesandbox');

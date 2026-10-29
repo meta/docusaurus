@@ -9,16 +9,16 @@
 
 declare module '@docusaurus/theme-mermaid' {
   import type {DeepPartial} from 'utility-types';
-  import type mermaidAPI from 'mermaid/mermaidAPI';
+  import type {MermaidConfig} from 'mermaid';
   import type {Plugin} from '@docusaurus/types';
 
   export type ThemeConfig = {
     mermaid: {
       theme: {
-        light: mermaidAPI.Theme;
-        dark: mermaidAPI.Theme;
+        light: NonNullable<MermaidConfig['theme']>;
+        dark: NonNullable<MermaidConfig['theme']>;
       };
-      options: mermaidAPI.Config;
+      options: MermaidConfig;
     };
   };
   export type UserThemeConfig = DeepPartial<ThemeConfig>;
@@ -27,9 +27,11 @@ declare module '@docusaurus/theme-mermaid' {
 }
 
 declare module '@theme/Mermaid' {
+  import {type ReactNode} from 'react';
+
   export interface Props {
     value: string;
   }
 
-  export default function Mermaid(props: Props): JSX.Element;
+  export default function Mermaid(props: Props): ReactNode;
 }

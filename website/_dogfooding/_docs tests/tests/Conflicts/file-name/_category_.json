@@ -1,0 +1,8 @@
+{
+  "label": "File name conflict",
+  "link": {
+    "type": "generated-index",
+    "title": "File name conflict",
+    "description": "Testing what happens when 2 files have the same name but different position prefixes"
+  }
+}

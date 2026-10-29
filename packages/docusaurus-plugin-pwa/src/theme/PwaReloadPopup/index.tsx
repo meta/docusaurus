@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {useState} from 'react';
+import {type ReactNode, useState} from 'react';
 import clsx from 'clsx';
 import Translate, {translate} from '@docusaurus/Translate';
 import type {Props} from '@theme/PwaReloadPopup';
 
 import styles from './styles.module.css';
 
-export default function PwaReloadPopup({onReload}: Props): JSX.Element | false {
+export default function PwaReloadPopup({onReload}: Props): ReactNode {
   const [isVisible, setIsVisible] = useState(true);
 
   return (

@@ -5,12 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-import {JsonView} from 'react-json-view-lite';
+import type {ReactNode} from 'react';
+import {
+  JsonView,
+  defaultStyles,
+  type Props as JsonViewProps,
+} from 'react-json-view-lite';
 import type {Props} from '@theme/DebugJsonView';
 import styles from './styles.module.css';
 
-const paraisoStyles = {
+const paraisoStyles: JsonViewProps['style'] = {
+  clickableLabel: defaultStyles.clickableLabel,
+  noQuotesForStringValues: false,
   container: styles.containerParaiso!,
   basicChildStyle: styles.basicElementParaiso!,
   label: styles.labelParaiso!,
@@ -24,12 +30,10 @@ const paraisoStyles = {
   collapseIcon: styles.collapseIconParaiso!,
   expandIcon: styles.expandIconParaiso!,
   collapsedContent: styles.collapseContentParaiso!,
+  childFieldsContainer: styles.childFieldsContainerParaiso!,
 };
 
-export default function DebugJsonView({
-  src,
-  collapseDepth,
-}: Props): JSX.Element {
+export default function DebugJsonView({src, collapseDepth}: Props): ReactNode {
   return (
     <JsonView
       data={src as object}

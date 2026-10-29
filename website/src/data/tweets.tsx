@@ -7,8 +7,6 @@
 
 /* eslint-disable @docusaurus/no-untranslated-text */
 
-import React from 'react';
-
 import type {Props as Tweet} from '../components/Tweet';
 
 export type TweetItem = Tweet & {
@@ -17,7 +15,7 @@ export type TweetItem = Tweet & {
 
 const TWEETS: TweetItem[] = [
   {
-    url: 'https://twitter.com/acemarke/status/1452725153998245891',
+    url: 'https://x.com/acemarke/status/1452725153998245891',
     handle: 'acemarke',
     name: 'Mark Erikson',
     date: 'Oct 26, 2021',
@@ -33,7 +31,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'markerikson',
   },
   {
-    url: 'https://twitter.com/arcanis/status/1351620354561732608',
+    url: 'https://x.com/arcanis/status/1351620354561732608',
     handle: 'arcanis',
     name: 'Maël',
     date: 'Jan 20, 2021',
@@ -47,7 +45,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'arcanis',
   },
   {
-    url: 'https://twitter.com/maxlynch/status/1375113166007455748',
+    url: 'https://x.com/maxlynch/status/1375113166007455748',
     handle: 'maxlynch',
     name: 'Max Lynch',
     date: 'Mar 25, 2021',
@@ -61,7 +59,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'mlynch',
   },
   {
-    url: 'https://twitter.com/supabase/status/1328960757149671425',
+    url: 'https://x.com/supabase/status/1328960757149671425',
     handle: 'supabase',
     name: 'Supabase',
     date: 'Nov 18, 2020',
@@ -78,7 +76,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'supabase',
   },
   {
-    url: 'https://twitter.com/paularmstrong/status/1387059593373700100',
+    url: 'https://x.com/paularmstrong/status/1387059593373700100',
     handle: 'paularmstrong',
     name: 'Paul Armstrong',
     date: 'Apr 27, 2021',
@@ -93,7 +91,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'paularmstrong',
   },
   {
-    url: 'https://twitter.com/sanketsahu/status/1328677366642528257',
+    url: 'https://x.com/sanketsahu/status/1328677366642528257',
     handle: 'sanketsahu',
     name: 'Sanket Sahu',
     date: 'Nov 17, 2020',
@@ -106,7 +104,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'sanketsahu',
   },
   {
-    url: 'https://twitter.com/debs_obrien/status/1374615572298801155',
+    url: 'https://x.com/debs_obrien/status/1374615572298801155',
     handle: 'debs_obrien',
     name: "Debbie O'Brien",
     date: 'Mar 24, 2021',
@@ -122,7 +120,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'debs-obrien',
   },
   {
-    url: 'https://twitter.com/Dr_Electron/status/1443635328376508433',
+    url: 'https://x.com/Dr_Electron/status/1443635328376508433',
     handle: 'Dr_Electron',
     name: 'Dr.Electron',
     date: 'Oct 11, 2021',
@@ -132,22 +130,22 @@ const TWEETS: TweetItem[] = [
         have the honor of being a favorite. We are really happy that we found
         this project. It helped us a lot to improve the documentation. And we
         still have a lot of plans with things like tutorials, versioning and
-        i8n.
+        i18n.
       </>
     ),
     showOnHomepage: true,
     githubUsername: 'Dr-Electron',
   },
   {
-    url: 'https://twitter.com/kentcdodds/status/1323806816019468288',
+    url: 'https://x.com/kentcdodds/status/1323806816019468288',
     handle: 'kentcdodds',
     name: 'Kent C. Dodds',
     date: 'Nov 4, 2020',
     content: (
       <>
-        http://testing-library.com just got a nice update! We&apos;re now on the
-        latest version of <b>@docusaurus</b> thanks to @matanbobi, @TensorNo,
-        and @nickemccurdy 💙
+        https://testing-library.com just got a nice update! We&apos;re now on
+        the latest version of <b>@docusaurus</b> thanks to @matanbobi,
+        @TensorNo, and @nickemccurdy 💙
         <br />
         <br />
         My favorite new feature: dark mode!! 🌑/☀️
@@ -157,7 +155,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'kentcdodds',
   },
   {
-    url: 'https://twitter.com/bantg/status/1463608561368457225',
+    url: 'https://x.com/bantg/status/1463608561368457225',
     handle: 'bantg',
     name: 'banteg',
     date: 'Nov 25, 2021',
@@ -166,7 +164,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'banteg',
   },
   {
-    url: 'https://twitter.com/swyx/status/1418405515684581378',
+    url: 'https://x.com/swyx/status/1418405515684581378',
     handle: 'swyx',
     name: 'swyx',
     date: 'Jul 23, 2021',
@@ -176,7 +174,7 @@ const TWEETS: TweetItem[] = [
         <b>@docusaurus</b>!
         <br />
         <br />
-        @temporalio uses it for http://docs.temporal.io, and it has been a huge
+        @temporalio uses it for https://docs.temporal.io, and it has been a huge
         boon to our docs team. @sebastienlorber is an incredible steward of the
         project, support it if you can!
       </>
@@ -185,7 +183,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'sw-yx',
   },
   {
-    url: 'https://twitter.com/rachelnabors/status/1478490902037467137',
+    url: 'https://x.com/rachelnabors/status/1478490902037467137',
     handle: 'rachelnabors',
     name: "R 'Nearest' Nabors 💙",
     date: 'Jan 5, 2022',
@@ -198,7 +196,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'rachelnabors',
   },
   {
-    url: 'https://twitter.com/dabit3/status/1394685348375052295',
+    url: 'https://x.com/dabit3/status/1394685348375052295',
     handle: 'dabit3',
     name: 'Nader Dabit',
     date: 'May 19, 2021',
@@ -212,7 +210,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'dabit3',
   },
   {
-    url: 'https://twitter.com/johnny_reilly/status/1469238609266028545',
+    url: 'https://x.com/johnny_reilly/status/1469238609266028545',
     handle: 'johnny_reilly',
     name: 'John Reilly',
     date: 'Dec 10, 2021',
@@ -221,16 +219,16 @@ const TWEETS: TweetItem[] = [
         I ❤️ <b>@docusaurus</b> - it makes it so easy to spin up docs, blogs and
         simple websites. I&apos;ve used it to:
         <br />
-        <br /> ✅ Replatform my blog with GitHub pages <br />
-        ✅ Build a website for a local business <br />✅ Build internal facing
-        blog/docs sites with @AzureStaticApps
+        <br /> ✅ Replatform my blog with GitHub pages <br />✅ Build a website
+        for a local business <br />✅ Build internal facing blog/docs sites with
+        @AzureStaticApps
       </>
     ),
     showOnHomepage: false,
     githubUsername: 'johnnyreilly',
   },
   {
-    url: 'https://twitter.com/tinkertim/status/1423358665726304260',
+    url: 'https://x.com/tinkertim/status/1423358665726304260',
     handle: 'tinkertim',
     name: 'Tim Post 💉💉💉',
     date: 'Aug 6, 2021',
@@ -248,7 +246,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'tinkertim',
   },
   {
-    url: 'https://twitter.com/sebastienlorber/status/1321784071815680000',
+    url: 'https://x.com/sebastienlorber/status/1321784071815680000',
     handle: 'sebastienlorber',
     name: 'Sebastien Lorber',
     date: 'Oct 29, 2020',
@@ -258,20 +256,18 @@ const TWEETS: TweetItem[] = [
         <b>@docusaurus</b>
         v2
         <br />
-        Some obvious changes: <br />
-        🌔 Dark mode <br />
-        ⚡️ SPA navigation / prefetching <br />
-        🧐 @algolia DocSearch v3 <br />
-        💥 @mdx_js enable many new possibilities <br />
+        Some obvious changes: <br />🌔 Dark mode <br />
+        ⚡️ SPA navigation / prefetching <br />🧐 @algolia DocSearch v3 <br />💥
+        @mdx_js enable many new possibilities <br />
         <br />
-        Check it out: http://reactnative.dev
+        Check it out: https://reactnative.dev
       </>
     ),
     showOnHomepage: false,
     githubUsername: 'slorber',
   },
   {
-    url: 'https://twitter.com/iansu/status/1184149586048245760',
+    url: 'https://x.com/iansu/status/1184149586048245760',
     handle: 'iansu',
     name: 'Ian Sutherland',
     date: 'Oct 16, 2019',
@@ -291,7 +287,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'iansu',
   },
   {
-    url: 'https://twitter.com/mweststrate/status/1181276252293853186',
+    url: 'https://x.com/mweststrate/status/1181276252293853186',
     handle: 'mweststrate',
     name: 'Michel Weststrate',
     date: 'Oct 8, 2019',
@@ -299,9 +295,8 @@ const TWEETS: TweetItem[] = [
       <>
         New #mobx docs are online! More modern, fixing many UI issues.
         <br />
-        <br />
-        👏 @cloverich did the awesome job of migrating from ancient gitbook
-        -&gt; <b>@docusaurus</b>! 👏 <br />
+        <br />👏 @cloverich did the awesome job of migrating from ancient
+        gitbook -&gt; <b>@docusaurus</b>! 👏 <br />
         <br />
         No real content updates yet, but contributing and publishing has become
         way easier
@@ -311,7 +306,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'mweststrate',
   },
   {
-    url: 'https://twitter.com/verdaccio_npm/status/1420187249145118722',
+    url: 'https://x.com/verdaccio_npm/status/1420187249145118722',
     handle: 'verdaccio_npm',
     name: 'verdaccio',
     date: 'Jul 28, 2021',
@@ -328,7 +323,7 @@ const TWEETS: TweetItem[] = [
   },
 
   {
-    url: 'https://twitter.com/yangshunz/status/1284536949718478848',
+    url: 'https://x.com/yangshunz/status/1284536949718478848',
     handle: 'yangshunz',
     name: 'Yangshun Tay',
     date: 'Jul 19, 2020',
@@ -344,7 +339,7 @@ const TWEETS: TweetItem[] = [
   },
 
   {
-    url: 'https://twitter.com/pierregillesl/status/1372839188698001408',
+    url: 'https://x.com/pierregillesl/status/1372839188698001408',
     handle: 'pierregillesl',
     name: 'Pierre-Gilles Leymarie',
     date: 'Mar 19, 2021',
@@ -365,7 +360,7 @@ const TWEETS: TweetItem[] = [
     githubUsername: 'Pierre-Gilles',
   },
   {
-    url: 'https://twitter.com/biantris_/status/1480259279487741953',
+    url: 'https://x.com/biantris_/status/1480259279487741953',
     handle: 'biantris_',
     name: 'biazita',
     date: 'Jan 10, 2022',

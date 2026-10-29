@@ -1,20 +1,32 @@
 {
   "name": "@docusaurus/theme-live-codeblock",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Docusaurus live code block component.",
   "main": "lib/index.js",
   "types": "src/theme-live-codeblock.d.ts",
   "sideEffects": [
     "lib/theme/Playground/*"
   ],
+  "exports": {
+    "./lib/*": "./lib/*",
+    "./src/*": "./src/*",
+    "./client": {
+      "type": "./lib/client/index.d.ts",
+      "default": "./lib/client/index.js"
+    },
+    ".": {
+      "types": "./src/theme-live-codeblock.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsc --build && node ../../admin/scripts/copyUntypedFiles.js && prettier --config ../../.prettierrc --write \"lib/theme/**/*.js\"",
+    "build": "tsc --build && copy-untyped-files && format-gitignored-files \"lib/theme/**/*.js\"",
     "watch": "run-p -c copy:watch build:watch",
     "build:watch": "tsc --build --watch",
-    "copy:watch": "node ../../admin/scripts/copyUntypedFiles.js --watch"
+    "copy:watch": "copy-untyped-files --watch"
   },
   "repository": {
     "type": "git",
@@ -23,25 +35,24 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@docusaurus/core": "3.2.1",
-    "@docusaurus/theme-common": "3.2.1",
-    "@docusaurus/theme-translations": "3.2.1",
-    "@docusaurus/utils-validation": "3.2.1",
-    "@philpl/buble": "^0.19.7",
-    "clsx": "^2.0.0",
-    "fs-extra": "^11.1.1",
-    "react-live": "^4.1.5",
-    "tslib": "^2.6.0"
+    "@docusaurus/core": "workspace:*",
+    "@docusaurus/theme-classic": "workspace:*",
+    "@docusaurus/theme-common": "workspace:*",
+    "@docusaurus/theme-translations": "workspace:*",
+    "@docusaurus/utils-validation": "workspace:*",
+    "clsx": "catalog:",
+    "react-live": "catalog:",
+    "tslib": "catalog:"
   },
   "devDependencies": {
-    "@docusaurus/types": "3.2.1",
-    "@types/buble": "^0.20.1"
+    "@docusaurus/module-type-aliases": "workspace:*",
+    "@docusaurus/types": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   }
 }

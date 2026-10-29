@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`directives remark plugin - client compiler default behavior for container directives: console 1`] = `
+exports[`directives remark plugin - client compiler > default behavior for container directives > console 1`] = `
 [
   [
     "[WARNING] Docusaurus found 1 unused Markdown directives in file "packages/docusaurus-mdx-loader/src/remark/unusedDirectives/__tests__/__fixtures__/containerDirectives.md"
@@ -10,8 +10,8 @@ Your content might render in an unexpected way. Visit https://github.com/faceboo
 ]
 `;
 
-exports[`directives remark plugin - client compiler default behavior for container directives: result 1`] = `
-"<admonition type="danger"><p>Take care of snowstorms...</p></admonition>
+exports[`directives remark plugin - client compiler > default behavior for container directives > result 1`] = `
+"<div><p>Take care of snowstorms...</p></div>
 <div><p>unused directive content</p></div>
 <p>:::NotAContainerDirective with a phrase after</p>
 <p>:::</p>
@@ -19,7 +19,7 @@ exports[`directives remark plugin - client compiler default behavior for contain
 <p>:::</p>"
 `;
 
-exports[`directives remark plugin - client compiler default behavior for leaf directives: console 1`] = `
+exports[`directives remark plugin - client compiler > default behavior for leaf directives > console 1`] = `
 [
   [
     "[WARNING] Docusaurus found 1 unused Markdown directives in file "packages/docusaurus-mdx-loader/src/remark/unusedDirectives/__tests__/__fixtures__/leafDirectives.md"
@@ -29,13 +29,13 @@ Your content might render in an unexpected way. Visit https://github.com/faceboo
 ]
 `;
 
-exports[`directives remark plugin - client compiler default behavior for leaf directives: result 1`] = `
+exports[`directives remark plugin - client compiler > default behavior for leaf directives > result 1`] = `
 "<div></div>
 <p>Leaf directive in a phrase ::NotALeafDirective</p>
 <p>::NotALeafDirective with a phrase after</p>"
 `;
 
-exports[`directives remark plugin - client compiler default behavior for text directives: console 1`] = `
+exports[`directives remark plugin - client compiler > default behavior for text directives > console 1`] = `
 [
   [
     "[WARNING] Docusaurus found 2 unused Markdown directives in file "packages/docusaurus-mdx-loader/src/remark/unusedDirectives/__tests__/__fixtures__/textDirectives.md"
@@ -46,7 +46,7 @@ Your content might render in an unexpected way. Visit https://github.com/faceboo
 ]
 `;
 
-exports[`directives remark plugin - client compiler default behavior for text directives: result 1`] = `
+exports[`directives remark plugin - client compiler > default behavior for text directives > result 1`] = `
 "<p>Simple: textDirective1</p>
 <pre><code class="language-sh">Simple: textDirectiveCode
 </code></pre>
@@ -58,8 +58,35 @@ exports[`directives remark plugin - client compiler default behavior for text di
 </code></pre>"
 `;
 
-exports[`directives remark plugin - server compiler default behavior for container directives: result 1`] = `
-"<admonition type="danger"><p>Take care of snowstorms...</p></admonition>
+exports[`directives remark plugin - client compiler > onUnusedMarkdownDirectives > function form > if file contains unused container directive > result 1`] = `
+"<div><p>Take care of snowstorms...</p></div>
+<div></div>
+<p>:::NotAContainerDirective with a phrase after</p>
+<p>:::</p>
+<p>Phrase before :::NotAContainerDirective</p>
+<p>:::</p>"
+`;
+
+exports[`directives remark plugin - client compiler > onUnusedMarkdownDirectives > function form > if file contains unused leaf directive > result 1`] = `
+"<div></div>
+<p>Leaf directive in a phrase ::NotALeafDirective</p>
+<p>::NotALeafDirective with a phrase after</p>"
+`;
+
+exports[`directives remark plugin - client compiler > onUnusedMarkdownDirectives > function form > if file contains unused text directive > result 1`] = `
+"<p>Simple: textDirective1</p>
+<pre><code class="language-sh">Simple: textDirectiveCode
+</code></pre>
+<p>Simple:textDirective2</p>
+<p>Simple<div></div></p>
+<p>Simple<div></div></p>
+<p>Simple:textDirective5</p>
+<pre><code class="language-sh">Simple:textDirectiveCode
+</code></pre>"
+`;
+
+exports[`directives remark plugin - client compiler > onUnusedMarkdownDirectives > ignore > if file contains unused container directive > result 1`] = `
+"<div><p>Take care of snowstorms...</p></div>
 <div><p>unused directive content</p></div>
 <p>:::NotAContainerDirective with a phrase after</p>
 <p>:::</p>
@@ -67,13 +94,40 @@ exports[`directives remark plugin - server compiler default behavior for contain
 <p>:::</p>"
 `;
 
-exports[`directives remark plugin - server compiler default behavior for leaf directives: result 1`] = `
+exports[`directives remark plugin - client compiler > onUnusedMarkdownDirectives > ignore > if file contains unused leaf directive > result 1`] = `
 "<div></div>
 <p>Leaf directive in a phrase ::NotALeafDirective</p>
 <p>::NotALeafDirective with a phrase after</p>"
 `;
 
-exports[`directives remark plugin - server compiler default behavior for text directives: result 1`] = `
+exports[`directives remark plugin - client compiler > onUnusedMarkdownDirectives > ignore > if file contains unused text directive > result 1`] = `
+"<p>Simple: textDirective1</p>
+<pre><code class="language-sh">Simple: textDirectiveCode
+</code></pre>
+<p>Simple:textDirective2</p>
+<p>Simple<div>label</div></p>
+<p>Simple<div></div></p>
+<p>Simple:textDirective5</p>
+<pre><code class="language-sh">Simple:textDirectiveCode
+</code></pre>"
+`;
+
+exports[`directives remark plugin - server compiler > default behavior for container directives > result 1`] = `
+"<div><p>Take care of snowstorms...</p></div>
+<div><p>unused directive content</p></div>
+<p>:::NotAContainerDirective with a phrase after</p>
+<p>:::</p>
+<p>Phrase before :::NotAContainerDirective</p>
+<p>:::</p>"
+`;
+
+exports[`directives remark plugin - server compiler > default behavior for leaf directives > result 1`] = `
+"<div></div>
+<p>Leaf directive in a phrase ::NotALeafDirective</p>
+<p>::NotALeafDirective with a phrase after</p>"
+`;
+
+exports[`directives remark plugin - server compiler > default behavior for text directives > result 1`] = `
 "<p>Simple: textDirective1</p>
 <pre><code class="language-sh">Simple: textDirectiveCode
 </code></pre>

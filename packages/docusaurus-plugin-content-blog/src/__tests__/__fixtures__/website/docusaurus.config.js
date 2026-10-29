@@ -13,7 +13,6 @@ module.exports = {
   baseUrl: '/',
   url: 'https://docusaurus.io',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'throw',
   favicon: 'img/docusaurus.ico',
   presets: [
     [

@@ -5,9 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {useState, useEffect, useMemo, useRef} from 'react';
+import {useState, useEffect, useMemo, useId, useRef} from 'react';
 import {useColorMode, useThemeConfig} from '@docusaurus/theme-common';
-import mermaid from 'mermaid';
+import {loadMermaid} from './loadMermaid';
+
 import type {RenderResult, MermaidConfig} from 'mermaid';
 import type {ThemeConfig} from '@docusaurus/theme-mermaid';
 
@@ -31,15 +32,6 @@ export function useMermaidConfig(): MermaidConfig {
   );
 }
 
-function useMermaidId(): string {
-  /*
-  Random client-only id, we don't care much but mermaid want an id so...
-  Note: Mermaid doesn't like values provided by Rect.useId() and throws
-  */
-  // return useId(); // tried that, doesn't work ('#d:re:' is not a valid selector.)
-  return useRef(`mermaid-svg-${Math.round(Math.random() * 10000000)}`).current!;
-}
-
 async function renderMermaid({
   id,
   text,
@@ -49,6 +41,8 @@ async function renderMermaid({
   text: string;
   config: MermaidConfig;
 }): Promise<RenderResult> {
+  const mermaid = await loadMermaid();
+
   /*
   Mermaid API is really weird :s
   It is a big mutable singleton with multiple config levels
@@ -67,7 +61,7 @@ async function renderMermaid({
   To use a new mermaid config (on colorMode change for example) we should
   update siteConfig, and it can only be done with initialize()
    */
-  mermaid.mermaidAPI.initialize(config);
+  mermaid.initialize(config);
 
   try {
     return await mermaid.render(id, text);
@@ -87,7 +81,8 @@ export function useMermaidRenderResult({
   config?: MermaidConfig;
 }): RenderResult | null {
   const [result, setResult] = useState<RenderResult | null>(null);
-  const id = useMermaidId();
+  const id = useId();
+  const renderCount = useRef(0);
 
   /*
   For flexibility, we allow the hook to receive a custom Mermaid config
@@ -97,13 +92,16 @@ export function useMermaidRenderResult({
   const config = providedConfig ?? defaultMermaidConfig;
 
   useEffect(() => {
-    renderMermaid({id, text, config})
+    // Mermaid removes existing DOM elements with the requested ID. Reusing an
+    // ID can delete the displayed SVG, which React won't restore if the new
+    // SVG markup is identical. Give every render its own ID instead.
+    renderMermaid({id: `${id}-${renderCount.current++}`, text, config})
       // TODO maybe try to use Suspense here and throw the promise?
       // See also https://github.com/pmndrs/suspend-react
       .then(setResult)
       .catch((e) => {
         // Funky way to trigger parent React error boundary
-        // See https://twitter.com/sebastienlorber/status/1628340871899893768
+        // See https://x.com/sebastienlorber/status/1628340871899893768
         setResult(() => {
           throw e;
         });

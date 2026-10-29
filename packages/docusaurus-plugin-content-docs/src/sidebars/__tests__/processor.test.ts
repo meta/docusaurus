@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {jest} from '@jest/globals';
+import {describe, expect, it, vi} from 'vitest';
 import {createSlugger} from '@docusaurus/utils';
 import {processSidebars} from '../processor';
 import {DefaultSidebarItemsGenerator} from '../generator';
@@ -26,7 +26,7 @@ describe('processSidebars', () => {
   function createStaticSidebarItemGenerator(
     sidebarSlice: NormalizedSidebar,
   ): SidebarItemsGenerator {
-    return jest.fn(() => sidebarSlice);
+    return vi.fn(() => sidebarSlice);
   }
 
   const StaticGeneratedSidebarSlice: Sidebar = [

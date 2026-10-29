@@ -1,0 +1,129 @@
+---
+title: Docusaurus 3.4
+authors: [slorber]
+tags: [release]
+image: ./img/social-card.png
+date: 2024-05-31
+---
+
+We are happy to announce **Docusaurus 3.4**.
+
+Upgrading should be easy. Our [release process](/community/release-process) respects [Semantic Versioning](https://semver.org/). Minor versions do not include any breaking changes.
+
+![Docusaurus blog post social card](./img/social-card.png)
+
+{/* truncate */}
+
+## Highlights {/* #highlights */}
+
+### Tags files {/* #tags-files */}
+
+The docs and blog plugins both already supported a `tags` front matter attribute, enabling you to group related content. But tags declared inline in the front matter are not always ideal.
+
+With [#10137](https://github.com/facebook/docusaurus/pull/10137), you can now declare a list of pre-defined tags in a `tags.yml` file:
+
+```yml title="blog/tags.yml"
+tag1:
+  label: 'Tag 1'
+  description: 'Tag 1 description'
+  permalink: /tag-1-permalink
+
+tag2:
+  label: 'Tag 2'
+  description: 'Tag 2 description'
+  permalink: /tag-2-permalink
+```
+
+These predefined tags can be used in the front matter of your blog or docs files:
+
+```md title="blog/2024-05-31-my-blog-post.md"
+---
+tags: [tag1, tag2]
+---
+
+# Title
+
+Content
+```
+
+:::tip Keeping tags usage consistent
+
+Use the new `onInlineTags: 'throw'` plugin option to enforce the usage of predefined tags and prevent contributors from creating new unwanted tags.
+
+:::
+
+### Hash Router - Experimental {/* #hash-router---experimental */}
+
+With [9859](https://github.com/facebook/docusaurus/pull/9859), we added a new **experimental** hash router config option, useful for **offline browsing** by opening your site locally through the `file://` protocol.
+
+```tsx title="docusaurus.config.js"
+export default {
+  future: {
+    experimental_router: 'hash',
+  },
+};
+```
+
+:::warning
+
+This mode is **not recommended for sites deployed through a web server**.
+
+:::
+
+When this mode is turned on, Docusaurus will opt out of static site rendering, and build a client-side single page application where all routes are prefixed with `/#/`. A single `index.html` file is generated. This file can be opened locally in your browser by simply clicking it, using the browser `file://` protocol. This makes it possible to distribute a Docusaurus site as a `.zip` file so that readers can browse it offline, without having to install anything complex on their computer apart a web browser.
+
+![Docusaurus hash router - local browsing using the file:// protocol](./img/hash.png)
+
+Try browsing our own Docusaurus site built with the hash router:
+
+- [Docusaurus website - Hash Router web deployment](https://facebook.github.io/docusaurus/#/)
+- [Docusaurus website - Hash Router downloadable GitHub artifacts](https://github.com/facebook/docusaurus/actions/workflows/build-hash-router.yml)
+
+:::warning Experimental
+
+This feature is **experimental**. If you try it out, please let us know how it works for you [here](https://github.com/facebook/docusaurus/issues/3825).
+
+:::
+
+### Site Storage - Experimental {/* #site-storage---experimental */}
+
+Docusaurus uses the browser `localStorage` API to persist UI state.
+
+But sometimes the storage space is "shared" between multiple sites using the same domain, leading to **storage key conflicts**. This generally happens in two cases
+
+- when working on multiple `http://localhost:3000` sites
+- when hosting multiple sites under the same domain: `https://example.com/site1/` and `https://example.com/site2/`
+
+For this reason, we introduced a new **experimental** `siteStorage` configuration option:
+
+```tsx
+export default {
+  future: {
+    experimental_storage: {
+      type: 'localStorage',
+      namespace: true,
+    },
+  },
+};
+```
+
+When `namespace: true` is set, we apply a hash suffix to all the storage keys, making them unique to the current site (based on `config.url` and `config.baseUrl`. For example, the `theme` storage key becomes `theme-x6f`. It is also possible to provide your own custom suffix `namespace: 'suffix'`. We also made it possible to use `type: 'sessionStorage'` instead of the default `localStorage`.
+
+:::warning Experimental
+
+This feature is **experimental**. If you try it out, please let us know how it works for you [here](https://github.com/facebook/docusaurus/pull/10121).
+
+:::
+
+## Other changes {/* #other-changes */}
+
+Other notable changes include:
+
+- [#10151](https://github.com/facebook/docusaurus/pull/10151): add Turkmen (tk) theme translations
+- [#10111](https://github.com/facebook/docusaurus/pull/10111): add Bulgarian (bg) theme translations
+- [#10168](https://github.com/facebook/docusaurus/pull/10168): fix many long overdue Markdown link resolution bugs
+- [#10178](https://github.com/facebook/docusaurus/pull/10178): the `/search` page now respects the `contextualSearch: false` setting
+- [#10118](https://github.com/facebook/docusaurus/pull/10118): fix bad pluralization on docs generated index category card description
+- [#10130](https://github.com/facebook/docusaurus/pull/10130): fix false positives reported by the broken anchor checker due to trailing slashes
+
+Check the **[3.4.0 changelog entry](/changelog/3.4.0)** for an exhaustive list of changes.

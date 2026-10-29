@@ -38,8 +38,13 @@
   color: var(--ifm-color-primary) !important;
 }
 
-@media (max-width: 996px) {
+@media (width <= 996px) {
   .sidebar {
     display: none;
   }
+}
+
+.yearGroupHeading {
+  margin-top: 1.6rem;
+  margin-bottom: 0.4rem;
 }

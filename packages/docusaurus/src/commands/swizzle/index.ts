@@ -5,9 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
 import logger from '@docusaurus/logger';
-import {askPreferredLanguage} from '@docusaurus/utils';
+import {realpath} from '@docusaurus/fs';
 import {
   getThemeName,
   getThemePath,
@@ -19,7 +18,10 @@ import {helpTables, themeComponentsTable} from './tables';
 import {normalizeOptions} from './common';
 import {eject, getAction, wrap} from './actions';
 import {getThemeSwizzleConfig} from './config';
-import {askSwizzleDangerousComponent} from './prompts';
+import {
+  askSwizzleDangerousComponent,
+  askSwizzlePreferredLanguage,
+} from './prompts';
 import {initSwizzleContext} from './context';
 import type {SwizzleAction, SwizzleComponentConfig} from '@docusaurus/types';
 import type {SwizzleCLIOptions, SwizzlePlugin} from './common';
@@ -54,7 +56,7 @@ async function getLanguageForThemeName({
 
   // It's only useful to prompt the user for themes that support both JS/TS
   if (supportsTS) {
-    return askPreferredLanguage({exit: true});
+    return askSwizzlePreferredLanguage();
   }
 
   return 'javascript';
@@ -134,7 +136,7 @@ export async function swizzle(
   siteDirParam: string = '.',
   optionsParam: Partial<SwizzleCLIOptions> = {},
 ): Promise<void> {
-  const siteDir = await fs.realpath(siteDirParam);
+  const siteDir = await realpath(siteDirParam);
 
   const options = normalizeOptions(optionsParam);
   const {list, danger} = options;

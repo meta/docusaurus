@@ -1,7 +1,11 @@
+// This file is not used by "docusaurus start/build" commands.
+// It helps improve your IDE experience (type-checking, autocompletion...),
+// You can also run the package.json "typecheck" script manually.
+// Our base config is often good enough, but feel free to customize it!
 {
-  // This file is not used in compilation. It is here just for a nice editor experience.
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
-    "baseUrl": "."
+    // Node.js types, for Node.js code (docusaurus.config.ts, sidebars.ts...)
+    "types": ["node"]
   }
 }

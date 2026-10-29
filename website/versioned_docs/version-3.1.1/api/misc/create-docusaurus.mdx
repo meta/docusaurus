@@ -7,7 +7,7 @@ slug: /api/misc/create-docusaurus
 
 A scaffolding utility to help you instantly set up a functional Docusaurus app.
 
-## Usage {#usage}
+## Usage {/* #usage */}
 
 ```bash
 npx create-docusaurus@latest [name] [template] [rootDir]
@@ -30,13 +30,13 @@ This command should be preferably used in an interactive shell so all features a
 
 :::
 
-## Options {#options}
+## Options {/* #options */}
 
-### `-t, --typescript` {#typescript}
+### `-t, --typescript` {/* #typescript */}
 
 Used when the template argument is a recognized name. Currently, only `classic` provides a TypeScript variant.
 
-### `-g, --git-strategy` {#git-strategy}
+### `-g, --git-strategy` {/* #git-strategy */}
 
 Used when the template argument is a git repo. It needs to be one of:
 
@@ -45,7 +45,7 @@ Used when the template argument is a git repo. It needs to be one of:
 - `copy`: does a shallow clone, but does not create a git repo
 - `custom`: enter your custom git clone command. We will prompt you for it. You can write something like `git clone --depth 10`, and we will append the repository URL and destination directory.
 
-### `-p, --package-manager` {#package-manager}
+### `-p, --package-manager` {/* #package-manager */}
 
 Value should be one of `npm`, `yarn`, `pnpm`, or `bun`. If it's not explicitly provided, Docusaurus will infer one based on:
 
@@ -53,6 +53,6 @@ Value should be one of `npm`, `yarn`, `pnpm`, or `bun`. If it's not explicitly p
 - The command used to invoke `create-docusaurus` (e.g. `npm init`, `npx`, `yarn create`, `bunx`, etc.)
 - Interactive prompting, in case all heuristics are not present
 
-### `-s, --skip-install` {#skip-install}
+### `-s, --skip-install` {/* #skip-install */}
 
 If provided, Docusaurus will not automatically install dependencies after creating the app. The `--package-manager` option is only useful when you are actually installing dependencies.

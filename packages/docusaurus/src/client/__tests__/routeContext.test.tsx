@@ -4,11 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-import React from 'react';
-// TODO migrate to @testing-library/react when SSR rendering possible
-// See https://github.com/testing-library/react-testing-library/issues/1120
-import {renderHook} from '@testing-library/react-hooks/server';
+// @vitest-environment jsdom
+import {describe, expect, it} from 'vitest';
+import {renderHook} from '@testing-library/react';
 import {RouteContextProvider} from '../routeContext';
 import useRouteContext from '../exports/useRouteContext';
 
@@ -33,7 +31,7 @@ describe('RouteContextProvider', () => {
           ),
         }).result.current,
     ).toThrowErrorMatchingInlineSnapshot(
-      `"Unexpected: no Docusaurus route context found"`,
+      `[Error: Unexpected: no Docusaurus route context found]`,
     );
   });
   it('throws if there is no parent context created by plugin', () => {
@@ -47,7 +45,7 @@ describe('RouteContextProvider', () => {
           ),
         }).result.current,
     ).toThrowErrorMatchingInlineSnapshot(
-      `"Unexpected: Docusaurus topmost route context has no \`plugin\` attribute"`,
+      `[Error: Unexpected: Docusaurus topmost route context has no \`plugin\` attribute]`,
     );
   });
   it('merges route context created by parent', () => {

@@ -5,15 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import logger from '@docusaurus/logger';
-import {DEFAULT_PLUGIN_ID} from '@docusaurus/utils';
+import {DEFAULT_PLUGIN_ID, getLocaleConfig} from '@docusaurus/utils';
+import {fs, pathExists, outputFile} from '@docusaurus/fs';
 import {
   getVersionsFilePath,
   getVersionDocsDirPath,
   getVersionSidebarsPath,
   getDocsDirPathLocalized,
+  getPluginDirPathLocalized,
   readVersionsFile,
 } from './versions/files';
 import {validateVersionName} from './versions/validation';
@@ -44,7 +45,7 @@ async function createVersionedSidebarFile({
   const shouldCreateVersionedSidebarFile = Object.keys(sidebars).length > 0;
 
   if (shouldCreateVersionedSidebarFile) {
-    await fs.outputFile(
+    await outputFile(
       getVersionSidebarsPath(siteDir, pluginId, version),
       `${JSON.stringify(sidebars, null, 2)}\n`,
       'utf8',
@@ -53,7 +54,7 @@ async function createVersionedSidebarFile({
 }
 
 // Tests depend on non-default export for mocking.
-export async function cliDocsVersionCommand(
+async function cliDocsVersionCommand(
   version: unknown,
   {id: pluginId, path: docsPath, sidebarPath}: PluginOptions,
   {siteDir, i18n}: LoadContext,
@@ -88,7 +89,7 @@ export async function cliDocsVersionCommand(
       const localizationDir = path.resolve(
         siteDir,
         i18n.path,
-        i18n.localeConfigs[locale]!.path,
+        getLocaleConfig(i18n, locale).path,
       );
       // Copy docs files.
       const docsDir =
@@ -101,7 +102,7 @@ export async function cliDocsVersionCommand(
             });
 
       if (
-        !(await fs.pathExists(docsDir)) ||
+        !(await pathExists(docsDir)) ||
         (await fs.readdir(docsDir)).length === 0
       ) {
         if (locale === i18n.defaultLocale) {
@@ -122,7 +123,28 @@ export async function cliDocsVersionCommand(
               pluginId,
               versionName: version,
             });
-      await fs.copy(docsDir, newVersionDir);
+      // verbatimSymlinks: keep relative symlinks relative
+      await fs.cp(docsDir, newVersionDir, {
+        recursive: true,
+        verbatimSymlinks: true,
+      });
+
+      // Copy version JSON translation file for this locale
+      // i18n/<l>/docusaurus-plugin-content-docs/current.json => version-v1.json
+      // See https://docusaurus.io/docs/next/api/plugins/@docusaurus/plugin-content-docs#translation-files-location
+      if (locale !== i18n.defaultLocale) {
+        const dir = getPluginDirPathLocalized({
+          localizationDir,
+          pluginId,
+        });
+        const sourceFile = path.join(dir, 'current.json');
+        const dest = path.join(dir, `version-${version}.json`);
+        if (await pathExists(sourceFile)) {
+          await fs.cp(sourceFile, dest, {verbatimSymlinks: true});
+        } else {
+          logger.warn`${pluginIdLogPrefix}: i18n translation file does not exist in path=${sourceFile}. Skipping.`;
+        }
+      }
     }),
   );
 
@@ -135,10 +157,24 @@ export async function cliDocsVersionCommand(
 
   // Update versions.json file.
   versions.unshift(version);
-  await fs.outputFile(
+  await outputFile(
     getVersionsFilePath(siteDir, pluginId),
     `${JSON.stringify(versions, null, 2)}\n`,
   );
 
   logger.success`name=${pluginIdLogPrefix}: version name=${version} created!`;
 }
+
+// TODO try to remove this workaround
+// Why use a default export instead of named exports here?
+// This is only to make Jest mocking happy
+// After upgrading Jest/SWC we got this weird mocking error in extendCli tests
+// "spyOn: Cannot redefine property cliDocsVersionCommand"
+// I tried various workarounds, and it's the only one that worked :/
+// See also:
+// - https://pyk.sh/fixing-typeerror-cannot-redefine-property-x-error-in-jest-tests#heading-solution-2-using-barrel-imports
+// - https://github.com/aelbore/esbuild-jest/issues/26
+// - https://stackoverflow.com/questions/67872622/jest-spyon-not-working-on-index-file-cannot-redefine-property/69951703#69951703
+export default {
+  cliDocsVersionCommand,
+};

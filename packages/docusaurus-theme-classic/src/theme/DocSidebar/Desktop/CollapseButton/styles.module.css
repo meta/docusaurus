@@ -15,7 +15,7 @@
   --docusaurus-collapse-button-bg-hover: rgb(255 255 255 / 10%);
 }
 
-@media (min-width: 997px) {
+@media (width >= 997px) {
   .collapseSidebarButton {
     display: block !important;
     background-color: var(--docusaurus-collapse-button-bg);

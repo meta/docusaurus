@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {type ReactNode} from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import {ThemeClassNames} from '@docusaurus/theme-common';
 
@@ -17,7 +17,8 @@ function AdmonitionContainer({
   type,
   className,
   children,
-}: Pick<Props, 'type' | 'className'> & {children: ReactNode}) {
+  id,
+}: Pick<Props, 'type' | 'className' | 'id'> & {children: ReactNode}) {
   return (
     <div
       className={clsx(
@@ -25,7 +26,8 @@ function AdmonitionContainer({
         ThemeClassNames.common.admonitionType(type),
         styles.admonition,
         className,
-      )}>
+      )}
+      id={id}>
       {children}
     </div>
   );
@@ -46,11 +48,11 @@ function AdmonitionContent({children}: Pick<Props, 'children'>) {
   ) : null;
 }
 
-export default function AdmonitionLayout(props: Props): JSX.Element {
-  const {type, icon, title, children, className} = props;
+export default function AdmonitionLayout(props: Props): ReactNode {
+  const {type, icon, title, children, className, id} = props;
   return (
-    <AdmonitionContainer type={type} className={className}>
-      <AdmonitionHeading title={title} icon={icon} />
+    <AdmonitionContainer type={type} className={className} id={id}>
+      {title || icon ? <AdmonitionHeading title={title} icon={icon} /> : null}
       <AdmonitionContent>{children}</AdmonitionContent>
     </AdmonitionContainer>
   );

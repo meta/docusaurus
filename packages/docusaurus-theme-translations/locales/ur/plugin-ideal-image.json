@@ -1,0 +1,7 @@
+{
+  "theme.IdealImageMessage.404error": "404. تصویر نہیں ملی",
+  "theme.IdealImageMessage.error": "خرابی۔ دوبارہ لوڈ کرنے کے لیے کلک کریں",
+  "theme.IdealImageMessage.load": "لوڈ کرنے کے لیے کلک کریں {sizeMessage}",
+  "theme.IdealImageMessage.loading": "لوڈنگ ہو رہی ہے...",
+  "theme.IdealImageMessage.offline": "آپ کا براؤزر آف لائن ہے۔ تصویر لوڈ نہیں ہوئی"
+}

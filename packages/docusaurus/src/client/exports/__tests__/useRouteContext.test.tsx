@@ -4,11 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-import React from 'react';
-// TODO migrate to @testing-library/react when SSR rendering possible
-// See https://github.com/testing-library/react-testing-library/issues/1120
-import {renderHook} from '@testing-library/react-hooks/server';
+// @vitest-environment jsdom
+import {describe, expect, it} from 'vitest';
+import {renderHook} from '@testing-library/react';
 import {RouteContextProvider} from '../../routeContext';
 import useRouteContext from '../useRouteContext';
 
@@ -17,7 +15,7 @@ describe('useRouteContext', () => {
     expect(
       () => renderHook(() => useRouteContext()).result.current,
     ).toThrowErrorMatchingInlineSnapshot(
-      `"Unexpected: no Docusaurus route context found"`,
+      `[Error: Unexpected: no Docusaurus route context found]`,
     );
   });
   it('returns merged route contexts', () => {

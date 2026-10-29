@@ -5,9 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
-import fs from 'fs-extra';
-import {getPluginI18nPath, DEFAULT_PLUGIN_ID} from '@docusaurus/utils';
+import path from 'node:path';
+import {
+  getPluginI18nPath,
+  getLocaleConfig,
+  DEFAULT_PLUGIN_ID,
+} from '@docusaurus/utils';
+import {pathExists, readJSON} from '@docusaurus/fs';
 import {
   VERSIONS_JSON_FILE,
   VERSIONED_DOCS_DIR,
@@ -19,7 +23,7 @@ import type {
   PluginOptions,
   VersionMetadata,
 } from '@docusaurus/plugin-content-docs';
-import type {VersionContext} from './index';
+import type {VersionContext} from './version';
 
 /** Add a prefix like `community_version-1.0.0`. No-op for default instance. */
 function addPluginIdPrefix(fileOrDir: string, pluginId: string): string {
@@ -75,6 +79,21 @@ export function getDocsDirPathLocalized({
   });
 }
 
+export function getPluginDirPathLocalized({
+  localizationDir,
+  pluginId,
+}: {
+  localizationDir: string;
+  pluginId: string;
+}): string {
+  return getPluginI18nPath({
+    localizationDir,
+    pluginName: 'docusaurus-plugin-content-docs',
+    pluginId,
+    subPaths: [],
+  });
+}
+
 /** `community` => `[siteDir]/community_versions.json` */
 export function getVersionsFilePath(siteDir: string, pluginId: string): string {
   return path.join(siteDir, addPluginIdPrefix(VERSIONS_JSON_FILE, pluginId));
@@ -91,8 +110,8 @@ export async function readVersionsFile(
   pluginId: string,
 ): Promise<string[] | null> {
   const versionsFilePath = getVersionsFilePath(siteDir, pluginId);
-  if (await fs.pathExists(versionsFilePath)) {
-    const content: unknown = await fs.readJSON(versionsFilePath);
+  if (await pathExists(versionsFilePath)) {
+    const content: unknown = await readJSON(versionsFilePath);
     validateVersionNames(content);
     return content;
   }
@@ -126,7 +145,7 @@ export async function readVersionNames(
     );
   }
 
-  const versions = options.disableVersioning ? [] : versionFileContent ?? [];
+  const versions = options.disableVersioning ? [] : (versionFileContent ?? []);
 
   // We add the current version at the beginning, unless:
   // - user don't want to; or
@@ -171,11 +190,16 @@ export async function getVersionMetadataPaths({
   >
 > {
   const isCurrent = versionName === CURRENT_VERSION_NAME;
-  const contentPathLocalized = getDocsDirPathLocalized({
-    localizationDir: context.localizationDir,
-    pluginId: options.id,
-    versionName,
-  });
+
+  const shouldTranslate = getLocaleConfig(context.i18n).translate;
+  const contentPathLocalized = shouldTranslate
+    ? getDocsDirPathLocalized({
+        localizationDir: context.localizationDir,
+        pluginId: options.id,
+        versionName,
+      })
+    : undefined;
+
   const contentPath = isCurrent
     ? path.resolve(context.siteDir, options.path)
     : getVersionDocsDirPath(context.siteDir, options.id, versionName);
@@ -183,7 +207,7 @@ export async function getVersionMetadataPaths({
     ? options.sidebarPath
     : getVersionSidebarsPath(context.siteDir, options.id, versionName);
 
-  if (!(await fs.pathExists(contentPath))) {
+  if (!(await pathExists(contentPath))) {
     throw new Error(
       `The docs folder does not exist for version "${versionName}". A docs folder is expected to be found at ${path.relative(
         context.siteDir,
@@ -200,7 +224,7 @@ export async function getVersionMetadataPaths({
   if (
     versionName === CURRENT_VERSION_NAME &&
     typeof sidebarFilePath === 'string' &&
-    !(await fs.pathExists(sidebarFilePath))
+    !(await pathExists(sidebarFilePath))
   ) {
     throw new Error(`The path to the sidebar file does not exist at "${path.relative(
       context.siteDir,

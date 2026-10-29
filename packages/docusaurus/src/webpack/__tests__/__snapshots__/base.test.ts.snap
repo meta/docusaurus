@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`base webpack config creates webpack aliases 1`] = `
+exports[`base webpack config > creates webpack aliases 1`] = `
 {
   "@docusaurus/BrowserOnly": "../../../../client/exports/BrowserOnly.tsx",
   "@docusaurus/ComponentCreator": "../../../../client/exports/ComponentCreator.tsx",
@@ -23,6 +23,7 @@ exports[`base webpack config creates webpack aliases 1`] = `
   "@docusaurus/useIsomorphicLayoutEffect": "../../../../client/exports/useIsomorphicLayoutEffect.tsx",
   "@docusaurus/useRouteContext": "../../../../client/exports/useRouteContext.tsx",
   "@generated": "../../../../../../..",
+  "@mdx-js/react": "../../../../../../../node_modules/@mdx-js/react",
   "@site": "",
   "@theme-init/PluginThemeComponentEnhanced": "pluginThemeFolder/PluginThemeComponentEnhanced.js",
   "@theme-original/Error": "../../../../client/theme-fallback/Error/index.tsx",
@@ -34,6 +35,7 @@ exports[`base webpack config creates webpack aliases 1`] = `
   "@theme-original/PluginThemeComponentOverriddenByUser": "pluginThemeFolder/PluginThemeComponentOverriddenByUser.js",
   "@theme-original/Root": "../../../../client/theme-fallback/Root/index.tsx",
   "@theme-original/SiteMetadata": "../../../../client/theme-fallback/SiteMetadata/index.tsx",
+  "@theme-original/ThemeProvider": "../../../../client/theme-fallback/ThemeProvider/index.tsx",
   "@theme-original/subfolder/PluginThemeComponent2": "pluginThemeFolder/subfolder/PluginThemeComponent2.js",
   "@theme/Error": "../../../../client/theme-fallback/Error/index.tsx",
   "@theme/Layout": "../../../../client/theme-fallback/Layout/index.tsx",
@@ -44,8 +46,11 @@ exports[`base webpack config creates webpack aliases 1`] = `
   "@theme/PluginThemeComponentOverriddenByUser": "src/theme/PluginThemeComponentOverriddenByUser.js",
   "@theme/Root": "../../../../client/theme-fallback/Root/index.tsx",
   "@theme/SiteMetadata": "../../../../client/theme-fallback/SiteMetadata/index.tsx",
+  "@theme/ThemeProvider": "../../../../client/theme-fallback/ThemeProvider/index.tsx",
   "@theme/UserThemeComponent1": "src/theme/UserThemeComponent1.js",
   "@theme/subfolder/PluginThemeComponent2": "pluginThemeFolder/subfolder/PluginThemeComponent2.js",
   "@theme/subfolder/UserThemeComponent2": "src/theme/subfolder/UserThemeComponent2.js",
+  "react": "../../../../../../../node_modules/react",
+  "react-dom": "../../../../../../../node_modules/react-dom",
 }
 `;

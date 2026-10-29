@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 
 import type {Props} from '@theme/Icon/Expand';
 
-export default function IconExpand({expanded, ...props}: Props): JSX.Element {
+export default function IconExpand({expanded, ...props}: Props): ReactNode {
   if (expanded) {
     return (
       <svg

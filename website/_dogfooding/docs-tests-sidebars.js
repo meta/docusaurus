@@ -8,6 +8,7 @@
 /**
  * @typedef {import('@docusaurus/plugin-content-docs').SidebarsConfig} SidebarsConfig
  * @typedef {import('@docusaurus/plugin-content-docs/lib/sidebars/types').SidebarItemConfig} SidebarItemConfig
+ * @typedef {import('@docusaurus/plugin-content-docs/lib/sidebars/types').SidebarItemCategoryConfig} SidebarItemCategoryConfig
  */
 
 /** @type {SidebarsConfig} */
@@ -21,6 +22,7 @@ const sidebars = {
     },
     'doc-without-sidebar',
     'doc-with-another-sidebar',
+    'doc-with-complex-description',
     'doc-with-last-update',
     {
       type: 'category',
@@ -41,6 +43,7 @@ const sidebars = {
         {
           type: 'category',
           label: 'Sidebar item description tests',
+          description: 'Some custom category description',
           link: {
             type: 'generated-index',
           },
@@ -62,7 +65,8 @@ const sidebars = {
               items: [
                 {
                   type: 'link',
-                  label: 'Link ',
+                  label: 'Link',
+                  key: 'link-key-1',
                   href: 'https://docusaurus.io',
                 },
               ],
@@ -75,6 +79,7 @@ const sidebars = {
                 {
                   type: 'link',
                   label: 'Link ',
+                  key: 'link-key-2',
                   href: 'https://docusaurus.io',
                 },
               ],
@@ -156,7 +161,7 @@ const sidebars = {
         {
           type: 'html',
           value:
-            '<span style="border-top: 1px solid var(--ifm-color-gray-500); display: block;margin: 0.5rem 0 0.25rem 1rem;" />',
+            '<span style="border-top: 1px solid var(--ifm-color-gray-500); display: block;margin: 0.5rem 0 0.25rem 1rem;" ></span>',
         },
         // Image
         {
@@ -181,14 +186,16 @@ function generateHugeSidebarItems() {
   /**
    * @param {number} maxLevel
    * @param {number} currentLevel
+   * @param {string} parentKey
    * @returns {SidebarItemConfig[]}
    */
-  function generateRecursive(maxLevel, currentLevel = 0) {
+  function generateRecursive(maxLevel, currentLevel = 0, parentKey = 'ROOT') {
     if (currentLevel === maxLevel) {
       return [
         {
           type: 'link',
           href: '/',
+          key: `link-${parentKey}-maxLevel`,
           label: `Link (level ${currentLevel + 1})`,
         },
       ];
@@ -197,14 +204,23 @@ function generateHugeSidebarItems() {
     const linkItems = Array.from(Array(linksCount).keys()).map((index) => ({
       type: 'link',
       href: '/',
+      key: `link-${parentKey}-${index}`,
       label: `Link ${index} (level ${currentLevel + 1})`,
     }));
 
     const categoryItems = Array.from(Array(categoriesCount).keys()).map(
+      /**
+       * @returns {SidebarItemCategoryConfig}
+       */
       (index) => ({
         type: 'category',
         label: `Category ${index} (level ${currentLevel + 1})`,
-        items: generateRecursive(maxLevel, currentLevel + 1),
+        key: `category-${parentKey}-${index}`,
+        items: generateRecursive(
+          maxLevel,
+          currentLevel + 1,
+          `${parentKey}-${index}`,
+        ),
       }),
     );
 

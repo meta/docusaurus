@@ -6,7 +6,7 @@
  */
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
-export function useCalendar(): string {
+function useCalendar(): string {
   const {
     i18n: {currentLocale, localeConfigs},
   } = useDocusaurusContext();

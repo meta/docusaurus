@@ -1,0 +1,7 @@
+{
+  "theme.IdealImageMessage.404error": "404. Снимката не е намерена",
+  "theme.IdealImageMessage.error": "Грешка. Щракнете, за да презаредите.",
+  "theme.IdealImageMessage.load": "Щракнете, за да заредите {sizeMessage}",
+  "theme.IdealImageMessage.loading": "Зарежда...",
+  "theme.IdealImageMessage.offline": "Браузърът Ви е извън обхват. Снимката не е заредена."
+}

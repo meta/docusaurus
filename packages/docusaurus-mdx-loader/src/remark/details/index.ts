@@ -5,18 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-// @ts-expect-error: TODO see https://github.com/microsoft/TypeScript/issues/49721
+import {visit} from 'unist-util-visit';
 import type {Transformer} from 'unified';
 
-// @ts-expect-error: ES support...
-import type {MdxJsxFlowElement} from 'mdast-util-mdx';
+import type {Root} from 'mdast';
 
 // Transform <details> to <Details>
 // MDX 2 doesn't allow to substitute html elements with the provider anymore
-export default function plugin(): Transformer {
-  return async (root) => {
-    const {visit} = await import('unist-util-visit');
-    visit(root, 'mdxJsxFlowElement', (node: MdxJsxFlowElement) => {
+export default function plugin(): Transformer<Root> {
+  return (root) => {
+    visit(root, 'mdxJsxFlowElement', (node) => {
       if (node.name === 'details') {
         node.name = 'Details';
       }

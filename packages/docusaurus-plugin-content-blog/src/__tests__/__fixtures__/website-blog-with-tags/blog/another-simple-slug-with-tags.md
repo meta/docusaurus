@@ -3,9 +3,10 @@ slug: /simple/slug/another
 title: Another Simple Slug
 date: 2020-08-15
 
-author: Sébastien Lorber
-author_title: Docusaurus maintainer
-author_url: https://sebastienlorber.com
+authors:
+  - name: Sébastien Lorber
+    title: Docusaurus maintainer
+    url: https://sebastienlorber.com
 
 tags: [tag1]
 ---

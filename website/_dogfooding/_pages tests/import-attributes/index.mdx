@@ -1,0 +1,106 @@
+# Import attributes tests
+
+MDX, JSX and TSX files can use [import attributes](https://github.com/tc39/proposal-import-attributes).
+
+Modules imported with `with {type: 'text'}` should be the raw file content, not processed by any loader. These tests fail the build otherwise.
+
+```mdx-code-block
+import TextImportTest from './_TextImportTest';
+import JsxTests from './_JsxTests';
+import TsxTests from './_TsxTests';
+
+import jsonData from './_fixtures/json-fixture.json' with {type: 'json'};
+
+import jsText from './_fixtures/js-fixture.js' with {type: 'text'};
+import tsText from './_fixtures/ts-fixture.ts' with {type: 'text'};
+import tsxText from './_fixtures/tsx-fixture.tsx' with {type: 'text'};
+import jsonText from './_fixtures/json-fixture.json' with {type: 'text'};
+import cssText from './_fixtures/css-fixture.css' with {type: 'text'};
+import cssModuleText from './_fixtures/css-module-fixture.module.css' with {type: 'text'};
+import svgText from './_fixtures/svg-fixture.svg' with {type: 'text'};
+import mdText from './_fixtures/md-fixture.md' with {type: 'text'};
+import mdxText from './_fixtures/mdx-fixture.mdx' with {type: 'text'};
+import yamlText from './_fixtures/yaml-fixture.yaml' with {type: 'text'};
+import txtText from './_fixtures/txt-fixture.txt' with {type: 'text'};
+```
+
+## MDX file
+
+### JSON import
+
+<pre>{JSON.stringify(jsonData)}</pre>
+
+<TextImportTest
+  name="JS"
+  language="jsx"
+  value={jsText}
+  expected="<div>JS fixture</div>"
+/>
+<TextImportTest
+  name="TS"
+  language="ts"
+  value={tsText}
+  expected="tsFixture: string"
+/>
+<TextImportTest
+  name="TSX"
+  language="tsx"
+  value={tsxText}
+  expected="{name}: {name: string}"
+/>
+<TextImportTest
+  name="JSON"
+  language="json"
+  value={jsonText}
+  expected='"fixture": "JSON fixture"'
+/>
+<TextImportTest
+  name="CSS"
+  language="css"
+  value={cssText}
+  expected=".cssFixture {"
+/>
+<TextImportTest
+  name="CSS Module"
+  language="css"
+  value={cssModuleText}
+  expected=".cssModuleFixture {"
+/>
+<TextImportTest
+  name="SVG"
+  language="xml"
+  value={svgText}
+  expected="<svg xmlns"
+/>
+<TextImportTest
+  name="Markdown"
+  language="md"
+  value={mdText}
+  expected="Some **Markdown** text."
+/>
+<TextImportTest
+  name="MDX"
+  language="mdx"
+  value={mdxText}
+  expected='<MdxFixture name="world" />'
+/>
+<TextImportTest
+  name="YAML"
+  language="yaml"
+  value={yamlText}
+  expected="fixture: YAML fixture"
+/>
+<TextImportTest
+  name="Text"
+  language="text"
+  value={txtText}
+  expected="Text fixture"
+/>
+
+## JSX file
+
+<JsxTests />
+
+## TSX file
+
+<TsxTests />

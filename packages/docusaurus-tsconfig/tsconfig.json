@@ -6,19 +6,16 @@
     "allowJs": true,
     "esModuleInterop": true,
     "jsx": "preserve",
-    "lib": ["DOM"],
+    "jsxImportSource": "react",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
     "moduleResolution": "bundler",
     "module": "esnext",
     "noEmit": true,
-    "types": [
-      "node",
-      "@docusaurus/module-type-aliases",
-      "@docusaurus/theme-classic"
-    ],
-    "baseUrl": ".",
     "paths": {
-      "@site/*": ["./*"]
+      "@site/*": ["${configDir}/*"]
     },
     "skipLibCheck": true
-  }
+  },
+  "exclude": ["${configDir}/.docusaurus", "${configDir}/build"]
 }

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Translate, {translate} from '@docusaurus/Translate';
 
 export type FeatureItem = {
@@ -15,7 +15,7 @@ export type FeatureItem = {
     width: number;
     height: number;
   };
-  text: JSX.Element;
+  text: ReactNode;
 };
 
 const FEATURES: FeatureItem[] = [

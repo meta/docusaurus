@@ -5,20 +5,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import {startTransition, type ReactNode} from 'react';
 import ReactDOM, {type ErrorInfo} from 'react-dom/client';
-import {BrowserRouter} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
-
+import {BrowserRouter, HashRouter} from 'react-router-dom';
+import siteConfig from '@generated/docusaurus.config';
 import ExecutionEnvironment from './exports/ExecutionEnvironment';
 import App from './App';
 import preload from './preload';
 import docusaurus from './docusaurus';
 
-declare global {
-  interface NodeModule {
-    hot?: {accept: () => void};
-  }
+function Router({children}: {children: ReactNode}): ReactNode {
+  return siteConfig.future.experimental_router === 'hash' ? (
+    <HashRouter>{children}</HashRouter>
+  ) : (
+    <BrowserRouter>{children}</BrowserRouter>
+  );
 }
 
 const hydrate = Boolean(process.env.HYDRATE_CLIENT_ENTRY);
@@ -31,9 +33,9 @@ if (ExecutionEnvironment.canUseDOM) {
 
   const app = (
     <HelmetProvider>
-      <BrowserRouter>
+      <Router>
         <App />
-      </BrowserRouter>
+      </Router>
     </HelmetProvider>
   );
 
@@ -46,21 +48,24 @@ if (ExecutionEnvironment.canUseDOM) {
   };
 
   const renderApp = () => {
+    if (window.docusaurusRoot) {
+      window.docusaurusRoot.render(app);
+      return;
+    }
     if (hydrate) {
-      React.startTransition(() => {
-        ReactDOM.hydrateRoot(container, app, {
-          onRecoverableError,
-        });
+      window.docusaurusRoot = ReactDOM.hydrateRoot(container, app, {
+        onRecoverableError,
       });
     } else {
       const root = ReactDOM.createRoot(container, {onRecoverableError});
-      React.startTransition(() => {
-        root.render(app);
-      });
+      root.render(app);
+      window.docusaurusRoot = root;
     }
   };
 
-  preload(window.location.pathname).then(renderApp);
+  preload(window.location.pathname).then(() => {
+    startTransition(renderApp);
+  });
 
   // Webpack Hot Module Replacement API
   if (module.hot) {

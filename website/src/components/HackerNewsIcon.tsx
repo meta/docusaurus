@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 
 export default function HackerNewsIcon({
   size = 54,
 }: {
   size?: number;
-}): JSX.Element {
+}): ReactNode {
   return (
     <Link
       to="https://news.ycombinator.com/item?id=32303052"

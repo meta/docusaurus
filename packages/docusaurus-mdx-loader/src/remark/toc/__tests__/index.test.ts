@@ -5,27 +5,26 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
-import vfile from 'to-vfile';
+import {describe, expect, it} from 'vitest';
+import path from 'node:path';
+import gfm from 'remark-gfm';
+import {compile} from '@mdx-js/mdx';
+import {read} from 'to-vfile';
 import plugin from '../index';
 import headings from '../../headings/index';
 
 const processFixture = async (name: string) => {
-  const {default: gfm} = await import('remark-gfm');
-
-  const {compile} = await import('@mdx-js/mdx');
-
   const filePath = path.join(
     __dirname,
     '__fixtures__',
     name.endsWith('.mdx') ? name : `${name}.md`,
   );
 
-  const file = await vfile.read(filePath);
+  const file = await read(filePath);
 
   const result = await compile(file, {
     format: 'mdx',
-    remarkPlugins: [headings, gfm, plugin],
+    remarkPlugins: [[headings, {anchorsMaintainCase: false}], gfm, plugin],
     rehypePlugins: [],
   });
 

@@ -1,7 +1,7 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
 
-# Workaround of a mysterious bug in either lint-staged or husky.
-# https://github.com/typicode/husky/issues/1134
-# https://github.com/okonet/lint-staged/issues/693#issuecomment-1079759224
-FORCE_COLOR=1 yarn lint-staged --allow-empty
+# In case we need to execute a pnpm-based precommit hook
+# this will be faster
+export pnpm_config_verify_deps_before_run=false
+
+# Favor direct bins if possible to bypass pnpm
+lint-staged

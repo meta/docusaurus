@@ -6,15 +6,15 @@ sidebar_position: 4
 
 Static methods are not part of the plugin instance—they are attached to the constructor function. These methods are used to validate and normalize the plugin options and theme config, which are then used as constructor parameters to initialize the plugin instance.
 
-## `validateOptions({options, validate})` {#validateOptions}
+## `validateOptions({options, validate})` {/* #validateOptions */}
 
 Returns validated and normalized options for the plugin. This method is called before the plugin is initialized. You must return the options since they will be passed to the plugin during initialization.
 
-### `options` {#options}
+### `options` {/* #options */}
 
 `validateOptions` is called with `options` passed to plugin for validation and normalization.
 
-### `validate` {#validate}
+### `validate` {/* #validate */}
 
 `validateOptions` is called with `validate` function which takes a **[Joi](https://www.npmjs.com/package/joi)** schema and options as the arguments, returns validated and normalized options. `validate` will automatically handle error and validation config.
 
@@ -44,15 +44,15 @@ export function validateOptions({options, validate}) {
 // highlight-end
 ```
 
-## `validateThemeConfig({themeConfig, validate})` {#validateThemeConfig}
+## `validateThemeConfig({themeConfig, validate})` {/* #validateThemeConfig */}
 
 Return validated and normalized configuration for the theme.
 
-### `themeConfig` {#themeConfig}
+### `themeConfig` {/* #themeConfig */}
 
 `validateThemeConfig` is called with `themeConfig` provided in `docusaurus.config.js` for validation and normalization.
 
-### `validate` {#validate-1}
+### `validate` {/* #validate-1 */}
 
 `validateThemeConfig` is called with `validate` function which takes a **[Joi](https://www.npmjs.com/package/joi)** schema and `themeConfig` as the arguments, returns validated and normalized options. `validate` will automatically handle error and validation config.
 

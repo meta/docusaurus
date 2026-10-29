@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 
@@ -18,15 +18,15 @@ function useBoom(): boolean {
   return (customFields as {crashTest?: boolean}).crashTest ?? false;
 }
 
-function boomRoot() {
+function boomRoot(): never {
   throw new Error('Boom root');
 }
 
 function boomParent() {
   try {
-    boomRoot();
+    return boomRoot();
   } catch (err) {
-    throw new Error('Boom parent', {cause: err as Error});
+    throw new Error('Boom parent', {cause: err});
   }
 }
 
@@ -35,7 +35,7 @@ function BoomComponent() {
   return <>{boom && boomParent()}</>;
 }
 
-export default function CrashTestPage(): JSX.Element {
+export default function CrashTestPage(): ReactNode {
   return (
     <Layout>
       {/* eslint-disable-next-line @docusaurus/prefer-docusaurus-heading */}

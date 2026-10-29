@@ -1,0 +1,74 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+.authorImage {
+  --ifm-avatar-photo-size: 3.6rem;
+}
+
+.author-as-h1 .authorImage {
+  --ifm-avatar-photo-size: 7rem;
+}
+
+.author-as-h2 .authorImage {
+  --ifm-avatar-photo-size: 5.4rem;
+}
+
+.authorDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+
+.authorName {
+  font-size: 1.1rem;
+  line-height: 1.1rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.author-as-h1 .authorName {
+  font-size: 2.4rem;
+  line-height: 2.4rem;
+  display: inline;
+}
+
+.author-as-h2 .authorName {
+  font-size: 1.4rem;
+  line-height: 1.4rem;
+  display: inline;
+}
+
+.authorTitle {
+  font-size: 0.8rem;
+  line-height: 1rem;
+  display: -webkit-box;
+  overflow: hidden;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.author-as-h1 .authorTitle {
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+}
+
+.author-as-h2 .authorTitle {
+  font-size: 1rem;
+  line-height: 1.3rem;
+}
+
+.authorBlogPostCount {
+  background: var(--ifm-color-secondary);
+  color: var(--ifm-color-black);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  border-radius: var(--ifm-global-radius);
+  padding: 0.1rem 0.4rem;
+  margin-left: 0.3rem;
+}

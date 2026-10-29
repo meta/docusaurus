@@ -1,0 +1,33 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`inlineScripts > inline javascript for default mode and no switch 1`] = `
+"(function() {
+  function getSystemColorMode() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  var initialTheme;
+  document.documentElement.setAttribute('data-theme', initialTheme || 'light');
+  document.documentElement.setAttribute('data-theme-choice', initialTheme || 'light');
+})();"
+`;
+
+exports[`inlineScripts > inline javascript for default options 1`] = `
+"(function() {
+  function getSystemColorMode() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function getQueryStringTheme() {
+    try {
+      return new URLSearchParams(window.location.search).get('docusaurus-theme')
+    } catch (e) {}
+  }
+  function getStoredTheme() {
+    try {
+      return window['localStorage'].getItem('theme');
+    } catch (err) {}
+  }
+  var initialTheme = getQueryStringTheme() || getStoredTheme();
+  document.documentElement.setAttribute('data-theme', initialTheme || getSystemColorMode());
+  document.documentElement.setAttribute('data-theme-choice', initialTheme || 'system');
+})();"
+`;

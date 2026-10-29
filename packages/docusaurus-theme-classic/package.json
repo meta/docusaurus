@@ -1,6 +1,6 @@
 {
   "name": "@docusaurus/theme-classic",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Classic theme for Docusaurus",
   "main": "lib/index.js",
   "types": "src/theme-classic.d.ts",
@@ -14,51 +14,49 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "tsc --build && node ../../admin/scripts/copyUntypedFiles.js && prettier --config ../../.prettierrc --write \"lib/theme/**/*.js\"",
+    "build": "tsc --build && copy-untyped-files && format-gitignored-files \"lib/theme/**/*.js\"",
     "watch": "run-p -c copy:watch build:watch",
     "build:watch": "tsc --build --watch",
-    "copy:watch": "node ../../admin/scripts/copyUntypedFiles.js --watch"
+    "copy:watch": "copy-untyped-files --watch"
   },
   "dependencies": {
-    "@docusaurus/core": "3.2.1",
-    "@docusaurus/mdx-loader": "3.2.1",
-    "@docusaurus/module-type-aliases": "3.2.1",
-    "@docusaurus/plugin-content-blog": "3.2.1",
-    "@docusaurus/plugin-content-docs": "3.2.1",
-    "@docusaurus/plugin-content-pages": "3.2.1",
-    "@docusaurus/theme-common": "3.2.1",
-    "@docusaurus/theme-translations": "3.2.1",
-    "@docusaurus/types": "3.2.1",
-    "@docusaurus/utils": "3.2.1",
-    "@docusaurus/utils-common": "3.2.1",
-    "@docusaurus/utils-validation": "3.2.1",
-    "@mdx-js/react": "^3.0.0",
-    "clsx": "^2.0.0",
-    "copy-text-to-clipboard": "^3.2.0",
-    "infima": "0.2.0-alpha.43",
-    "lodash": "^4.17.21",
-    "nprogress": "^0.2.0",
-    "postcss": "^8.4.26",
-    "prism-react-renderer": "^2.3.0",
-    "prismjs": "^1.29.0",
-    "react-router-dom": "^5.3.4",
-    "rtlcss": "^4.1.0",
-    "tslib": "^2.6.0",
-    "utility-types": "^3.10.0"
+    "@docusaurus/core": "workspace:*",
+    "@docusaurus/mdx-loader": "workspace:*",
+    "@docusaurus/module-type-aliases": "workspace:*",
+    "@docusaurus/plugin-content-blog": "workspace:*",
+    "@docusaurus/plugin-content-docs": "workspace:*",
+    "@docusaurus/plugin-content-pages": "workspace:*",
+    "@docusaurus/theme-common": "workspace:*",
+    "@docusaurus/theme-translations": "workspace:*",
+    "@docusaurus/types": "workspace:*",
+    "@docusaurus/utils": "workspace:*",
+    "@docusaurus/utils-common": "workspace:*",
+    "@docusaurus/utils-validation": "workspace:*",
+    "@mdx-js/react": "catalog:",
+    "clsx": "catalog:",
+    "copy-text-to-clipboard": "catalog:",
+    "infima": "catalog:",
+    "lodash": "catalog:",
+    "nprogress": "catalog:",
+    "postcss": "catalog:",
+    "prism-react-renderer": "catalog:",
+    "prismjs": "catalog:",
+    "rtlcss": "catalog:",
+    "tslib": "catalog:",
+    "utility-types": "catalog:"
   },
   "devDependencies": {
-    "@types/nprogress": "^0.2.0",
-    "@types/prismjs": "^1.26.0",
-    "@types/rtlcss": "^3.5.1",
-    "fs-extra": "^11.1.1",
-    "react-test-renderer": "^18.0.0",
-    "utility-types": "^3.10.0"
+    "@types/nprogress": "catalog:dev",
+    "@types/prismjs": "catalog:dev",
+    "@types/react-router-dom": "catalog:",
+    "@types/rtlcss": "catalog:dev",
+    "react-router-dom": "catalog:"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   }
 }

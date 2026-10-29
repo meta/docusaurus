@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-import {useBlogPost} from '@docusaurus/theme-common/internal';
+import type {ReactNode} from 'react';
+import {useBlogPost} from '@docusaurus/plugin-content-blog/client';
 
 import BlogPostItemHeaderTitle from '@theme/BlogPostItem/Header/Title';
 import BlogPostItemHeaderInfo from '@theme/BlogPostItem/Header/Info';
@@ -24,7 +24,7 @@ function ChangelogTitle() {
   );
 }
 
-export default function ChangelogItemHeader(): JSX.Element {
+export default function ChangelogItemHeader(): ReactNode {
   return (
     <header>
       <ChangelogTitle />

@@ -6,6 +6,7 @@
  */
 
 import {addLeadingSlash, removePrefix} from '@docusaurus/utils-common';
+import logger from '@docusaurus/logger';
 import collectRedirects from './collectRedirects';
 import writeRedirectFiles, {
   toRedirectFiles,
@@ -15,14 +16,24 @@ import type {LoadContext, Plugin} from '@docusaurus/types';
 import type {PluginContext, RedirectItem} from './types';
 import type {PluginOptions, Options} from './options';
 
+const PluginName = 'docusaurus-plugin-client-redirects';
+
 export default function pluginClientRedirectsPages(
   context: LoadContext,
   options: PluginOptions,
-): Plugin<void> {
+): Plugin<void> | null {
   const {trailingSlash} = context.siteConfig;
+  const router = context.siteConfig.future.experimental_router;
+
+  if (router === 'hash') {
+    logger.warn(
+      `${PluginName} does not support the Hash Router and will be disabled.`,
+    );
+    return null;
+  }
 
   return {
-    name: 'docusaurus-plugin-client-redirects',
+    name: PluginName,
     async postBuild(props) {
       const pluginContext: PluginContext = {
         relativeRoutesPaths: props.routesPaths.map(

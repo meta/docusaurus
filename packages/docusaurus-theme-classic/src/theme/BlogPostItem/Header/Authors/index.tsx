@@ -5,17 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
-import {useBlogPost} from '@docusaurus/theme-common/internal';
-import BlogPostItemHeaderAuthor from '@theme/BlogPostItem/Header/Author';
+import {useBlogPost} from '@docusaurus/plugin-content-blog/client';
+import BlogAuthor from '@theme/Blog/Components/Author';
 import type {Props} from '@theme/BlogPostItem/Header/Authors';
 import styles from './styles.module.css';
 
 // Component responsible for the authors layout
 export default function BlogPostItemHeaderAuthors({
   className,
-}: Props): JSX.Element | null {
+}: Props): ReactNode {
   const {
     metadata: {authors},
     assets,
@@ -25,6 +25,7 @@ export default function BlogPostItemHeaderAuthors({
     return null;
   }
   const imageOnly = authors.every(({name}) => !name);
+  const singleAuthor = authors.length === 1;
   return (
     <div
       className={clsx(
@@ -35,11 +36,11 @@ export default function BlogPostItemHeaderAuthors({
       {authors.map((author, idx) => (
         <div
           className={clsx(
-            !imageOnly && 'col col--6',
+            !imageOnly && (singleAuthor ? 'col col--12' : 'col col--6'),
             imageOnly ? styles.imageOnlyAuthorCol : styles.authorCol,
           )}
           key={idx}>
-          <BlogPostItemHeaderAuthor
+          <BlogAuthor
             author={{
               ...author,
               // Handle author images using relative paths

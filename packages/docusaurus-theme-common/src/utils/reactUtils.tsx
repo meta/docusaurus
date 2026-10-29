@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {
+import {
   useCallback,
+  useLayoutEffect,
   useMemo,
   useRef,
   type ComponentType,
   type ReactNode,
 } from 'react';
-import useIsomorphicLayoutEffect from '@docusaurus/useIsomorphicLayoutEffect';
 
 /**
  * Temporary userland implementation until an official hook is implemented
@@ -31,7 +31,7 @@ export function useEvent<T extends (...args: never[]) => unknown>(
 ): T {
   const ref = useRef<T>(callback);
 
-  useIsomorphicLayoutEffect(() => {
+  useLayoutEffect(() => {
     ref.current = callback;
   }, [callback]);
 
@@ -44,12 +44,15 @@ export function useEvent<T extends (...args: never[]) => unknown>(
  * Gets `value` from the last render.
  */
 export function usePrevious<T>(value: T): T | undefined {
-  const ref = useRef<T>();
+  const ref = useRef<T>(undefined);
 
-  useIsomorphicLayoutEffect(() => {
+  useLayoutEffect(() => {
     ref.current = value;
   });
 
+  // TODO need to fix this React Compiler lint error
+  //  probably requires changing the API though
+  // eslint-disable-next-line react-hooks/refs
   return ref.current;
 }
 
@@ -81,7 +84,7 @@ export function useShallowMemoObject<O extends object>(obj: O): O {
   const deps = Object.entries(obj);
   // Sort by keys to make it order-insensitive
   deps.sort((a, b) => a[0].localeCompare(b[0]));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps,react-hooks/use-memo
   return useMemo(() => obj, deps.flat());
 }
 
@@ -102,14 +105,16 @@ type SimpleProvider = ComponentType<{children: ReactNode}>;
  */
 export function composeProviders(providers: SimpleProvider[]): SimpleProvider {
   // Creates a single React component: it's cheaper to compose JSX elements
-  return ({children}) => (
-    <>
-      {providers.reduceRight(
-        (element, CurrentProvider) => (
-          <CurrentProvider>{element}</CurrentProvider>
-        ),
-        children,
-      )}
-    </>
-  );
+  return function ComposedProvider({children}: {children: ReactNode}) {
+    return (
+      <>
+        {providers.reduceRight(
+          (element, CurrentProvider) => (
+            <CurrentProvider>{element}</CurrentProvider>
+          ),
+          children,
+        )}
+      </>
+    );
+  };
 }

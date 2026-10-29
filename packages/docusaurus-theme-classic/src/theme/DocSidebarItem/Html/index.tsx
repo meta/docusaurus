@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import {ThemeClassNames} from '@docusaurus/theme-common';
 import type {Props} from '@theme/DocSidebarItem/Html';
@@ -16,7 +16,7 @@ export default function DocSidebarItemHtml({
   item,
   level,
   index,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const {value, defaultStyle, className} = item;
   return (
     <li
@@ -27,7 +27,6 @@ export default function DocSidebarItemHtml({
         className,
       )}
       key={index}
-      // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{__html: value}}
     />
   );

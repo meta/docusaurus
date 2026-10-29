@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {interpolate, type InterpolateValues} from '@docusaurus/Interpolate';
 // Can't read it from context, due to exposing imperative API
 import codeTranslations from '@generated/codeTranslations';
@@ -45,7 +45,7 @@ export default function Translate<Str extends string>({
   children,
   id,
   values,
-}: TranslateProps<Str>): JSX.Element {
+}: TranslateProps<Str>): ReactNode {
   if (children && typeof children !== 'string') {
     console.warn('Illegal <Translate> children', children);
     throw new Error(

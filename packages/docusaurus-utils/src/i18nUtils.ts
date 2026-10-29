@@ -5,14 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
+import path from 'node:path';
 import _ from 'lodash';
+import logger from '@docusaurus/logger';
 import {DEFAULT_PLUGIN_ID} from './constants';
-import {normalizeUrl} from './urlUtils';
 import type {
   TranslationFileContent,
   TranslationFile,
   I18n,
+  I18nLocaleConfig,
 } from '@docusaurus/types';
 
 /**
@@ -65,50 +66,16 @@ export function getPluginI18nPath({
   );
 }
 
-/**
- * Takes a path and returns a localized a version (which is basically `path +
- * i18n.currentLocale`).
- *
- * This is used to resolve the `outDir` and `baseUrl` of each locale; it is NOT
- * used to determine plugin localization file locations.
- */
-export function localizePath({
-  pathType,
-  path: originalPath,
-  i18n,
-  options = {},
-}: {
-  /**
-   * FS paths will treat Windows specially; URL paths will always have a
-   * trailing slash to make it a valid base URL.
-   */
-  pathType: 'fs' | 'url';
-  /** The path, URL or file path, to be localized. */
-  path: string;
-  /** The current i18n context. */
-  i18n: I18n;
-  options?: {
-    /**
-     * By default, we don't localize the path of defaultLocale. This option
-     * would override that behavior. Setting `false` is useful for `yarn build
-     * -l zh-Hans` to always emit into the root build directory.
-     */
-    localizePath?: boolean;
-  };
-}): string {
-  const shouldLocalizePath: boolean =
-    options.localizePath ?? i18n.currentLocale !== i18n.defaultLocale;
-
-  if (!shouldLocalizePath) {
-    return originalPath;
+// TODO we may extract this to a separate package
+//  we want to use it on the frontend too
+//  but "docusaurus-utils-common" (agnostic utils) is not an ideal place since
+export function getLocaleConfig(i18n: I18n, locale?: string): I18nLocaleConfig {
+  const localeToLookFor = locale ?? i18n.currentLocale;
+  const localeConfig = i18n.localeConfigs[localeToLookFor];
+  if (!localeConfig) {
+    throw new Error(
+      `Can't find locale config for locale ${logger.code(localeToLookFor)}`,
+    );
   }
-  // FS paths need special care, for Windows support. Note: we don't use the
-  // locale config's `path` here, because this function is used for resolving
-  // outDir, which must be the same as baseUrl. When we have the baseUrl config,
-  // we need to sync the two.
-  if (pathType === 'fs') {
-    return path.join(originalPath, i18n.currentLocale);
-  }
-  // Url paths; add a trailing slash so it's a valid base URL
-  return normalizeUrl([originalPath, i18n.currentLocale, '/']);
+  return localeConfig;
 }

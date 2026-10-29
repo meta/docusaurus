@@ -1,4 +1,5 @@
 {
+  "theme.Playground.buttons.reset": "Restablecer",
   "theme.Playground.liveEditor": "Editor en vivo",
   "theme.Playground.result": "Resultado"
 }

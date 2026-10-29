@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Layout from '@theme-original/Layout';
 import type {Props} from '@theme/Layout';
 
 // This component is only used to test for CSS insertion order
 import './styles.module.css';
 
-export default function LayoutWrapper(props: Props): JSX.Element {
+export default function LayoutWrapper(props: Props): ReactNode {
   return <Layout {...props} />;
 }

@@ -1,0 +1,948 @@
+---
+sidebar_position: 0
+description: API reference for Docusaurus configuration file.
+slug: /api/docusaurus-config
+---
+
+# `docusaurus.config.js`
+
+import APITable from '@site/src/components/APITable';
+
+:::info
+
+Refer to the Getting Started [**Configuration**](../configuration.mdx) for examples.
+
+:::
+
+## Overview {/* #overview */}
+
+`docusaurus.config.js` contains configurations for your site and is placed in the root directory of your site.
+
+:::note
+
+With a [TypeScript](../typescript-support.mdx) Docusaurus codebase your config file may be called `docusaurus.config.ts`. The syntax is broadly identical to the `js` config file with the addition of types. You can see an example on the [Docusaurus Website](https://github.com/facebook/docusaurus/blob/main/website/docusaurus.config.ts) itself.
+
+:::
+
+This file is **run in Node.js** and should export a site configuration object, or a function that creates it.
+
+The `docusaurus.config.js` file supports:
+
+- [**ES Modules**](https://flaviocopes.com/es-modules/)
+- [**CommonJS**](https://flaviocopes.com/commonjs/)
+- [**TypeScript**](../typescript-support.mdx#typing-config)
+
+Examples:
+
+```js title="docusaurus.config.js"
+export default {
+  title: 'Docusaurus',
+  url: 'https://docusaurus.io',
+  // your site config ...
+};
+```
+
+```js title="docusaurus.config.js"
+export default async function createConfigAsync() {
+  return {
+    title: 'Docusaurus',
+    url: 'https://docusaurus.io',
+    // your site config ...
+  };
+}
+```
+
+:::tip
+
+Refer to [**Syntax to declare `docusaurus.config.js`**](../configuration.mdx#syntax-to-declare-docusaurus-config) for a more exhaustive list of examples and explanations.
+
+:::
+
+## Required fields {/* #required-fields */}
+
+### `title` {/* #title */}
+
+- Type: `string`
+
+Title for your website. Will be used in metadata and as browser tab title.
+
+```js title="docusaurus.config.js"
+export default {
+  title: 'Docusaurus',
+};
+```
+
+### `url` {/* #url */}
+
+- Type: `string`
+
+URL for your website. This can also be considered the top-level hostname. For example, `https://facebook.github.io` is the URL of https://facebook.github.io/metro/, and `https://docusaurus.io` is the URL for https://docusaurus.io. This field is related to the [`baseUrl`](#baseUrl) field.
+
+```js title="docusaurus.config.js"
+export default {
+  url: 'https://docusaurus.io',
+};
+```
+
+:::info Special case for i18n sites
+
+If your site uses multiple locales, it is possible to provide a distinct `url` for each locale thanks to the [`siteConfig.i18n.localeConfigs[<locale>].url`](#i18n) attribute. This makes it possible to [deploy a localized Docusaurus site over multiple domains](../i18n/i18n-tutorial.mdx#multi-domain-deployment).
+
+:::
+
+### `baseUrl` {/* #baseUrl */}
+
+- Type: `string`
+
+The base URL of your site is the path segment appearing just after the [`url`](#url), letting you eventually host your site under a subpath instead of at the root of the domain.
+
+For example, let's consider you want to host a site at https://facebook.github.io/metro/, then you must configure it accordingly:
+
+- [`url`](#url) should be `'https://facebook.github.io'`
+- `baseUrl` should be `'/metro/'`
+
+By default, a Docusaurus site is hosted at the root of the domain:
+
+```js title="docusaurus.config.js"
+export default {
+  baseUrl: '/',
+};
+```
+
+:::info Special case for i18n sites
+
+If your site uses multiple locales, then Docusaurus will automatically localize the `baseUrl` of your site based on smart heuristics:
+
+- For the default locale, `baseUrl` will be `/<siteBaseUrl>/`
+- For other locales, `baseUrl` will be `/<siteBaseUrl>/<locale>/`
+- When building a single locale at a time (with `docusaurus build --locale <locale>`), `baseUrl` will be `/<siteBaseUrl>/`, assuming the intent is to [deploy each locale on distinct domains](../i18n/i18n-tutorial.mdx#multi-domain-deployment).
+
+When the localized `baseUrl` Docusaurus computes doesn't satisfy you, it's always possible to override it by providing an explicit localized `baseUrl` thanks to the [`siteConfig.i18n.localeConfigs[<locale>].baseUrl`](#i18n) attribute.
+
+:::
+
+## Optional fields {/* #optional-fields */}
+
+### `favicon` {/* #favicon */}
+
+- Type: `string | undefined`
+
+Path to your site favicon; must be a URL that can be used in link's href. For example, if your favicon is in `static/img/favicon.ico`:
+
+```js title="docusaurus.config.js"
+export default {
+  favicon: '/img/favicon.ico',
+};
+```
+
+### `trailingSlash` {/* #trailingSlash */}
+
+- Type: `boolean | undefined`
+
+Allow to customize the presence/absence of a trailing slash at the end of URLs/links, and how static HTML files are generated:
+
+- `undefined` (default): keeps URLs untouched, and emit `/docs/myDoc/index.html` for `/docs/myDoc.md`
+- `true`: add trailing slashes to URLs/links, and emit `/docs/myDoc/index.html` for `/docs/myDoc.md`
+- `false`: remove trailing slashes from URLs/links, and emit `/docs/myDoc.html` for `/docs/myDoc.md`
+
+:::tip
+
+Each static hosting provider serves static files differently (this behavior may even change over time).
+
+Refer to the [deployment guide](../deployment.mdx) and [slorber/trailing-slash-guide](https://github.com/slorber/trailing-slash-guide) to choose the appropriate setting.
+
+:::
+
+### `i18n` {/* #i18n */}
+
+- Type: `Object`
+
+The i18n configuration object to [localize your site](../i18n/i18n-introduction.mdx).
+
+Example:
+
+{/* cSpell:ignore فارسی */}
+
+```js title="docusaurus.config.js"
+export default {
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'fa'],
+    path: 'i18n',
+    localeConfigs: {
+      en: {
+        label: 'English',
+        direction: 'ltr',
+        htmlLang: 'en-US',
+        calendar: 'gregory',
+        path: 'en',
+        translate: false,
+        url: 'https://en.example.com',
+        baseUrl: '/',
+      },
+      fa: {
+        label: 'فارسی',
+        direction: 'rtl',
+        htmlLang: 'fa-IR',
+        calendar: 'persian',
+        path: 'fa',
+        translate: true,
+        url: 'https://fa.example.com',
+        baseUrl: '/',
+      },
+    },
+  },
+};
+```
+
+- `defaultLocale`: The locale that (1) does not have its name in the base URL (2) gets started with `docusaurus start` without `--locale` option (3) will be used for the `<link hrefLang="x-default">` tag
+- `locales`: List of locales deployed on your site. Must contain `defaultLocale`.
+- `path`: Root folder which all locale folders are relative to. Can be absolute or relative to the config file. Defaults to `i18n`.
+- `localeConfigs`: Individual options for each locale.
+  - `label`: The label displayed for this locale in the locales dropdown.
+  - `direction`: `ltr` (default) or `rtl` (for [right-to-left languages](https://developer.mozilla.org/en-US/docs/Glossary/rtl) like Farsi, Arabic, Hebrew, etc.). Used to select the locale's CSS and HTML meta attribute.
+  - `htmlLang`: BCP 47 language tag to use in `<html lang="...">` (or any other DOM tag name) and in `<link ... hreflang="...">`
+  - `calendar`: the [calendar](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/calendar) used to calculate the date era. Note that it doesn't control the actual string displayed: `MM/DD/YYYY` and `DD/MM/YYYY` are both `gregory`. To choose the format (`DD/MM/YYYY` or `MM/DD/YYYY`), set your locale name to `en-GB` or `en-US` (`en` means `en-US`).
+  - `path`: Root folder that all plugin localization folders of this locale are relative to. Will be resolved against `i18n.path`. Defaults to the locale's name (`i18n/<locale>`). Note: this has no effect on the locale's `baseUrl`—customization of base URL is a work-in-progress.
+  - `translate`: Should we run the translation process for this locale? By default, it is enabled if the `i18n/<locale>` folder exists
+  - `url`: This lets you override the [`siteConfig.url`](#url), particularly useful if your site is [deployed over multiple domains](../i18n/i18n-tutorial.mdx#multi-domain-deployment).
+  - `baseUrl`: This lets you override the default localized `baseUrl` Docusaurus infers from your [`siteConfig.baseUrl`](#baseUrl), giving you more control to host your localized site in less common ways, in particularly [deployments over multi-domains](../i18n/i18n-tutorial.mdx#multi-domain-deployment)
+
+### `storage` {/* #storage */}
+
+- Type: `Object`
+
+Site-wide browser storage options that theme authors should strive to respect.
+
+```js title="docusaurus.config.js"
+export default {
+  storage: {
+    type: 'localStorage',
+    namespace: true,
+  },
+};
+```
+
+- `type`: The browser storage theme authors should use. Possible values are `localStorage` and `sessionStorage`. Defaults to `localStorage`.
+- `namespace`: Whether to namespace the browser storage keys to avoid storage key conflicts when Docusaurus sites are hosted under the same domain, or on localhost. Possible values are `string | boolean`. The namespace is appended at the end of the storage keys `key-namespace`. Use `true` to automatically generate a random namespace from your site `url + baseUrl`. Defaults to `false` (no namespace, historical behavior). Use the [`future.v4.siteStorageNamespacing`](#future) flag to default this to `true`.
+
+### `future` {/* #future */}
+
+- Type: `Object`
+
+The `future` configuration object permits to opt-in for upcoming/unstable/experimental Docusaurus features that are not ready for prime time.
+
+It is also a way to opt-in for upcoming breaking changes coming in the next major versions, enabling you to prepare your site for the next version while staying on the previous one. The [Remix Future Flags blog post](https://remix.run/blog/future-flags) greatly explains this idea.
+
+:::danger Breaking changes in minor versions
+
+Features prefixed by `experimental_` or `unstable_` are subject to changes in **minor versions**, and not considered as [Semantic Versioning breaking changes](/community/release-process).
+
+Features namespaced by `v<MajorVersion>` (`v6` `v7`, etc.) are future flags that are expected to be turned on by default in the next major versions. These are less likely to change, but we keep the possibility to do so.
+
+`future` API breaking changes should be easy to handle, and will be documented in minor/major version blog posts.
+
+:::
+
+Example:
+
+```js title="docusaurus.config.js"
+export default {
+  future: {
+    v4: {
+      removeLegacyPostBuildHeadAttribute: true,
+      useCssCascadeLayers: true,
+      siteStorageNamespacing: true,
+      fasterByDefault: true,
+      mdx1CompatDisabledByDefault: true,
+    },
+    faster: {
+      swcJsLoader: true,
+      swcJsMinimizer: true,
+      swcHtmlMinimizer: true,
+      lightningCssMinimizer: true,
+      rspackBundler: true,
+      rspackPersistentCache: true,
+      ssgWorkerThreads: true,
+      mdxCrossCompilerCache: true,
+    },
+    experimental_router: 'hash',
+  },
+};
+```
+
+- `v4`: Permits to opt-in for upcoming Docusaurus v4 breaking changes and features, to prepare your site in advance for this new version. Use `true` as a shorthand to enable all the flags.
+  - [`removeLegacyPostBuildHeadAttribute`](https://github.com/facebook/docusaurus/pull/10435): Removes the legacy `plugin.postBuild({head})` API that prevents us from applying useful SSG optimizations ([explanations](https://github.com/facebook/docusaurus/pull/10850)).
+  - [`useCssCascadeLayers`](https://github.com/facebook/docusaurus/pull/11142): This enables the [Docusaurus CSS Cascade Layers plugin](./plugins/plugin-css-cascade-layers.mdx) with pre-configured layers that we plan to apply by default for Docusaurus v4.
+  - [`siteStorageNamespacing`](https://github.com/facebook/docusaurus/pull/11797): Defaults the [`storage.namespace`](#storage) config to `true` instead of `false`. This enables automatic browser storage key namespacing, which avoids storage key conflicts when multiple Docusaurus sites are hosted under the same domain, or on localhost.
+  - [`fasterByDefault`](https://github.com/facebook/docusaurus/pull/11802): Defaults all `future.faster` flags to `true` instead of `false`. This enables [Docusaurus Faster](https://github.com/facebook/docusaurus/issues/10556) features by default. Requires having `@docusaurus/faster` in your dependencies. If you explicitly set individual `faster` flags, those explicit values take precedence.
+  - [`mdx1CompatDisabledByDefault`](https://github.com/facebook/docusaurus/pull/11896): Defaults all [`markdown.mdx1Compat`](#markdown) flags to `false` instead of `true`. This prepares your site for Docusaurus v4, which will not enable MDX v1 compatibility by default. If you explicitly set individual `mdx1Compat` flags, those explicit values take precedence.
+- `faster`: An object containing feature flags to make the Docusaurus build faster. This requires adding the `@docusaurus/faster` package to your site's dependencies. Use `true` as a shorthand to enable all flags. Read more on the [Docusaurus Faster](https://github.com/facebook/docusaurus/issues/10556) issue. Available feature flags:
+  - [`swcJsLoader`](https://github.com/facebook/docusaurus/pull/10435): Use [SWC](https://swc.rs/) to transpile JS (instead of [Babel](https://babeljs.io/)).
+  - [`swcJsMinimizer`](https://github.com/facebook/docusaurus/pull/10441): Use [SWC](https://swc.rs/) to minify JS (instead of [Terser](https://github.com/terser/terser)).
+  - [`swcHtmlMinimizer `](https://github.com/facebook/docusaurus/pull/10554): Use [SWC](https://swc.rs/) to minify HTML and inlined JS/CSS (instead of [html-minifier-terser](https://github.com/terser/html-minifier-terser)).
+  - [`lightningCssMinimizer`](https://github.com/facebook/docusaurus/pull/10522): Use [Lightning CSS](https://lightningcss.dev/) to minify CSS (instead of [cssnano](https://github.com/cssnano/cssnano) and [clean-css](https://github.com/clean-css/clean-css)).
+  - [`rspackBundler`](https://github.com/facebook/docusaurus/pull/10402): Use [Rspack](https://rspack.dev/) to bundle your app (instead of [webpack](https://webpack.js.org/)).
+  - [`rspackPersistentCache`](https://github.com/facebook/docusaurus/pull/10931): Use [Rspack Persistent Cache](https://rspack.dev/config/cache) to re-build your app faster on subsequent builds. Requires `rspackBundler: true`. Requires persisting `./node_modules/.cache` across rebuilds.
+  - [`mdxCrossCompilerCache`](https://github.com/facebook/docusaurus/pull/10479): Compile MDX files only once for both browser/Node.js environments instead of twice.
+  - [`ssgWorkerThreads`](https://github.com/facebook/docusaurus/pull/10826): Using a Node.js worker thread pool to execute the static site generation phase faster. Requires `future.v4.removeLegacyPostBuildHeadAttribute` to be turned on.
+  - [`gitEagerVcs`](https://github.com/facebook/docusaurus/pull/11512): Upgrades the default [VCS strategy](#vcs) to `default-v2`, that reads your whole Git repository at once instead of per-file, making Git operations faster on large repositories.
+- `experimental_router`: The router type to use. Possible values are `browser` and `hash`. Defaults to `browser`. The `hash` router is only useful for rare cases where you want to opt-out of static site generation, have a fully client-side app with a single `index.html` entrypoint file. This can be useful to distribute a Docusaurus site as a `.zip` archive that you can [browse locally without running a web server](https://github.com/facebook/docusaurus/issues/3825).
+- [`experimental_vcs`](#vcs): The Version Control System (VCS) implementation to use to read file info (creation/last update date/author). Read the [dedicated section](#vcs) below for details.
+
+#### `experimental_vcs` {/* #vcs */}
+
+This exposes an API that lets you provide your own Version Control System (VCS) implementation to read file info (creation/last update date/author).
+
+```ts
+export default {
+  future: {
+    experimental_vcs: {
+      initialize: ({siteDir}) => {
+        // Initialize your VCS client here.
+        // If you want to read your VCS eagerly/incrementally on startup,
+        // this is the place to do it.
+        // This function is synchronous on purpose and not awaited
+        // It should not delay Docusaurus startup, but be run in parallel.
+      },
+      getFileCreationInfo: async (filePath: string) => {
+        // Provide your own implementation to read file creation info.
+        return getFileCreationInfo(filePath);
+      },
+      getFileLastUpdateInfo: async (filePath: string) => {
+        // Provide your own implementation to read file creation info.
+        return getFileLastUpdateInfo(filePath);
+      },
+    },
+  },
+};
+```
+
+##### VCS Presets {/* #vcs-presets */}
+
+It is possible to pass a boolean VCS value:
+
+- `true`: enables the default VCS preset (`default-v1` or `default-v2`, depending on the Docusaurus Faster `gitEagerVcs` flag value)
+- `false`: disables the VCS, always returns `null` for all files
+
+```ts
+export default {
+  future: {
+    experimental_vcs: true, // Enables the default VCS preset
+  },
+};
+```
+
+It is also possible to choose VCS preset we provide out of the box by its name.
+
+```ts
+export default {
+  future: {
+    experimental_vcs: 'presetName',
+  },
+};
+```
+
+The available preset names are:
+
+- `git-ad-hoc`: the historical `git log <filename>` based strategy.
+- `git-eager`: the new Git strategy that reads your whole repository upfront.
+- `hardcoded`: returns hardcoded value, useful in dev/tests to speed up developer experience.
+- `disabled`: returns `null` for all files, considering them untracked.
+- `default-v1`: the historical default (`git-ad-hoc` in prod, `hardcoded` in dev)
+- `default-v2`: the upcoming default (`git-eager` in prod, `hardcoded` in dev)
+
+Unless you have specific needs, we recommend using the default presets (`default-v1` or `default-v2`), that skip reading file info in development mode for better performance.
+
+##### VCS Types {/* #vcs-types */}
+
+```ts
+type VcsChangeInfo = {timestamp: number; author: string};
+
+type VscInitializeParams = {
+  siteDir: string;
+};
+
+type VcsConfig = {
+  initialize: (params: VscInitializeParams) => void;
+  getFileCreationInfo: (filePath: string) => Promise<VcsChangeInfo | null>;
+  getFileLastUpdateInfo: (filePath: string) => Promise<VcsChangeInfo | null>;
+};
+
+type VcsPreset =
+  | 'git-ad-hoc'
+  | 'git-eager'
+  | 'hardcoded'
+  | 'disabled'
+  | 'default-v1'
+  | 'default-v2';
+```
+
+### `noIndex` {/* #noIndex */}
+
+- Type: `boolean`
+
+This option adds `<meta name="robots" content="noindex, nofollow">` to every page to tell search engines to avoid indexing your site (more information [here](https://moz.com/learn/seo/robots-meta-directives)).
+
+Example:
+
+```js title="docusaurus.config.js"
+export default {
+  noIndex: true, // Defaults to `false`
+};
+```
+
+### `onBrokenLinks` {/* #onBrokenLinks */}
+
+- Type: `'ignore' | 'log' | 'warn' | 'throw'`
+
+The behavior of Docusaurus when it detects any broken link.
+
+By default, it throws an error, to ensure you never ship any broken link.
+
+:::note
+
+The broken links detection is only available for a production build (`docusaurus build`).
+
+:::
+
+### `onBrokenAnchors` {/* #onBrokenAnchors */}
+
+- Type: `'ignore' | 'log' | 'warn' | 'throw'`
+
+The behavior of Docusaurus when it detects any broken anchor declared with the `Heading` component of Docusaurus.
+
+By default, it prints a warning, to let you know about your broken anchors.
+
+### `onBrokenMarkdownLinks` {/* #onBrokenMarkdownLinks */}
+
+:::warning Deprecated
+
+Deprecated in Docusaurus v3.9, and will be removed in Docusaurus v4.
+
+Replaced by [`siteConfig.markdown.hooks.onBrokenMarkdownLinks`](#hooks.onBrokenMarkdownLinks)
+
+:::
+
+- Type: `'ignore' | 'log' | 'warn' | 'throw'`
+
+The behavior of Docusaurus when it detects any broken Markdown link.
+
+By default, it prints a warning, to let you know about your broken Markdown link.
+
+### `onDuplicateRoutes` {/* #onDuplicateRoutes */}
+
+- Type: `'ignore' | 'log' | 'warn' | 'throw'`
+
+The behavior of Docusaurus when it detects any [duplicate routes](/guides/creating-pages.mdx#duplicate-routes).
+
+By default, it displays a warning after you run `yarn start` or `yarn build`.
+
+### `tagline` {/* #tagline */}
+
+- Type: `string`
+
+The tagline for your website.
+
+```js title="docusaurus.config.js"
+export default {
+  tagline:
+    'Docusaurus makes it easy to maintain Open Source documentation websites.',
+};
+```
+
+### `organizationName` {/* #organizationName */}
+
+- Type: `string`
+
+The GitHub user or organization that owns the repository. You don't need this if you are not using the `docusaurus deploy` command.
+
+```js title="docusaurus.config.js"
+export default {
+  // Docusaurus' organization is facebook
+  organizationName: 'facebook',
+};
+```
+
+### `projectName` {/* #projectName */}
+
+- Type: `string`
+
+The name of the GitHub repository. You don't need this if you are not using the `docusaurus deploy` command.
+
+```js title="docusaurus.config.js"
+export default {
+  projectName: 'docusaurus',
+};
+```
+
+### `deploymentBranch` {/* #deploymentBranch */}
+
+- Type: `string`
+
+The name of the branch to deploy the static files to. You don't need this if you are not using the `docusaurus deploy` command.
+
+```js title="docusaurus.config.js"
+export default {
+  deploymentBranch: 'gh-pages',
+};
+```
+
+### `githubHost` {/* #githubHost */}
+
+- Type: `string`
+
+The hostname of your server. Useful if you are using GitHub Enterprise. You don't need this if you are not using the `docusaurus deploy` command.
+
+```js title="docusaurus.config.js"
+export default {
+  githubHost: 'github.com',
+};
+```
+
+### `githubPort` {/* #githubPort */}
+
+- Type: `string`
+
+The port of your server. Useful if you are using GitHub Enterprise. You don't need this if you are not using the `docusaurus deploy` command.
+
+```js title="docusaurus.config.js"
+export default {
+  githubPort: '22',
+};
+```
+
+### `themeConfig` {/* #themeConfig */}
+
+- Type: `Object`
+
+The [theme configuration](./themes/theme-configuration.mdx) object to customize your site UI like navbar and footer.
+
+Example:
+
+```js title="docusaurus.config.js"
+export default {
+  themeConfig: {
+    docs: {
+      sidebar: {
+        hideable: false,
+        autoCollapseCategories: false,
+      },
+    },
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
+    navbar: {
+      title: 'Site Title',
+      logo: {
+        alt: 'Site Logo',
+        src: 'img/logo.svg',
+        width: 32,
+        height: 32,
+      },
+      items: [
+        {
+          to: 'docs/docusaurus.config.js',
+          activeBasePath: 'docs',
+          label: 'docusaurus.config.js',
+          position: 'left',
+        },
+        // ... other links
+      ],
+    },
+    footer: {
+      style: 'dark',
+      links: [
+        {
+          title: 'Docs',
+          items: [
+            {
+              label: 'Docs',
+              to: 'docs/doc1',
+            },
+          ],
+        },
+        // ... other links
+      ],
+      logo: {
+        alt: 'Meta Open Source Logo',
+        src: 'img/meta_oss_logo.png',
+        href: 'https://opensource.fb.com',
+        width: 160,
+        height: 51,
+      },
+      copyright: `Copyright © ${new Date().getFullYear()} Facebook, Inc.`, // You can also put own HTML here
+    },
+  },
+};
+```
+
+### `plugins` {/* #plugins */}
+
+- Type: `PluginConfig[]`
+
+```ts
+type PluginConfig = string | [string, any] | PluginModule | [PluginModule, any];
+```
+
+See [plugin method references](./plugin-methods/README.mdx) for the shape of a `PluginModule`.
+
+```js title="docusaurus.config.js"
+export default {
+  plugins: [
+    'docusaurus-plugin-awesome',
+    ['docusuarus-plugin-confetti', {fancy: false}],
+    () => ({
+      postBuild() {
+        console.log('Build finished');
+      },
+    }),
+  ],
+};
+```
+
+### `themes` {/* #themes */}
+
+- Type: `PluginConfig[]`
+
+```js title="docusaurus.config.js"
+export default {
+  themes: ['@docusaurus/theme-classic'],
+};
+```
+
+### `presets` {/* #presets */}
+
+- Type: `PresetConfig[]`
+
+```ts
+type PresetConfig = string | [string, any];
+```
+
+```js title="docusaurus.config.js"
+export default {
+  presets: [],
+};
+```
+
+### `markdown` {/* #markdown */}
+
+The global Docusaurus Markdown config.
+
+- Type: `MarkdownConfig`
+
+```ts
+type MarkdownPreprocessor = (args: {
+  filePath: string;
+  fileContent: string;
+}) => string;
+
+type MDX1CompatOptions =
+  | boolean
+  | {
+      comments: boolean;
+      admonitions: boolean;
+      headingIds: boolean;
+    };
+
+type ParseFrontMatter = (params: {
+  filePath: string;
+  fileContent: string;
+  defaultParseFrontMatter: ParseFrontMatter;
+}) => Promise<{
+  frontMatter: {[key: string]: unknown};
+  content: string;
+}>;
+
+type MarkdownAnchorsConfig = {
+  maintainCase: boolean;
+};
+
+type OnBrokenMarkdownLinksFunction = (params: {
+  sourceFilePath: string; // MD/MDX source file relative to cwd
+  url: string; // Link url
+  node: Link | Definition; // mdast Node
+}) => void | string;
+
+type OnBrokenMarkdownImagesFunction = (params: {
+  sourceFilePath: string; // MD/MDX source file relative to cwd
+  url: string; // Image url
+  node: Image; // mdast node
+}) => void | string;
+
+type ReportingSeverity = 'ignore' | 'log' | 'warn' | 'throw';
+
+type MarkdownHooks = {
+  onBrokenMarkdownLinks: ReportingSeverity | OnBrokenMarkdownLinksFunction;
+  onBrokenMarkdownImages: ReportingSeverity | OnBrokenMarkdownImagesFunction;
+};
+
+type MarkdownConfig = {
+  format: 'mdx' | 'md' | 'detect';
+  mermaid: boolean;
+  emoji: boolean;
+  preprocessor?: MarkdownPreprocessor;
+  parseFrontMatter?: ParseFrontMatter;
+  mdx1Compat: MDX1CompatOptions;
+  remarkRehypeOptions: object; // see https://github.com/remarkjs/remark-rehype#options
+  anchors: MarkdownAnchorsConfig;
+  hooks: MarkdownHooks;
+};
+```
+
+Example:
+
+```js title="docusaurus.config.js"
+export default {
+  markdown: {
+    format: 'mdx',
+    mermaid: true,
+    emoji: true,
+    preprocessor: ({filePath, fileContent}) => {
+      return fileContent.replaceAll('{{MY_VAR}}', 'MY_VALUE');
+    },
+    parseFrontMatter: async (params) => {
+      const result = await params.defaultParseFrontMatter(params);
+      result.frontMatter.description =
+        result.frontMatter.description?.replaceAll('{{MY_VAR}}', 'MY_VALUE');
+      return result;
+    },
+    mdx1Compat: {
+      comments: true,
+      admonitions: true,
+      headingIds: true,
+    },
+    anchors: {
+      maintainCase: true,
+    },
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+      onBrokenMarkdownImages: 'throw',
+    },
+  },
+};
+```
+
+```mdx-code-block
+<APITable>
+```
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `format` | `'mdx' \| 'md' \| 'detect'` | `'mdx'` | The default parser format to use for Markdown content. Using 'detect' will select the appropriate format automatically based on file extensions: `.md` vs `.mdx`. |
+| `mermaid` | `boolean` | `false` | When `true`, allows Docusaurus to render Markdown code blocks with `mermaid` language as Mermaid diagrams. |
+| `emoji` | `boolean` | `true` | When `true`, allows Docusaurus to render emoji shortcodes (e.g., `:+1:`) as Unicode emoji (👍). When `false`, emoji shortcodes are left as-is. |
+| `preprocessor` | `MarkdownPreprocessor` | `undefined` | Gives you the ability to alter the Markdown content string before parsing. Use it as a last-resort escape hatch or workaround: it is almost always better to implement a Remark/Rehype plugin. |
+| `parseFrontMatter` | `ParseFrontMatter` | `undefined` | Gives you the ability to provide your own front matter parser, or to enhance the default parser. Read our [front matter guide](../guides/markdown-features/markdown-features-intro.mdx#front-matter) for details. |
+| `mdx1Compat` | `MDX1CompatOptions` | `{comments: true, admonitions: true, headingIds: true}` | Compatibility options to make it easier to upgrade to Docusaurus v3+. Defaults to all `false` when [`future.v4.mdx1CompatDisabledByDefault`](#future) is enabled. |
+| `anchors` | `MarkdownAnchorsConfig` | `{maintainCase: false}` | Options to control the behavior of anchors generated from Markdown headings |
+| `remarkRehypeOptions` | `object` | `undefined` | Makes it possible to pass custom [`remark-rehype` options](https://github.com/remarkjs/remark-rehype#options). |
+| `hooks` | `MarkdownHooks` | `object` | Make it possible to customize the MDX loader behavior with callbacks or built-in options. |
+| `hooks.onBrokenMarkdownLinks` | `ReportingSeverity \| OnBrokenMarkdownLinksFunction` | `'warn'` | Hook to customize the behavior when encountering a broken Markdown link URL. With the callback function, you can return a new link URL, or alter the link [mdast node](https://github.com/syntax-tree/mdast). |
+| `hooks.onBrokenMarkdownImages` | `ReportingSeverity \| OnBrokenMarkdownImagesFunction` | `'throw'` | Hook to customize the behavior when encountering a broken Markdown image URL. With the callback function, you can return a new image URL, or alter the image [mdast node](https://github.com/syntax-tree/mdast). |
+
+```mdx-code-block
+</APITable>
+```
+
+### `customFields` {/* #customFields */}
+
+Docusaurus guards `docusaurus.config.js` from unknown fields. To add a custom field, define it on `customFields`.
+
+- Type: `Object`
+
+```js title="docusaurus.config.js"
+export default {
+  customFields: {
+    admin: 'endi',
+    superman: 'lol',
+  },
+};
+```
+
+Attempting to add unknown fields in the config will lead to errors during build time:
+
+```bash
+Error: The field(s) 'foo', 'bar' are not recognized in docusaurus.config.js
+```
+
+### `staticDirectories` {/* #staticDirectories */}
+
+An array of paths, relative to the site's directory or absolute. Files under these paths will be copied to the build output as-is.
+
+- Type: `string[]`
+
+Example:
+
+```js title="docusaurus.config.js"
+export default {
+  staticDirectories: ['static'],
+};
+```
+
+### `headTags` {/* #headTags */}
+
+An array of tags that will be inserted in the HTML `<head>`. The values must be objects that contain two properties; `tagName` and `attributes`. `tagName` must be a string that determines the tag being created; eg `"link"`. `attributes` must be an attribute-value map. When custom html elements are needed, set `customElement: true`.
+
+- Type: `{ tagName: string; attributes: Object; customElement?: boolean; }[]`
+
+Example:
+
+```js title="docusaurus.config.js"
+export default {
+  headTags: [
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        href: '/img/docusaurus.png',
+      },
+    },
+  ],
+};
+```
+
+This would become `<link rel="icon" href="img/docusaurus.png" />` in the generated HTML.
+
+### `scripts` {/* #scripts */}
+
+An array of scripts to load. The values can be either strings or plain objects of attribute-value maps. The `<script>` tags will be inserted in the HTML `<head>`. If you use a plain object, the only required attribute is `src`, and any other attributes are permitted (each one should have boolean/string values).
+
+Note that `<script>` added here are render-blocking, so you might want to add `async: true`/`defer: true` to the objects.
+
+- Type: `(string | Object)[]`
+
+Example:
+
+```js title="docusaurus.config.js"
+export default {
+  scripts: [
+    // String format.
+    'https://docusaurus.io/script.js',
+    // Object format.
+    {
+      src: 'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js',
+      async: true,
+    },
+  ],
+};
+```
+
+### `stylesheets` {/* #stylesheets */}
+
+An array of CSS sources to load. The values can be either strings or plain objects of attribute-value maps. The `<link>` tags will be inserted in the HTML `<head>`. If you use an object, the only required attribute is `href`, and any other attributes are permitted (each one should have boolean/string values).
+
+- Type: `(string | Object)[]`
+
+Example:
+
+```js title="docusaurus.config.js"
+export default {
+  stylesheets: [
+    // String format.
+    'https://docusaurus.io/style.css',
+    // Object format.
+    {
+      href: 'http://mydomain.com/style.css',
+    },
+  ],
+};
+```
+
+:::info
+
+By default, the `<link>` tags will have `rel="stylesheet"`, but you can explicitly add a custom `rel` value to inject any kind of `<link>` tag, not necessarily stylesheets.
+
+:::
+
+### `clientModules` {/* #clientModules */}
+
+An array of [client modules](../advanced/client.mdx#client-modules) to load globally on your site.
+
+Example:
+
+```js title="docusaurus.config.js"
+export default {
+  clientModules: ['./mySiteGlobalJs.js', './mySiteGlobalCss.css'],
+};
+```
+
+### `ssrTemplate` {/* #ssrTemplate */}
+
+An HTML template written in [Eta's syntax](https://eta.js.org/docs/syntax#syntax-overview) that will be used to render your application. This can be used to set custom attributes on the `body` tags, additional `meta` tags, customize the `viewport`, etc. Please note that Docusaurus will rely on the template to be correctly structured in order to function properly, once you do customize it, you will have to make sure that your template is compliant with the requirements from upstream.
+
+- Type: `string`
+
+Example:
+
+```js title="docusaurus.config.js"
+export default {
+  ssrTemplate: `<!DOCTYPE html>
+<html <%~ it.htmlAttributes %>>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="generator" content="Docusaurus v<%= it.version %>">
+    <% it.metaAttributes.forEach((metaAttribute) => { %>
+      <%~ metaAttribute %>
+    <% }); %>
+    <%~ it.headTags %>
+    <% it.stylesheets.forEach((stylesheet) => { %>
+      <link rel="stylesheet" href="<%= it.baseUrl %><%= stylesheet %>" />
+    <% }); %>
+    <% it.scripts.forEach((script) => { %>
+      <link rel="preload" href="<%= it.baseUrl %><%= script %>" as="script">
+    <% }); %>
+  </head>
+  <body <%~ it.bodyAttributes %>>
+    <%~ it.preBodyTags %>
+    <div id="__docusaurus">
+      <%~ it.appHtml %>
+    </div>
+    <% it.scripts.forEach((script) => { %>
+      <script src="<%= it.baseUrl %><%= script %>"></script>
+    <% }); %>
+    <%~ it.postBodyTags %>
+  </body>
+</html>`,
+};
+```
+
+### `titleDelimiter` {/* #titleDelimiter */}
+
+- Type: `string`
+
+Will be used as title delimiter in the generated `<title>` tag.
+
+Example:
+
+```js title="docusaurus.config.js"
+export default {
+  titleDelimiter: '🦖', // Defaults to `|`
+};
+```
+
+### `baseUrlIssueBanner` {/* #baseUrlIssueBanner */}
+
+- Type: `boolean`
+
+When enabled, will show a banner in case your site can't load its CSS or JavaScript files, which is a very common issue, often related to a wrong `baseUrl` in site config.
+
+Example:
+
+```js title="docusaurus.config.js"
+export default {
+  baseUrlIssueBanner: true, // Defaults to `true`
+};
+```
+
+![A sample base URL issue banner. The style is very raw since the stylesheets failed to load. The text says "Your Docusaurus site did not load properly... Current configured baseUrl = / (default value); We suggest trying baseUrl = /build/](/img/baseUrlIssueBanner.png)
+
+:::warning
+
+This banner needs to inline CSS / JS in case all asset loading fails due to wrong base URL.
+
+If you have a strict [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you should rather disable it.
+
+:::

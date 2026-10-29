@@ -62,12 +62,12 @@ export function NavbarSecondaryMenuDisplayProvider({
   children,
 }: {
   children: ReactNode;
-}): JSX.Element {
+}): ReactNode {
   const value = useContextValue();
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+  return <Context value={value}>{children}</Context>;
 }
 
-function renderElement(content: Content): JSX.Element | undefined {
+function renderElement(content: Content): ReactNode {
   if (content.component) {
     const Comp = content.component;
     return <Comp {...content.props} />;
@@ -85,7 +85,7 @@ export function useNavbarSecondaryMenu(): {
    */
   hide: () => void;
   /** The content returned from the current secondary menu filler. */
-  content: JSX.Element | undefined;
+  content: ReactNode;
 } {
   const value = useContext(Context);
   if (!value) {

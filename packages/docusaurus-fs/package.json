@@ -1,0 +1,28 @@
+{
+  "name": "@docusaurus/fs",
+  "version": "4.0.0",
+  "description": "File system utilities for Docusaurus packages.",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/facebook/docusaurus.git",
+    "directory": "packages/docusaurus-fs"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@docusaurus/logger": "workspace:*",
+    "p-queue": "catalog:",
+    "tslib": "catalog:"
+  },
+  "engines": {
+    "node": ">=24.21"
+  }
+}

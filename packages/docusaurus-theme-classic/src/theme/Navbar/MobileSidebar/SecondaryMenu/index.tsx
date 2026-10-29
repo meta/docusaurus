@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {type ComponentProps} from 'react';
+import type {ComponentProps, ReactNode} from 'react';
 import {useThemeConfig} from '@docusaurus/theme-common';
 import {useNavbarSecondaryMenu} from '@docusaurus/theme-common/internal';
 import Translate from '@docusaurus/Translate';
@@ -24,7 +24,7 @@ function SecondaryMenuBackButton(props: ComponentProps<'button'>) {
 
 // The secondary menu slides from the right and shows contextual information
 // such as the docs sidebar
-export default function NavbarMobileSidebarSecondaryMenu(): JSX.Element | null {
+export default function NavbarMobileSidebarSecondaryMenu(): ReactNode {
   const isPrimaryMenuEmpty = useThemeConfig().navbar.items.length === 0;
   const secondaryMenu = useNavbarSecondaryMenu();
   return (

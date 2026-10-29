@@ -5,8 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
-import {getThemeComponents, readComponentNames} from '../components';
+import {describe, expect, it, vi} from 'vitest';
+import path from 'node:path';
+import {
+  getComponentName,
+  getThemeComponents,
+  readComponentNames,
+} from '../components';
 import {Components} from './testUtils';
 import type {SwizzleConfig} from '@docusaurus/types';
 
@@ -118,7 +123,7 @@ describe('getThemeComponents', () => {
     expect(() =>
       themeComponents.getConfig('DoesNotExistComp'),
     ).toThrowErrorMatchingInlineSnapshot(
-      `"Can't get component config: component doesn't exist: DoesNotExistComp"`,
+      `[Error: Can't get component config: component doesn't exist: DoesNotExistComp]`,
     );
   });
 
@@ -243,5 +248,60 @@ describe('getThemeComponents', () => {
     expect(
       themeComponents.hasAnySafeAction(Components.FirstLevelComponent),
     ).toBe(false);
+  });
+});
+
+describe('getComponentName', () => {
+  const swizzleConfig: SwizzleConfig = {
+    components: {
+      [Components.ComponentInFolder]: {
+        actions: {
+          wrap: 'safe',
+          eject: 'unsafe',
+        },
+      },
+    },
+  };
+
+  async function getInvalidComponentNameInfoLogs(componentNameParam: string) {
+    const themeComponents = await getThemeComponents({
+      themeName: 'myThemeName',
+      themePath: FixtureThemePath,
+      swizzleConfig,
+    });
+    using exit = vi
+      .spyOn(process, 'exit')
+      .mockImplementation((() => {}) as () => never);
+    using _error = vi.spyOn(console, 'error').mockImplementation(() => {});
+    using info = vi.spyOn(console, 'info').mockImplementation(() => {});
+    await getComponentName({
+      componentNameParam,
+      themeComponents,
+      list: false,
+    });
+    expect(exit).toHaveBeenCalledExactlyOnceWith(1);
+    return info.mock.calls;
+  }
+
+  it('suggests close component name with a safe action', async () => {
+    await expect(getInvalidComponentNameInfoLogs('ComponentInFoldr')).resolves
+      .toMatchInlineSnapshot(`
+      [
+        [
+          "[INFO] Did you mean ComponentInFolder? ",
+        ],
+      ]
+    `);
+  });
+
+  it('suggests close component name without any safe action', async () => {
+    await expect(getInvalidComponentNameInfoLogs('FirstLevelComponnt')).resolves
+      .toMatchInlineSnapshot(`
+      [
+        [
+          "[INFO] Did you mean FirstLevelComponent? Note: this component is an unsafe internal component and can only be swizzled with \`--danger\` or explicit confirmation.",
+        ],
+      ]
+    `);
   });
 });

@@ -40,7 +40,7 @@ export async function createAllRoutes(
   routes.forEach(param.actions.addRoute);
 }
 
-export async function buildAllRoutes({
+async function buildAllRoutes({
   content,
   actions,
   options,

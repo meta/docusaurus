@@ -53,18 +53,6 @@ function useContextValue(): ContextValue {
 
   const [shown, setShown] = useState(false);
 
-  // Close mobile sidebar on navigation pop
-  // Most likely firing when using the Android back button (but not only)
-  useHistoryPopHandler(() => {
-    if (shown) {
-      setShown(false);
-      // Prevent pop navigation; seems desirable enough
-      // See https://github.com/facebook/docusaurus/pull/5462#issuecomment-911699846
-      return false;
-    }
-    return undefined;
-  });
-
   const toggle = useCallback(() => {
     setShown((s) => !s);
   }, []);
@@ -81,13 +69,45 @@ function useContextValue(): ContextValue {
   );
 }
 
+// A component hook wrapper enables conditional rendering
+// See reason here: https://github.com/facebook/docusaurus/issues/10988
+function OnHistoryPop({
+  handler,
+}: {
+  handler: Parameters<typeof useHistoryPopHandler>[0];
+}) {
+  useHistoryPopHandler(handler);
+  return null;
+}
+
 export function NavbarMobileSidebarProvider({
   children,
 }: {
   children: ReactNode;
-}): JSX.Element {
+}): ReactNode {
   const value = useContextValue();
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+  return (
+    <>
+      {
+        // Close mobile sidebar on navigation pop
+        // Most likely firing when using the Android back button (but not only)
+        // Important: we can only have a single history blocker at a time
+        // That's why this needs to be rendered conditionally
+        // See bug report https://github.com/facebook/docusaurus/issues/10988
+        value.shown && (
+          <OnHistoryPop
+            handler={() => {
+              value.toggle();
+              // Prevent pop navigation; seems desirable enough
+              // See https://github.com/facebook/docusaurus/pull/5462#issuecomment-911699846
+              return false;
+            }}
+          />
+        )
+      }
+      <Context value={value}>{children}</Context>
+    </>
+  );
 }
 
 export function useNavbarMobileSidebar(): ContextValue {

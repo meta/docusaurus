@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import DebugLayout from '@theme/DebugLayout';
 import DebugJsonView from '@theme/DebugJsonView';
 
-export default function DebugMetadata(): JSX.Element {
+export default function DebugMetadata(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
     <DebugLayout>

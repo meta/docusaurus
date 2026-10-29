@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`simple site custom pagination - development 1`] = `
+exports[`simple site > custom pagination - development 1`] = `
 {
   "pagination": [
     {
@@ -356,7 +356,7 @@ exports[`simple site custom pagination - development 1`] = `
 }
 `;
 
-exports[`simple site custom pagination - production 1`] = `
+exports[`simple site > custom pagination - production 1`] = `
 {
   "pagination": [
     {

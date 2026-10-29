@@ -5,102 +5,99 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type {SiteStorage} from './context';
 import type {RuleSetRule} from 'webpack';
-import type {Required as RequireKeys, DeepPartial} from 'utility-types';
+import type {DeepPartial, Overwrite} from 'utility-types';
 import type {I18nConfig} from './i18n';
 import type {PluginConfig, PresetConfig, HtmlTagObject} from './plugin';
+import type {ReportingSeverity} from './reporting';
+import type {MarkdownConfig} from './markdown';
 
-import type {ProcessorOptions} from '@mdx-js/mdx';
-
-export type RemarkRehypeOptions = ProcessorOptions['remarkRehypeOptions'];
-
-export type ReportingSeverity = 'ignore' | 'log' | 'warn' | 'throw';
+export type RouterType = 'browser' | 'hash';
 
 export type ThemeConfig = {
   [key: string]: unknown;
 };
 
-export type MarkdownPreprocessor = (args: {
-  filePath: string;
-  fileContent: string;
-}) => string;
-
-export type MDX1CompatOptions = {
-  comments: boolean;
-  admonitions: boolean;
-  headingIds: boolean;
+export type StorageConfig = {
+  type: SiteStorage['type'];
+  namespace: boolean | string;
 };
 
-export type ParseFrontMatterParams = {filePath: string; fileContent: string};
-export type ParseFrontMatterResult = {
-  frontMatter: {[key: string]: unknown};
-  content: string;
+export type WebpackConfig = {
+  /**
+   * Configuration for alternative JS loaders. "babel" will use the built-in
+   * Babel loader and preset; otherwise, you can provide your custom Webpack
+   * rule set.
+   */
+  jsLoader?: 'babel' | ((options: {isServer: boolean}) => RuleSetRule);
 };
-export type DefaultParseFrontMatter = (
-  params: ParseFrontMatterParams,
-) => Promise<ParseFrontMatterResult>;
-export type ParseFrontMatter = (
-  params: ParseFrontMatterParams & {
-    defaultParseFrontMatter: DefaultParseFrontMatter;
-  },
-) => Promise<ParseFrontMatterResult>;
 
-export type MarkdownConfig = {
-  /**
-   * The Markdown format to use by default.
-   *
-   * This is the format passed down to the MDX compiler, impacting the way the
-   * content is parsed.
-   *
-   * Possible values:
-   * - `'mdx'`: use the MDX format (JSX support)
-   * - `'md'`: use the CommonMark format (no JSX support)
-   * - `'detect'`: select the format based on file extension (.md / .mdx)
-   *
-   * @see https://mdxjs.com/packages/mdx/#optionsformat
-   * @default 'mdx'
-   */
-  format: 'mdx' | 'md' | 'detect';
+// VCS (Version Control System) info about a given change, e.g., a git commit.
+// The agnostic term "VCS" is used instead of "git" to acknowledge the existence
+// of other version control systems, and external systems like CMSs and i18n
+// translation SaaS (e.g., Crowdin)
+export type VcsChangeInfo = {timestamp: number; author: string};
 
-  /**
-   * A function callback that lets users parse the front matter themselves.
-   * Gives the opportunity to read it from a different source, or process it.
-   *
-   * @see https://github.com/facebook/docusaurus/issues/5568
-   */
-  parseFrontMatter: ParseFrontMatter;
+export type VscInitializeParams = {
+  siteDir: string;
+  // TODO could it be useful to provide all plugins getPathsToWatch() here?
+  //  this could give the opportunity to find out all VCS roots ahead of times
+  //  this is mostly useful for multi-git-repo setups, can be added later
+};
 
+// VCS (Version Control System) config hooks to get file change info.
+// This lets you override and customize the default Docusaurus behavior.
+// This can be useful to optimize calls or when using something else than git
+// See https://github.com/facebook/docusaurus/issues/11208
+// See https://github.com/e18e/ecosystem-issues/issues/216
+export type VcsConfig = {
   /**
-   * Allow mermaid language code blocks to be rendered into Mermaid diagrams:
+   * Initialize the VCS system.
+   * This is notably useful to pre-read eagerly a full Git repository so that
+   * all the files first/last update info can be retrieved efficiently later
    *
-   * - `true`: code blocks with language mermaid will be rendered.
-   * - `false` | `undefined` (default): code blocks with language mermaid
-   * will be left as code blocks.
+   * Note: for now, this function is synchronous on purpose, it can be used to
+   * start warming up the VCS by reading eagerly, but we don't want to delay
+   * the rest of the Docusaurus start/build process. Instead of awaiting the
+   * init promise, you can create/store it and await it later during reads.
    *
-   * @see https://docusaurus.io/docs/markdown-features/diagrams/
-   * @default false
+   * @param params Initialization params that can be useful to warm up the VCS
    */
-  mermaid: boolean;
+  initialize: (params: VscInitializeParams) => void;
+  getFileCreationInfo: (filePath: string) => Promise<VcsChangeInfo | null>;
+  getFileLastUpdateInfo: (filePath: string) => Promise<VcsChangeInfo | null>;
+};
 
+/**
+ * List of pre-built VcsConfig that Docusaurus provides.
+ */
+export type VcsPreset =
+  | 'git-ad-hoc'
+  | 'git-eager'
+  | 'hardcoded'
+  | 'disabled'
+  | 'default'
+  | 'default-v3';
+
+export type FutureConfig = {
   /**
-   * Gives opportunity to preprocess the MDX string content before compiling.
-   * A good escape hatch that can be used to handle edge cases.
+   * Docusaurus can work with 2 router types.
    *
-   * @param args
+   * - The "browser" router is the main/default router of Docusaurus.
+   *   It will use the browser history and regular urls to navigate from
+   *   one page to another. A static file will be emitted for each page.
+   *
+   * - The "hash" router can be useful in very specific situations (such as
+   *   distributing your app for offline-first usage), but should be avoided
+   *   in most cases. All pages paths will be prefixed with a /#/.
+   *   It will opt out of static site generation, only emit a single index.html
+   *   entry point, and use the browser hash for routing. The Docusaurus site
+   *   content will be rendered client-side, like a regular single page
+   *   application.
+   *   @see https://github.com/facebook/docusaurus/issues/3825
    */
-  preprocessor?: MarkdownPreprocessor;
-
-  /**
-   * Set of flags make it easier to upgrade from MDX 1 to MDX 2
-   * See also https://github.com/facebook/docusaurus/issues/4029
-   */
-  mdx1Compat: MDX1CompatOptions;
-
-  /**
-   * Ability to provide custom remark-rehype options
-   * See also https://github.com/remarkjs/remark-rehype#options
-   */
-  remarkRehypeOptions: RemarkRehypeOptions;
+  experimental_router: RouterType;
 };
 
 /**
@@ -160,6 +157,24 @@ export type DocusaurusConfig = {
    */
   i18n: I18nConfig;
   /**
+   * Site-wide browser storage options.
+   *
+   * @see https://docusaurus.io/docs/api/docusaurus-config#storage
+   */
+  storage: StorageConfig;
+  /**
+   * The Version Control System (VCS) implementation used to read file info
+   * (creation/last update date/author).
+   *
+   * @see https://docusaurus.io/docs/api/docusaurus-config#vcs
+   */
+  vcs: VcsConfig;
+  /**
+   * Docusaurus future flags and experimental features.
+   * Similar to Remix future flags, see https://remix.run/blog/future-flags
+   */
+  future: FutureConfig;
+  /**
    * This option adds `<meta name="robots" content="noindex, nofollow">` to
    * every page to tell search engines to avoid indexing your site.
    *
@@ -176,19 +191,12 @@ export type DocusaurusConfig = {
    */
   onBrokenLinks: ReportingSeverity;
   /**
-   * The behavior of Docusaurus when it detects any broken link.
+   * The behavior of Docusaurus when it detects any broken anchor.
    *
    * @see https://docusaurus.io/docs/api/docusaurus-config#onBrokenAnchors
-   * @default "warn"
+   * @default "throw"
    */
   onBrokenAnchors: ReportingSeverity;
-  /**
-   * The behavior of Docusaurus when it detects any broken markdown link.
-   *
-   * @see https://docusaurus.io/docs/api/docusaurus-config#onBrokenMarkdownLinks
-   * @default "warn"
-   */
-  onBrokenMarkdownLinks: ReportingSeverity;
   /**
    * The behavior of Docusaurus when it detects any [duplicate
    * routes](https://docusaurus.io/docs/creating-pages#duplicate-routes).
@@ -343,9 +351,9 @@ export type DocusaurusConfig = {
    * customize it, you will have to make sure that your template is compliant
    * with the requirements from upstream.
    *
-   * @see https://docusaurus.io/docs/api/docusaurus-config#ssrTemplate
+   * @see https://docusaurus.io/docs/api/docusaurus-config#ssgTemplate
    */
-  ssrTemplate?: string;
+  ssgTemplate?: string;
   /**
    * Will be used as title delimiter in the generated `<title>` tag.
    *
@@ -362,25 +370,36 @@ export type DocusaurusConfig = {
    * @default true
    */
   baseUrlIssueBanner: boolean;
-  /** Webpack-related options. */
-  webpack?: {
-    /**
-     * Configuration for alternative JS loaders. "babel" will use the built-in
-     * Babel loader and preset; otherwise, you can provide your custom Webpack
-     * rule set.
-     */
-    jsLoader: 'babel' | ((isServer: boolean) => RuleSetRule);
-  };
+  // TODO Docusaurus v5: remove Webpack and Babel support
+  /**
+   * Docusaurus uses Rspack by default.
+   * When provided, Docusaurus uses Webpack and Babel instead.
+   * @deprecated Webpack and Babel support will be removed in Docusaurus v5
+   */
+  webpack?: WebpackConfig;
   /** Markdown-related options. */
   markdown: MarkdownConfig;
 };
 
 /**
- * Docusaurus config, as provided by the user (partial/unnormalized). This type
+ * Docusaurus config, as provided by the user (partial/un-normalized). This type
  * is used to provide type-safety / IDE auto-complete on the config file.
  * @see https://docusaurus.io/docs/typescript-support
  */
-export type Config = RequireKeys<
+export type Config = Overwrite<
   DeepPartial<DocusaurusConfig>,
-  'title' | 'url' | 'baseUrl'
+  {
+    title: DocusaurusConfig['title'];
+    url: DocusaurusConfig['url'];
+    baseUrl: DocusaurusConfig['baseUrl'];
+    vcs?: VcsPreset | VcsConfig | boolean;
+    // TODO Docusaurus v5: remove Webpack and Babel support
+    /**
+     * Docusaurus uses Rspack by default.
+     * Use `true` or an object to use Webpack and Babel instead.
+     * @deprecated Webpack and Babel support will be removed in Docusaurus v5
+     */
+    webpack?: boolean | WebpackConfig;
+    future?: DeepPartial<FutureConfig>;
+  }
 >;

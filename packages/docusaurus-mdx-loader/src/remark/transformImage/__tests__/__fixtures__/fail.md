@@ -1,1 +1,0 @@
-![img](/img/doesNotExist.png)

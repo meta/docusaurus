@@ -5,30 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {TranslationFileContent, TranslationFile} from '@docusaurus/types';
-import type {
-  PluginOptions,
-  BlogContent,
-  BlogPaginated,
-} from '@docusaurus/plugin-content-blog';
-
-function translateListPage(
-  blogListPaginated: BlogPaginated[],
-  translations: TranslationFileContent,
-) {
-  return blogListPaginated.map((page) => {
-    const {items, metadata} = page;
-    return {
-      items,
-      metadata: {
-        ...metadata,
-        blogTitle: translations.title?.message ?? page.metadata.blogTitle,
-        blogDescription:
-          translations.description?.message ?? page.metadata.blogDescription,
-      },
-    };
-  });
-}
+import type {TranslationFile} from '@docusaurus/types';
+import type {PluginOptions, BlogContent} from '@docusaurus/plugin-content-blog';
 
 export function getTranslationFiles(options: PluginOptions): TranslationFile[] {
   return [
@@ -56,14 +34,13 @@ export function translateContent(
   content: BlogContent,
   translationFiles: TranslationFile[],
 ): BlogContent {
-  const {content: optionsTranslations} = translationFiles[0]!;
+  const {content: translations} = translationFiles[0]!;
   return {
     ...content,
+    blogTitle: translations.title?.message ?? content.blogTitle,
+    blogDescription:
+      translations.description?.message ?? content.blogDescription,
     blogSidebarTitle:
-      optionsTranslations['sidebar.title']?.message ?? content.blogSidebarTitle,
-    blogListPaginated: translateListPage(
-      content.blogListPaginated,
-      optionsTranslations,
-    ),
+      translations['sidebar.title']?.message ?? content.blogSidebarTitle,
   };
 }

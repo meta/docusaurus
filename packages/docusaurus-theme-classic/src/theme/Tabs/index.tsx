@@ -5,25 +5,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {cloneElement, type ReactElement} from 'react';
+import type React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
+import {ThemeClassNames} from '@docusaurus/theme-common';
 import {
   useScrollPositionBlocker,
+  useTabsContextValue,
   useTabs,
   sanitizeTabsChildren,
-  type TabItemProps,
+  TabsProvider,
 } from '@docusaurus/theme-common/internal';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import type {Props} from '@theme/Tabs';
 import styles from './styles.module.css';
 
-function TabList({
-  className,
-  block,
-  selectedValue,
-  selectValue,
-  tabValues,
-}: Props & ReturnType<typeof useTabs>) {
+function TabList({className}: {className?: string}) {
+  const {selectedValue, selectValue, tabValues} = useTabs();
+
   const tabRefs: (HTMLLIElement | null)[] = [];
   const {blockElementScrollPositionUntilNextRender} =
     useScrollPositionBlocker();
@@ -73,13 +72,7 @@ function TabList({
     <ul
       role="tablist"
       aria-orientation="horizontal"
-      className={clsx(
-        'tabs',
-        {
-          'tabs--block': block,
-        },
-        className,
-      )}>
+      className={clsx('tabs', className)}>
       {tabValues.map(({value, label, attributes}) => (
         <li
           // TODO extract TabListItem
@@ -87,7 +80,9 @@ function TabList({
           tabIndex={selectedValue === value ? 0 : -1}
           aria-selected={selectedValue === value}
           key={value}
-          ref={(tabControl) => tabRefs.push(tabControl)}
+          ref={(ref) => {
+            tabRefs.push(ref);
+          }}
           onKeyDown={handleKeydown}
           onClick={handleTabChange}
           {...attributes}
@@ -106,55 +101,41 @@ function TabList({
   );
 }
 
-function TabContent({
-  lazy,
+function TabContent({children}: {children: ReactNode}) {
+  return <div className="margin-top--md">{children}</div>;
+}
+
+function TabsContainer({
+  className,
   children,
-  selectedValue,
-}: Props & ReturnType<typeof useTabs>) {
-  const childTabs = (Array.isArray(children) ? children : [children]).filter(
-    Boolean,
-  ) as ReactElement<TabItemProps>[];
-  if (lazy) {
-    const selectedTabItem = childTabs.find(
-      (tabItem) => tabItem.props.value === selectedValue,
-    );
-    if (!selectedTabItem) {
-      // fail-safe or fail-fast? not sure what's best here
-      return null;
-    }
-    return cloneElement(selectedTabItem, {className: 'margin-top--md'});
-  }
+}: {
+  className?: string;
+  children: ReactNode;
+}): ReactNode {
   return (
-    <div className="margin-top--md">
-      {childTabs.map((tabItem, i) =>
-        cloneElement(tabItem, {
-          key: i,
-          hidden: tabItem.props.value !== selectedValue,
-        }),
-      )}
+    <div className={clsx(ThemeClassNames.tabs.container, styles.tabList)}>
+      <TabList
+        // Surprising but historical
+        // className is applied on TabList, not on TabsContainer
+        className={className}
+      />
+      <TabContent>{children}</TabContent>
     </div>
   );
 }
 
-function TabsComponent(props: Props): JSX.Element {
-  const tabs = useTabs(props);
-  return (
-    <div className={clsx('tabs-container', styles.tabList)}>
-      <TabList {...props} {...tabs} />
-      <TabContent {...props} {...tabs} />
-    </div>
-  );
-}
-
-export default function Tabs(props: Props): JSX.Element {
+export default function Tabs(props: Props): ReactNode {
   const isBrowser = useIsBrowser();
+  const value = useTabsContextValue(props);
   return (
-    <TabsComponent
+    <TabsProvider
+      value={value}
       // Remount tabs after hydration
       // Temporary fix for https://github.com/facebook/docusaurus/issues/5653
-      key={String(isBrowser)}
-      {...props}>
-      {sanitizeTabsChildren(props.children)}
-    </TabsComponent>
+      key={String(isBrowser)}>
+      <TabsContainer className={props.className}>
+        {sanitizeTabsChildren(props.children)}
+      </TabsContainer>
+    </TabsProvider>
   );
 }

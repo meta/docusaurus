@@ -1,1 +1,0 @@
-![invalid image](/invalid.png)

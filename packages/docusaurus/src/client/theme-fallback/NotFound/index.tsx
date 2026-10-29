@@ -8,11 +8,11 @@
 // Should we translate theme-fallback?
 /* eslint-disable @docusaurus/no-untranslated-text */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Head from '@docusaurus/Head';
 import Layout from '@theme/Layout';
 
-export default function NotFound(): JSX.Element {
+export default function NotFound(): ReactNode {
   return (
     <>
       <Head>

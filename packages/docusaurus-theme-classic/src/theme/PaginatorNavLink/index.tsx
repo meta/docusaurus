@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import type {Props} from '@theme/PaginatorNavLink';
 
-export default function PaginatorNavLink(props: Props): JSX.Element {
+export default function PaginatorNavLink(props: Props): ReactNode {
   const {permalink, title, subLabel, isNext} = props;
   return (
     <Link

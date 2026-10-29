@@ -48,11 +48,6 @@ const optionsSchema = Joi.object<PluginOptions>({
   swRegister: Joi.alternatives()
     .try(Joi.string(), Joi.bool().valid(false))
     .default(DEFAULT_OPTIONS.swRegister),
-  // @ts-expect-error: forbidden
-  reloadPopup: Joi.any().forbidden().messages({
-    'any.unknown':
-      'The reloadPopup option is removed in favor of swizzling. See https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-pwa#customizing-reload-popup for how to customize the reload popup using swizzling.',
-  }),
 });
 
 export function validateOptions({

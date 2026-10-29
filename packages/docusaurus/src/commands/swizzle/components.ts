@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import _ from 'lodash';
 import logger from '@docusaurus/logger';
 import {posixPath} from '@docusaurus/utils';
+import {fs, pathExists} from '@docusaurus/fs';
 import {askComponentName} from './prompts';
 import {findClosestValue, findStringIgnoringCase} from './common';
 import {helpTables, themeComponentsTable} from './tables';
@@ -73,15 +73,13 @@ export async function readComponentNames(themePath: string): Promise<string[]> {
   type File = {file: string; fullPath: string; isDir: boolean};
   type ComponentFile = File & {componentName: string};
 
-  if (!(await fs.pathExists(themePath))) {
+  if (!(await pathExists(themePath))) {
     return [];
   }
 
   async function walk(dir: string): Promise<ComponentFile[]> {
     const files: File[] = await Promise.all(
-      (
-        await fs.readdir(dir)
-      ).flatMap(async (file) => {
+      (await fs.readdir(dir)).flatMap(async (file) => {
         const fullPath = path.join(dir, file);
         const stat = await fs.stat(fullPath);
         const isDir = stat.isDirectory();
@@ -122,7 +120,7 @@ export async function readComponentNames(themePath: string): Promise<string[]> {
   return sortComponentNames(componentNames);
 }
 
-export function listComponentNames(themeComponents: ThemeComponents): string {
+function listComponentNames(themeComponents: ThemeComponents): string {
   if (themeComponents.all.length === 0) {
     return 'No component to swizzle.';
   }
@@ -264,8 +262,8 @@ function handleInvalidComponentNameParam({
   const suggestion = findClosestValue(componentNameParam, themeComponents.all);
   if (suggestion) {
     logger.info`Did you mean name=${suggestion}? ${
-      themeComponents.hasAnySafeAction(suggestion)
-        ? `Note: this component is an unsafe internal component and can only be swizzled with code=${'--danger'} or explicit confirmation.`
+      !themeComponents.hasAnySafeAction(suggestion)
+        ? `Note: this component is an unsafe internal component and can only be swizzled with ${logger.code('--danger')} or explicit confirmation.`
         : ''
     }`;
   } else {

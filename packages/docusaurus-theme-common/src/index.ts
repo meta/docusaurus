@@ -19,6 +19,7 @@ export {
   type MultiColumnFooter,
   type SimpleFooter,
   type Footer,
+  type FooterColumnItem,
   type FooterLogo,
   type FooterLinkItem,
   type ColorModeConfig,
@@ -31,18 +32,6 @@ export {
   useStorageSlot,
   listStorageKeys,
 } from './utils/storageUtils';
-
-export {useContextualSearchFilters} from './utils/searchUtils';
-
-export {
-  useCurrentSidebarCategory,
-  filterDocCardListItems,
-} from './utils/docsUtils';
-
-export {
-  useBlogListPageStructuredData,
-  useBlogPostStructuredData,
-} from './utils/structuredDataUtils';
 
 export {usePluralForm} from './utils/usePluralForm';
 
@@ -77,14 +66,12 @@ export {useWindowSize} from './hooks/useWindowSize';
 
 export {
   translateTagsPageTitle,
+  TagsPageLinkLabel,
   listTagsByLetters,
   type TagLetterEntry,
 } from './utils/tagsUtils';
 
-export {
-  useSearchQueryString,
-  useSearchLinkCreator,
-} from './hooks/useSearchPage';
+export {useAnchorTargetClassName} from './utils/anchorUtils';
 
 export {isMultiColumnFooterLinks} from './utils/footerUtils';
 
@@ -94,15 +81,13 @@ export {duplicates, uniq} from './utils/jsUtils';
 
 export {usePrismTheme} from './hooks/usePrismTheme';
 
-export {useDocsPreferredVersion} from './contexts/docsPreferredVersion';
-
-export {processAdmonitionProps} from './utils/admonitionUtils';
-
 export {
   useHistorySelector,
   useQueryString,
   useQueryStringList,
   useClearQueryString,
+  mergeSearchParams,
+  mergeSearchStrings,
 } from './utils/historyUtils';
 
 export {
@@ -113,8 +98,9 @@ export {
 export {
   UnlistedBannerTitle,
   UnlistedBannerMessage,
-  UnlistedMetadata,
-} from './utils/unlistedUtils';
+  DraftBannerTitle,
+  DraftBannerMessage,
+} from './translations/contentVisibilityTranslations';
 
 export {
   ErrorBoundaryTryAgainButton,

@@ -5,16 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import '@generated/client-modules';
 
 import routes from '@generated/routes';
 import {useLocation} from '@docusaurus/router';
 import renderRoutes from '@docusaurus/renderRoutes';
 import Root from '@theme/Root';
+import ThemeProvider from '@theme/ThemeProvider';
 import SiteMetadata from '@theme/SiteMetadata';
 import normalizeLocation from './normalizeLocation';
-import {BrowserContextProvider} from './browserContext';
 import {DocusaurusContextProvider} from './docusaurusContext';
 import PendingNavigation from './PendingNavigation';
 import BaseUrlIssueBanner from './BaseUrlIssueBanner';
@@ -25,24 +25,32 @@ import SiteMetadataDefaults from './SiteMetadataDefaults';
 import ErrorBoundary from '@docusaurus/ErrorBoundary';
 import HasHydratedDataAttribute from './hasHydratedDataAttribute';
 
-export default function App(): JSX.Element {
-  const routeElement = renderRoutes(routes);
+const routesElement = renderRoutes(routes);
+
+function AppNavigation() {
   const location = useLocation();
+  const normalizedLocation = normalizeLocation(location);
+  return (
+    <PendingNavigation location={normalizedLocation}>
+      {routesElement}
+    </PendingNavigation>
+  );
+}
+
+export default function App(): ReactNode {
   return (
     <div id="__docusaurus-app">
       <ErrorBoundary>
         <DocusaurusContextProvider>
-          <BrowserContextProvider>
-            <Root>
+          <Root>
+            <ThemeProvider>
               <SiteMetadataDefaults />
               <SiteMetadata />
               <BaseUrlIssueBanner />
-              <PendingNavigation location={normalizeLocation(location)}>
-                {routeElement}
-              </PendingNavigation>
-            </Root>
-            <HasHydratedDataAttribute />
-          </BrowserContextProvider>
+              <AppNavigation />
+            </ThemeProvider>
+          </Root>
+          <HasHydratedDataAttribute />
         </DocusaurusContextProvider>
       </ErrorBoundary>
     </div>

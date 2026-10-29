@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
-import os from 'os';
-import fs from 'fs-extra';
+import path from 'node:path';
+import os from 'node:os';
+import fs from 'node:fs/promises';
 
 export const ThemePath = path.join(__dirname, '__fixtures__/theme');
 

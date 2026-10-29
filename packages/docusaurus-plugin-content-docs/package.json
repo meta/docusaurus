@@ -1,6 +1,6 @@
 {
   "name": "@docusaurus/plugin-content-docs",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Docs plugin for Docusaurus.",
   "main": "lib/index.js",
   "sideEffects": false,
@@ -35,35 +35,39 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@docusaurus/core": "3.2.1",
-    "@docusaurus/logger": "3.2.1",
-    "@docusaurus/mdx-loader": "3.2.1",
-    "@docusaurus/module-type-aliases": "3.2.1",
-    "@docusaurus/types": "3.2.1",
-    "@docusaurus/utils": "3.2.1",
-    "@docusaurus/utils-common": "3.2.1",
-    "@docusaurus/utils-validation": "3.2.1",
-    "@types/react-router-config": "^5.0.7",
-    "combine-promises": "^1.1.0",
-    "fs-extra": "^11.1.1",
-    "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21",
-    "tslib": "^2.6.0",
-    "utility-types": "^3.10.0",
-    "webpack": "^5.88.1"
+    "@docusaurus/core": "workspace:*",
+    "@docusaurus/fs": "workspace:*",
+    "@docusaurus/glob": "workspace:*",
+    "@docusaurus/logger": "workspace:*",
+    "@docusaurus/mdx-loader": "workspace:*",
+    "@docusaurus/module-type-aliases": "workspace:*",
+    "@docusaurus/theme-common": "workspace:*",
+    "@docusaurus/types": "workspace:*",
+    "@docusaurus/utils": "workspace:*",
+    "@docusaurus/utils-common": "workspace:*",
+    "@docusaurus/utils-validation": "workspace:*",
+    "@types/react-router-config": "catalog:",
+    "combine-promises": "catalog:",
+    "js-yaml": "catalog:",
+    "lodash": "catalog:",
+    "schema-dts": "catalog:",
+    "tslib": "catalog:",
+    "utility-types": "catalog:",
+    "webpack": "catalog:"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.5",
-    "@types/picomatch": "^2.3.0",
-    "commander": "^5.1.0",
-    "picomatch": "^2.3.1",
-    "shelljs": "^0.8.5"
+    "@total-typescript/shoehorn": "catalog:dev",
+    "@types/picomatch": "catalog:dev",
+    "@types/react-router-dom": "catalog:",
+    "commander": "catalog:",
+    "picomatch": "catalog:dev",
+    "react-router-dom": "catalog:"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   }
 }

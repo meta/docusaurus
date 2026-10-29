@@ -1,163 +1,163 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`normalizeConfig should throw error if plugins is not a string and it's not an array #1 for the input of: [123] 1`] = `
-" => Bad Docusaurus plugin value plugins[0].
-Example valid plugin config:
-{
-  plugins: [
-    ["@docusaurus/plugin-content-docs",options],
-    "./myPlugin",
-    ["./myPlugin",{someOption: 42}],
-    function myPlugin() { },
-    [function myPlugin() { },options]
-  ],
-};
-
-"
-`;
-
-exports[`normalizeConfig should throw error if plugins is not an array of [string, object][] #1 for the input of: [[Array]] 1`] = `
-" => Bad Docusaurus plugin value plugins[0].
-Example valid plugin config:
-{
-  plugins: [
-    ["@docusaurus/plugin-content-docs",options],
-    "./myPlugin",
-    ["./myPlugin",{someOption: 42}],
-    function myPlugin() { },
-    [function myPlugin() { },options]
-  ],
-};
-
-"
-`;
-
-exports[`normalizeConfig should throw error if plugins is not an array of [string, object][] #2 for the input of: [[Array]] 1`] = `
-" => Bad Docusaurus plugin value plugins[0].
-Example valid plugin config:
-{
-  plugins: [
-    ["@docusaurus/plugin-content-docs",options],
-    "./myPlugin",
-    ["./myPlugin",{someOption: 42}],
-    function myPlugin() { },
-    [function myPlugin() { },options]
-  ],
-};
-
-"
-`;
-
-exports[`normalizeConfig should throw error if plugins is not an array of [string, object][] #3 for the input of: [[Array]] 1`] = `
-" => Bad Docusaurus plugin value plugins[0].
-Example valid plugin config:
-{
-  plugins: [
-    ["@docusaurus/plugin-content-docs",options],
-    "./myPlugin",
-    ["./myPlugin",{someOption: 42}],
-    function myPlugin() { },
-    [function myPlugin() { },options]
-  ],
-};
-
-"
-`;
-
-exports[`normalizeConfig should throw error if plugins is not array for the input of: {} 1`] = `
-""plugins" must be an array
-"
-`;
-
-exports[`normalizeConfig should throw error if themes is not a string and it's not an array #1 for the input of: [123] 1`] = `
-" => Bad Docusaurus theme value themes[0].
-Example valid theme config:
-{
-  themes: [
-    ["@docusaurus/theme-classic",options],
-    "./myTheme",
-    ["./myTheme",{someOption: 42}],
-    function myTheme() { },
-    [function myTheme() { },options]
-  ],
-};
-
-"
-`;
-
-exports[`normalizeConfig should throw error if themes is not an array of [string, object][] #1 for the input of: [[Array]] 1`] = `
-" => Bad Docusaurus theme value themes[0].
-Example valid theme config:
-{
-  themes: [
-    ["@docusaurus/theme-classic",options],
-    "./myTheme",
-    ["./myTheme",{someOption: 42}],
-    function myTheme() { },
-    [function myTheme() { },options]
-  ],
-};
-
-"
-`;
-
-exports[`normalizeConfig should throw error if themes is not an array of [string, object][] #2 for the input of: [[Array]] 1`] = `
-" => Bad Docusaurus theme value themes[0].
-Example valid theme config:
-{
-  themes: [
-    ["@docusaurus/theme-classic",options],
-    "./myTheme",
-    ["./myTheme",{someOption: 42}],
-    function myTheme() { },
-    [function myTheme() { },options]
-  ],
-};
-
-"
-`;
-
-exports[`normalizeConfig should throw error if themes is not an array of [string, object][] #3 for the input of: [[Array]] 1`] = `
-" => Bad Docusaurus theme value themes[0].
-Example valid theme config:
-{
-  themes: [
-    ["@docusaurus/theme-classic",options],
-    "./myTheme",
-    ["./myTheme",{someOption: 42}],
-    function myTheme() { },
-    [function myTheme() { },options]
-  ],
-};
-
-"
-`;
-
-exports[`normalizeConfig should throw error if themes is not array for the input of: {} 1`] = `
-""themes" must be an array
-"
-`;
-
-exports[`normalizeConfig throws error for required fields 1`] = `
-""baseUrl" is required
+exports[`normalizeConfig > throws error for required fields 1`] = `
+[Error: "url" is required
+"baseUrl" is required
 "title" is required
-"url" is required
 "themes" must be an array
 "presets" must be an array
 "scripts" must be an array
 "stylesheets" must be an array
 These field(s) ("invalidField",) are not recognized in docusaurus.config.js.
 If you still want these fields to be in your configuration, put them in the "customFields" field.
-See https://docusaurus.io/docs/api/docusaurus-config/#customfields"
+See https://docusaurus.io/docs/api/docusaurus-config/#customfields]
 `;
 
-exports[`normalizeConfig throws error for unknown field 1`] = `
-"These field(s) ("invalid",) are not recognized in docusaurus.config.js.
+exports[`normalizeConfig > throws error for unknown field 1`] = `
+[Error: These field(s) ("invalid",) are not recognized in docusaurus.config.js.
 If you still want these fields to be in your configuration, put them in the "customFields" field.
-See https://docusaurus.io/docs/api/docusaurus-config/#customfields"
+See https://docusaurus.io/docs/api/docusaurus-config/#customfields]
 `;
 
-exports[`normalizeConfig throws for "error" reporting severity 1`] = `
-""onBrokenLinks" must be one of [ignore, log, warn, throw]
-"
+exports[`onBrokenLinks > throws for "error" reporting severity 1`] = `
+[Error: "onBrokenLinks" must be one of [ignore, log, warn, throw]
+]
+`;
+
+exports[`plugins > should throw error if plugins is not a string and it's not an array #1 for the input of: %p 1`] = `
+[Error:  => Bad Docusaurus plugin value plugins[0].
+Example valid plugin config:
+{
+  plugins: [
+    ["@docusaurus/plugin-content-docs",options],
+    "./myPlugin",
+    ["./myPlugin",{someOption: 42}],
+    function myPlugin() { },
+    [function myPlugin() { },options]
+  ],
+};
+
+]
+`;
+
+exports[`plugins > should throw error if plugins is not an array of [string, object][] #1 for the input of: %p 1`] = `
+[Error:  => Bad Docusaurus plugin value plugins[0].
+Example valid plugin config:
+{
+  plugins: [
+    ["@docusaurus/plugin-content-docs",options],
+    "./myPlugin",
+    ["./myPlugin",{someOption: 42}],
+    function myPlugin() { },
+    [function myPlugin() { },options]
+  ],
+};
+
+]
+`;
+
+exports[`plugins > should throw error if plugins is not an array of [string, object][] #2 for the input of: %p 1`] = `
+[Error:  => Bad Docusaurus plugin value plugins[0].
+Example valid plugin config:
+{
+  plugins: [
+    ["@docusaurus/plugin-content-docs",options],
+    "./myPlugin",
+    ["./myPlugin",{someOption: 42}],
+    function myPlugin() { },
+    [function myPlugin() { },options]
+  ],
+};
+
+]
+`;
+
+exports[`plugins > should throw error if plugins is not an array of [string, object][] #3 for the input of: %p 1`] = `
+[Error:  => Bad Docusaurus plugin value plugins[0].
+Example valid plugin config:
+{
+  plugins: [
+    ["@docusaurus/plugin-content-docs",options],
+    "./myPlugin",
+    ["./myPlugin",{someOption: 42}],
+    function myPlugin() { },
+    [function myPlugin() { },options]
+  ],
+};
+
+]
+`;
+
+exports[`plugins > should throw error if plugins is not array for the input of: %p 1`] = `
+[Error: "plugins" must be an array
+]
+`;
+
+exports[`themes > should throw error if themes is not a string and it's not an array #1 for the input of: %p 1`] = `
+[Error:  => Bad Docusaurus theme value themes[0].
+Example valid theme config:
+{
+  themes: [
+    ["@docusaurus/theme-classic",options],
+    "./myTheme",
+    ["./myTheme",{someOption: 42}],
+    function myTheme() { },
+    [function myTheme() { },options]
+  ],
+};
+
+]
+`;
+
+exports[`themes > should throw error if themes is not an array of [string, object][] #1 for the input of: %p 1`] = `
+[Error:  => Bad Docusaurus theme value themes[0].
+Example valid theme config:
+{
+  themes: [
+    ["@docusaurus/theme-classic",options],
+    "./myTheme",
+    ["./myTheme",{someOption: 42}],
+    function myTheme() { },
+    [function myTheme() { },options]
+  ],
+};
+
+]
+`;
+
+exports[`themes > should throw error if themes is not an array of [string, object][] #2 for the input of: %p 1`] = `
+[Error:  => Bad Docusaurus theme value themes[0].
+Example valid theme config:
+{
+  themes: [
+    ["@docusaurus/theme-classic",options],
+    "./myTheme",
+    ["./myTheme",{someOption: 42}],
+    function myTheme() { },
+    [function myTheme() { },options]
+  ],
+};
+
+]
+`;
+
+exports[`themes > should throw error if themes is not an array of [string, object][] #3 for the input of: %p 1`] = `
+[Error:  => Bad Docusaurus theme value themes[0].
+Example valid theme config:
+{
+  themes: [
+    ["@docusaurus/theme-classic",options],
+    "./myTheme",
+    ["./myTheme",{someOption: 42}],
+    function myTheme() { },
+    [function myTheme() { },options]
+  ],
+};
+
+]
+`;
+
+exports[`themes > should throw error if themes is not array for the input of: %p 1`] = `
+[Error: "themes" must be an array
+]
 `;

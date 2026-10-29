@@ -28,7 +28,7 @@ module.exports = {
 
 When browsing `doc1` or `doc2`, the `tutorialSidebar` will be displayed; when browsing `doc3` or `doc4`, the `apiSidebar` will be displayed.
 
-## Understanding sidebar association {#sidebar-association}
+## Understanding sidebar association {/* #sidebar-association */}
 
 Following the example above, if a `commonDoc` is included in both sidebars:
 
@@ -79,7 +79,7 @@ Even when `tutorialSidebar` doesn't contain a link to `home`, it will still be d
 
 If you set `displayed_sidebar: null`, no sidebar will be displayed whatsoever on this page, and subsequently, no pagination either.
 
-## Generating pagination {#generating-pagination}
+## Generating pagination {/* #generating-pagination */}
 
 Docusaurus uses the sidebar to generate the "next" and "previous" pagination links at the bottom of each doc page. It strictly uses the sidebar that is displayed: if no sidebar is associated, it doesn't generate pagination either. However, the docs linked as "next" and "previous" are not guaranteed to display the same sidebar: they are included in this sidebar, but in their front matter, they may have a different `displayed_sidebar`.
 
@@ -114,7 +114,7 @@ You can also disable displaying a pagination link with `pagination_next: null` o
 
 The pagination label by default is the sidebar label. You can use the front matter `pagination_label` to customize how this doc appears in the pagination.
 
-## The `ref` item {#sidebar-item-ref}
+## The `ref` item {/* #sidebar-item-ref */}
 
 The `ref` type is identical to the [`doc` type](./items.mdx#sidebar-item-doc) in every way, except that it doesn't participate in generating navigation metadata. It only registers itself as a link. When [generating pagination](#generating-pagination) and [displaying sidebar](#sidebar-association), `ref` items are completely ignored.
 

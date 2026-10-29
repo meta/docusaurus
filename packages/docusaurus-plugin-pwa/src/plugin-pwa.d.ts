@@ -76,6 +76,8 @@ declare module '@docusaurus/plugin-pwa' {
 }
 
 declare module '@theme/PwaReloadPopup' {
+  import type {ReactNode} from 'react';
+
   export interface Props {
     /**
      * The popup should call this callback when the `reload` button is clicked.
@@ -84,5 +86,5 @@ declare module '@theme/PwaReloadPopup' {
      */
     readonly onReload: () => void;
   }
-  export default function PwaReloadPopup(props: Props): JSX.Element;
+  export default function PwaReloadPopup(props: Props): ReactNode;
 }

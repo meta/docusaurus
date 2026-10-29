@@ -1,0 +1,56 @@
+---
+sidebar_label: 'Sidebar Front Matter Tests'
+sidebar_class_name: 'dogfood_sidebar_class_name_test'
+---
+
+# Sidebar front matter
+
+```mdx-code-block
+import Link from '@docusaurus/Link';
+import {useCurrentSidebarCategory} from '@docusaurus/plugin-content-docs/client';
+import DocCardList from '@theme/DocCardList';
+
+<DocCardList />
+
+---
+
+## Items table
+
+export const DocPropsList = ({category}) => {
+  const items = [category, ...category.items];
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>
+            <code>type</code>
+          </th>
+          <th>
+            <code>label</code>
+          </th>
+          <th>
+            <code>customProps</code>
+          </th>
+          <th>
+            <code>className</code>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {items.map((item, index) => (
+          <tr key={index}>
+            <td>{item.type}</td>
+            <td>
+              <Link to={item.href}>{item.label}</Link>
+            </td>
+            <td>{JSON.stringify(item.customProps)}</td>
+            <td>{JSON.stringify(item.className)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+<DocPropsList category={useCurrentSidebarCategory()} />
+```

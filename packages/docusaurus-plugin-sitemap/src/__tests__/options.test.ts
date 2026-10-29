@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {normalizePluginOptions} from '@docusaurus/utils-validation';
 import {
   validateOptions,
@@ -33,8 +34,6 @@ describe('validateOptions', () => {
 
   it('accepts correctly defined user options', () => {
     const userOptions: Options = {
-      changefreq: 'yearly',
-      priority: 0.9,
       ignorePatterns: ['/search/**'],
       lastmod: 'datetime',
     };
@@ -50,6 +49,7 @@ describe('validateOptions', () => {
         lastmod: undefined,
       };
       expect(testValidate(userOptions)).toEqual(defaultOptions);
+      expect(testValidate(userOptions).lastmod).toBe('date');
     });
 
     it('accepts lastmod null', () => {
@@ -80,120 +80,46 @@ describe('validateOptions', () => {
       expect(() =>
         testValidate(userOptions),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""lastmod" must be one of [null, date, datetime]"`,
+        `[ValidationError: "lastmod" must be one of [null, date, datetime]]`,
       );
     });
   });
 
-  describe('priority', () => {
-    it('accepts priority undefined', () => {
-      const userOptions: Options = {
-        priority: undefined,
-      };
-      expect(testValidate(userOptions)).toEqual(defaultOptions);
+  describe('removed options', () => {
+    it('rejects changefreq', () => {
+      const userOptions = {changefreq: 'weekly'} as Options;
+      expect(() => testValidate(userOptions))
+        .toThrowErrorMatchingInlineSnapshot(`
+        [ValidationError: The sitemap plugin \`changefreq\` option has been removed in Docusaurus v4. Please remove it from your config.
+        If you still want to emit this sitemap tag, use the \`createSitemapItems\` option instead: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-sitemap#changefreq-priority]
+      `);
     });
 
-    it('accepts priority null', () => {
-      const userOptions: Options = {
-        priority: null,
-      };
-      expect(testValidate(userOptions)).toEqual({
-        ...defaultOptions,
-        ...userOptions,
-      });
+    it('rejects changefreq null', () => {
+      const userOptions = {changefreq: null} as Options;
+      expect(() => testValidate(userOptions))
+        .toThrowErrorMatchingInlineSnapshot(`
+        [ValidationError: The sitemap plugin \`changefreq\` option has been removed in Docusaurus v4. Please remove it from your config.
+        If you still want to emit this sitemap tag, use the \`createSitemapItems\` option instead: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-sitemap#changefreq-priority]
+      `);
     });
 
-    it('accepts priority 0', () => {
-      const userOptions: Options = {
-        priority: 0,
-      };
-      expect(testValidate(userOptions)).toEqual({
-        ...defaultOptions,
-        ...userOptions,
-      });
+    it('rejects priority', () => {
+      const userOptions = {priority: 0.5} as Options;
+      expect(() => testValidate(userOptions))
+        .toThrowErrorMatchingInlineSnapshot(`
+        [ValidationError: The sitemap plugin \`priority\` option has been removed in Docusaurus v4. Please remove it from your config.
+        If you still want to emit this sitemap tag, use the \`createSitemapItems\` option instead: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-sitemap#changefreq-priority]
+      `);
     });
 
-    it('accepts priority 0.4', () => {
-      const userOptions: Options = {
-        priority: 0.4,
-      };
-      expect(testValidate(userOptions)).toEqual({
-        ...defaultOptions,
-        ...userOptions,
-      });
-    });
-
-    it('accepts priority 1', () => {
-      const userOptions: Options = {
-        priority: 1,
-      };
-      expect(testValidate(userOptions)).toEqual({
-        ...defaultOptions,
-        ...userOptions,
-      });
-    });
-
-    it('rejects priority > 1', () => {
-      const userOptions: Options = {
-        priority: 2,
-      };
-      expect(() =>
-        testValidate(userOptions),
-      ).toThrowErrorMatchingInlineSnapshot(
-        `""priority" must be less than or equal to 1"`,
-      );
-    });
-
-    it('rejects priority < 0', () => {
-      const userOptions: Options = {
-        priority: -3,
-      };
-      expect(() =>
-        testValidate(userOptions),
-      ).toThrowErrorMatchingInlineSnapshot(
-        `""priority" must be greater than or equal to 0"`,
-      );
-    });
-  });
-
-  describe('changefreq', () => {
-    it('accepts changefreq undefined', () => {
-      const userOptions: Options = {
-        changefreq: undefined,
-      };
-      expect(testValidate(userOptions)).toEqual(defaultOptions);
-    });
-
-    it('accepts changefreq null', () => {
-      const userOptions: Options = {
-        changefreq: null,
-      };
-      expect(testValidate(userOptions)).toEqual({
-        ...defaultOptions,
-        ...userOptions,
-      });
-    });
-
-    it('accepts changefreq always', () => {
-      const userOptions: Options = {
-        changefreq: 'always',
-      };
-      expect(testValidate(userOptions)).toEqual({
-        ...defaultOptions,
-        ...userOptions,
-      });
-    });
-
-    it('rejects changefreq bad inputs', () => {
-      const userOptions: Options = {
-        // @ts-expect-error: bad value on purpose
-        changefreq: 'annually',
-      };
-      expect(() =>
-        testValidate(userOptions),
-      ).toThrowErrorMatchingInlineSnapshot(
-        `""changefreq" must be one of [null, hourly, daily, weekly, monthly, yearly, always, never]"`,
-      );
+    it('rejects priority null', () => {
+      const userOptions = {priority: null} as Options;
+      expect(() => testValidate(userOptions))
+        .toThrowErrorMatchingInlineSnapshot(`
+        [ValidationError: The sitemap plugin \`priority\` option has been removed in Docusaurus v4. Please remove it from your config.
+        If you still want to emit this sitemap tag, use the \`createSitemapItems\` option instead: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-sitemap#changefreq-priority]
+      `);
     });
   });
 
@@ -233,7 +159,7 @@ describe('validateOptions', () => {
       expect(() =>
         testValidate(userOptions),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""ignorePatterns" must be an array"`,
+        `[ValidationError: "ignorePatterns" must be an array]`,
       );
     });
 
@@ -245,7 +171,47 @@ describe('validateOptions', () => {
       expect(() =>
         testValidate(userOptions),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""ignorePatterns[0]" must be a string"`,
+        `[ValidationError: "ignorePatterns[0]" must be a string]`,
+      );
+    });
+  });
+
+  describe('createSitemapItems', () => {
+    it('accept createSitemapItems undefined', () => {
+      const userOptions: Options = {
+        createSitemapItems: undefined,
+      };
+      expect(testValidate(userOptions)).toEqual(defaultOptions);
+    });
+
+    it('accept createSitemapItems valid', () => {
+      const userOptions: Options = {
+        createSitemapItems: async (params) => {
+          const {defaultCreateSitemapItems, ...rest} = params;
+          const sitemapItems = await defaultCreateSitemapItems(rest);
+          const sitemapsWithoutPageAndTags = sitemapItems.filter(
+            (sitemapItem) =>
+              !sitemapItem.url.includes('/tags/') &&
+              !sitemapItem.url.includes('/page/'),
+          );
+          return sitemapsWithoutPageAndTags;
+        },
+      };
+      expect(testValidate(userOptions)).toEqual({
+        ...defaultOptions,
+        ...userOptions,
+      });
+    });
+
+    it('rejects createSitemapItems bad input type', () => {
+      const userOptions: Options = {
+        // @ts-expect-error: test
+        createSitemapItems: 'not a function',
+      };
+      expect(() =>
+        testValidate(userOptions),
+      ).toThrowErrorMatchingInlineSnapshot(
+        `[ValidationError: "createSitemapItems" must be of type function]`,
       );
     });
   });

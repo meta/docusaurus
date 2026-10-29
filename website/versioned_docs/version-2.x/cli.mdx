@@ -25,15 +25,15 @@ Once your website is bootstrapped, the website source will contain the Docusauru
 }
 ```
 
-## Docusaurus CLI commands {#docusaurus-cli-commands}
+## Docusaurus CLI commands {/* #docusaurus-cli-commands */}
 
 Below is a list of Docusaurus CLI commands and their usages:
 
-### `docusaurus start [siteDir]` {#docusaurus-start-sitedir}
+### `docusaurus start [siteDir]` {/* #docusaurus-start-sitedir */}
 
 Builds and serves a preview of your site locally with [Webpack Dev Server](https://webpack.js.org/configuration/dev-server).
 
-#### Options {#options}
+#### Options {/* #options */}
 
 | Name | Default | Description |
 | --- | --- | --- |
@@ -61,7 +61,7 @@ npm run start -- --host 0.0.0.0
 
 :::
 
-#### Enabling HTTPS {#enabling-https}
+#### Enabling HTTPS {/* #enabling-https */}
 
 There are multiple ways to obtain a certificate. We will use [mkcert](https://github.com/FiloSottile/mkcert) as an example.
 
@@ -77,11 +77,11 @@ HTTPS=true SSL_CRT_FILE=localhost.pem SSL_KEY_FILE=localhost-key.pem yarn start
 
 4. Open `https://localhost:3000/`
 
-### `docusaurus build [siteDir]` {#docusaurus-build-sitedir}
+### `docusaurus build [siteDir]` {/* #docusaurus-build-sitedir */}
 
 Compiles your site for production.
 
-#### Options {#options-1}
+#### Options {/* #options-1 */}
 
 | Name | Default | Description |
 | --- | --- | --- |
@@ -98,7 +98,7 @@ You can skip the HTML minification with the environment variable `SKIP_HTML_MINI
 
 :::
 
-### `docusaurus swizzle [themeName] [componentName] [siteDir]` {#docusaurus-swizzle}
+### `docusaurus swizzle [themeName] [componentName] [siteDir]` {/* #docusaurus-swizzle */}
 
 [Swizzle](./swizzling.mdx) a theme component to customize it.
 
@@ -111,7 +111,7 @@ npm run swizzle @docusaurus/theme-classic Footer -- --eject
 
 The swizzle CLI is interactive and will guide you through the whole [swizzle process](./swizzling.mdx).
 
-#### Options {#options-swizzle}
+#### Options {/* #options-swizzle */}
 
 | Name | Description |
 | --- | --- |
@@ -130,11 +130,11 @@ Unsafe components have a higher risk of breaking changes due to internal refacto
 
 :::
 
-### `docusaurus deploy [siteDir]` {#docusaurus-deploy-sitedir}
+### `docusaurus deploy [siteDir]` {/* #docusaurus-deploy-sitedir */}
 
 Deploys your site with [GitHub Pages](https://pages.github.com/). Check out the docs on [deployment](deployment.mdx#deploying-to-github-pages) for more details.
 
-#### Options {#options-3}
+#### Options {/* #options-3 */}
 
 | Name | Default | Description |
 | --- | --- | --- |
@@ -142,7 +142,7 @@ Deploys your site with [GitHub Pages](https://pages.github.com/). Check out the 
 | `--skip-build` | `false` | Deploy website without building it. This may be useful when using a custom deploy script. |
 | `--config` | `undefined` | Path to Docusaurus config file, default to `[siteDir]/docusaurus.config.js` |
 
-### `docusaurus serve [siteDir]` {#docusaurus-serve-sitedir}
+### `docusaurus serve [siteDir]` {/* #docusaurus-serve-sitedir */}
 
 Serve your built website locally.
 
@@ -155,13 +155,13 @@ Serve your built website locally.
 | `--host` | `localhost` | Specify a host to use. For example, if you want your server to be accessible externally, you can use `--host 0.0.0.0`. |
 | `--no-open` | `false` locally, `true` in CI | Do not open a browser window to the server location. |
 
-### `docusaurus clear [siteDir]` {#docusaurus-clear-sitedir}
+### `docusaurus clear [siteDir]` {/* #docusaurus-clear-sitedir */}
 
 Clear a Docusaurus site's generated assets, caches, build artifacts.
 
 We recommend running this command before reporting bugs, after upgrading versions, or anytime you have issues with your Docusaurus site.
 
-### `docusaurus write-translations [siteDir]` {#docusaurus-write-translations-sitedir}
+### `docusaurus write-translations [siteDir]` {/* #docusaurus-write-translations-sitedir */}
 
 Write the JSON translation files that you will have to translate.
 
@@ -174,7 +174,7 @@ By default, the files are written in `website/i18n/<defaultLocale>/...`.
 | `--config` | `undefined` | Path to Docusaurus config file, default to `[siteDir]/docusaurus.config.js` |
 | `--messagePrefix` | `''` | Allows adding a prefix to each translation message, to help you highlight untranslated strings |
 
-### `docusaurus write-heading-ids [siteDir] [files]` {#docusaurus-write-heading-ids-sitedir}
+### `docusaurus write-heading-ids [siteDir] [files]` {/* #docusaurus-write-heading-ids-sitedir */}
 
 Add [explicit heading IDs](./guides/markdown-features/markdown-features-toc.mdx#heading-ids) to the Markdown documents of your site.
 

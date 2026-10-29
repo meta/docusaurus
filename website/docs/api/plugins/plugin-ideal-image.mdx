@@ -15,13 +15,13 @@ By default, the plugin is **inactive in development** so you could always view f
 
 :::
 
-## Installation {#installation}
+## Installation {/* #installation */}
 
 ```bash npm2yarn
 npm install --save @docusaurus/plugin-ideal-image
 ```
 
-## Usage {#usage}
+## Usage {/* #usage */}
 
 This plugin supports the PNG and JPG formats only.
 
@@ -36,6 +36,25 @@ import thumbnail from './path/to/img.png';
 <Image img={require('./path/to/img.png')} />
 ```
 
+:::note
+
+When `plugin-ideal-image` is installed, importing a supported image file no longer returns a plain URL string. Instead, it returns an object with the shape: `{ preSrc: string, src: { src: string, width: number, height: number } }`.
+
+If you need to use the image in a standard `<img>` tag, access it like this:
+
+```jsx
+<img
+  src={image.src.src}
+  width={image.src.width}
+  height={image.src.height}
+  alt="description"
+/>
+```
+
+To avoid dealing with this object shape directly, it is recommended to use the `<Image>` component provided by this plugin instead.
+
+:::
+
 :::warning
 
 This plugin registers a [Webpack loader](https://webpack.js.org/loaders/) that changes the type of imported/require images:
@@ -45,7 +64,21 @@ This plugin registers a [Webpack loader](https://webpack.js.org/loaders/) that c
 
 :::
 
-## Configuration {#configuration}
+:::warning For pnpm users
+
+Starting with [pnpm 10](https://github.com/pnpm/pnpm/releases/tag/v10.0.0), running `pnpm install` won't run dependency install scripts by default. You'll need additional pnpm configuration ([issue](https://github.com/lovell/sharp/issues/4343)) for our `sharp` image resizing dependency to install correctly, such as:
+
+```json title="package.json"
+{
+  "pnpm": {
+    "onlyBuiltDependencies": ["fsevents"]
+  }
+}
+```
+
+:::
+
+## Configuration {/* #configuration */}
 
 Accepted fields:
 
@@ -68,7 +101,7 @@ Accepted fields:
 </APITable>
 ```
 
-### Example configuration {#ex-config}
+### Example configuration {/* #ex-config */}
 
 Here's an example configuration:
 

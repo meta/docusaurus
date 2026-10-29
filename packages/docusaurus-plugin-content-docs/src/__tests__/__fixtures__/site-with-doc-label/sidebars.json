@@ -8,7 +8,9 @@
     {
       "id": "hello-2",
       "type": "doc",
-      "label": "Hello Two"
+      "label": "Hello Two",
+      "className": "class-name-from-sidebars.json",
+      "customProps": {"test": "from sidebars.json"}
     }
   ]
 }

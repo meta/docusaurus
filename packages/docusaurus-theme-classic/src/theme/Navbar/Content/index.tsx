@@ -5,8 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {type ReactNode} from 'react';
-import {useThemeConfig, ErrorCauseBoundary} from '@docusaurus/theme-common';
+import type {ReactNode} from 'react';
+import clsx from 'clsx';
+import {
+  useThemeConfig,
+  ErrorCauseBoundary,
+  ThemeClassNames,
+} from '@docusaurus/theme-common';
 import {
   splitNavbarItems,
   useNavbarMobileSidebar,
@@ -25,7 +30,7 @@ function useNavbarItems() {
   return useThemeConfig().navbar.items as NavbarItemConfig[];
 }
 
-function NavbarItems({items}: {items: NavbarItemConfig[]}): JSX.Element {
+function NavbarItems({items}: {items: NavbarItemConfig[]}): ReactNode {
   return (
     <>
       {items.map((item, i) => (
@@ -55,13 +60,25 @@ function NavbarContentLayout({
 }) {
   return (
     <div className="navbar__inner">
-      <div className="navbar__items">{left}</div>
-      <div className="navbar__items navbar__items--right">{right}</div>
+      <div
+        className={clsx(
+          ThemeClassNames.layout.navbar.containerLeft,
+          'navbar__items',
+        )}>
+        {left}
+      </div>
+      <div
+        className={clsx(
+          ThemeClassNames.layout.navbar.containerRight,
+          'navbar__items navbar__items--right',
+        )}>
+        {right}
+      </div>
     </div>
   );
 }
 
-export default function NavbarContent(): JSX.Element {
+export default function NavbarContent(): ReactNode {
   const mobileSidebar = useNavbarMobileSidebar();
 
   const items = useNavbarItems();

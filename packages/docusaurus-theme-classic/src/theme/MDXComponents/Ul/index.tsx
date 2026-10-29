@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import type {Props} from '@theme/MDXComponents/Ul';
 
@@ -25,6 +25,6 @@ function transformUlClassName(className?: string): string | undefined {
   );
 }
 
-export default function MDXUl(props: Props): JSX.Element {
+export default function MDXUl(props: Props): ReactNode {
   return <ul {...props} className={transformUlClassName(props.className)} />;
 }

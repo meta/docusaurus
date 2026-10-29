@@ -1,0 +1,19 @@
+# Link resolution tests
+
+## Test for issue [#11099](https://github.com/facebook/docusaurus/issues/11099)
+
+These links should target the root `index.mdx` file:
+
+[`/index.mdx`](/index.mdx)
+
+[`@site/_dogfooding/_docs tests/index.mdx`](@site/_dogfooding/_docs%20tests/index.mdx)
+
+These links should target the current `index.mdx` file:
+
+[`/tests/links/index.mdx`](/tests/links/resolution/index.mdx)
+
+[`@site/_dogfooding/_docs tests/tests/links/resolution/index.mdx`](@site/_dogfooding/_docs%20tests/tests/links/resolution/index.mdx)
+
+[`index.mdx`](index.mdx)
+
+[`./index.mdx`](./index.mdx)

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import {useCollapsible, Collapsible} from '@docusaurus/theme-common';
 import TOCItems from '@theme/TOCItems';
@@ -19,7 +19,7 @@ export default function TOCCollapsible({
   className,
   minHeadingLevel,
   maxHeadingLevel,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const {collapsed, toggleCollapsed} = useCollapsible({
     initialState: true,
   });

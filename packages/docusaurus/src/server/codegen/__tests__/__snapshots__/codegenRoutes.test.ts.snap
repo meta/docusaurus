@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`loadRoutes loads flat route config 1`] = `
+exports[`loadRoutes > loads flat route config 1`] = `
 {
   "registry": {
     "__comp---theme-blog-list-pagea-6-a-7ba": "@theme/BlogListPage",
@@ -43,7 +43,7 @@ export default [
 }
 `;
 
-exports[`loadRoutes loads nested route config 1`] = `
+exports[`loadRoutes > loads nested route config 1`] = `
 {
   "registry": {
     "__comp---theme-doc-item-178-a40": "@theme/DocItem",
@@ -112,7 +112,7 @@ export default [
 }
 `;
 
-exports[`loadRoutes loads route config with empty (but valid) path string 1`] = `
+exports[`loadRoutes > loads route config with empty (but valid) path string 1`] = `
 {
   "registry": {
     "__comp---hello-world-jse-0-f-b6c": "hello/world.js",

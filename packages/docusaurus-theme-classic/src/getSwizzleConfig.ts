@@ -70,14 +70,6 @@ export default function getSwizzleConfig(): SwizzleConfig {
         description:
           'The folder containing all the admonition type components.',
       },
-      'Admonition/Type/Caution': {
-        actions: {
-          eject: 'safe',
-          wrap: 'safe',
-        },
-        description:
-          'The component responsible for rendering a :::caution admonition type',
-      },
       'Admonition/Type/Danger': {
         actions: {
           eject: 'safe',
@@ -127,6 +119,27 @@ export default function getSwizzleConfig(): SwizzleConfig {
         description:
           'The object mapping admonition type to a React component.\nUse it to add custom admonition type components, or replace existing ones.\nCan be ejected or wrapped (only manually, see our documentation).',
       },
+      Blog: {
+        actions: {
+          // Forbidden because it's a parent folder, makes the CLI crash atm
+          eject: 'forbidden',
+          wrap: 'forbidden',
+        },
+      },
+      'Blog/Components': {
+        actions: {
+          // Forbidden because it's a parent folder, makes the CLI crash atm
+          eject: 'forbidden',
+          wrap: 'forbidden',
+        },
+      },
+      'Blog/Pages': {
+        actions: {
+          // Forbidden because it's a parent folder, makes the CLI crash atm
+          eject: 'forbidden',
+          wrap: 'forbidden',
+        },
+      },
       CodeBlock: {
         actions: {
           eject: 'safe',
@@ -138,10 +151,10 @@ export default function getSwizzleConfig(): SwizzleConfig {
       'CodeBlock/Content': {
         actions: {
           eject: 'unsafe',
-          wrap: 'forbidden',
+          wrap: 'unsafe',
         },
         description:
-          'The folder containing components responsible for rendering different types of CodeBlock content.',
+          'The component responsible for rendering the syntax-highlighted code lines of a CodeBlock.',
       },
       ColorModeToggle: {
         actions: {
@@ -289,6 +302,17 @@ export default function getSwizzleConfig(): SwizzleConfig {
         },
         description: 'The menu icon component',
       },
+      'Icon/Socials': {
+        actions: {
+          // Forbidden because it's a parent folder, makes the CLI crash atm
+          // TODO the CLI should rather support --eject
+          // Subfolders can be swizzled
+          eject: 'forbidden',
+          wrap: 'forbidden',
+        },
+        description:
+          'The Icon/Socials folder is not directly swizzle-able, but you can swizzle its sub-components.',
+      },
       MDXComponents: {
         actions: {
           eject: 'safe',
@@ -335,6 +359,13 @@ export default function getSwizzleConfig(): SwizzleConfig {
         },
         description:
           'The component used to render <img> tags and Markdown images in MDX',
+      },
+      'MDXComponents/Li': {
+        actions: {
+          eject: 'safe',
+          wrap: 'safe',
+        },
+        description: 'The component used to render <li> tags in MDX',
       },
       'MDXComponents/Pre': {
         actions: {

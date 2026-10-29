@@ -5,9 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {jest} from '@jest/globals';
+import {describe, expect, it, vi} from 'vitest';
 import normalizeLocation from '../normalizeLocation';
 import type {Location} from 'history';
+
+vi.mock('@generated/routes', () => import('./__mocks__/@generated/routes'));
 
 describe('normalizeLocation', () => {
   it('rewrites locations with index.html', () => {
@@ -72,7 +74,7 @@ describe('normalizeLocation', () => {
   });
 
   it('leaves pathnames untouched', () => {
-    const replaceMock = jest.spyOn(String.prototype, 'replace');
+    const replaceMock = vi.spyOn(String.prototype, 'replace');
 
     expect(
       normalizeLocation({

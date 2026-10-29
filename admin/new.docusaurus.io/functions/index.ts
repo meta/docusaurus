@@ -10,10 +10,9 @@ import {
   createPlaygroundResponse,
   createPlaygroundDocumentationResponse,
 } from '../functionUtils/playgroundUtils';
-import type {Handler} from '@netlify/functions';
 
-export const handler: Handler = async (event) => {
-  const playgroundName = readPlaygroundName(event);
+export default async (request: Request): Promise<Response> => {
+  const playgroundName = readPlaygroundName(request);
   return playgroundName
     ? createPlaygroundResponse(playgroundName)
     : createPlaygroundDocumentationResponse();

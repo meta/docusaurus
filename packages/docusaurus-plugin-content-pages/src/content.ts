@@ -5,14 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import {
   encodePath,
   fileToPath,
   aliasedSitePath,
   getFolderContainingFile,
-  Globby,
   normalizeUrl,
   parseMarkdownFile,
   isUnlisted,
@@ -21,10 +19,14 @@ import {
   getEditUrl,
   posixPath,
   getPluginI18nPath,
+  getContentPathList,
+  getLocaleConfig,
+  type ContentPaths,
 } from '@docusaurus/utils';
+import {glob} from '@docusaurus/glob';
+import {fs} from '@docusaurus/fs';
 import {validatePageFrontMatter} from './frontMatter';
 import type {LoadContext} from '@docusaurus/types';
-import type {PagesContentPaths} from './types';
 import type {
   PluginOptions,
   Metadata,
@@ -37,20 +39,20 @@ export function createPagesContentPaths({
 }: {
   context: LoadContext;
   options: PluginOptions;
-}): PagesContentPaths {
+}): ContentPaths {
   const {siteDir, localizationDir} = context;
+
+  const shouldTranslate = getLocaleConfig(context.i18n).translate;
   return {
     contentPath: path.resolve(siteDir, options.path),
-    contentPathLocalized: getPluginI18nPath({
-      localizationDir,
-      pluginName: 'docusaurus-plugin-content-pages',
-      pluginId: options.id,
-    }),
+    contentPathLocalized: shouldTranslate
+      ? getPluginI18nPath({
+          localizationDir,
+          pluginName: 'docusaurus-plugin-content-pages',
+          pluginId: options.id,
+        })
+      : undefined,
   };
-}
-
-export function getContentPathList(contentPaths: PagesContentPaths): string[] {
-  return [contentPaths.contentPathLocalized, contentPaths.contentPath];
 }
 
 const isMarkdownSource = (source: string) =>
@@ -59,7 +61,7 @@ const isMarkdownSource = (source: string) =>
 type LoadContentParams = {
   context: LoadContext;
   options: PluginOptions;
-  contentPaths: PagesContentPaths;
+  contentPaths: ContentPaths;
 };
 
 export async function loadPagesContent(
@@ -67,7 +69,7 @@ export async function loadPagesContent(
 ): Promise<LoadedContent> {
   const {options} = params;
 
-  const pagesFiles = await Globby(params.options.include, {
+  const pagesFiles = await glob(params.options.include, {
     cwd: params.contentPaths.contentPath,
     ignore: options.exclude,
   });
@@ -78,7 +80,7 @@ export async function loadPagesContent(
     } catch (err) {
       throw new Error(
         `Processing of page source file path=${relativeSource} failed.`,
-        {cause: err as Error},
+        {cause: err},
       );
     }
   }
@@ -96,6 +98,7 @@ async function processPageSourceFile(
 ): Promise<Metadata | undefined> {
   const {context, options, contentPaths} = params;
   const {siteConfig, baseUrl, siteDir, i18n} = context;
+  const {vcs} = siteConfig;
   const {editUrl} = options;
 
   // Lookup in localized folder in priority
@@ -106,12 +109,13 @@ async function processPageSourceFile(
 
   const source = path.join(contentPath, relativeSource);
   const aliasedSourcePath = aliasedSitePath(source, siteDir);
-  const permalink = normalizeUrl([
-    baseUrl,
-    options.routeBasePath,
-    encodePath(fileToPath(relativeSource)),
-  ]);
+
+  const filenameSlug = encodePath(fileToPath(relativeSource));
+
   if (!isMarkdownSource(relativeSource)) {
+    // For now, slug can't be customized for JSX pages
+    const slug = filenameSlug;
+    const permalink = normalizeUrl([baseUrl, options.routeBasePath, slug]);
     return {
       type: 'jsx',
       permalink,
@@ -130,6 +134,9 @@ async function processPageSourceFile(
     parseFrontMatter: siteConfig.markdown.parseFrontMatter,
   });
   const frontMatter = validatePageFrontMatter(unsafeFrontMatter);
+
+  const slug = frontMatter.slug ?? filenameSlug;
+  const permalink = normalizeUrl([baseUrl, options.routeBasePath, slug]);
 
   const pagesDirPath = await getFolderContainingFile(
     getContentPathList(contentPaths),
@@ -154,7 +161,9 @@ async function processPageSourceFile(
     } else if (typeof editUrl === 'string') {
       const isLocalized = pagesDirPath === contentPaths.contentPathLocalized;
       const fileContentPath =
-        isLocalized && options.editLocalizedFiles
+        isLocalized &&
+        options.editLocalizedFiles &&
+        contentPaths.contentPathLocalized
           ? contentPaths.contentPathLocalized
           : contentPaths.contentPath;
 
@@ -172,6 +181,7 @@ async function processPageSourceFile(
     source,
     options,
     frontMatter.last_update,
+    vcs,
   );
 
   if (isDraft({frontMatter})) {

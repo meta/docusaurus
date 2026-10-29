@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {simpleHash, docuHash} from '../hashUtils';
 
 describe('hashUtils', () => {
@@ -47,5 +48,31 @@ describe('docuHash', () => {
     Object.keys(asserts).forEach((file) => {
       expect(docuHash(file)).toBe(asserts[file]);
     });
+  });
+
+  it('docuHash works with hashLength option', () => {
+    const asserts: {[key: string]: string} = {
+      '': '-d41d8',
+      '/': 'index',
+      '/foo-bar': 'foo-bar-09652',
+      '/foo/bar': 'foo-bar-1df48',
+    };
+    Object.keys(asserts).forEach((file) => {
+      expect(docuHash(file, {hashLength: 5})).toBe(asserts[file]);
+    });
+  });
+
+  it('docuHash works with hashExtra option', () => {
+    expect(docuHash('')).toBe('-d41');
+    expect(docuHash('', {hashExtra: ''})).toBe('-d41');
+    expect(docuHash('', {hashExtra: 'some-extra'})).toBe('-928');
+
+    expect(docuHash('/')).toBe('index');
+    expect(docuHash('/', {hashExtra: ''})).toBe('index-6a9');
+    expect(docuHash('/', {hashExtra: 'some-extra'})).toBe('index-68e');
+
+    expect(docuHash('/foo/bar')).toBe('foo-bar-1df');
+    expect(docuHash('/foo/bar', {hashExtra: ''})).toBe('foo-bar-1df');
+    expect(docuHash('/foo/bar', {hashExtra: 'some-extra'})).toBe('foo-bar-7d4');
   });
 });

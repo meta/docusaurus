@@ -9,7 +9,7 @@ type Env = 'production' | 'development';
 
 /**
  * To easily work on draft/unlisted in dev mode, use this env variable!
- * SIMULATE_PRODUCTION_VISIBILITY=true yarn start:website
+ * SIMULATE_PRODUCTION_VISIBILITY=true pnpm start:website
  */
 const simulateProductionVisibility =
   process.env.SIMULATE_PRODUCTION_VISIBILITY === 'true';

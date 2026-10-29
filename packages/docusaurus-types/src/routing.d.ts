@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {ParsedUrlQueryInput} from 'querystring';
+import type {ParsedUrlQueryInput} from 'node:querystring';
 import type {PluginIdentifier} from './plugin';
 
 /**
@@ -56,12 +56,19 @@ export type RouteMetadata = {
   /**
    * The last updated date of this route
    * This is generally read from the Git history of the sourceFilePath
-   * but can also be provided through other means (usually front matter)
+   * but can also be provided through other means (usually front matter).
    *
    * This has notably been introduced for adding "lastmod" support to the
    * sitemap plugin, see https://github.com/facebook/docusaurus/pull/9954
+   *
+   * `undefined` means we haven't tried to compute the value for this route.
+   * This is usually the case for routes created by third-party plugins that do
+   * not need this metadata.
+   *
+   * `null` means we already tried to compute a lastUpdatedAt, but we know for
+   * sure there isn't any. This usually happens for untracked Git files.
    */
-  lastUpdatedAt?: number;
+  lastUpdatedAt?: number | null;
 };
 
 /**

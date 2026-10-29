@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import type {Props} from '@theme/Admonition';
 import DefaultAdmonitionTypes from '@theme-original/Admonition/Types';
 import Heading from '@theme/Heading';
 
-function MyCustomAdmonition(props: Props): JSX.Element {
+function MyCustomAdmonition(props: Props): ReactNode {
   return (
     <div style={{border: 'solid red', padding: 10}}>
       <Heading as="h5" style={{color: 'blue', fontSize: 30}}>

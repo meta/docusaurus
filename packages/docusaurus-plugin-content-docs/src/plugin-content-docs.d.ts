@@ -12,14 +12,18 @@ declare module '@docusaurus/plugin-content-docs' {
 
   import type {
     ContentPaths,
-    FrontMatterTag,
     TagsListItem,
     TagModule,
-    Tag,
     FrontMatterLastUpdate,
     LastUpdateData,
+    TagMetadata,
+    TagsPluginOptions,
   } from '@docusaurus/utils';
-  import type {Plugin, LoadContext} from '@docusaurus/types';
+  import type {
+    Plugin,
+    LoadContext,
+    OptionValidationContext,
+  } from '@docusaurus/types';
   import type {Overwrite, Required} from 'utility-types';
 
   export type Assets = {
@@ -64,7 +68,7 @@ declare module '@docusaurus/plugin-content-docs' {
     locale: string;
   }) => string | undefined;
 
-  export type MetadataOptions = {
+  export type MetadataOptions = TagsPluginOptions & {
     /**
      * URL route for the docs section of your site. **DO NOT** include a
      * trailing slash. Use `/` for shipping docs without base path.
@@ -311,7 +315,7 @@ declare module '@docusaurus/plugin-content-docs' {
      * Front matter tags, unnormalized.
      * @see {@link DocMetadata.tags}
      */
-    tags?: FrontMatterTag[];
+    tags?: string[];
     /**
      * If there isn't a Markdown h1 heading (which, if there is, we don't
      * remove), this front matter will cause the front matter title to not be
@@ -334,7 +338,15 @@ declare module '@docusaurus/plugin-content-docs' {
      * @see {@link DocMetadata.slug}
      */
     slug?: string;
-    /** Customizes the sidebar label for this doc. Will default to its title. */
+    /**
+     * Customizes the sidebar key for this doc,
+     * to uniquely identify it in translations.
+     */
+    sidebar_key?: string;
+    /**
+     * Customizes the sidebar label for this doc.
+     * Will default to its title.
+     */
     sidebar_label?: string;
     /**
      * Controls the position of a doc inside the generated sidebar slice when
@@ -446,7 +458,7 @@ declare module '@docusaurus/plugin-content-docs' {
      */
     editUrl?: string | null;
     /** Tags, normalized. */
-    tags: Tag[];
+    tags: TagMetadata[];
     /** Front matter, as-is. */
     frontMatter: DocFrontMatter & {[key: string]: unknown};
   };
@@ -545,8 +557,8 @@ declare module '@docusaurus/plugin-content-docs' {
   };
 
   export type LoadedVersion = VersionMetadata & {
-    docs: DocMetadata[];
-    drafts: DocMetadata[];
+    docs: DocMetadataBase[];
+    drafts: DocMetadataBase[];
     sidebars: import('./sidebars/types').Sidebars;
   };
 
@@ -558,13 +570,18 @@ declare module '@docusaurus/plugin-content-docs' {
     context: LoadContext,
     options: PluginOptions,
   ): Promise<Plugin<LoadedContent>>;
+
+  export function validateOptions(
+    args: OptionValidationContext<Options | undefined, PluginOptions>,
+  ): PluginOptions;
 }
 
 declare module '@theme/DocItem' {
+  import type {ReactNode} from 'react';
   import type {PropDocContent} from '@docusaurus/plugin-content-docs';
 
   export type DocumentRoute = {
-    readonly component: () => JSX.Element;
+    readonly component: () => ReactNode;
     readonly exact: boolean;
     readonly path: string;
     readonly sidebar?: string;
@@ -575,10 +592,11 @@ declare module '@theme/DocItem' {
     readonly content: PropDocContent;
   }
 
-  export default function DocItem(props: Props): JSX.Element;
+  export default function DocItem(props: Props): ReactNode;
 }
 
 declare module '@theme/DocCategoryGeneratedIndexPage' {
+  import type {ReactNode} from 'react';
   import type {PropCategoryGeneratedIndex} from '@docusaurus/plugin-content-docs';
 
   export interface Props {
@@ -587,55 +605,59 @@ declare module '@theme/DocCategoryGeneratedIndexPage' {
 
   export default function DocCategoryGeneratedIndexPage(
     props: Props,
-  ): JSX.Element;
+  ): ReactNode;
 }
 
 declare module '@theme/DocTagsListPage' {
+  import type {ReactNode} from 'react';
   import type {PropTagsListPage} from '@docusaurus/plugin-content-docs';
 
   export interface Props extends PropTagsListPage {}
-  export default function DocTagsListPage(props: Props): JSX.Element;
+  export default function DocTagsListPage(props: Props): ReactNode;
 }
 
 declare module '@theme/DocTagDocListPage' {
+  import type {ReactNode} from 'react';
   import type {PropTagDocList} from '@docusaurus/plugin-content-docs';
 
   export interface Props {
     readonly tag: PropTagDocList;
   }
-  export default function DocTagDocListPage(props: Props): JSX.Element;
+  export default function DocTagDocListPage(props: Props): ReactNode;
 }
 
 declare module '@theme/DocBreadcrumbs' {
-  export default function DocBreadcrumbs(): JSX.Element;
+  import type {ReactNode} from 'react';
+
+  export default function DocBreadcrumbs(): ReactNode;
 }
 
 declare module '@theme/DocsRoot' {
+  import type {ReactNode} from 'react';
   import type {RouteConfigComponentProps} from 'react-router-config';
   import type {Required} from 'utility-types';
 
   export interface Props extends Required<RouteConfigComponentProps, 'route'> {}
 
-  export default function DocsRoot(props: Props): JSX.Element;
+  export default function DocsRoot(props: Props): ReactNode;
 }
 
 declare module '@theme/DocVersionRoot' {
-  import type {PropVersionMetadata} from '@docusaurus/plugin-content-docs';
-  import type {RouteConfigComponentProps} from 'react-router-config';
-  import type {Required} from 'utility-types';
-
-  export interface Props extends Required<RouteConfigComponentProps, 'route'> {
-    readonly version: PropVersionMetadata;
-  }
-
-  export default function DocVersionRoot(props: Props): JSX.Element;
-}
-
-declare module '@theme/DocRoot' {
+  import type {ReactNode} from 'react';
   import type {RouteConfigComponentProps} from 'react-router-config';
   import type {Required} from 'utility-types';
 
   export interface Props extends Required<RouteConfigComponentProps, 'route'> {}
 
-  export default function DocRoot(props: Props): JSX.Element;
+  export default function DocVersionRoot(props: Props): ReactNode;
+}
+
+declare module '@theme/DocRoot' {
+  import type {ReactNode} from 'react';
+  import type {RouteConfigComponentProps} from 'react-router-config';
+  import type {Required} from 'utility-types';
+
+  export interface Props extends Required<RouteConfigComponentProps, 'route'> {}
+
+  export default function DocRoot(props: Props): ReactNode;
 }

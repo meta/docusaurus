@@ -41,6 +41,17 @@ Mermaid diagrams are rendered client-side and produce layout shifts
   display: none;
 }
 
+/*
+Mermaid renders diagrams in a temporary <div id="d..."><svg>...</svg></div>
+appended to <body>, and removes it once done
+When captured mid-render, it adds a root-level "img" to aria snapshots
+It must remain rendered, otherwise Mermaid can't measure the diagram
+ */
+body > div[id^='d']:has(> svg) {
+  position: fixed;
+  visibility: hidden;
+}
+
 /******* DOCUSAURUS WEBSITE SPECIFIC *******/
 
 /* ProductHunt vote counter can increment at any time */

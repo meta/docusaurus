@@ -1,0 +1,13 @@
+# Import Bad Package
+
+We are importing MDX content from a file that is in a package that has a bad React version.
+
+This is expected to work despite the bad version.
+
+See https://github.com/facebook/docusaurus/issues/9027
+
+---
+
+import Readme from '@site/../admin/test-bad-package/README.mdx';
+
+<Readme />

@@ -25,9 +25,14 @@
   background: var(--ifm-color-emphasis-200);
 }
 
-[data-theme='light'] .darkToggleIcon,
-[data-theme='dark'] .lightToggleIcon {
+.toggleIcon {
   display: none;
+}
+
+[data-theme-choice='system'] .systemToggleIcon,
+[data-theme-choice='light'] .lightToggleIcon,
+[data-theme-choice='dark'] .darkToggleIcon {
+  display: initial;
 }
 
 .toggleButtonDisabled {

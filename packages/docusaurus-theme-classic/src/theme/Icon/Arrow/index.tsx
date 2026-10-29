@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import type {Props} from '@theme/Icon/Arrow';
 
-export default function IconArrow(props: Props): JSX.Element {
+export default function IconArrow(props: Props): ReactNode {
   return (
     <svg width="20" height="20" aria-hidden="true" {...props}>
       <g fill="#7a7a7a">

@@ -4,9 +4,10 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-import React from 'react';
-import renderer from 'react-test-renderer';
+// @vitest-environment jsdom
+import {describe, expect, it} from 'vitest';
+import {render} from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
 import Interpolate, {interpolate} from '../Interpolate';
 
 describe('interpolate', () => {
@@ -31,6 +32,7 @@ describe('interpolate', () => {
       object: {hello: 'world'},
       array: ['Hello'],
     };
+    // @ts-expect-error: test invalid object values
     expect(interpolate(text, values)).toMatchInlineSnapshot(
       `"42 Hello [object Object] Hello"`,
     );
@@ -51,6 +53,7 @@ describe('interpolate', () => {
     // Should we emit warnings in such case?
     const text = 'Hello {name} how are you {unprovidedValue}?';
     const values = {name: 'Sébastien', extraValue: 'today'};
+    // @ts-expect-error: test missing values
     expect(interpolate(text, values)).toMatchInlineSnapshot(
       `"Hello Sébastien how are you {unprovidedValue}?"`,
     );
@@ -60,19 +63,42 @@ describe('interpolate', () => {
     // Should we emit warnings in such case?
     const text = 'Hello {name} how are you {day}?';
     expect(interpolate(text)).toEqual(text);
+    // @ts-expect-error: test missing values
     expect(interpolate(text, {})).toEqual(text);
   });
 
   it('placeholders with JSX values', () => {
     const text = 'Hello {name} how are you {day}?';
     const values = {name: <b>Sébastien</b>, day: <span>today</span>};
-    expect(interpolate(text, values)).toMatchSnapshot();
+    expect(interpolate(text, values)).toMatchInlineSnapshot(`
+      [
+        "Hello ",
+        <b>
+          Sébastien
+        </b>,
+        " how are you ",
+        <span>
+          today
+        </span>,
+        "?",
+      ]
+    `);
   });
 
   it('placeholders with mixed vales', () => {
     const text = 'Hello {name} how are you {day}?';
     const values = {name: 'Sébastien', day: <span>today</span>};
-    expect(interpolate(text, values)).toMatchSnapshot();
+    expect(interpolate(text, values)).toMatchInlineSnapshot(`
+      [
+        "Hello ",
+        "Sébastien",
+        " how are you ",
+        <span>
+          today
+        </span>,
+        "?",
+      ]
+    `);
   });
 
   it('acceptance test', () => {
@@ -83,26 +109,37 @@ describe('interpolate', () => {
       extraUselessValue1: <div>test</div>,
       extraUselessValue2: 'hi',
     };
-    expect(interpolate(text, values)).toMatchSnapshot();
+    // @ts-expect-error: test missing values
+    expect(interpolate(text, values)).toMatchInlineSnapshot(`
+      [
+        "Hello ",
+        "Sébastien",
+        " how are you ",
+        <span>
+          today
+        </span>,
+        "? Another ",
+        "{unprovidedValue}",
+        "!",
+      ]
+    `);
   });
 });
 
 describe('<Interpolate>', () => {
   it('without placeholders', () => {
     const text = 'Hello how are you?';
-    expect(renderer.create(<Interpolate>{text}</Interpolate>).toJSON()).toEqual(
-      text,
-    );
+    const {container} = render(<Interpolate>{text}</Interpolate>);
+    expect(container).toHaveTextContent(text);
   });
 
   it('placeholders with string values', () => {
     const text = 'Hello {name} how are you {day}?';
     const values = {name: 'Sébastien', day: 'today'};
-    expect(
-      renderer
-        .create(<Interpolate values={values}>{text}</Interpolate>)
-        .toJSON(),
-    ).toMatchInlineSnapshot(`"Hello Sébastien how are you today?"`);
+    const {container} = render(
+      <Interpolate values={values}>{text}</Interpolate>,
+    );
+    expect(container).toHaveTextContent('Hello Sébastien how are you today?');
   });
 
   it('acceptance test', () => {
@@ -113,27 +150,30 @@ describe('<Interpolate>', () => {
       extraUselessValue1: <div>test</div>,
       extraUselessValue2: 'hi',
     };
-    expect(
-      renderer
-        .create(<Interpolate values={values}>{text}</Interpolate>)
-        .toJSON(),
-    ).toMatchSnapshot();
+    const {container} = render(
+      <Interpolate values={values}>{text}</Interpolate>,
+    );
+    expect(container.innerHTML).toMatchInlineSnapshot(
+      `"Hello Sébastien how are you <span>today</span>? Another {unprovidedValue}!"`,
+    );
   });
 
   it('rejects when children is not string', () => {
     expect(() =>
-      renderer.create(
+      render(
+        // @ts-expect-error: test invalid children
         <Interpolate>
           <span>aaa</span>
         </Interpolate>,
       ),
     ).toThrowErrorMatchingInlineSnapshot(
-      `"The Docusaurus <Interpolate> component only accept simple string values. Received: React element"`,
+      `[Error: The Docusaurus <Interpolate> component only accept simple string values. Received: React element]`,
     );
     expect(() =>
-      renderer.create(<Interpolate>{null}</Interpolate>),
+      // @ts-expect-error: test invalid children
+      render(<Interpolate>{null}</Interpolate>),
     ).toThrowErrorMatchingInlineSnapshot(
-      `"The Docusaurus <Interpolate> component only accept simple string values. Received: object"`,
+      `[Error: The Docusaurus <Interpolate> component only accept simple string values. Received: object]`,
     );
   });
 });

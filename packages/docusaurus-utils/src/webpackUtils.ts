@@ -5,10 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
-import {escapePath} from './pathUtils';
+import path from 'node:path';
 import {
-  WEBPACK_URL_LOADER_LIMIT,
+  ASSET_INLINE_MAX_SIZE,
   OUTPUT_STATIC_ASSETS_DIR_NAME,
 } from './constants';
 import type {RuleSetRule, LoaderContext} from 'webpack';
@@ -18,7 +17,6 @@ export type WebpackCompilerName = 'server' | 'client';
 export function getWebpackLoaderCompilerName(
   context: LoaderContext<unknown>,
 ): WebpackCompilerName {
-  // eslint-disable-next-line no-underscore-dangle
   const compilerName = context._compiler?.name;
   switch (compilerName) {
     case 'server':
@@ -33,143 +31,175 @@ export function getWebpackLoaderCompilerName(
 
 type AssetFolder = 'images' | 'files' | 'fonts' | 'medias';
 
-type FileLoaderUtils = {
-  loaders: {
-    file: (options: {folder: AssetFolder}) => RuleSetRule;
-    url: (options: {folder: AssetFolder}) => RuleSetRule;
-    inlineMarkdownImageFileLoader: string;
-    inlineMarkdownAssetImageFileLoader: string;
-    inlineMarkdownLinkFileLoader: string;
-  };
+/**
+ * How an asset request created with `createAssetRequest()` is handled:
+ * - `image`: emitted as an image file, or inlined as a data URL if small
+ * - `image-file`: always emitted as an image file, never inlined
+ * - `file`: always emitted as a file, whatever its extension
+ */
+export type AssetRequestType = 'image' | 'image-file' | 'file';
+
+const AssetRequestQueryParam = 'docusaurus-asset';
+
+/**
+ * Creates a request that always resolves to an asset URL string, for
+ * Docusaurus-generated code (Markdown images, links, front matter assets...).
+ *
+ * The `!` prefix disables the configured normal loaders, and the resource query
+ * selects a dedicated asset rule. This way, other plugins (ideal-image,
+ * SVGR...) do not transform those assets.
+ * See https://webpack.js.org/concepts/loaders/#inline
+ *
+ * @param assetPath the already escaped asset path to require
+ * @param search an optional user-provided query string, starting with `?`
+ */
+export function createAssetRequest({
+  assetPath,
+  search,
+  type,
+}: {
+  assetPath: string;
+  search?: string;
+  type: AssetRequestType;
+}): string {
+  const query = `${AssetRequestQueryParam}=${type}`;
+  return `!${assetPath}${search ? `${search}&${query}` : `?${query}`}`;
+}
+
+type AssetRuleUtils = {
   rules: {
+    /**
+     * The single rule handling all assets, made of the rules below.
+     * It is a `oneOf` rule: the first matching child rule wins.
+     */
+    assets: () => RuleSetRule;
     images: () => RuleSetRule;
+    svgs: () => RuleSetRule;
     fonts: () => RuleSetRule;
     media: () => RuleSetRule;
-    svg: () => RuleSetRule;
     otherAssets: () => RuleSetRule;
   };
 };
 
-/**
- * Returns unified loader configurations to be used for various file types.
- *
- * Inspired by https://github.com/gatsbyjs/gatsby/blob/8e6e021014da310b9cc7d02e58c9b3efe938c665/packages/gatsby/src/utils/webpack-utils.ts#L447
- */
-export function getFileLoaderUtils(): FileLoaderUtils {
-  // Files/images < urlLoaderLimit will be inlined as base64 strings directly in
-  // the html
-  const urlLoaderLimit = WEBPACK_URL_LOADER_LIMIT;
-
-  const fileLoaderFileName = (folder: AssetFolder) =>
-    path.posix.join(
+function createAssetRuleUtils({isServer}: {isServer: boolean}): AssetRuleUtils {
+  const generator = (folder: AssetFolder) => ({
+    filename: path.posix.join(
       OUTPUT_STATIC_ASSETS_DIR_NAME,
       folder,
-      '[name]-[contenthash].[ext]',
-    );
+      '[name]-[contenthash][ext]',
+    ),
+    // The server compilation does not need to emit assets
+    emit: !isServer,
+  });
 
-  const loaders: FileLoaderUtils['loaders'] = {
-    file: (options: {folder: AssetFolder}) => ({
-      loader: require.resolve(`file-loader`),
-      options: {
-        name: fileLoaderFileName(options.folder),
-      },
-    }),
-    url: (options: {folder: AssetFolder}) => ({
-      loader: require.resolve('url-loader'),
-      options: {
-        limit: urlLoaderLimit,
-        name: fileLoaderFileName(options.folder),
-        fallback: require.resolve('file-loader'),
-      },
-    }),
+  // An asset emitted as a file, or inlined as a data URL if small enough
+  const asset = (folder: AssetFolder): RuleSetRule => ({
+    type: 'asset',
+    parser: {dataUrlCondition: {maxSize: ASSET_INLINE_MAX_SIZE ?? 10000}},
+    generator: generator(folder),
+  });
 
-    // TODO avoid conflicts with the ideal-image plugin
-    // TODO this may require a little breaking change for ideal-image users?
-    // Maybe with the ideal image plugin, all md images should be "ideal"?
-    // This is used to force url-loader+file-loader on markdown images
-    // https://webpack.js.org/concepts/loaders/#inline
-    inlineMarkdownImageFileLoader: `!${escapePath(
-      require.resolve('url-loader'),
-    )}?limit=${urlLoaderLimit}&name=${fileLoaderFileName(
-      'images',
-    )}&fallback=${escapePath(require.resolve('file-loader'))}!`,
-    inlineMarkdownAssetImageFileLoader: `!${escapePath(
-      require.resolve('file-loader'),
-    )}?name=${fileLoaderFileName('images')}!`,
-    inlineMarkdownLinkFileLoader: `!${escapePath(
-      require.resolve('file-loader'),
-    )}?name=${fileLoaderFileName('files')}!`,
-  };
+  // An asset always emitted as a file
+  const assetResource = (folder: AssetFolder): RuleSetRule => ({
+    type: 'asset/resource',
+    generator: generator(folder),
+  });
 
-  const rules: FileLoaderUtils['rules'] = {
-    /**
-     * Loads image assets, inlines images via a data URI if they are below
-     * the size threshold
-     */
-    images: () => ({
-      use: [loaders.url({folder: 'images'})],
-      test: /\.(?:ico|jpe?g|png|gif|webp|avif)(?:\?.*)?$/i,
-    }),
+  const assetRequestRule = (
+    type: AssetRequestType,
+    rule: RuleSetRule,
+  ): RuleSetRule => ({
+    resourceQuery: new RegExp(`[?&]${AssetRequestQueryParam}=${type}(?:&|$)`),
+    ...rule,
+  });
 
-    fonts: () => ({
-      use: [loaders.url({folder: 'fonts'})],
-      test: /\.(?:woff2?|eot|ttf|otf)$/i,
-    }),
-
-    /**
-     * Loads audio and video and inlines them via a data URI if they are below
-     * the size threshold
-     */
-    media: () => ({
-      use: [loaders.url({folder: 'medias'})],
-      test: /\.(?:mp4|avi|mov|mkv|mpg|mpeg|vob|wmv|m4v|webm|ogv|wav|mp3|m4a|aac|oga|flac)$/i,
-    }),
-
-    svg: () => ({
-      test: /\.svg$/i,
+  const rules: AssetRuleUtils['rules'] = {
+    assets: () => ({
+      with: {type: {not: 'text'}},
       oneOf: [
-        {
-          use: [
-            {
-              loader: require.resolve('@svgr/webpack'),
-              options: {
-                prettier: false,
-                svgo: true,
-                svgoConfig: {
-                  plugins: [
-                    {
-                      name: 'preset-default',
-                      params: {
-                        overrides: {
-                          removeTitle: false,
-                          removeViewBox: false,
-                        },
-                      },
-                    },
-                  ],
-                },
-                titleProp: true,
-                ref: ![path],
-              },
-            },
-          ],
-          // We don't want to use SVGR loader for non-React source code
-          // ie we don't want to use SVGR for CSS files...
-          issuer: {
-            and: [/\.(?:tsx?|jsx?|mdx?)$/i],
-          },
-        },
-        {
-          use: [loaders.url({folder: 'images'})],
-        },
+        // Requests created with createAssetRequest() come first on purpose
+        // They must not be handled by other asset rules (ideal-image, SVGR...)
+        assetRequestRule('image', asset('images')),
+        assetRequestRule('image-file', assetResource('images')),
+        assetRequestRule('file', assetResource('files')),
+        rules.images(),
+        rules.svgs(),
+        rules.fonts(),
+        rules.media(),
+        rules.otherAssets(),
       ],
     }),
 
+    images: () => ({
+      test: /\.(?:ico|jpe?g|png|gif|webp|avif)$/i,
+      ...asset('images'),
+    }),
+
+    /**
+     * The SVG rule is isolated on purpose: our SVGR plugin enhances it
+     * See https://github.com/facebook/docusaurus/pull/10820
+     */
+    svgs: () => ({
+      test: /\.svg$/i,
+      ...asset('images'),
+    }),
+
+    fonts: () => ({
+      test: /\.(?:woff2?|eot|ttf|otf)$/i,
+      ...asset('fonts'),
+    }),
+
+    media: () => ({
+      test: /\.(?:mp4|avi|mov|mkv|mpg|mpeg|vob|wmv|m4v|webm|ogv|wav|mp3|m4a|aac|oga|flac)$/i,
+      ...asset('medias'),
+    }),
+
     otherAssets: () => ({
-      use: [loaders.file({folder: 'files'})],
       test: /\.(?:pdf|docx?|xlsx?|zip|rar)$/i,
+      ...assetResource('files'),
     }),
   };
 
-  return {loaders, rules};
+  return {rules};
+}
+
+const AssetRuleUtilsMap = {
+  server: createAssetRuleUtils({isServer: true}),
+  client: createAssetRuleUtils({isServer: false}),
+};
+
+/**
+ * Returns the bundler asset module rules to be used for various file types.
+ * Inspired by https://github.com/gatsbyjs/gatsby/blob/8e6e021014da310b9cc7d02e58c9b3efe938c665/packages/gatsby/src/utils/webpack-utils.ts#L447
+ */
+export function getAssetRuleUtils(isServer: boolean): AssetRuleUtils {
+  return isServer ? AssetRuleUtilsMap.server : AssetRuleUtilsMap.client;
+}
+
+/**
+ * Finds a rule in the asset `oneOf` rule, so that plugins can enhance it.
+ * The rule is found by comparing its `test` condition.
+ */
+export function findAssetRule({
+  rules,
+  test,
+}: {
+  rules: RuleSetRule[];
+  test: RuleSetRule['test'];
+}): {parentRules: RuleSetRule[]; rule: RuleSetRule} | undefined {
+  for (const rule of rules) {
+    if (String(rule.test) === String(test)) {
+      return {parentRules: rules, rule};
+    }
+    if (rule.oneOf) {
+      const result = findAssetRule({
+        rules: rule.oneOf as RuleSetRule[],
+        test,
+      });
+      if (result) {
+        return result;
+      }
+    }
+  }
+  return undefined;
 }

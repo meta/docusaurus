@@ -5,49 +5,105 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-declare module '@docusaurus/theme-search-algolia' {
-  import type {DeepPartial} from 'utility-types';
+// TODO Docusaurus v4: remove after we drop support for DocSearch v3
+declare module '@docsearch/react/button';
+declare module '@docsearch/react/useDocSearchKeyboardEvents';
+declare module '@docsearch/react/version';
 
-  export type ThemeConfig = {
-    algolia: {
-      contextualSearch: boolean;
-      externalUrlRegex?: string;
-      appId: string;
-      apiKey: string;
-      indexName: string;
-      searchParameters: {[key: string]: unknown};
-      searchPagePath: string | false | null;
-      replaceSearchResultPathname?: {
-        from: string;
-        to: string;
-      };
-      insights?: boolean;
+declare module '@docusaurus/theme-search-algolia' {
+  import type {DeepPartial, Overwrite, Optional} from 'utility-types';
+
+  import type {DocSearchProps} from '@docsearch/react';
+  import type {FacetFilters} from 'algoliasearch/lite';
+
+  // The config after normalization (e.g. AskAI string -> object)
+  // This matches DocSearch v4.3+ AskAi configuration
+  export type AskAiConfig = {
+    indexName: string;
+    apiKey: string;
+    appId: string;
+    assistantId: string;
+    searchParameters?: {
+      facetFilters?: FacetFilters;
+    };
+    suggestedQuestions?: boolean;
+  };
+
+  // DocSearch props that Docusaurus exposes directly through props forwarding
+  type DocusaurusDocSearchProps = Pick<
+    DocSearchProps,
+    | 'appId'
+    | 'apiKey'
+    | 'indexName'
+    | 'placeholder'
+    | 'translations'
+    | 'searchParameters'
+    | 'insights'
+    | 'initialQuery'
+  > & {
+    // Docusaurus normalizes the AskAI config to an object
+    askAi?: AskAiConfig;
+  };
+
+  export type ThemeConfigAlgolia = DocusaurusDocSearchProps & {
+    // TODO Docusaurus v4: upgrade to DocSearch v4, migrate indexName to indices
+    indexName: string;
+
+    // Docusaurus custom options, not coming from DocSearch
+    contextualSearch: boolean;
+    externalUrlRegex?: string;
+    searchPagePath: string | false | null;
+    replaceSearchResultPathname?: {
+      from: string;
+      to: string;
     };
   };
-  export type UserThemeConfig = DeepPartial<ThemeConfig>;
-}
 
-declare module '@docusaurus/theme-search-algolia/client' {
-  import type {ThemeConfig} from '@docusaurus/theme-search-algolia';
+  export type ThemeConfig = {
+    algolia: ThemeConfigAlgolia;
+  };
 
-  export function useAlgoliaThemeConfig(): ThemeConfig;
-
-  export function useAlgoliaContextualFacetFilters(): [string, string[]];
-
-  export function useSearchResultUrlProcessor(): (url: string) => string;
+  export type UserThemeConfig = {
+    algolia?: Overwrite<
+      DeepPartial<ThemeConfigAlgolia>,
+      {
+        // Required fields:
+        appId: ThemeConfigAlgolia['appId'];
+        apiKey: ThemeConfigAlgolia['apiKey'];
+        indexName: ThemeConfigAlgolia['indexName'];
+        // askAi also accepts a shorter string form
+        askAi?:
+          | string
+          | Optional<AskAiConfig, 'indexName' | 'appId' | 'apiKey'>;
+      }
+    >;
+  };
 }
 
 declare module '@theme/SearchPage' {
-  export default function SearchPage(): JSX.Element;
+  import type {ReactNode} from 'react';
+
+  export default function SearchPage(): ReactNode;
 }
 
 declare module '@theme/SearchBar' {
-  export default function SearchBar(): JSX.Element;
+  import type {ReactNode} from 'react';
+
+  export default function SearchBar(): ReactNode;
 }
 
 declare module '@theme/SearchTranslations' {
   import type {DocSearchTranslations} from '@docsearch/react';
 
-  const translations: DocSearchTranslations & {placeholder: string};
+  const translations: DocSearchTranslations & {
+    placeholder: string;
+    // TODO Docusaurus v4: cleanup after we drop support for DocSearch v3
+    modal?: {
+      searchBox?: {
+        placeholderText?: string;
+        placeholderTextAskAi?: string;
+      };
+    };
+  };
   export default translations;
 }

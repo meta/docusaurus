@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {useMemo} from 'react';
+import {type ReactNode, useMemo} from 'react';
 import {useThemeConfig} from '@docusaurus/theme-common';
 import {
   useTOCHighlight,
@@ -23,7 +23,7 @@ export default function TOCItems({
   minHeadingLevel: minHeadingLevelOption,
   maxHeadingLevel: maxHeadingLevelOption,
   ...props
-}: Props): JSX.Element | null {
+}: Props): ReactNode {
   const themeConfig = useThemeConfig();
 
   const minHeadingLevel =

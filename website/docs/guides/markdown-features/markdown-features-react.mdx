@@ -10,7 +10,6 @@ slug: /markdown-features/react
 import BrowserWindow from '@site/src/components/BrowserWindow';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import styles from './markdown-features-react.module.css';
 ```
 
 Docusaurus has built-in support for [MDX](https://mdxjs.com/), which allows you to write JSX within your Markdown files and render them as React components.
@@ -31,7 +30,7 @@ Prettier, the most popular formatter, [supports only the legacy MDX v1](https://
 
 :::
 
-### Exporting components {#exporting-components}
+### Exporting components {/* #exporting-components */}
 
 To define any custom component within an MDX file, you have to export it: only paragraphs that start with `export` will be parsed as components instead of prose.
 
@@ -92,7 +91,7 @@ Since all doc files are parsed using MDX, anything that looks like HTML is actua
 
 :::
 
-### Importing components {#importing-components}
+### Importing components {/* #importing-components */}
 
 You can also import your own components defined in other files or third-party components installed via npm.
 
@@ -144,7 +143,7 @@ If you use the same component across a lot of files, you don't need to import it
 
 :::
 
-### MDX component scope {#mdx-component-scope}
+### MDX component scope {/* #mdx-component-scope */}
 
 Apart from [importing a component](#importing-components) and [exporting a component](#exporting-components), a third way to use a component in MDX is to **register it to the global scope**, which will make it automatically available in every MDX file, without any import statements.
 
@@ -200,7 +199,7 @@ I can conveniently use <Highlight color="#25c2a0">Docusaurus green</Highlight> e
 
 We use **upper-case** tag names like `Highlight` on purpose.
 
-From MDX v3+ onward (Docusaurus v3+), lower-case tag names are always rendered as native html elements, and will not use any component mapping you provide.
+MDX always renders lower-case tag names as native HTML elements, and will not use any component mapping you provide.
 
 :::
 
@@ -231,9 +230,9 @@ If you don't wrap your imported MDX with `MDXContent`, the global scope will not
 
 :::
 
-### Markdown and JSX interoperability {#markdown-and-jsx-interoperability}
+### Markdown and JSX interoperability {/* #markdown-and-jsx-interoperability */}
 
-Docusaurus v3 is using [MDX v3](https://mdxjs.com/blog/v3/).
+Docusaurus uses [MDX v3](https://mdxjs.com/blog/v3/).
 
 The [MDX syntax](https://mdxjs.com/docs/what-is-mdx/#mdx-syntax) is mostly compatible with [CommonMark](https://commonmark.org/), but is much stricter because your `.mdx` files can use JSX and are compiled into real React components (check the [playground](https://mdxjs.com/playground/)).
 
@@ -246,36 +245,30 @@ Some valid CommonMark features won't work with MDX ([more info](https://mdxjs.co
 
 :::danger Experimental CommonMark support
 
-Docusaurus v3 makes it possible to opt-in for a less strict, standard [CommonMark](https://commonmark.org/) support with the following options:
+Docusaurus makes it possible to opt-in for a less strict, standard [CommonMark](https://commonmark.org/) support with the following options:
 
-- The `format: md` front matter
+- The `mdx.format: md` front matter
 - The `.md` file extension combined with the `siteConfig.markdown.format: "detect"` configuration
 
 This feature is **experimental** and currently has a few [limitations](https://github.com/facebook/docusaurus/issues/9092).
 
 :::
 
-## Importing code snippets {#importing-code-snippets}
+## Importing code snippets {/* #importing-code-snippets */}
 
-You can not only import a file containing a component definition, but also import any code file as raw text, and then insert it in a code block, thanks to [Webpack raw-loader](https://webpack.js.org/loaders/raw-loader/). In order to use `raw-loader`, you first need to install it in your project:
-
-```bash npm2yarn
-npm install --save raw-loader
-```
-
-Now you can import code snippets from another file as it is:
+You can not only import a file containing a component definition, but also import any code file as raw text, and then insert it in a code block, thanks to the standard [import attributes](https://github.com/tc39/proposal-import-attributes) syntax:
 
 {/* prettier-ignore */}
 ```jsx title="myMarkdownFile.mdx"
 import CodeBlock from '@theme/CodeBlock';
-import MyComponentSource from '!!raw-loader!./myComponent';
+import MyComponentSource from './myComponent.js' with {type: 'text'};
 
 <CodeBlock language="jsx">{MyComponentSource}</CodeBlock>
 ```
 
 ```mdx-code-block
 import CodeBlock from '@theme/CodeBlock';
-import MyComponentSource from '!!raw-loader!@site/src/pages/examples/_myComponent';
+import MyComponentSource from '@site/src/pages/examples/_myComponent.tsx' with {type: 'text'};
 
 <BrowserWindow>
 
@@ -298,9 +291,9 @@ This feature is experimental and might be subject to breaking API changes in the
 
 :::
 
-## Importing Markdown {#importing-markdown}
+## Importing Markdown {/* #importing-markdown */}
 
-You can use Markdown files as components and import them elsewhere, either in Markdown files or in React pages.
+You can use Markdown files as components and import them elsewhere, either in Markdown files or in React pages. Each MDX file default-exports its page content as a React component. In the `import` statement, you can default-import this component with any name, but it must be capitalized following React's naming rules.
 
 By convention, using the **`_` filename prefix** will not create any doc page and means the Markdown file is a **"partial"**, to be imported by other files.
 
@@ -327,13 +320,7 @@ import PartialExample from './_markdown-partial-example.mdx';
 
 This way, you can reuse content among multiple pages and avoid duplicating materials.
 
-:::warning
-
-Currently, the table of contents does not contain the imported Markdown headings. This is a technical limitation that we are trying to solve ([issue](https://github.com/facebook/docusaurus/issues/3915)).
-
-:::
-
-## Available exports {#available-exports}
+## Available exports {/* #available-exports */}
 
 Within the MDX page, the following variables are available as globals:
 

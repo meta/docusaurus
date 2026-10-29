@@ -51,6 +51,22 @@ type BrokenLinksHelper = {
   isAnchorBrokenLink: (linkPath: URLPath) => boolean;
 };
 
+function safeDecodeURI(value: string): string {
+  try {
+    return decodeURI(value);
+  } catch {
+    return value;
+  }
+}
+
+function safeDecodeURIComponent(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
 function createBrokenLinksHelper({
   collectedLinks,
   routes,
@@ -102,7 +118,7 @@ function createBrokenLinksHelper({
   }
 
   function isPathBrokenLink(linkPath: URLPath) {
-    const pathnames = [linkPath.pathname, decodeURI(linkPath.pathname)];
+    const pathnames = [linkPath.pathname, safeDecodeURI(linkPath.pathname)];
     if (pathnames.some((p) => validPathnames.has(p))) {
       return false;
     }
@@ -125,7 +141,15 @@ function createBrokenLinksHelper({
       return false;
     }
     const targetPage =
-      collectedLinks.get(pathname) || collectedLinks.get(decodeURI(pathname));
+      collectedLinks.get(pathname) ??
+      collectedLinks.get(safeDecodeURI(pathname)) ??
+      // The broken link checker should not care about a trailing slash
+      // Those are already covered by the broken pathname checker
+      // See https://github.com/facebook/docusaurus/issues/10116
+      collectedLinks.get(addTrailingSlash(pathname)) ??
+      collectedLinks.get(addTrailingSlash(safeDecodeURI(pathname))) ??
+      collectedLinks.get(removeTrailingSlash(pathname)) ??
+      collectedLinks.get(removeTrailingSlash(safeDecodeURI(pathname)));
     // link with anchor to a page that does not exist (or did not collect any
     // link/anchor) is considered as a broken anchor
     if (!targetPage) {
@@ -134,7 +158,7 @@ function createBrokenLinksHelper({
     // it's a not broken anchor if the anchor exists on the target page
     if (
       targetPage.anchors.has(hash) ||
-      targetPage.anchors.has(decodeURIComponent(hash))
+      targetPage.anchors.has(safeDecodeURIComponent(hash))
     ) {
       return false;
     }
@@ -354,8 +378,6 @@ function reportBrokenLinks({
 }) {
   // We need to split the broken links reporting in 2 for better granularity
   // This is because we need to report broken path/anchors independently
-  // For v3.x retro-compatibility, we can't throw by default for broken anchors
-  // TODO Docusaurus v4: make onBrokenAnchors throw by default?
   const {brokenPaths, brokenAnchors} = splitBrokenLinks(brokenLinks);
 
   const pathErrorMessage = createBrokenPathsMessage(brokenPaths);

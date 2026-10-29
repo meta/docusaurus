@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {type ReactNode} from 'react';
+import type {ReactNode} from 'react';
 
 export default function Highlight({
   children,
@@ -13,7 +13,7 @@ export default function Highlight({
 }: {
   children: ReactNode;
   color: string;
-}): JSX.Element {
+}): ReactNode {
   return (
     <span
       style={{

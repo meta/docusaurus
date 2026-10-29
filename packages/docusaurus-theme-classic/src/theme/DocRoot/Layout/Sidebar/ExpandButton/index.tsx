@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {translate} from '@docusaurus/Translate';
 import IconArrow from '@theme/Icon/Arrow';
 import type {Props} from '@theme/DocRoot/Layout/Sidebar/ExpandButton';
@@ -14,7 +14,7 @@ import styles from './styles.module.css';
 
 export default function DocRootLayoutSidebarExpandButton({
   toggleSidebar,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   return (
     <div
       className={styles.expandButton}

@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
+import {ThemeClassNames} from '@docusaurus/theme-common';
 import type {Props} from '@theme/Footer/Layout';
 
 export default function FooterLayout({
@@ -14,10 +15,10 @@ export default function FooterLayout({
   links,
   logo,
   copyright,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   return (
     <footer
-      className={clsx('footer', {
+      className={clsx(ThemeClassNames.layout.footer.container, 'footer', {
         'footer--dark': style === 'dark',
       })}>
       <div className="container container-fluid">

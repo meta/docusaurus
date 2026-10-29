@@ -5,14 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import {translate} from '@docusaurus/Translate';
 import {usePluralForm} from '@docusaurus/theme-common';
-import {
-  useBlogPost,
-  useDateTimeFormat,
-} from '@docusaurus/theme-common/internal';
+import {useDateTimeFormat} from '@docusaurus/theme-common/internal';
+import {useBlogPost} from '@docusaurus/plugin-content-blog/client';
 import type {Props} from '@theme/BlogPostItem/Header/Info';
 
 import styles from './styles.module.css';
@@ -56,9 +54,7 @@ function Spacer() {
   return <>{' · '}</>;
 }
 
-export default function BlogPostItemHeaderInfo({
-  className,
-}: Props): JSX.Element {
+export default function BlogPostItemHeaderInfo({className}: Props): ReactNode {
   const {metadata} = useBlogPost();
   const {date, readingTime} = metadata;
 

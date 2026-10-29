@@ -5,9 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/* eslint-disable global-require */
-
-import React from 'react';
 import Translate, {translate} from '@docusaurus/Translate';
 
 const QUOTES = [

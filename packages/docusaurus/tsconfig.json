@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "references": [
     {"path": "./tsconfig.server.json"},
     {"path": "./tsconfig.client.json"}
@@ -9,6 +9,6 @@
     "checkJs": true,
     "rootDir": "."
   },
-  "include": ["bin"],
+  "include": ["package.json", "bin"],
   "exclude": ["**/__tests__/**"]
 }

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Translate from '@docusaurus/Translate';
 import {
   ErrorBoundaryError,
@@ -14,10 +14,7 @@ import {
 import type {Props} from '@theme/Error';
 import Heading from '@theme/Heading';
 
-export default function ErrorPageContent({
-  error,
-  tryAgain,
-}: Props): JSX.Element {
+export default function ErrorPageContent({error, tryAgain}: Props): ReactNode {
   return (
     <main className="container margin-vert--xl">
       <div className="row">

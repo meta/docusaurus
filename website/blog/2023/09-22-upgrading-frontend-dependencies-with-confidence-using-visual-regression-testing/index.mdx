@@ -17,13 +17,13 @@ This article introduces a **visual regression testing** workflow based on [**Git
 
 ![Upgrading frontend dependencies with confidence - social card](./img/social-card.png)
 
-<!--truncate-->
+{/* truncate */}
 
 This workflow has been tested while upgrading Docusaurus v2 to v3, and already helped catch a few visual regressions on sites such as [React Native](https://reactnative.dev/), [Jest](https://jestjs.io/), and the [Docusaurus](https://docusaurus.io/) site itself.
 
 Docusaurus v3 comes with infrastructure changes and major dependency upgrades such as [MDX v3](https://mdxjs.com/blog/v3/) and [React 18](https://react.dev/blog/2022/03/29/react-v18), which can produce unexpected side effects. It would have been difficult to notice all the visual regressions without such a workflow. That's why we encourage site owners to consider adopting visual regression testing, especially for highly customized sites.
 
-## Workflow overview
+## Workflow overview {/* #workflow-overview */}
 
 The general idea is pretty simple:
 
@@ -47,13 +47,13 @@ Here is a more concrete example of Argos [reporting a visual regression](https:/
 
 [![Argos GitHub PR comment](./img/argos-react-native-regression.png)](https://app.argos-ci.com/slorber/rnw-visual-tests/builds/32/56012838)
 
-## Workflow implementation
+## Workflow implementation {/* #workflow-implementation */}
 
 This section will describe the implementation details of each step of the workflow.
 
 You will need to [sign up to Argos](https://app.argos-ci.com/signup) and [connect Argos to your GitHub repository](https://argos-ci.com/docs/github)
 
-### Dependencies
+### Dependencies {/* #dependencies */}
 
 This workflow requires the following dev dependencies, in addition to the usual Docusaurus ones:
 
@@ -61,7 +61,7 @@ This workflow requires the following dev dependencies, in addition to the usual 
 yarn add -D @argos-ci/cli @argos-ci/playwright @playwright/test cheerio
 ```
 
-### GitHub Action
+### GitHub Action {/* #github-action */}
 
 The GitHub action is responsible for executing the workflow for each Git branch.
 
@@ -104,7 +104,7 @@ jobs:
         run: yarn argos upload ./screenshots
 ```
 
-### Playwright config
+### Playwright config {/* #playwright-config */}
 
 Playwright is responsible for taking screenshots of the website previously built locally by the GitHub action.
 
@@ -132,7 +132,7 @@ const config: PlaywrightTestConfig = {
 export default config;
 ```
 
-### Playwright test
+### Playwright test {/* #playwright-test */}
 
 A Playwright config is not enough: we also need to write a Playwright test file to generate the site screenshots.
 
@@ -208,7 +208,7 @@ export function pathnameToArgosName(pathname: string): string {
 
 </details>
 
-### Stylesheet
+### Stylesheet {/* #stylesheet */}
 
 Screenshots are not always deterministic, and taking a screenshot of a page twice can lead to subtle variations that will be reported by Argos as **false positive** visual regressions.
 
@@ -244,7 +244,7 @@ For example, the docs "Last Updated on" might render on more than 1 line, eventu
 
 :::
 
-## Example repository
+## Example repository {/* #example-repository */}
 
 The [slorber/docusaurus-argos-example](https://github.com/slorber/docusaurus-argos-example) repo shows a complete example of implementing this workflow on a newly initialized Docusaurus v2 site, using a Yarn monorepo.
 
@@ -264,7 +264,7 @@ Browse the Docusaurus repository for a more advanced integration:
 
 :::
 
-## Make it cheap
+## Make it cheap {/* #make-it-cheap */}
 
 The tools we choose are implementation details of this visual regression testing workflow.
 
@@ -274,7 +274,7 @@ In case you don't mind storing large screenshots in Git, you can also try the fr
 
 External tools can be expensive, but generally offer free plans with an ample quota of screenshots. You can reduce your screenshot consumption by implementing a few tricks below.
 
-### Limit the number of pathnames
+### Limit the number of pathnames {/* #limit-the-number-of-pathnames */}
 
 The base setup involves taking a screenshot of every single pathname found in `sitemap.xml`. For large sites, that can lead to a lot of screenshots.
 
@@ -298,7 +298,7 @@ test.describe('Docusaurus site screenshots', () => {
 });
 ```
 
-### Limit the workflow concurrency
+### Limit the workflow concurrency {/* #limit-the-workflow-concurrency */}
 
 Implementing [GitHub Actions concurrency groups](https://docs.github.com/en/actions/using-jobs/using-concurrency) will prevent successive commits to trigger multiple useless workflow runs. The workflow will only be executed for the last commit, and previous commits will be canceled automatically.
 
@@ -308,7 +308,7 @@ concurrency:
   cancel-in-progress: true
 ```
 
-### Run your workflow conditionally
+### Run your workflow conditionally {/* #run-your-workflow-conditionally */}
 
 It's not worth running this workflow for every single commit and pull-request.
 
@@ -344,7 +344,7 @@ jobs:
 
 There are many options to explore, such as [triggering the workflow manually](https://docs.github.com/en/actions/using-workflows/manually-running-a-workflow) or [only when files matching a specific pattern are modified](https://docs.github.com/en/actions/using-workflows/triggering-a-workflow#example-including-paths).
 
-## Conclusion
+## Conclusion {/* #conclusion */}
 
 I believe **visual regression testing is underused** in the frontend ecosystem.
 
@@ -354,7 +354,7 @@ So why not give it a try?
 
 Happy hacking!
 
-## See also
+## See also {/* #see-also */}
 
 Useful documentation links:
 

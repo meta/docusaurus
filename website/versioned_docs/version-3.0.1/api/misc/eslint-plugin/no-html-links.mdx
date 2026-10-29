@@ -10,14 +10,14 @@ Ensure that the Docusaurus [`<Link>`](../../../docusaurus-core.mdx#link) compone
 
 The `<Link>` component has prefetching and preloading built-in. It also does build-time broken link detection, and helps Docusaurus understand your site's structure better.
 
-## Rule Details {#details}
+## Rule Details {/* #details */}
 
 Examples of **incorrect** code for this rule:
 
 ```html
 <a href="/page">go to page!</a>
 
-<a href="https://twitter.com/docusaurus" target="_blank">Twitter</a>
+<a href="https://x.com/docusaurus" target="_blank">X</a>
 ```
 
 Examples of **correct** code for this rule:
@@ -27,10 +27,10 @@ import Link from '@docusaurus/Link'
 
 <Link to="/page">go to page!</Link>
 
-<Link to="https://twitter.com/docusaurus">Twitter</Link>
+<Link to="https://x.com/docusaurus">X</Link>
 ```
 
-## Rule Configuration {#configuration}
+## Rule Configuration {/* #configuration */}
 
 Accepted fields:
 

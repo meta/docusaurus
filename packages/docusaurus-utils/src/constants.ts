@@ -18,7 +18,7 @@ export const NODE_MINOR_VERSION = parseInt(
 
 /** Docusaurus core version. */
 export const DOCUSAURUS_VERSION =
-  // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   (require('../package.json') as {version: string}).version;
 
 /**
@@ -91,10 +91,14 @@ export const DEFAULT_PORT = process.env.PORT
 export const DEFAULT_PLUGIN_ID = 'default';
 
 /**
- * Allow overriding the limit after which the url loader will no longer inline
- * assets.
+ * Max size in bytes under which assets (images, fonts, medias) are inlined in
+ * the bundles as base64 data URLs, instead of being emitted as separate files.
+ * Overrides the default max size when the `DOCUSAURUS_ASSET_INLINE_MAX_SIZE`
+ * env variable is set.
  *
  * @see https://github.com/facebook/docusaurus/issues/5493
  */
-export const WEBPACK_URL_LOADER_LIMIT =
-  process.env.WEBPACK_URL_LOADER_LIMIT ?? 10000;
+export const ASSET_INLINE_MAX_SIZE: number | undefined = process.env
+  .DOCUSAURUS_ASSET_INLINE_MAX_SIZE
+  ? parseInt(process.env.DOCUSAURUS_ASSET_INLINE_MAX_SIZE, 10)
+  : undefined;

@@ -5,7 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {toSidebarDocItemLinkProp, toTagDocListProp} from '../props';
+import {describe, expect, it} from 'vitest';
+import {fromPartial} from '@total-typescript/shoehorn';
+import {
+  toSidebarDocItemLinkProp,
+  toSidebarsProp,
+  toTagDocListProp,
+} from '../props';
 
 describe('toTagDocListProp', () => {
   type Params = Parameters<typeof toTagDocListProp>[0];
@@ -18,6 +24,8 @@ describe('toTagDocListProp', () => {
     const tag: Tag = {
       label: 'tag1',
       permalink: '/tag1',
+      description: undefined,
+      inline: false,
       docIds: ['id1', 'id3'],
       unlisted: false,
     };
@@ -130,5 +138,125 @@ describe('toSidebarDocItemLinkProp', () => {
         },
       }).unlisted,
     ).toBe(false);
+  });
+});
+
+describe('toSidebarsProp', () => {
+  type Params = Parameters<typeof toSidebarsProp>[0];
+
+  it('works', () => {
+    const params: Params = {
+      docs: [
+        fromPartial({
+          id: 'doc-id-1',
+          permalink: '/doc-1',
+          title: 'Doc 1 title',
+          frontMatter: {},
+        }),
+      ],
+      sidebars: {
+        mySidebar: [
+          {
+            type: 'link',
+            label: 'Example link',
+            key: 'link-example-key',
+            href: 'https://example.com',
+          },
+          {
+            type: 'ref',
+            label: 'Doc 1 ref',
+            key: 'ref-with-doc-id-1',
+            id: 'doc-id-1',
+          },
+          {
+            type: 'ref',
+            id: 'doc-id-1',
+            // no label/key on purpose
+          },
+          {
+            type: 'category',
+            label: 'My category',
+            key: 'my-category-key',
+            collapsible: false,
+            collapsed: true,
+            items: [
+              {
+                type: 'doc',
+                label: 'Doc 1',
+                key: 'doc-id-1',
+                id: 'doc-id-1',
+              },
+              {
+                type: 'doc',
+                id: 'doc-id-1',
+                // no label/key on purpose
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    const result = toSidebarsProp(params);
+
+    expect(result).toMatchInlineSnapshot(`
+      {
+        "mySidebar": [
+          {
+            "href": "https://example.com",
+            "key": "link-example-key",
+            "label": "Example link",
+            "type": "link",
+          },
+          {
+            "className": undefined,
+            "customProps": undefined,
+            "docId": "doc-id-1",
+            "href": "/doc-1",
+            "key": "ref-with-doc-id-1",
+            "label": "Doc 1 ref",
+            "type": "link",
+            "unlisted": undefined,
+          },
+          {
+            "className": undefined,
+            "customProps": undefined,
+            "docId": "doc-id-1",
+            "href": "/doc-1",
+            "label": "Doc 1 title",
+            "type": "link",
+            "unlisted": undefined,
+          },
+          {
+            "collapsed": true,
+            "collapsible": false,
+            "items": [
+              {
+                "className": undefined,
+                "customProps": undefined,
+                "docId": "doc-id-1",
+                "href": "/doc-1",
+                "key": "doc-id-1",
+                "label": "Doc 1",
+                "type": "link",
+                "unlisted": undefined,
+              },
+              {
+                "className": undefined,
+                "customProps": undefined,
+                "docId": "doc-id-1",
+                "href": "/doc-1",
+                "label": "Doc 1 title",
+                "type": "link",
+                "unlisted": undefined,
+              },
+            ],
+            "key": "my-category-key",
+            "label": "My category",
+            "type": "category",
+          },
+        ],
+      }
+    `);
   });
 });

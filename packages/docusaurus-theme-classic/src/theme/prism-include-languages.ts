@@ -7,7 +7,23 @@
 
 import siteConfig from '@generated/docusaurus.config';
 import type * as PrismNamespace from 'prismjs';
-import type {Optional} from 'utility-types';
+
+// Prism components requiring markup-templating, see prismjs/components.json
+const MarkupTemplatingLanguages = [
+  'django',
+  'ejs',
+  'erb',
+  'etlua',
+  'ftl',
+  'handlebars',
+  'latte',
+  'liquid',
+  'php',
+  'smarty',
+  'soy',
+  'tt2',
+  'twig',
+];
 
 export default function prismIncludeLanguages(
   PrismObject: typeof PrismNamespace,
@@ -18,21 +34,28 @@ export default function prismIncludeLanguages(
   const {additionalLanguages} = prism as {additionalLanguages: string[]};
 
   // Prism components work on the Prism instance on the window, while prism-
-  // react-renderer uses its own Prism instance. We temporarily mount the
-  // instance onto window, import components to enhance it, then remove it to
-  // avoid polluting global namespace.
+  // react-renderer uses its own Prism instance. We mount the instance onto
+  // window, and import components to enhance it.
+  // Some components (twig, liquid) also read the window instance later, in
+  // hooks running when highlighting code. We leave our instance on window for
+  // them, unless another library (like Redoc) mounted its own Prism instance
+  // there before: we restore it.
   // You can mutate PrismObject: registering plugins, deleting languages... As
   // long as you don't re-assign it
+
+  const PrismBefore = globalThis.Prism;
   globalThis.Prism = PrismObject;
 
   additionalLanguages.forEach((lang) => {
-    if (lang === 'php') {
-      // eslint-disable-next-line global-require
+    if (MarkupTemplatingLanguages.includes(lang)) {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       require('prismjs/components/prism-markup-templating.js');
     }
-    // eslint-disable-next-line global-require, import/no-dynamic-require
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require(`prismjs/components/prism-${lang}`);
   });
 
-  delete (globalThis as Optional<typeof globalThis, 'Prism'>).Prism;
+  if (typeof PrismBefore !== 'undefined') {
+    globalThis.Prism = PrismBefore;
+  }
 }

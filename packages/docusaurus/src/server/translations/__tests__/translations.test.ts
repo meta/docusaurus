@@ -5,10 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {jest} from '@jest/globals';
-import fs from 'fs-extra';
-import path from 'path';
-import tmp from 'tmp-promise';
+import {describe, expect, it, vi} from 'vitest';
+import path from 'node:path';
+import {mkdtempDisposable, realpath} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {outputFile, readJSON} from '@docusaurus/fs';
 import {
   writePluginTranslations,
   writeCodeTranslations,
@@ -26,41 +27,38 @@ import type {
 } from '@docusaurus/types';
 
 async function createTmpSiteDir() {
-  const {path: siteDirPath} = await tmp.dir({
-    prefix: 'jest-createTmpSiteDir',
-  });
-  return siteDirPath;
+  return mkdtempDisposable(
+    path.join(await realpath(tmpdir()), 'docusaurus-tmp-'),
+  );
 }
 
 async function createTmpTranslationFile(
   content: TranslationFileContent | null,
 ) {
   const siteDir = await createTmpSiteDir();
-  const filePath = path.join(siteDir, 'i18n/en/code.json');
+  const filePath = path.join(siteDir.path, 'i18n/en/code.json');
 
   // null means we don't want a file, just a filename
   if (content !== null) {
-    await fs.outputFile(filePath, JSON.stringify(content, null, 2));
+    await outputFile(filePath, JSON.stringify(content, null, 2));
   }
 
   return {
-    localizationDir: path.join(siteDir, 'i18n/en'),
+    localizationDir: path.join(siteDir.path, 'i18n/en'),
     readFile() {
-      return fs.readJSON(filePath);
+      return readJSON(filePath);
     },
+    [Symbol.asyncDispose]: siteDir[Symbol.asyncDispose],
   };
 }
 
 describe('writeCodeTranslations', () => {
-  const consoleInfoMock = jest
-    .spyOn(console, 'info')
-    .mockImplementation(() => {});
-  beforeEach(() => {
-    consoleInfoMock.mockClear();
-  });
-
   it('creates new translation file', async () => {
-    const {localizationDir, readFile} = await createTmpTranslationFile(null);
+    using info = vi.spyOn(console, 'info');
+
+    await using tmpTranslationFile = await createTmpTranslationFile(null);
+    const {localizationDir, readFile} = tmpTranslationFile;
+
     await writeCodeTranslations(
       {localizationDir},
       {
@@ -76,13 +74,17 @@ describe('writeCodeTranslations', () => {
       key2: {message: 'key2 message'},
       key3: {message: 'key3 message'},
     });
-    expect(consoleInfoMock).toHaveBeenCalledWith(
+    expect(info).toHaveBeenCalledWith(
       expect.stringMatching(/3.* translations will be written/),
     );
   });
 
   it('creates new translation file with prefix', async () => {
-    const {localizationDir, readFile} = await createTmpTranslationFile(null);
+    using info = vi.spyOn(console, 'info');
+
+    await using tmpTranslationFile = await createTmpTranslationFile(null);
+    const {localizationDir, readFile} = tmpTranslationFile;
+
     await writeCodeTranslations(
       {localizationDir},
       {
@@ -100,17 +102,20 @@ describe('writeCodeTranslations', () => {
       key2: {message: 'PREFIX key2 message'},
       key3: {message: 'PREFIX key3 message'},
     });
-    expect(consoleInfoMock).toHaveBeenCalledWith(
+    expect(info).toHaveBeenCalledWith(
       expect.stringMatching(/3.* translations will be written/),
     );
   });
 
   it('appends missing translations', async () => {
-    const {localizationDir, readFile} = await createTmpTranslationFile({
+    using info = vi.spyOn(console, 'info');
+
+    await using tmpTranslationFile = await createTmpTranslationFile({
       key1: {message: 'key1 message'},
       key2: {message: 'key2 message'},
       key3: {message: 'key3 message'},
     });
+    const {localizationDir, readFile} = tmpTranslationFile;
 
     await writeCodeTranslations(
       {localizationDir},
@@ -129,15 +134,18 @@ describe('writeCodeTranslations', () => {
       key3: {message: 'key3 message'},
       key4: {message: 'key4 message new'},
     });
-    expect(consoleInfoMock).toHaveBeenCalledWith(
+    expect(info).toHaveBeenCalledWith(
       expect.stringMatching(/4.* translations will be written/),
     );
   });
 
   it('appends missing.* translations with prefix', async () => {
-    const {localizationDir, readFile} = await createTmpTranslationFile({
+    using info = vi.spyOn(console, 'info');
+
+    await using tmpTranslationFile = await createTmpTranslationFile({
       key1: {message: 'key1 message'},
     });
+    const {localizationDir, readFile} = tmpTranslationFile;
 
     await writeCodeTranslations(
       {localizationDir},
@@ -154,15 +162,18 @@ describe('writeCodeTranslations', () => {
       key1: {message: 'key1 message'},
       key2: {message: 'PREFIX key2 message new'},
     });
-    expect(consoleInfoMock).toHaveBeenCalledWith(
+    expect(info).toHaveBeenCalledWith(
       expect.stringMatching(/2.* translations will be written/),
     );
   });
 
   it('overrides missing translations', async () => {
-    const {localizationDir, readFile} = await createTmpTranslationFile({
+    using info = vi.spyOn(console, 'info');
+
+    await using tmpTranslationFile = await createTmpTranslationFile({
       key1: {message: 'key1 message'},
     });
+    const {localizationDir, readFile} = tmpTranslationFile;
 
     await writeCodeTranslations(
       {localizationDir},
@@ -179,15 +190,18 @@ describe('writeCodeTranslations', () => {
       key1: {message: 'key1 message new'},
       key2: {message: 'key2 message new'},
     });
-    expect(consoleInfoMock).toHaveBeenCalledWith(
+    expect(info).toHaveBeenCalledWith(
       expect.stringMatching(/2.* translations will be written/),
     );
   });
 
   it('overrides missing translations with prefix', async () => {
-    const {localizationDir, readFile} = await createTmpTranslationFile({
+    using info = vi.spyOn(console, 'info');
+
+    await using tmpTranslationFile = await createTmpTranslationFile({
       key1: {message: 'key1 message'},
     });
+    const {localizationDir, readFile} = tmpTranslationFile;
 
     await writeCodeTranslations(
       {localizationDir},
@@ -205,17 +219,20 @@ describe('writeCodeTranslations', () => {
       key1: {message: 'PREFIX key1 message new'},
       key2: {message: 'PREFIX key2 message new'},
     });
-    expect(consoleInfoMock).toHaveBeenCalledWith(
+    expect(info).toHaveBeenCalledWith(
       expect.stringMatching(/2.* translations will be written/),
     );
   });
 
   it('always overrides message description', async () => {
-    const {localizationDir, readFile} = await createTmpTranslationFile({
+    using info = vi.spyOn(console, 'info');
+
+    await using tmpTranslationFile = await createTmpTranslationFile({
       key1: {message: 'key1 message', description: 'key1 desc'},
       key2: {message: 'key2 message', description: 'key2 desc'},
       key3: {message: 'key3 message', description: undefined},
     });
+    const {localizationDir, readFile} = tmpTranslationFile;
 
     await writeCodeTranslations(
       {localizationDir},
@@ -232,20 +249,23 @@ describe('writeCodeTranslations', () => {
       key2: {message: 'key2 message', description: 'key2 desc new'},
       key3: {message: 'key3 message', description: 'key3 desc new'},
     });
-    expect(consoleInfoMock).toHaveBeenCalledWith(
+    expect(info).toHaveBeenCalledWith(
       expect.stringMatching(/3.* translations will be written/),
     );
   });
 
   it('does not create empty translation files', async () => {
-    const {localizationDir, readFile} = await createTmpTranslationFile(null);
+    using info = vi.spyOn(console, 'info');
+
+    await using tmpTranslationFile = await createTmpTranslationFile(null);
+    const {localizationDir, readFile} = tmpTranslationFile;
 
     await writeCodeTranslations({localizationDir}, {}, {});
 
-    await expect(readFile()).rejects.toThrow(
-      /ENOENT: no such file or directory, open /,
-    );
-    expect(consoleInfoMock).toHaveBeenCalledTimes(0);
+    await expect(readFile()).rejects.toMatchObject({
+      cause: {code: 'ENOENT'},
+    });
+    expect(info).toHaveBeenCalledTimes(0);
   });
 
   it('throws for invalid content', async () => {
@@ -264,14 +284,15 @@ describe('writeCodeTranslations', () => {
         {},
       ),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `""bad" must be of type object"`,
+      `[ValidationError: "bad" must be of type object]`,
     );
   });
 });
 
 describe('writePluginTranslations', () => {
   it('writes plugin translations', async () => {
-    const localizationDir = await createTmpSiteDir();
+    await using tmpDir = await createTmpSiteDir();
+    const localizationDir = tmpDir.path;
 
     const filePath = path.join(
       localizationDir,
@@ -297,7 +318,7 @@ describe('writePluginTranslations', () => {
       } as LoadedPlugin,
     });
 
-    await expect(fs.readJSON(filePath)).resolves.toEqual({
+    await expect(readJSON(filePath)).resolves.toEqual({
       key1: {message: 'key1 message'},
       key2: {message: 'key2 message'},
       key3: {message: 'key3 message'},
@@ -305,7 +326,8 @@ describe('writePluginTranslations', () => {
   });
 
   it('writes plugin translations consecutively with different options', async () => {
-    const localizationDir = await createTmpSiteDir();
+    await using tmpDir = await createTmpSiteDir();
+    const localizationDir = tmpDir.path;
 
     const filePath = path.join(
       localizationDir,
@@ -340,7 +362,7 @@ describe('writePluginTranslations', () => {
       key2: {message: 'key2 message', description: 'key2 desc'},
       key3: {message: 'key3 message', description: 'key3 desc'},
     });
-    await expect(fs.readJSON(filePath)).resolves.toEqual({
+    await expect(readJSON(filePath)).resolves.toEqual({
       key1: {message: 'key1 message', description: 'key1 desc'},
       key2: {message: 'key2 message', description: 'key2 desc'},
       key3: {message: 'key3 message', description: 'key3 desc'},
@@ -353,7 +375,7 @@ describe('writePluginTranslations', () => {
       },
       {messagePrefix: 'PREFIX '},
     );
-    await expect(fs.readJSON(filePath)).resolves.toEqual({
+    await expect(readJSON(filePath)).resolves.toEqual({
       key1: {message: 'key1 message', description: 'key1 desc'},
       key2: {message: 'key2 message', description: 'key2 desc'},
       key3: {message: 'key3 message', description: undefined},
@@ -369,7 +391,7 @@ describe('writePluginTranslations', () => {
       },
       {messagePrefix: 'PREFIX ', override: true},
     );
-    await expect(fs.readJSON(filePath)).resolves.toEqual({
+    await expect(readJSON(filePath)).resolves.toEqual({
       key1: {message: 'PREFIX key1 message 3', description: 'key1 desc'},
       key2: {message: 'PREFIX key2 message 3', description: 'key2 desc'},
       key3: {message: 'PREFIX key3 message 3', description: 'key3 desc'},
@@ -378,7 +400,8 @@ describe('writePluginTranslations', () => {
   });
 
   it('throws with explicit extension', async () => {
-    const localizationDir = await createTmpSiteDir();
+    await using tmpDir = await createTmpSiteDir();
+    const localizationDir = tmpDir.path;
 
     await expect(() =>
       writePluginTranslations({
@@ -398,14 +421,15 @@ describe('writePluginTranslations', () => {
         options: {},
       }),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `"Translation file path at "my/translation/file.json" does not need to end with ".json", we add the extension automatically."`,
+      `[Error: Translation file path at "my/translation/file.json" does not need to end with ".json", we add the extension automatically.]`,
     );
   });
 });
 
 describe('localizePluginTranslationFile', () => {
   it('does not localize if localized file does not exist', async () => {
-    const localizationDir = await createTmpSiteDir();
+    await using tmpDir = await createTmpSiteDir();
+    const localizationDir = tmpDir.path;
 
     const translationFile: TranslationFile = {
       path: 'my/translation/file',
@@ -429,14 +453,15 @@ describe('localizePluginTranslationFile', () => {
   });
 
   it('normalizes partially localized translation files', async () => {
-    const localizationDir = await createTmpSiteDir();
+    await using tmpDir = await createTmpSiteDir();
+    const localizationDir = tmpDir.path;
 
-    await fs.outputJSON(
+    await outputFile(
       path.join(localizationDir, 'my-plugin-name', 'my/translation/file.json'),
-      {
+      JSON.stringify({
         key2: {message: 'key2 message localized'},
         key4: {message: 'key4 message localized'},
-      },
+      }),
     );
 
     const translationFile: TranslationFile = {
@@ -478,7 +503,7 @@ describe('readCodeTranslationFileContent', () => {
     return readCodeTranslationFileContent({localizationDir});
   }
 
-  it("returns undefined if file does't exist", async () => {
+  it("returns undefined if file doesn't exist", async () => {
     await expect(
       readCodeTranslationFileContent({localizationDir: 'foo'}),
     ).resolves.toBeUndefined();
@@ -508,23 +533,25 @@ describe('readCodeTranslationFileContent', () => {
       // @ts-expect-error: test
       testReadTranslation('HEY'),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `""value" must be of type object"`,
+      `[ValidationError: "value" must be of type object]`,
     );
     await expect(() =>
       // @ts-expect-error: test
       testReadTranslation(42),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `""value" must be of type object"`,
+      `[ValidationError: "value" must be of type object]`,
     );
     await expect(() =>
       // @ts-expect-error: test
       testReadTranslation({key: {description: 'no message'}}),
-    ).rejects.toThrowErrorMatchingInlineSnapshot(`""key.message" is required"`);
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: "key.message" is required]`,
+    );
     await expect(() =>
       // @ts-expect-error: test
       testReadTranslation({key: {message: 42}}),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `""key.message" must be a string"`,
+      `[ValidationError: "key.message" must be a string]`,
     );
     await expect(() =>
       testReadTranslation({
@@ -532,7 +559,7 @@ describe('readCodeTranslationFileContent', () => {
         key: {message: 'Message', description: 42},
       }),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `""key.description" must be a string"`,
+      `[ValidationError: "key.description" must be a string]`,
     );
   });
 });
@@ -624,24 +651,19 @@ describe('loadPluginsDefaultCodeTranslationMessages', () => {
 });
 
 describe('applyDefaultCodeTranslations', () => {
-  const consoleWarnMock = jest
-    .spyOn(console, 'warn')
-    .mockImplementation(() => {});
-  beforeEach(() => {
-    consoleWarnMock.mockClear();
-  });
-
   it('works for no code and message', () => {
+    using warn = vi.spyOn(console, 'warn');
     expect(
       applyDefaultCodeTranslations({
         extractedCodeTranslations: {},
         defaultCodeMessages: {},
       }),
     ).toEqual({});
-    expect(consoleWarnMock).toHaveBeenCalledTimes(0);
+    expect(warn).toHaveBeenCalledTimes(0);
   });
 
   it('works for code and message', () => {
+    using warn = vi.spyOn(console, 'warn');
     expect(
       applyDefaultCodeTranslations({
         extractedCodeTranslations: {
@@ -660,10 +682,11 @@ describe('applyDefaultCodeTranslations', () => {
         description: 'description',
       },
     });
-    expect(consoleWarnMock).toHaveBeenCalledTimes(0);
+    expect(warn).toHaveBeenCalledTimes(0);
   });
 
   it('works for code and message mismatch', () => {
+    using warn = vi.spyOn(console, 'warn');
     expect(
       applyDefaultCodeTranslations({
         extractedCodeTranslations: {
@@ -682,11 +705,12 @@ describe('applyDefaultCodeTranslations', () => {
         description: 'description',
       },
     });
-    expect(consoleWarnMock).toHaveBeenCalledTimes(1);
-    expect(consoleWarnMock.mock.calls[0]![0]).toMatch(/unknownId/);
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0]![0]).toMatch(/unknownId/);
   });
 
   it('works for realistic scenario', () => {
+    using warn = vi.spyOn(console, 'warn');
     expect(
       applyDefaultCodeTranslations({
         extractedCodeTranslations: {
@@ -724,8 +748,8 @@ describe('applyDefaultCodeTranslations', () => {
         description: 'description 3',
       },
     });
-    expect(consoleWarnMock).toHaveBeenCalledTimes(1);
-    expect(consoleWarnMock.mock.calls[0]![0]).toMatch(/idUnknown1/);
-    expect(consoleWarnMock.mock.calls[0]![0]).toMatch(/idUnknown2/);
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0]![0]).toMatch(/idUnknown1/);
+    expect(warn.mock.calls[0]![0]).toMatch(/idUnknown2/);
   });
 });

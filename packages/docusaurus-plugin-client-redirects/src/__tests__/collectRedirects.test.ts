@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {removeTrailingSlash} from '@docusaurus/utils-common';
 import {normalizePluginOptions} from '@docusaurus/utils-validation';
 import collectRedirects from '../collectRedirects';
@@ -232,6 +233,30 @@ describe('collectRedirects', () => {
     ]);
   });
 
+  it('preserves external redirect targets with trailingSlash=true', () => {
+    expect(
+      collectRedirects(
+        createTestPluginContext(
+          {
+            redirects: [
+              {
+                from: '/someLegacyPath',
+                to: 'https://example.com/somePath?a=1#x',
+              },
+            ],
+          },
+          ['/'],
+        ),
+        true,
+      ),
+    ).toEqual([
+      {
+        from: '/someLegacyPath',
+        to: 'https://example.com/somePath?a=1#x',
+      },
+    ]);
+  });
+
   it('collects redirects from plugin option redirects with trailingSlash=false', () => {
     expect(
       collectRedirects(
@@ -264,6 +289,30 @@ describe('collectRedirects', () => {
       {
         from: '/someLegacyPathArray2',
         to: '/',
+      },
+    ]);
+  });
+
+  it('preserves external redirect targets with trailingSlash=false', () => {
+    expect(
+      collectRedirects(
+        createTestPluginContext(
+          {
+            redirects: [
+              {
+                from: '/someLegacyPath',
+                to: 'https://example.com/somePath/?a=1#x',
+              },
+            ],
+          },
+          ['/'],
+        ),
+        false,
+      ),
+    ).toEqual([
+      {
+        from: '/someLegacyPath',
+        to: 'https://example.com/somePath/?a=1#x',
       },
     ]);
   });
@@ -518,10 +567,10 @@ describe('collectRedirects', () => {
         undefined,
       ),
     ).toThrowErrorMatchingInlineSnapshot(`
-      "@docusaurus/plugin-client-redirects: multiple redirects are created with the same "from" pathname: "/random-path"
+      [Error: @docusaurus/plugin-client-redirects: multiple redirects are created with the same "from" pathname: "/random-path"
       It is not possible to redirect the same pathname to multiple destinations:
       - {"from":"/random-path","to":"/path-one"}
-      - {"from":"/random-path","to":"/path-two"}"
+      - {"from":"/random-path","to":"/path-two"}]
     `);
     expect(() =>
       collectRedirects(
@@ -538,8 +587,8 @@ describe('collectRedirects', () => {
         undefined,
       ),
     ).toThrowErrorMatchingInlineSnapshot(`
-      "@docusaurus/plugin-client-redirects: some redirects would override existing paths, and will be ignored:
-      - {"from":"/path-two","to":"/path-one"}"
+      [Error: @docusaurus/plugin-client-redirects: some redirects would override existing paths, and will be ignored:
+      - {"from":"/path-two","to":"/path-one"}]
     `);
   });
 });

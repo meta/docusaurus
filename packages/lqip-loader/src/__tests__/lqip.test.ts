@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
+import {describe, expect, it} from 'vitest';
+import path from 'node:path';
 import {base64} from '../lqip';
 
 const imgPath = path.join(__dirname, '__fixtures__', 'endi.jpg');

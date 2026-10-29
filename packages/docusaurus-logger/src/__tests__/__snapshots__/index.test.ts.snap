@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`error prints objects 1`] = `
+exports[`logger > error > prints objects 1`] = `
 [
   [
     "[ERROR] {"a":1}",
@@ -17,7 +17,7 @@ exports[`error prints objects 1`] = `
 ]
 `;
 
-exports[`info prints objects 1`] = `
+exports[`logger > info > prints objects 1`] = `
 [
   [
     "[INFO] {"a":1}",
@@ -34,7 +34,7 @@ exports[`info prints objects 1`] = `
 ]
 `;
 
-exports[`success prints objects 1`] = `
+exports[`logger > success > prints objects 1`] = `
 [
   [
     "[SUCCESS] {"a":1}",
@@ -51,7 +51,7 @@ exports[`success prints objects 1`] = `
 ]
 `;
 
-exports[`warn prints objects 1`] = `
+exports[`logger > warn > prints objects 1`] = `
 [
   [
     "[WARNING] {"a":1}",

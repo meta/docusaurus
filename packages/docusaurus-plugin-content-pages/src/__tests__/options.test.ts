@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {normalizePluginOptions} from '@docusaurus/utils-validation';
 import {validateOptions, DEFAULT_OPTIONS} from '../options';
 import type {Options} from '@docusaurus/plugin-content-pages';
@@ -49,7 +50,9 @@ describe('normalizePagesPluginOptions', () => {
         // @ts-expect-error: bad attribute
         path: 42,
       });
-    }).toThrowErrorMatchingInlineSnapshot(`""path" must be a string"`);
+    }).toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: "path" must be a string]`,
+    );
   });
 
   it('empty routeBasePath replace default path("/")', () => {

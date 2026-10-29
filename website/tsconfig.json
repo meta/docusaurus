@@ -3,7 +3,6 @@
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
-    "baseUrl": ".",
     "resolveJsonModule": true,
     "allowArbitraryExtensions": true,
 
@@ -27,14 +26,13 @@
     "useUnknownInCatchVariables": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "importsNotUsedAsValues": "remove",
 
-    // This is important. We run `yarn tsc` in website so we can catch issues
+    // This is important. We run `pnpm tsc` in website so we can catch issues
     // with our declaration files (mostly names that are forgotten to be
     // imported, invalid semantics...). Because we don't have end-to-end type
     // tests, removing this would make things much harder to catch.
     "skipLibCheck": false,
-    "types": ["jest"]
+    "types": ["node"]
   },
-  "exclude": ["src/sw.js"]
+  "exclude": ["build", ".docusaurus", "src/sw.js", "_dogfooding/_asset-tests"]
 }

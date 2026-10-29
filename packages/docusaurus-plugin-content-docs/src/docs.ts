@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
-import fs from 'fs-extra';
+import path from 'node:path';
 import _ from 'lodash';
 import {
   aliasedSitePath,
@@ -16,16 +15,18 @@ import {
   normalizeUrl,
   parseMarkdownFile,
   posixPath,
-  Globby,
-  normalizeFrontMatterTags,
   isUnlisted,
   isDraft,
   readLastUpdateData,
+  normalizeTags,
 } from '@docusaurus/utils';
+import {glob} from '@docusaurus/glob';
+import {fs} from '@docusaurus/fs';
 import {validateDocFrontMatter} from './frontMatter';
 import getSlug from './slug';
 import {stripPathNumberPrefixes} from './numberPrefix';
 import {toDocNavigationLink, toNavigationLink} from './sidebars/utils';
+import type {TagsFile} from '@docusaurus/utils';
 import type {
   MetadataOptions,
   PluginOptions,
@@ -34,7 +35,6 @@ import type {
   DocMetadata,
   PropNavigationLink,
   VersionMetadata,
-  LoadedVersion,
 } from '@docusaurus/plugin-content-docs';
 import type {LoadContext} from '@docusaurus/types';
 import type {SidebarsUtils} from './sidebars/utils';
@@ -65,7 +65,7 @@ export async function readVersionDocs(
     'include' | 'exclude' | 'showLastUpdateAuthor' | 'showLastUpdateTime'
   >,
 ): Promise<DocFile[]> {
-  const sources = await Globby(options.include, {
+  const sources = await glob(options.include, {
     cwd: versionMetadata.contentPath,
     ignore: options.exclude,
   });
@@ -82,18 +82,21 @@ async function doProcessDocMetadata({
   context,
   options,
   env,
+  tagsFile,
 }: {
   docFile: DocFile;
   versionMetadata: VersionMetadata;
   context: LoadContext;
   options: MetadataOptions;
   env: DocEnv;
+  tagsFile: TagsFile | null;
 }): Promise<DocMetadataBase> {
   const {source, content, contentPath, filePath} = docFile;
   const {
     siteDir,
     siteConfig: {
       markdown: {parseFrontMatter},
+      vcs,
     },
   } = context;
 
@@ -122,6 +125,7 @@ async function doProcessDocMetadata({
     filePath,
     options,
     lastUpdateFrontMatter,
+    vcs,
   );
 
   // E.g. api/plugins/myDoc -> myDoc; myDoc -> myDoc
@@ -193,7 +197,9 @@ async function doProcessDocMetadata({
         locale: context.i18n.currentLocale,
       });
     } else if (typeof options.editUrl === 'string') {
-      const isLocalized = contentPath === versionMetadata.contentPathLocalized;
+      const isLocalized =
+        typeof versionMetadata.contentPathLocalized !== 'undefined' &&
+        contentPath === versionMetadata.contentPathLocalized;
       const baseVersionEditUrl =
         isLocalized && options.editLocalizedFiles
           ? versionMetadata.editUrlLocalized
@@ -205,6 +211,14 @@ async function doProcessDocMetadata({
 
   const draft = isDraft({env, frontMatter});
   const unlisted = isUnlisted({env, frontMatter});
+
+  const tags = normalizeTags({
+    options,
+    source,
+    frontMatterTags: frontMatter.tags,
+    tagsBaseRoutePath: versionMetadata.tagsPath,
+    tagsFile,
+  });
 
   // Assign all of object properties during instantiation (if possible) for
   // NodeJS optimization.
@@ -221,7 +235,7 @@ async function doProcessDocMetadata({
     draft,
     unlisted,
     editUrl: customEditURL !== undefined ? customEditURL : getDocEditUrl(),
-    tags: normalizeFrontMatterTags(versionMetadata.tagsPath, frontMatter.tags),
+    tags,
     version: versionMetadata.versionName,
     lastUpdatedBy: lastUpdate.lastUpdatedBy,
     lastUpdatedAt: lastUpdate.lastUpdatedAt,
@@ -236,13 +250,14 @@ export async function processDocMetadata(args: {
   context: LoadContext;
   options: MetadataOptions;
   env: DocEnv;
+  tagsFile: TagsFile | null;
 }): Promise<DocMetadataBase> {
   try {
     return await doProcessDocMetadata(args);
   } catch (err) {
     throw new Error(
       `Can't process doc metadata for doc at path path=${args.docFile.filePath} in version name=${args.versionMetadata.versionName}`,
-      {cause: err as Error},
+      {cause: err},
     );
   }
 }
@@ -257,7 +272,7 @@ export function addDocNavigation({
 }: {
   docs: DocMetadataBase[];
   sidebarsUtils: SidebarsUtils;
-}): LoadedVersion['docs'] {
+}): DocMetadata[] {
   const docsById = createDocsByIdIndex(docs);
   const unlistedIds = getUnlistedIds(docs);
 

@@ -43,11 +43,11 @@ export function NavbarSecondaryMenuContentProvider({
   children,
 }: {
   children: ReactNode;
-}): JSX.Element {
+}): ReactNode {
   const value = useState({component: null, props: null});
   return (
     // @ts-expect-error: this context is hard to type
-    <Context.Provider value={value}>{children}</Context.Provider>
+    <Context value={value}>{children}</Context>
   );
 }
 
@@ -76,7 +76,7 @@ export function NavbarSecondaryMenuFiller<P extends object>({
 }: {
   component: NavbarSecondaryMenuComponent<P>;
   props: P;
-}): JSX.Element | null {
+}): ReactNode {
   const context = useContext(Context);
   if (!context) {
     throw new ReactContextError('NavbarSecondaryMenuContentProvider');

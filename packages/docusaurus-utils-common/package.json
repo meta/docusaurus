@@ -1,6 +1,6 @@
 {
   "name": "@docusaurus/utils-common",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Common (Node/Browser) utility functions for Docusaurus packages.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -19,17 +19,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "tslib": "^2.6.0"
-  },
-  "peerDependencies": {
-    "@docusaurus/types": "*"
-  },
-  "peerDependenciesMeta": {
-    "@docusaurus/types": {
-      "optional": true
-    }
+    "@docusaurus/types": "workspace:*",
+    "tslib": "catalog:"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   }
 }

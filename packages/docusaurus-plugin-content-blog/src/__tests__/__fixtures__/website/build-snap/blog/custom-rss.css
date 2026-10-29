@@ -1,0 +1,76 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+* {
+  color: #0d1137;
+}
+
+main {
+  flex: 1 0 auto;
+  width: 100%;
+  margin: 4rem auto;
+  padding: 1.5 rem;
+  max-width: 800px;
+  /* stylelint-disable-next-line font-family-name-quotes */
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell;
+}
+
+.info {
+  display: block;
+  margin: 3rem 0;
+  padding: 2rem 3rem;
+  border: 1px solid dodgerblue;
+  border-left-width: 0.5rem;
+  border-radius: 0.4rem;
+  background-color: #e52165;
+}
+
+.rss-icon {
+  height: 3.8rem;
+  width: 3.8rem;
+  margin-right: 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.pb-7 {
+  padding-bottom: 3rem;
+}
+
+a {
+  color: #005aff;
+  text-decoration: none;
+}
+
+h1 {
+  text-wrap: balance;
+  font-size: 3.8rem;
+  line-height: 1;
+  font-weight: 800;
+  margin-bottom: 4rem;
+}
+
+h2 {
+  font-size: 3rem;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 3rem;
+}
+
+h2:not(:first-child) {
+  margin-top: 5.8rem;
+}
+
+.italic {
+  font-style: italic;
+}

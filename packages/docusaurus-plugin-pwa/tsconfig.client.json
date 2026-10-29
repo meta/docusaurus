@@ -1,21 +1,13 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "noEmit": false,
-    "composite": true,
-    "incremental": true,
-    "tsBuildInfoFile": "./lib/.tsbuildinfo-client",
-    "rootDir": "src",
-    "outDir": "lib",
-    "moduleResolution": "bundler",
-    "module": "esnext",
-    "target": "esnext"
-  },
+  "extends": "../../tsconfig.base.client.json",
   "include": [
     "src/theme/",
     "src/*.d.ts",
     "src/registerSw.ts",
     "src/renderReloadPopup.tsx"
   ],
-  "exclude": ["**/__tests__/**"]
+  "exclude": ["**/__tests__/**"],
+  "compilerOptions": {
+    "types": ["node"]
+  }
 }

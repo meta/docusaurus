@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`footnoteIDFixer remark plugin appends a hash to each footnote def/ref 1`] = `
+exports[`footnoteIDFixer remark plugin > appends a hash to each footnote def/ref 1`] = `
 "import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 function _createMdxContent(props) {
   const _components = {

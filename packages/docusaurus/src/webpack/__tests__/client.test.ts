@@ -5,49 +5,55 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import webpack from 'webpack';
-
+import {describe, it} from 'vitest';
 import {createBuildClientConfig, createStartClientConfig} from '../client';
-import {loadSetup} from '../../server/__tests__/testUtils';
+import {
+  BundlerNames,
+  createTestConfigureWebpackUtils,
+  loadBundlerSiteFixture,
+  validateBundlerConfig,
+} from './testUtils';
 
-describe('webpack dev config', () => {
+describe.each(BundlerNames)('%s client config', (bundlerName) => {
   it('simple start', async () => {
-    const {props} = await loadSetup('simple-site');
+    const props = await loadBundlerSiteFixture('simple-site', bundlerName);
     const {clientConfig} = await createStartClientConfig({
       props,
+      configureWebpackUtils: await createTestConfigureWebpackUtils(bundlerName),
       minify: false,
       poll: false,
     });
-    webpack.validate(clientConfig);
+    validateBundlerConfig(clientConfig, bundlerName);
   });
 
   it('simple build', async () => {
-    const {props} = await loadSetup('simple-site');
+    const props = await loadBundlerSiteFixture('simple-site', bundlerName);
     const {config} = await createBuildClientConfig({
       props,
+      configureWebpackUtils: await createTestConfigureWebpackUtils(bundlerName),
       minify: false,
-      bundleAnalyzer: false,
     });
-    webpack.validate(config);
+    validateBundlerConfig(config, bundlerName);
   });
 
   it('custom start', async () => {
-    const {props} = await loadSetup('custom-site');
+    const props = await loadBundlerSiteFixture('custom-site', bundlerName);
     const {clientConfig} = await createStartClientConfig({
       props,
+      configureWebpackUtils: await createTestConfigureWebpackUtils(bundlerName),
       minify: false,
       poll: false,
     });
-    webpack.validate(clientConfig);
+    validateBundlerConfig(clientConfig, bundlerName);
   });
 
   it('custom build', async () => {
-    const {props} = await loadSetup('custom-site');
+    const props = await loadBundlerSiteFixture('custom-site', bundlerName);
     const {config} = await createBuildClientConfig({
       props,
+      configureWebpackUtils: await createTestConfigureWebpackUtils(bundlerName),
       minify: false,
-      bundleAnalyzer: false,
     });
-    webpack.validate(config);
+    validateBundlerConfig(config, bundlerName);
   });
 });

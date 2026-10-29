@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {useWindowSize} from '@docusaurus/theme-common';
 import DocSidebarDesktop from '@theme/DocSidebar/Desktop';
 import DocSidebarMobile from '@theme/DocSidebar/Mobile';
 import type {Props} from '@theme/DocSidebar';
 
-export default function DocSidebar(props: Props): JSX.Element {
+export default function DocSidebar(props: Props): ReactNode {
   const windowSize = useWindowSize();
 
   // Desktop sidebar visible on hydration: need SSR rendering

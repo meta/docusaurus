@@ -1,0 +1,84 @@
+# Test links
+
+These are dogfood tests showing that Markdown links with md/mdx file references are resolved correctly.
+
+Also proves that [#9048](https://github.com/facebook/docusaurus/issues/9048) linking bugs are solved.
+
+---
+
+## Resolvable links
+
+[target.mdx](target.mdx)
+
+[./target.mdx](./target.mdx)
+
+[../links/target.mdx](../links/target.mdx)
+
+[./target.mdx?age=42#target-heading](./target.mdx?age=42#target-heading)
+
+[\<./target.mdx?qs=value with space>](<./target.mdx?qs=value with space>)
+
+[target.mdx 'link title'](target.mdx 'link title')
+
+## Complex resolvable links
+
+Some of those are edge cases reported in [#9048](https://github.com/facebook/docusaurus/issues/9048)
+
+{/* prettier-ignore */}```inline triple backticks code block, see https://github.com/facebook/docusaurus/issues/9048#issuecomment-1959199829```
+
+<p>
+  <b>[./target.mdx](./target.mdx) bolded</b>
+</p>
+
+[**./target.mdx** with _italic_ and <span style={{'color': 'red'}}>`JSX`</span>](./target.mdx)
+
+[`Type1`](target.mdx#target-heading)\<[`Type2`](target.mdx#target-heading)\>
+
+{/* prettier-ignore */}[./target.mdx link
+declared
+on
+multiple
+lines
+](./target.mdx)
+
+[![Image with ./target.mdx link](/img/slash-introducing.svg)](./target.mdx)
+
+## Unresolvable links
+
+[https://github.com/facebook/docusaurus/blob/main/README.md](https://github.com/facebook/docusaurus/blob/main/README.md)
+
+[ftp:///README.mdx](ftp:///README.mdx)
+
+```markdown
+[target.mdx](target.mdx)
+```
+
+## Links in comments
+
+MDX/HTML comments with invalid file references should not be resolved nor reported by the broken link checker:
+
+```mdx
+{/* [doesNotExist.mdx](doesNotExist.mdx) */}
+
+<!-- [doesNotExist.mdx](doesNotExist.mdx) -->
+```
+
+{/* [doesNotExist.mdx](doesNotExist.mdx) */}
+
+## Reference-style links
+
+The following should also work:
+
+```md
+Testing some link refs: [link-ref1], [link-ref2], [link-ref3]
+
+[link-ref1]: target.mdx
+[link-ref2]: ./target.mdx
+[link-ref3]: ../links/target.mdx?qs#target-heading
+```
+
+Testing some link refs: [link-ref1], [link-ref2], [link-ref3]
+
+[link-ref1]: target.mdx
+[link-ref2]: ./target.mdx
+[link-ref3]: ../links/target.mdx?qs#target-heading

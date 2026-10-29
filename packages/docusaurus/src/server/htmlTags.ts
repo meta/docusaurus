@@ -6,45 +6,69 @@
  */
 
 import _ from 'lodash';
-import htmlTags from 'html-tags';
-import voidHtmlTags from 'html-tags/void';
+import htmlTags, {voidHtmlTags} from 'html-tags';
 import escapeHTML from 'escape-html';
 import type {
   Props,
   HtmlTagObject,
   HtmlTags,
   LoadedPlugin,
+  RouterType,
 } from '@docusaurus/types';
 
+// TODO this should be done at config validation time, not here
 function assertIsHtmlTagObject(val: unknown): asserts val is HtmlTagObject {
   if (typeof val !== 'object' || !val) {
     throw new Error(`"${val}" is not a valid HTML tag object.`);
   }
-  if (typeof (val as HtmlTagObject).tagName !== 'string') {
+  const htmlTag = val as HtmlTagObject;
+  if (typeof htmlTag.tagName !== 'string') {
     throw new Error(
       `${JSON.stringify(
         val,
       )} is not a valid HTML tag object. "tagName" must be defined as a string.`,
     );
   }
-  if (!(htmlTags as string[]).includes((val as HtmlTagObject).tagName)) {
+  if (
+    !htmlTag.customElement &&
+    !(htmlTags as string[]).includes(htmlTag.tagName)
+  ) {
     throw new Error(
       `Error loading ${JSON.stringify(val)}, "${
-        (val as HtmlTagObject).tagName
-      }" is not a valid HTML tag.`,
+        htmlTag.tagName
+      }" is not a valid HTML tag. Either use a valid "tagName" or set "customElement: true".`,
     );
   }
 }
 
-function htmlTagObjectToString(tag: unknown): string {
+function hashRouterAbsoluteToRelativeTagAttribute(
+  name: string,
+  value: string,
+): string {
+  if ((name === 'src' || name === 'href') && value.startsWith('/')) {
+    return `.${value}`;
+  }
+  return value;
+}
+
+function htmlTagObjectToString({
+  tag,
+  router,
+}: {
+  tag: unknown;
+  router: RouterType;
+}): string {
   assertIsHtmlTagObject(tag);
   const isVoidTag = (voidHtmlTags as string[]).includes(tag.tagName);
   const tagAttributes = tag.attributes ?? {};
   const attributes = Object.keys(tagAttributes)
     .map((attr) => {
-      const value = tagAttributes[attr]!;
+      let value = tagAttributes[attr]!;
       if (typeof value === 'boolean') {
         return value ? attr : undefined;
+      }
+      if (router === 'hash') {
+        value = hashRouterAbsoluteToRelativeTagAttribute(attr, value);
       }
       return `${attr}="${escapeHTML(value)}"`;
     })
@@ -55,10 +79,18 @@ function htmlTagObjectToString(tag: unknown): string {
   return openingTag + innerHTML + closingTag;
 }
 
-function createHtmlTagsString(tags: HtmlTags | undefined): string {
+function createHtmlTagsString({
+  tags,
+  router,
+}: {
+  tags: HtmlTags | undefined;
+  router: RouterType;
+}): string {
   return (Array.isArray(tags) ? tags : [tags])
     .filter(Boolean)
-    .map((val) => (typeof val === 'string' ? val : htmlTagObjectToString(val)))
+    .map((val) =>
+      typeof val === 'string' ? val : htmlTagObjectToString({tag: val, router}),
+    )
     .join('\n');
 }
 
@@ -66,9 +98,13 @@ function createHtmlTagsString(tags: HtmlTags | undefined): string {
  * Runs the `injectHtmlTags` lifecycle, and aggregates all plugins' tags into
  * directly render-able HTML markup.
  */
-export function loadHtmlTags(
-  plugins: LoadedPlugin[],
-): Pick<Props, 'headTags' | 'preBodyTags' | 'postBodyTags'> {
+export function loadHtmlTags({
+  plugins,
+  router,
+}: {
+  plugins: LoadedPlugin[];
+  router: RouterType;
+}): Pick<Props, 'headTags' | 'preBodyTags' | 'postBodyTags'> {
   const pluginHtmlTags = plugins.map(
     (plugin) => plugin.injectHtmlTags?.({content: plugin.content}) ?? {},
   );
@@ -78,7 +114,7 @@ export function loadHtmlTags(
       tagTypes,
       tagTypes.map((type) =>
         pluginHtmlTags
-          .map((tags) => createHtmlTagsString(tags[type]))
+          .map((tags) => createHtmlTagsString({tags: tags[type], router}))
           .join('\n')
           .trim(),
       ),

@@ -1,29 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`linkify reports broken markdown links 1`] = `
-"---
-title: This post links to another one!
----
-
-[Good link 1](/blog/2018/12/14/Happy-First-Birthday-Slash)
-
-[Good link 2](/blog/2018/12/14/Happy-First-Birthday-Slash)
-
-[Bad link 1](postNotExist1.md)
-
-[Bad link 1](./postNotExist2.mdx)
-"
-`;
-
-exports[`linkify transforms to correct link 1`] = `
-"---
-title: This post links to another one!
----
-
-[Linked post](/blog/2018/12/14/Happy-First-Birthday-Slash)"
-`;
-
-exports[`paginateBlogPosts generates a single page 1`] = `
+exports[`paginateBlogPosts > generates a single page 1`] = `
 [
   {
     "items": [
@@ -48,7 +25,26 @@ exports[`paginateBlogPosts generates a single page 1`] = `
 ]
 `;
 
-exports[`paginateBlogPosts generates pages 1`] = `
+exports[`paginateBlogPosts > generates pages - 0 blog post 1`] = `
+[
+  {
+    "items": [],
+    "metadata": {
+      "blogDescription": "Blog Description",
+      "blogTitle": "Blog Title",
+      "nextPage": undefined,
+      "page": 1,
+      "permalink": "/blog",
+      "postsPerPage": 2,
+      "previousPage": undefined,
+      "totalCount": 0,
+      "totalPages": 1,
+    },
+  },
+]
+`;
+
+exports[`paginateBlogPosts > generates pages 1`] = `
 [
   {
     "items": [
@@ -103,7 +99,7 @@ exports[`paginateBlogPosts generates pages 1`] = `
 ]
 `;
 
-exports[`paginateBlogPosts generates pages at blog root 1`] = `
+exports[`paginateBlogPosts > generates pages at blog root 1`] = `
 [
   {
     "items": [
@@ -158,7 +154,7 @@ exports[`paginateBlogPosts generates pages at blog root 1`] = `
 ]
 `;
 
-exports[`paginateBlogPosts generates pages with custom pageBasePath 1`] = `
+exports[`paginateBlogPosts > generates pages with custom pageBasePath 1`] = `
 [
   {
     "items": [

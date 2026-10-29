@@ -7,11 +7,11 @@ toc_max_heading_level: 4
 
 This manual migration process should be run after the [automated migration process](./migration-automated.mdx), to complete the missing parts, or debug issues in the migration CLI output.
 
-## Project setup {#project-setup}
+## Project setup {/* #project-setup */}
 
-### `package.json` {#packagejson}
+### `package.json` {/* #packagejson */}
 
-#### Scoped package names {#scoped-package-names}
+#### Scoped package names {/* #scoped-package-names */}
 
 In Docusaurus 2, we use scoped package names:
 
@@ -37,7 +37,7 @@ Please use the most recent Docusaurus 2 version, which you can check out [here](
 
 :::
 
-#### CLI commands {#cli-commands}
+#### CLI commands {/* #cli-commands */}
 
 Meanwhile, CLI commands are renamed to `docusaurus <command>` (instead of `docusaurus-command`).
 
@@ -86,7 +86,7 @@ A typical Docusaurus 2 `package.json` may look like this:
 }
 ```
 
-### Update references to the `build` directory {#update-references-to-the-build-directory}
+### Update references to the `build` directory {/* #update-references-to-the-build-directory */}
 
 In Docusaurus 1, all the build artifacts are located within `website/build/<PROJECT_NAME>`.
 
@@ -94,7 +94,7 @@ In Docusaurus 2, it is now moved to just `website/build`. Make sure that you upd
 
 If you are deploying to GitHub pages, make sure to run `yarn deploy` instead of `yarn publish-gh-pages` script.
 
-### `.gitignore` {#gitignore}
+### `.gitignore` {/* #gitignore */}
 
 The `.gitignore` in your `website` should contain:
 
@@ -121,13 +121,13 @@ yarn-debug.log*
 yarn-error.log*
 ```
 
-### `README` {#readme}
+### `README` {/* #readme */}
 
 The D1 website may have an existing README file. You can modify it to reflect the D2 changes, or copy the default [Docusaurus v2 README](https://github.com/facebook/docusaurus/blob/main/packages/create-docusaurus/templates/shared/README.md).
 
-## Site configurations {#site-configurations}
+## Site configurations {/* #site-configurations */}
 
-### `docusaurus.config.js` {#docusaurusconfigjs}
+### `docusaurus.config.js` {/* #docusaurusconfigjs */}
 
 Rename `siteConfig.js` to `docusaurus.config.js`.
 
@@ -161,13 +161,13 @@ If you are migrating your Docusaurus v1 website, and there are pending documenta
 
 Refer to migration guide below for each field in `siteConfig.js`.
 
-### Updated fields {#updated-fields}
+### Updated fields {/* #updated-fields */}
 
-#### `baseUrl`, `tagline`, `title`, `url`, `favicon`, `organizationName`, `projectName`, `githubHost`, `scripts`, `stylesheets` {#baseurl-tagline-title-url-favicon-organizationname-projectname-githubhost-scripts-stylesheets}
+#### `baseUrl`, `tagline`, `title`, `url`, `favicon`, `organizationName`, `projectName`, `githubHost`, `scripts`, `stylesheets` {/* #baseurl-tagline-title-url-favicon-organizationname-projectname-githubhost-scripts-stylesheets */}
 
 No actions needed, these configuration fields were not modified.
 
-#### `colors` {#colors}
+#### `colors` {/* #colors */}
 
 Deprecated. We wrote a custom CSS framework for Docusaurus 2 called [Infima](https://infima.dev/) which uses CSS variables for theming. The docs are not quite ready yet and we will update here when it is. To overwrite Infima's CSS variables, create your own CSS file (e.g. `./src/css/custom.css`) and import it globally by passing it as an option to `@docusaurus/preset-classic`:
 
@@ -213,7 +213,7 @@ import ColorGenerator from '@site/src/components/ColorGenerator';
 
 <ColorGenerator />
 
-#### `footerIcon`, `copyright`, `ogImage`, `twitterImage`, `docsSideNavCollapsible` {#footericon-copyright-ogimage-twitterimage-docssidenavcollapsible}
+#### `footerIcon`, `copyright`, `ogImage`, `twitterImage`, `docsSideNavCollapsible` {/* #footericon-copyright-ogimage-twitterimage-docssidenavcollapsible */}
 
 Site meta info such as assets, SEO, copyright info are now handled by themes. To customize them, use the `themeConfig` field in your `docusaurus.config.js`:
 
@@ -235,7 +235,7 @@ module.exports = {
 };
 ```
 
-#### `headerIcon`, `headerLinks` {#headericon-headerlinks}
+#### `headerIcon`, `headerLinks` {/* #headericon-headerlinks */}
 
 In Docusaurus 1, header icon and header links were root fields in `siteConfig`:
 
@@ -277,7 +277,7 @@ module.exports = {
 };
 ```
 
-#### `algolia` {#algolia}
+#### `algolia` {/* #algolia */}
 
 ```js {4-8} title="docusaurus.config.js"
 module.exports = {
@@ -301,7 +301,7 @@ You can contact the DocSearch team (@shortcuts, @s-pace) for support. They can u
 
 :::
 
-#### `blogSidebarCount` {#blogsidebarcount}
+#### `blogSidebarCount` {/* #blogsidebarcount */}
 
 Deprecated. Pass it as a blog option to `@docusaurus/preset-classic` instead:
 
@@ -322,11 +322,11 @@ module.exports = {
 };
 ```
 
-#### `cname` {#cname}
+#### `cname` {/* #cname */}
 
 Deprecated. Create a `CNAME` file in your `static` folder instead with your custom domain. Files in the `static` folder will be copied into the root of the `build` folder during execution of the build command.
 
-#### `customDocsPath`, `docsUrl`, `editUrl`, `enableUpdateBy`, `enableUpdateTime` {#customdocspath-docsurl-editurl-enableupdateby-enableupdatetime}
+#### `customDocsPath`, `docsUrl`, `editUrl`, `enableUpdateBy`, `enableUpdateTime` {/* #customdocspath-docsurl-editurl-enableupdateby-enableupdatetime */}
 
 **BREAKING**: `editUrl` should point to (website) Docusaurus project instead of `docs` directory.
 
@@ -361,7 +361,7 @@ module.exports = {
 };
 ```
 
-#### `gaTrackingId` {#gatrackingid}
+#### `gaTrackingId` {/* #gatrackingid */}
 
 ```js title="docusaurus.config.js"
 module.exports = {
@@ -382,7 +382,7 @@ module.exports = {
 };
 ```
 
-#### `gaGtag` {#gagtag}
+#### `gaGtag` {/* #gagtag */}
 
 ```js title="docusaurus.config.js"
 module.exports = {
@@ -403,7 +403,7 @@ module.exports = {
 };
 ```
 
-### Removed fields {#removed-fields}
+### Removed fields {/* #removed-fields */}
 
 The following fields are all deprecated, you may remove from your configuration file.
 
@@ -435,7 +435,7 @@ The following fields are all deprecated, you may remove from your configuration 
 
 We intend to implement many of the deprecated config fields as plugins in future. Help will be appreciated!
 
-## Urls {#urls}
+## Urls {/* #urls */}
 
 In v1, all pages were available with or without the `.html` extension.
 
@@ -472,9 +472,9 @@ module.exports = {
 
 If you want to keep the `.html` extension as the canonical URL of a page, docs can declare a `slug: installation.html` front matter.
 
-## Components {#components}
+## Components {/* #components */}
 
-### Sidebar {#sidebar}
+### Sidebar {/* #sidebar */}
 
 In previous version, nested sidebar category is not allowed and sidebar category can only contain doc ID. However, v2 allows infinite nested sidebar and we have many types of [Sidebar Item](../../guides/docs/sidebar/items.mdx) other than document.
 
@@ -490,7 +490,7 @@ You'll have to migrate your sidebar if it contains category type. Rename `subcat
 },
 ```
 
-### Footer {#footer}
+### Footer {/* #footer */}
 
 `website/core/Footer.js` is no longer needed. If you want to modify the default footer provided by Docusaurus, [swizzle](../../swizzling.mdx) it:
 
@@ -516,7 +516,7 @@ module.exports = {
 };
 ```
 
-### Pages {#pages}
+### Pages {/* #pages */}
 
 Please refer to [creating pages](guides/creating-pages.mdx) to learn how Docusaurus 2 pages work. After reading that, notice that you have to move `pages/en` files in v1 to `src/pages` instead.
 
@@ -569,13 +569,13 @@ The following code could be helpful for migration of various pages:
 - Index page - [Flux](https://github.com/facebook/flux/blob/master/website/src/pages/index.js/) (recommended), [Docusaurus 2](https://github.com/facebook/docusaurus/blob/main/website/src/pages/index.js/), [Hermes](https://github.com/facebook/hermes/blob/main/website/src/pages/index.js/)
 - Help/Support page - [Docusaurus 2](https://github.com/facebook/docusaurus/blob/main/website/src/pages/help.js/), [Flux](http://facebook.github.io/flux/support)
 
-## Content {#content}
+## Content {/* #content */}
 
-### Replace AUTOGENERATED_TABLE_OF_CONTENTS {#replace-autogenerated_table_of_contents}
+### Replace AUTOGENERATED_TABLE_OF_CONTENTS {/* #replace-autogenerated_table_of_contents */}
 
 This feature is replaced by [inline table of content](../../guides/markdown-features/markdown-features-toc.mdx#inline-table-of-contents)
 
-### Update Markdown syntax to be MDX-compatible {#update-markdown-syntax-to-be-mdx-compatible}
+### Update Markdown syntax to be MDX-compatible {/* #update-markdown-syntax-to-be-mdx-compatible */}
 
 In Docusaurus 2, the Markdown syntax has been changed to [MDX](https://mdxjs.com/). Hence there might be some broken syntax in the existing docs which you would have to update. A common example is self-closing tags like `<img>` and `<br>` which are valid in HTML would have to be explicitly closed now ( `<img/>` and `<br/>`). All tags in MDX documents have to be valid JSX.
 
@@ -583,23 +583,23 @@ Front matter is parsed by [gray-matter](https://github.com/jonschlinkert/gray-ma
 
 **Tips**: You might want to use some online tools like [HTML to JSX](https://transform.tools/html-to-jsx) to make the migration easier.
 
-### Language-specific code tabs {#language-specific-code-tabs}
+### Language-specific code tabs {/* #language-specific-code-tabs */}
 
 Refer to the [multi-language support code blocks](../../guides/markdown-features/markdown-features-code-blocks.mdx#multi-language-support-code-blocks) section.
 
-### Front matter {#front-matter}
+### Front matter {/* #front-matter */}
 
 The Docusaurus front matter fields for the blog have been changed from camelCase to snake_case to be consistent with the docs.
 
 The fields `authorFBID` and `authorTwitter` have been deprecated. They are only used for generating the profile image of the author which can be done via the `authors` field.
 
-## Deployment {#deployment}
+## Deployment {/* #deployment */}
 
 The `CNAME` file used by GitHub Pages is not generated anymore, so be sure you have created it in `/static/CNAME` if you use a custom domain.
 
 The blog RSS feed is now hosted at `/blog/rss.xml` instead of `/blog/feed.xml`. You may want to configure server-side redirects so that users' subscriptions keep working.
 
-## Test your site {#test-your-site}
+## Test your site {/* #test-your-site */}
 
 After migration, your folder structure should look like this:
 

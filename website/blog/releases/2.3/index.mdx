@@ -12,11 +12,11 @@ The upgrade should be easy: as explained in our [release process documentation](
 
 ![Docusaurus 2.2 social card](./img/social-card.png)
 
-<!--truncate-->
+{/* truncate */}
 
-## Highlights
+## Highlights {/* #highlights */}
 
-### Google Tag Manager plugin
+### Google Tag Manager plugin {/* #google-tag-manager-plugin */}
 
 Google Tag Manager is a tag management system that allows great flexibility. It enables analytics and marketing teams to easily load other third-party trackers and fire analytics tags.
 
@@ -26,11 +26,11 @@ We now have a [`@docusaurus/plugin-google-tag-manager`](/docs/api/plugins/@docus
 
 [Google will sunset its Universal Analytics](https://blog.google/products/marketingplatform/analytics/prepare-for-future-with-google-analytics-4/) on **July 1, 2023**, and ask users to migrate to **Google Analytics 4**.
 
-Therefore, we are also **deprecating our existing [`@docusaurus/plugin-google-analytics`](/docs/api/plugins/@docusaurus/plugin-google-analytics)** package. Docusaurus users should create a new Google Analytics 4 property, and migrate to the [gtag.js plugin](/docs/api/plugins/@docusaurus/plugin-google-gtag/), or the [Google Tag Manager plugin](/docs/api/plugins/@docusaurus/plugin-google-tag-manager/). Refer to the [dedicated Docusaurus issue](https://github.com/facebook/docusaurus/issues/7221) for details and questions.
+Therefore, we are also **deprecating our existing [`@docusaurus/plugin-google-analytics`](https://github.com/facebook/docusaurus/issues/7221)** package. Docusaurus users should create a new Google Analytics 4 property, and migrate to the [gtag.js plugin](/docs/api/plugins/@docusaurus/plugin-google-gtag/), or the [Google Tag Manager plugin](/docs/api/plugins/@docusaurus/plugin-google-tag-manager/). Refer to the [dedicated Docusaurus issue](https://github.com/facebook/docusaurus/issues/7221) for details and questions.
 
 :::
 
-### Tabs Query String Support
+### Tabs Query String Support {/* #tabs-query-string-support */}
 
 It is now possible to link a selected tab to a query string parameter. When a tab is selected, it will be stored in your browser URL as a `?qs-param=tab-value` search parameter.
 
@@ -66,7 +66,7 @@ import TabItem from '@theme/TabItem';
   </Tabs>
 </BrowserWindow>
 
-### Nested admonitions
+### Nested admonitions {/* #nested-admonitions */}
 
 It is now possible to nest one admonition within another by adding extra colons for the outer/enclosing admonition:
 
@@ -96,7 +96,7 @@ Use this sparingly when it makes sense.
 
 ::::
 
-### Blog `createFeedItems`
+### Blog `createFeedItems` {/* #blog-createfeeditems */}
 
 A new blog plugin option [`feedOptions.createFeedItems`](/docs/api/plugins/@docusaurus/plugin-content-blog/#CreateFeedItemsFn) gives you more control over the RSS/Atom feed generation. It is now possible to transform/filter/limit feed items through a new callback.
 
@@ -122,7 +122,7 @@ A new blog plugin option [`feedOptions.createFeedItems`](/docs/api/plugins/@docu
 ];
 ```
 
-### Translations
+### Translations {/* #translations */}
 
 We added or completed the default theme translation support for multiple languages:
 
@@ -140,7 +140,7 @@ Completing theme translations is an [ongoing effort](https://github.com/facebook
 
 :::
 
-## Other changes
+## Other changes {/* #other-changes */}
 
 Other notable changes include:
 

@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "${configDir}/lib/.tsbuildinfo-client",
+    "lib": ["DOM", "ESNext"],
+    "noEmit": false,
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "target": "esnext",
+    "types": []
+  }
+}

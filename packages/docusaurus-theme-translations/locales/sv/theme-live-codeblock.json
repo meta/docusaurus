@@ -1,4 +1,5 @@
 {
-  "theme.Playground.liveEditor": "Live Editor",
+  "theme.Playground.buttons.reset": "Återställ",
+  "theme.Playground.liveEditor": "Live-redigerare",
   "theme.Playground.result": "Resultat"
 }

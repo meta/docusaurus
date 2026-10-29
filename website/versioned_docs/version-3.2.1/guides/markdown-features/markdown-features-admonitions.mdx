@@ -83,7 +83,7 @@ Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
 </BrowserWindow>
 ```
 
-## Usage with Prettier {#usage-with-prettier}
+## Usage with Prettier {/* #usage-with-prettier */}
 
 If you use [Prettier](https://prettier.io) to format your Markdown files, Prettier might auto-format your code to invalid admonition syntax. To avoid this problem, add empty lines around the starting and ending directives. This is also why the examples we show here all have empty lines around the content.
 
@@ -105,7 +105,7 @@ Hello world
 ::: note Hello world:::
 ```
 
-## Specifying title {#specifying-title}
+## Specifying title {/* #specifying-title */}
 
 You may also specify an optional title.
 
@@ -129,7 +129,7 @@ Some **content** with some _Markdown_ `syntax`.
 </BrowserWindow>
 ```
 
-## Nested admonitions {#nested-admonitions}
+## Nested admonitions {/* #nested-admonitions */}
 
 Admonitions can be nested. Use more colons `:` for each parent admonition level.
 
@@ -177,7 +177,7 @@ Deep child content
 </BrowserWindow>
 ```
 
-## Admonitions with MDX {#admonitions-with-mdx}
+## Admonitions with MDX {/* #admonitions-with-mdx */}
 
 You can use MDX inside admonitions too!
 
@@ -213,7 +213,7 @@ import TabItem from '@theme/TabItem';
 </BrowserWindow>
 ```
 
-## Usage in JSX {#usage-in-jsx}
+## Usage in JSX {/* #usage-in-jsx */}
 
 Outside of Markdown, you can use the `@theme/Admonition` component to get the same output.
 
@@ -249,11 +249,11 @@ The types that are accepted are the same as above: `note`, `tip`, `danger`, `inf
 </BrowserWindow>
 ```
 
-## Customizing admonitions {#customizing-admonitions}
+## Customizing admonitions {/* #customizing-admonitions */}
 
 There are two kinds of customizations possible with admonitions: **parsing** and **rendering**.
 
-### Customizing rendering behavior {#customizing-rendering-behavior}
+### Customizing rendering behavior {/* #customizing-rendering-behavior */}
 
 You can customize how each individual admonition type is rendered through [swizzling](../../swizzling.mdx). You can often achieve your goal through a simple wrapper. For example, in the follow example, we swap out the icon for `info` admonitions only.
 
@@ -270,7 +270,7 @@ export default function AdmonitionWrapper(props) {
 }
 ```
 
-### Customizing parsing behavior {#customizing-parsing-behavior}
+### Customizing parsing behavior {/* #customizing-parsing-behavior */}
 
 Admonitions are implemented with a [Remark plugin](./markdown-features-plugins.mdx). The plugin is designed to be configurable. To customize the Remark plugin for a specific content plugin (docs, blog, pages), pass the options through the `admonitions` key.
 
@@ -299,7 +299,7 @@ The plugin accepts the following options:
 
 The `keyword` will be passed as the `type` prop of the `Admonition` component.
 
-### Custom admonition type components {#custom-admonition-type-components}
+### Custom admonition type components {/* #custom-admonition-type-components */}
 
 By default, the theme doesn't know what do to with custom admonition keywords such as `:::my-custom-admonition`. It is your responsibility to map each admonition keyword to a React component so that the theme knows how to render them.
 

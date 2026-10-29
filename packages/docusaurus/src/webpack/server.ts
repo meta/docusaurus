@@ -5,31 +5,35 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
-import fs from 'fs-extra';
+import path from 'node:path';
 import merge from 'webpack-merge';
 import {NODE_MAJOR_VERSION, NODE_MINOR_VERSION} from '@docusaurus/utils';
-import WebpackBar from 'webpackbar';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
+import {getProgressBarPlugin} from '@docusaurus/bundler';
 import {createBaseConfig} from './base';
-import type {Props} from '@docusaurus/types';
+import type {ConfigureWebpackUtils, Props} from '@docusaurus/types';
 import type {Configuration} from 'webpack';
 
-export default async function createServerConfig(params: {
+export default async function createServerConfig({
+  props,
+  configureWebpackUtils,
+}: {
   props: Props;
+  configureWebpackUtils: ConfigureWebpackUtils;
 }): Promise<{config: Configuration; serverBundlePath: string}> {
-  const {props} = params;
-
   const baseConfig = await createBaseConfig({
     props,
     isServer: true,
-
-    // Minification of server bundle reduces size but doubles bundle time :/
     minify: false,
+    configureWebpackUtils,
+  });
+
+  const ProgressBarPlugin = await getProgressBarPlugin({
+    currentBundler: props.currentBundler,
   });
 
   const outputFilename = 'server.bundle.js';
-  const serverBundlePath = path.join(props.outDir, outputFilename);
+  const outputDir = path.join(props.outDir, '__server');
+  const serverBundlePath = path.join(outputDir, outputFilename);
 
   const config = merge(baseConfig, {
     target: `node${NODE_MAJOR_VERSION}.${NODE_MINOR_VERSION}`,
@@ -37,59 +41,27 @@ export default async function createServerConfig(params: {
       main: path.resolve(__dirname, '../client/serverEntry.js'),
     },
     output: {
+      path: outputDir,
       filename: outputFilename,
-      libraryTarget: 'commonjs2',
-      // Workaround for Webpack 4 Bug (https://github.com/webpack/webpack/issues/6522)
-      globalObject: 'this',
+      library: {type: 'commonjs2'},
     },
     plugins: [
-      // Show compilation progress bar.
-      new WebpackBar({
+      new ProgressBarPlugin({
         name: 'Server',
         color: 'yellow',
       }),
-      await createStaticDirectoriesCopyPlugin(params),
-    ].filter(Boolean),
+    ],
+    optimization: {
+      // The optimization.concatenateModules is expensive
+      // - On the server, it's not useful to run it at all
+      // - On the client, it leads to a ~3% JS assets total size decrease
+      //   Let's keep it by default, but large sites may prefer faster builds
+      // See also https://github.com/facebook/docusaurus/pull/11176
+      // Note: we don't want to enable it on the client for "docusaurus start"
+      // See also https://github.com/facebook/docusaurus/pull/11222
+      concatenateModules: false,
+    },
   });
 
   return {config, serverBundlePath};
-}
-
-async function createStaticDirectoriesCopyPlugin({props}: {props: Props}) {
-  const {
-    outDir,
-    siteDir,
-    siteConfig: {staticDirectories: staticDirectoriesOption},
-  } = props;
-
-  // The staticDirectories option can contain empty directories, or non-existent
-  // directories (e.g. user deleted `static`). Instead of issuing an error, we
-  // just silently filter them out, because user could have never configured it
-  // in the first place (the default option should always "work").
-  const staticDirectories: string[] = (
-    await Promise.all(
-      staticDirectoriesOption.map(async (dir) => {
-        const staticDir = path.resolve(siteDir, dir);
-        if (
-          (await fs.pathExists(staticDir)) &&
-          (await fs.readdir(staticDir)).length > 0
-        ) {
-          return staticDir;
-        }
-        return '';
-      }),
-    )
-  ).filter(Boolean);
-
-  if (staticDirectories.length === 0) {
-    return undefined;
-  }
-
-  return new CopyWebpackPlugin({
-    patterns: staticDirectories.map((dir) => ({
-      from: dir,
-      to: outDir,
-      toType: 'dir',
-    })),
-  });
 }

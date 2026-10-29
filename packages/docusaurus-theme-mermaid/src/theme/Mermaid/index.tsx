@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {useEffect, useRef} from 'react';
-import type {ReactNode} from 'react';
+import {useEffect, useRef, type ReactNode} from 'react';
 import ErrorBoundary from '@docusaurus/ErrorBoundary';
 import {ErrorBoundaryErrorMessageFallback} from '@docusaurus/theme-common';
 import {
@@ -22,7 +21,7 @@ function MermaidRenderResult({
   renderResult,
 }: {
   renderResult: RenderResult;
-}): JSX.Element {
+}): ReactNode {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,7 +33,6 @@ function MermaidRenderResult({
     <div
       ref={ref}
       className={`${MermaidContainerClassName} ${styles.container}`}
-      // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{__html: renderResult.svg}}
     />
   );
@@ -48,7 +46,7 @@ function MermaidRenderer({value}: Props): ReactNode {
   return <MermaidRenderResult renderResult={renderResult} />;
 }
 
-export default function Mermaid(props: Props): JSX.Element {
+export default function Mermaid(props: Props): ReactNode {
   return (
     <ErrorBoundary
       fallback={(params) => <ErrorBoundaryErrorMessageFallback {...params} />}>

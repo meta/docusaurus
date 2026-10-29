@@ -5,28 +5,29 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {isValidElement} from 'react';
-import useIsBrowser from '@docusaurus/useIsBrowser';
+import {Suspense, isValidElement, use, type ReactNode} from 'react';
+import {browser} from 'react-dom';
 import type {Props} from '@docusaurus/BrowserOnly';
 
-// Similar comp to the one described here:
-// https://www.joshwcomeau.com/react/the-perils-of-rehydration/#abstractions
-export default function BrowserOnly({
-  children,
-  fallback,
-}: Props): JSX.Element | null {
-  const isBrowser = useIsBrowser();
+function BrowserOnlyContent({children}: Pick<Props, 'children'>): ReactNode {
+  // On the server, this bails out to the closest Suspense boundary fallback
+  // On the client, this is a no-op
+  use(browser());
 
-  if (isBrowser) {
-    if (
-      typeof children !== 'function' &&
-      process.env.NODE_ENV === 'development'
-    ) {
-      throw new Error(`Docusaurus error: The children of <BrowserOnly> must be a "render function", e.g. <BrowserOnly>{() => <span>{window.location.href}</span>}</BrowserOnly>.
+  if (
+    typeof children !== 'function' &&
+    process.env.NODE_ENV === 'development'
+  ) {
+    throw new Error(`Docusaurus error: The children of <BrowserOnly> must be a "render function", e.g. <BrowserOnly>{() => <span>{window.location.href}</span>}</BrowserOnly>.
 Current type: ${isValidElement(children) ? 'React element' : typeof children}`);
-    }
-    return <>{children?.()}</>;
   }
+  return <>{children?.()}</>;
+}
 
-  return fallback ?? null;
+export default function BrowserOnly({children, fallback}: Props): ReactNode {
+  return (
+    <Suspense fallback={fallback ?? null}>
+      <BrowserOnlyContent>{children}</BrowserOnlyContent>
+    </Suspense>
+  );
 }

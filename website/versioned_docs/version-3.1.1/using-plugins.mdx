@@ -8,7 +8,7 @@ We maintain a [list of official plugins](./api/plugins/overview.mdx), but the co
 
 If you are feeling energetic, you can also read [the plugin guide](./advanced/plugins.mdx) or [plugin method references](./api/plugin-methods/README.mdx) for how to make a plugin yourself.
 
-## Installing a plugin {#installing-a-plugin}
+## Installing a plugin {/* #installing-a-plugin */}
 
 A plugin is usually an npm package, so you install them like other npm packages using npm.
 
@@ -38,7 +38,7 @@ export default {
 
 Paths should be absolute or relative to the config file.
 
-## Configuring plugins {#configuring-plugins}
+## Configuring plugins {/* #configuring-plugins */}
 
 For the most basic usage of plugins, you can provide just the plugin name or the path to the plugin.
 
@@ -79,7 +79,7 @@ export default {
 };
 ```
 
-## Multi-instance plugins and plugin IDs {#multi-instance-plugins-and-plugin-ids}
+## Multi-instance plugins and plugin IDs {/* #multi-instance-plugins-and-plugin-ids */}
 
 All Docusaurus content plugins can support multiple plugin instances. For example, it may be useful to have [multiple docs plugin instances](./guides/docs/docs-multi-instance.mdx) or [multiple blogs](./blog.mdx#multiple-blogs). It is required to assign a unique ID to each plugin instance, and by default, the plugin ID is `default`.
 
@@ -112,7 +112,7 @@ At most one plugin instance can be the "default plugin instance", by omitting th
 
 :::
 
-## Using themes {#using-themes}
+## Using themes {/* #using-themes */}
 
 Themes are loaded in the exact same way as plugins. From the consumer perspective, the `themes` and `plugins` entries are interchangeable when installing and configuring a plugin. The only nuance is that themes are loaded after plugins, and it's possible for [a theme to override a plugin's default theme components](./advanced/client.mdx#theme-aliases).
 
@@ -130,11 +130,11 @@ export default {
 };
 ```
 
-## Using presets {#using-presets}
+## Using presets {/* #using-presets */}
 
 Presets are bundles of plugins and themes. For example, instead of letting you register and configure `@docusaurus/plugin-content-docs`, `@docusaurus/plugin-content-blog`, etc. one after the other in the config file, we have `@docusaurus/preset-classic` preset allows you to configure them in one centralized place.
 
-### `@docusaurus/preset-classic` {#docusauruspreset-classic}
+### `@docusaurus/preset-classic` {/* #docusauruspreset-classic */}
 
 The classic preset is shipped by default to new Docusaurus websites created with [`create-docusaurus`](./installation.mdx#scaffold-project-website). It contains the following themes and plugins:
 
@@ -183,7 +183,7 @@ export default {
 };
 ```
 
-### Installing presets {#installing-presets}
+### Installing presets {/* #installing-presets */}
 
 A preset is usually an npm package, so you install them like other npm packages using npm.
 
@@ -211,7 +211,7 @@ export default {
 };
 ```
 
-### Creating presets {#creating-presets}
+### Creating presets {/* #creating-presets */}
 
 A preset is a function with the same shape as the [plugin constructor](./api/plugin-methods/README.mdx#plugin-constructor). It should return an object of `{ plugins: PluginConfig[], themes: PluginConfig[] }`, in the same as how they are accepted in the site config. For example, you can specify a preset that includes the following themes and plugins:
 
@@ -265,7 +265,7 @@ export default {
 
 This is especially useful when some plugins and themes are intended to be used together. You can even link their options together, e.g. pass one option to multiple plugins.
 
-## Module shorthands {#module-shorthands}
+## Module shorthands {/* #module-shorthands */}
 
 Docusaurus supports shorthands for plugins, themes, and presets. When it sees a plugin/theme/preset name, it tries to load one of the following, in that order:
 

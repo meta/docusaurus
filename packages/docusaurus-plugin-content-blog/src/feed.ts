@@ -5,24 +5,31 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
-import fs from 'fs-extra';
-import logger from '@docusaurus/logger';
+import path from 'node:path';
 import {Feed, type Author as FeedAuthor} from 'feed';
-import * as srcset from 'srcset';
-import {normalizeUrl, readOutputHTMLFile} from '@docusaurus/utils';
+import {parseSrcset, stringifySrcset} from 'srcset';
+import {
+  getDataFilePath,
+  normalizeUrl,
+  readOutputHTMLFile,
+} from '@docusaurus/utils';
 import {
   blogPostContainerID,
   applyTrailingSlash,
 } from '@docusaurus/utils-common';
 import {load as cheerioLoad} from 'cheerio';
-import type {DocusaurusConfig} from '@docusaurus/types';
+import logger from '@docusaurus/logger';
+import {fs, pathExists, outputFile} from '@docusaurus/fs';
+import type {BlogContentPaths} from './types';
+import type {DocusaurusConfig, HtmlTags, LoadContext} from '@docusaurus/types';
 import type {
   FeedType,
   PluginOptions,
   Author,
   BlogPost,
   BlogFeedItem,
+  FeedOptions,
+  FeedXSLTOptions,
 } from '@docusaurus/plugin-content-blog';
 
 async function generateBlogFeed({
@@ -80,7 +87,7 @@ async function generateBlogFeed({
     defaultCreateFeedItems,
   });
 
-  feedItems.forEach(feed.addItem);
+  feedItems.forEach((item) => feed.addItem(item));
 
   return feed;
 }
@@ -95,10 +102,6 @@ async function defaultCreateFeedItems({
   outDir: string;
 }): Promise<BlogFeedItem[]> {
   const {url: siteUrl, baseUrl, trailingSlash} = siteConfig;
-
-  function toFeedAuthor(author: Author): FeedAuthor {
-    return {name: author.name, link: author.url, email: author.email};
-  }
 
   return Promise.all(
     blogPosts.map(async (post) => {
@@ -146,8 +149,8 @@ async function defaultCreateFeedItems({
               elm.attribs.src = toAbsoluteUrl(src);
             }
             if (srcsetAttr) {
-              elm.attribs.srcset = srcset.stringify(
-                srcset.parse(srcsetAttr).map((props) => ({
+              elm.attribs.srcset = stringifySrcset(
+                parseSrcset(srcsetAttr).map((props) => ({
                   ...props,
                   url: toAbsoluteUrl(props.url),
                 })),
@@ -168,6 +171,17 @@ async function defaultCreateFeedItems({
         content: $(`#${blogPostContainerID}`).html()!,
       };
 
+      // Author urls can be relative, but the feed lib throws on these
+      // Absolute urls are kept as is to preserve the existing feed output
+      const toFeedAuthor = (author: Author): FeedAuthor => ({
+        name: author.name,
+        link:
+          author.url && !URL.canParse(author.url)
+            ? toAbsoluteUrl(author.url)
+            : author.url,
+        email: author.email,
+      });
+
       // json1() method takes the first item of authors array
       // it causes an error when authors array is empty
       const feedItemAuthors = authors.map(toFeedAuthor);
@@ -180,32 +194,144 @@ async function defaultCreateFeedItems({
   );
 }
 
+async function resolveXsltFilePaths({
+  xsltFilePath,
+  contentPaths,
+}: {
+  xsltFilePath: string;
+  contentPaths: BlogContentPaths;
+}) {
+  const xsltAbsolutePath: string = path.isAbsolute(xsltFilePath)
+    ? xsltFilePath
+    : ((await getDataFilePath({filePath: xsltFilePath, contentPaths})) ??
+      path.resolve(contentPaths.contentPath, xsltFilePath));
+
+  if (!(await pathExists(xsltAbsolutePath))) {
+    throw new Error(
+      logger.interpolate`Blog feed XSLT file not found at path=${path.relative(
+        process.cwd(),
+        xsltAbsolutePath,
+      )}`,
+    );
+  }
+
+  const parsedPath = path.parse(xsltAbsolutePath);
+  const cssAbsolutePath = path.resolve(
+    parsedPath.dir,
+    `${parsedPath.name}.css`,
+  );
+  if (!(await pathExists(cssAbsolutePath))) {
+    throw new Error(
+      logger.interpolate`Blog feed XSLT file was found at path=${path.relative(
+        process.cwd(),
+        xsltAbsolutePath,
+      )}
+But its expected co-located CSS file could not be found at path=${path.relative(
+        process.cwd(),
+        cssAbsolutePath,
+      )}
+If you want to provide a custom XSLT file, you must provide a CSS file with the exact same name.`,
+    );
+  }
+
+  return {xsltAbsolutePath, cssAbsolutePath};
+}
+
+async function generateXsltFiles({
+  xsltFilePath,
+  generatePath,
+  contentPaths,
+}: {
+  xsltFilePath: string;
+  generatePath: string;
+  contentPaths: BlogContentPaths;
+}) {
+  const {xsltAbsolutePath, cssAbsolutePath} = await resolveXsltFilePaths({
+    xsltFilePath,
+    contentPaths,
+  });
+  const xsltOutputPath = path.join(
+    generatePath,
+    path.basename(xsltAbsolutePath),
+  );
+  const cssOutputPath = path.join(generatePath, path.basename(cssAbsolutePath));
+  await fs.cp(xsltAbsolutePath, xsltOutputPath, {verbatimSymlinks: true});
+  await fs.cp(cssAbsolutePath, cssOutputPath, {verbatimSymlinks: true});
+}
+
+// This modifies the XML feed content to add a relative href to the XSLT file
+// Good enough for now: we probably don't need a full XML parser just for that
+// See also https://darekkay.com/blog/rss-styling/
+function injectXslt({
+  feedContent,
+  xsltFilePath,
+}: {
+  feedContent: string;
+  xsltFilePath: string;
+}) {
+  return feedContent.replace(
+    '<?xml version="1.0" encoding="utf-8"?>',
+    `<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="${path.basename(
+      xsltFilePath,
+    )}"?>`,
+  );
+}
+
+const FeedConfigs: Record<
+  FeedType,
+  {
+    outputFileName: string;
+    getContent: (feed: Feed) => string;
+    getXsltFilePath: (xslt: FeedXSLTOptions) => string | null;
+  }
+> = {
+  rss: {
+    outputFileName: 'rss.xml',
+    getContent: (feed) => feed.rss2(),
+    getXsltFilePath: (xslt) => xslt.rss,
+  },
+  atom: {
+    outputFileName: 'atom.xml',
+    getContent: (feed) => feed.atom1(),
+    getXsltFilePath: (xslt) => xslt.atom,
+  },
+  json: {
+    outputFileName: 'feed.json',
+    getContent: (feed) => feed.json1(),
+    getXsltFilePath: () => null,
+  },
+};
+
 async function createBlogFeedFile({
   feed,
   feedType,
   generatePath,
+  feedOptions,
+  contentPaths,
 }: {
   feed: Feed;
   feedType: FeedType;
   generatePath: string;
+  feedOptions: FeedOptions;
+  contentPaths: BlogContentPaths;
 }) {
-  const [feedContent, feedPath] = (() => {
-    switch (feedType) {
-      case 'rss':
-        return [feed.rss2(), 'rss.xml'];
-      case 'json':
-        return [feed.json1(), 'feed.json'];
-      case 'atom':
-        return [feed.atom1(), 'atom.xml'];
-      default:
-        throw new Error(`Feed type ${feedType} not supported.`);
-    }
-  })();
   try {
-    await fs.outputFile(path.join(generatePath, feedPath), feedContent);
+    const feedConfig = FeedConfigs[feedType];
+
+    let feedContent = feedConfig.getContent(feed);
+
+    const xsltFilePath = feedConfig.getXsltFilePath(feedOptions.xslt);
+    if (xsltFilePath) {
+      await generateXsltFiles({xsltFilePath, contentPaths, generatePath});
+      feedContent = injectXslt({feedContent, xsltFilePath});
+    }
+
+    const outputPath = path.join(generatePath, feedConfig.outputFileName);
+    await outputFile(outputPath, feedContent);
   } catch (err) {
-    logger.error(`Generating ${feedType} feed failed.`);
-    throw err;
+    throw new Error(`Generating ${feedType} feed failed.`, {
+      cause: err,
+    });
   }
 }
 
@@ -222,12 +348,14 @@ export async function createBlogFeedFiles({
   siteConfig,
   outDir,
   locale,
+  contentPaths,
 }: {
   blogPosts: BlogPost[];
   options: PluginOptions;
   siteConfig: DocusaurusConfig;
   outDir: string;
   locale: string;
+  contentPaths: BlogContentPaths;
 }): Promise<void> {
   const blogPosts = allBlogPosts.filter(shouldBeInFeed);
 
@@ -250,7 +378,65 @@ export async function createBlogFeedFiles({
         feed,
         feedType,
         generatePath: path.join(outDir, options.routeBasePath),
+        feedOptions: options.feedOptions,
+        contentPaths,
       }),
     ),
   );
+}
+
+export function createFeedHtmlHeadTags({
+  context,
+  options,
+}: {
+  context: LoadContext;
+  options: PluginOptions;
+}): HtmlTags {
+  const feedTypes = options.feedOptions.type;
+  if (!feedTypes) {
+    return [];
+  }
+  const feedTitle = options.feedOptions.title ?? context.siteConfig.title;
+  const feedsConfig = {
+    rss: {
+      type: 'application/rss+xml',
+      path: 'rss.xml',
+      title: `${feedTitle} RSS Feed`,
+    },
+    atom: {
+      type: 'application/atom+xml',
+      path: 'atom.xml',
+      title: `${feedTitle} Atom Feed`,
+    },
+    json: {
+      type: 'application/json',
+      path: 'feed.json',
+      title: `${feedTitle} JSON Feed`,
+    },
+  };
+  const headTags: HtmlTags = [];
+
+  feedTypes.forEach((feedType) => {
+    const {
+      type,
+      path: feedConfigPath,
+      title: feedConfigTitle,
+    } = feedsConfig[feedType];
+
+    headTags.push({
+      tagName: 'link',
+      attributes: {
+        rel: 'alternate',
+        type,
+        href: normalizeUrl([
+          context.siteConfig.baseUrl,
+          options.routeBasePath,
+          feedConfigPath,
+        ]),
+        title: feedConfigTitle,
+      },
+    });
+  });
+
+  return headTags;
 }

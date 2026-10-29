@@ -1,7 +1,7 @@
 {
   "name": "@docusaurus/tsconfig",
-  "version": "3.2.1",
-  "description": "Docusaurus base TypeScript configuration.",
+  "version": "4.0.0",
+  "description": "Base TypeScript configuration for Docusaurus websites",
   "main": "tsconfig.json",
   "publishConfig": {
     "access": "public"
@@ -16,5 +16,8 @@
     "url": "https://github.com/facebook/docusaurus.git",
     "directory": "packages/docusaurus-tsconfig"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "peerDependencies": {
+    "typescript": ">=6.0"
+  }
 }

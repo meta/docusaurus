@@ -1,0 +1,107 @@
+---
+title: Docusaurus 3.7
+authors: [slorber]
+tags: [release]
+image: ./img/social-card.png
+date: 2025-01-03
+---
+
+We are happy to announce **Docusaurus 3.7**.
+
+Docusaurus is now compatible with [React 19](https://react.dev/blog/2024/12/05/react-19).
+
+Upgrading should be easy. Our [release process](/community/release-process) respects [Semantic Versioning](https://semver.org/). Minor versions do not include any breaking changes.
+
+![Docusaurus blog post social card](./img/social-card.png)
+
+{/* truncate */}
+
+## Highlight {/* #highlight */}
+
+### React 19 {/* #react-19 */}
+
+In [#10763](https://github.com/facebook/docusaurus/pull/10763), we added support for [React 19](https://react.dev/blog/2024/12/05/react-19), and the Docusaurus website is running on React 19 already.
+
+From now on, all newly initialized sites will run on React 19 by default, and React 19 will be the minimum required version Docusaurus v4.
+
+However, React 18 remains supported, and existing Docusaurus sites can either choose to stay on React 18, or upgrade their dependencies to React 19:
+
+```diff
+{
+  "name": "my-docusaurus-site",
+  "dependencies": {
+-   "react": "^18.0.0",
+-   "react-dom": "^18.0.0"
++   "react": "^19.0.0",
++   "react-dom": "^19.0.0"
+  }
+}
+```
+
+:::warning
+
+There's no urge to upgrade your site immediately.
+
+React 19 is a bit heavier than React 18. Since we support both versions, we don't leverage yet the new features that are exclusive to React 19.
+
+However, upgrading to React 19 prepares your site for Docusaurus v4, that will drop support for React 18.
+
+Here are good reasons to upgrade your site before Docusaurus v4:
+
+- You have custom React code and want to ensure it is ready for React19
+- You plan to leverage the brand-new React 19 features in your own code
+- You use custom or third-party plugins and want to ensure their compatibility
+- You have a monorepo and want to align the React dependency to v19 for all packages
+
+:::
+
+Along the way, we [fixed](https://github.com/facebook/docusaurus/pull/10786) all the remaining hydration errors reported by React 19, some of them produced by our aggressive HTML minifier settings.
+
+### SVGR plugin {/* #svgr-plugin */}
+
+Docusaurus has built-in support for [SVGR](https://github.com/gregberge/svgr), allowing you to seamlessly import and use SVG files as React components:
+
+```tsx
+import DocusaurusSvg from './docusaurus.svg';
+
+<DocusaurusSvg />;
+```
+
+This built-in support has been the source of various bug reports due to the inability to customize the [SVGR Options](https://react-svgr.com/docs/options/), in particular the [SVG Optimizer](https://svgo.dev/) options.
+
+In [#10677](https://github.com/facebook/docusaurus/pull/10677), we extracted a new [`@docusaurus/plugin-svgr`](/docs/api/plugins/@docusaurus/plugin-svgr) that you can now configure according to your needs. It is included by default in our classic preset:
+
+```js
+export default {
+  presets: [
+    [
+      'classic',
+      {
+        svgr: {
+          svgrConfig: {
+            // Your SVGR options ...
+            svgoConfig: {
+              // Your SVGO options ...
+              // Use "svgoConfig: undefined" to use a svgo.config.js file
+            },
+          },
+        },
+      },
+    ],
+  ],
+};
+```
+
+## Other changes {/* #other-changes */}
+
+Other notable changes include:
+
+- [#10768](https://github.com/facebook/docusaurus/pull/10768): Blog authors have built-in icons for social platforms bluesky, mastodon, threads, twitch, youtube, instagram.
+- [#10729](https://github.com/facebook/docusaurus/pull/10729): Blog now supports `frontMatter.sidebar_label`
+- [#10803](https://github.com/facebook/docusaurus/pull/10803): `@docusaurus/remark-plugin-npm2yarn` now supports Bun conversions.
+- [#10672](https://github.com/facebook/docusaurus/pull/10672): Upgrade Algolia DocSearch to `algoliasearch` v5.
+- [#10800](https://github.com/facebook/docusaurus/pull/10800): Docusaurus Faster turns Rspack incremental mode on by default.
+- [#10783](https://github.com/facebook/docusaurus/pull/10783): Improve Dutch theme translations.
+- [#10760](https://github.com/facebook/docusaurus/pull/10760): Improve Korean theme translations.
+
+Check the **[3.7.0 changelog entry](/changelog/3.7.0)** for an exhaustive list of changes.

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {jest} from '@jest/globals';
+import {describe, expect, it, vi} from 'vitest';
 import _ from 'lodash';
 import {mapAsyncSequential, findAsyncSequential} from '../jsUtils';
 
@@ -62,7 +62,7 @@ describe('findAsyncSequential', () => {
   it('finds sequentially', async () => {
     const items = ['1', '2', '3'];
 
-    const findFn = jest.fn(async (item: string) => {
+    const findFn = vi.fn(async (item: string) => {
       await sleep(400);
       return item === '2';
     });

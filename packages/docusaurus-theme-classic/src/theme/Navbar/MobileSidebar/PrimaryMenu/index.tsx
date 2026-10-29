@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {useThemeConfig} from '@docusaurus/theme-common';
 import {useNavbarMobileSidebar} from '@docusaurus/theme-common/internal';
 import NavbarItem, {type Props as NavbarItemConfig} from '@theme/NavbarItem';
@@ -16,7 +16,7 @@ function useNavbarItems() {
 }
 
 // The primary menu displays the navbar items
-export default function NavbarMobilePrimaryMenu(): JSX.Element {
+export default function NavbarMobilePrimaryMenu(): ReactNode {
   const mobileSidebar = useNavbarMobileSidebar();
 
   // TODO how can the order be defined for mobile?

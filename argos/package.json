@@ -1,17 +1,21 @@
 {
   "name": "argos",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Argos visual diff tests",
   "license": "MIT",
   "private": true,
   "scripts": {
     "screenshot": "playwright test",
-    "upload": "npx @argos-ci/cli upload ./screenshots",
+    "upload": "pnpm exec -- argos upload ./screenshots/chromium",
+    "upload-text-snapshots": "pnpm exec -- argos upload \"../website/build\" --build-name text-snapshots --files styles.css --files \"docs/**/*.html\" --files \"blog/**/*.html\" --files \"**/rss.xml\" --files \"**/atom.xml\" --files \"**/feed.json\" --files sitemap.xml",
     "report": "playwright show-report"
   },
   "dependencies": {
-    "@argos-ci/playwright": "^1.9.3",
-    "@playwright/test": "^1.41.2",
-    "cheerio": "^1.0.0-rc.12"
+    "@argos-ci/cli": "catalog:",
+    "@argos-ci/playwright": "catalog:",
+    "@playwright/test": "catalog:",
+    "cheerio": "catalog:",
+    "oxfmt": "catalog:",
+    "xml-formatter": "catalog:"
   }
 }

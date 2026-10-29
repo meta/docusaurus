@@ -1,4 +1,6 @@
 {
+  "theme.Playground.buttons.reset": "Reset",
+  "theme.Playground.buttons.reset___DESCRIPTION": "The reset button label for live code blocks",
   "theme.Playground.liveEditor": "Live Editor",
   "theme.Playground.liveEditor___DESCRIPTION": "The live editor label of the live codeblocks",
   "theme.Playground.result": "Result",

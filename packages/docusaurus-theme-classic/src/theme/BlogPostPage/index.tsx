@@ -5,18 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {type ReactNode} from 'react';
-import clsx from 'clsx';
+import type {ReactNode} from 'react';
 import {HtmlClassNameProvider, ThemeClassNames} from '@docusaurus/theme-common';
-import {BlogPostProvider, useBlogPost} from '@docusaurus/theme-common/internal';
+import {
+  BlogPostProvider,
+  useBlogPost,
+} from '@docusaurus/plugin-content-blog/client';
 import BlogLayout from '@theme/BlogLayout';
 import BlogPostItem from '@theme/BlogPostItem';
 import BlogPostPaginator from '@theme/BlogPostPaginator';
 import BlogPostPageMetadata from '@theme/BlogPostPage/Metadata';
 import BlogPostPageStructuredData from '@theme/BlogPostPage/StructuredData';
 import TOC from '@theme/TOC';
+import ContentVisibility from '@theme/ContentVisibility';
 import type {Props} from '@theme/BlogPostPage';
-import Unlisted from '@theme/Unlisted';
 import type {BlogSidebar} from '@docusaurus/plugin-content-blog';
 
 function BlogPostPageContent({
@@ -25,9 +27,9 @@ function BlogPostPageContent({
 }: {
   sidebar: BlogSidebar;
   children: ReactNode;
-}): JSX.Element {
+}): ReactNode {
   const {metadata, toc} = useBlogPost();
-  const {nextItem, prevItem, frontMatter, unlisted} = metadata;
+  const {nextItem, prevItem, frontMatter} = metadata;
   const {
     hide_table_of_contents: hideTableOfContents,
     toc_min_heading_level: tocMinHeadingLevel,
@@ -45,7 +47,7 @@ function BlogPostPageContent({
           />
         ) : undefined
       }>
-      {unlisted && <Unlisted />}
+      <ContentVisibility metadata={metadata} />
 
       <BlogPostItem>{children}</BlogPostItem>
 
@@ -56,15 +58,11 @@ function BlogPostPageContent({
   );
 }
 
-export default function BlogPostPage(props: Props): JSX.Element {
+export default function BlogPostPage(props: Props): ReactNode {
   const BlogPostContent = props.content;
   return (
     <BlogPostProvider content={props.content} isBlogPostPage>
-      <HtmlClassNameProvider
-        className={clsx(
-          ThemeClassNames.wrapper.blogPages,
-          ThemeClassNames.page.blogPostPage,
-        )}>
+      <HtmlClassNameProvider className={ThemeClassNames.page.blogPostPage}>
         <BlogPostPageMetadata />
         <BlogPostPageStructuredData />
         <BlogPostPageContent sidebar={props.sidebar}>

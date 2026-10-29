@@ -24,6 +24,15 @@ export default function collectRedirects(
   pluginContext: PluginContext,
   trailingSlash: boolean | undefined,
 ): RedirectItem[] {
+  function normalizeRedirectTo(to: string) {
+    return to.startsWith('/')
+      ? applyTrailingSlash(to, {
+          trailingSlash,
+          baseUrl: pluginContext.baseUrl,
+        })
+      : to;
+  }
+
   // For each plugin config option, create the appropriate redirects
   const redirects = [
     ...createFromExtensionsRedirects(
@@ -50,10 +59,7 @@ export default function collectRedirects(
     //
     // It should be easy to toggle `trailingSlash` option without having to
     // change other configs
-    to: applyTrailingSlash(redirect.to, {
-      trailingSlash,
-      baseUrl: pluginContext.baseUrl,
-    }),
+    to: normalizeRedirectTo(redirect.to),
   }));
 
   validateCollectedRedirects(redirects, pluginContext);
@@ -93,9 +99,10 @@ function validateCollectedRedirects(
     // See https://github.com/facebook/docusaurus/issues/6845
     .map((to) => {
       if (to.startsWith('/')) {
-        try {
-          return decodeURI(new URL(to, 'https://example.com').pathname);
-        } catch (e) {}
+        const url = URL.parse(to, 'https://example.com');
+        if (url) {
+          return decodeURI(url.pathname);
+        }
       }
       return undefined;
     })

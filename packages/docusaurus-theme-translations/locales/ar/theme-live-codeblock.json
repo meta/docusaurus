@@ -1,4 +1,5 @@
 {
-  "theme.Playground.liveEditor": "محرر مباشر",
+  "theme.Playground.buttons.reset": "Reset",
+  "theme.Playground.liveEditor": "مُحـرر مُبـاشر",
   "theme.Playground.result": "النتيجة"
 }

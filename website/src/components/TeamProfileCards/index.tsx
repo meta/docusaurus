@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {type ReactNode} from 'react';
+import type {ReactNode} from 'react';
 import Translate from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
@@ -25,7 +25,7 @@ type ProfileProps = {
   name: string;
   children: ReactNode;
   githubUrl: string;
-  twitterUrl?: string;
+  xUrl?: string;
 };
 
 function TeamProfileCard({
@@ -33,7 +33,7 @@ function TeamProfileCard({
   name,
   children,
   githubUrl,
-  twitterUrl,
+  xUrl,
 }: ProfileProps) {
   return (
     <div className={className}>
@@ -60,9 +60,9 @@ function TeamProfileCard({
                 GitHub
               </Link>
             )}
-            {twitterUrl && (
-              <Link className="button button--secondary" href={twitterUrl}>
-                Twitter
+            {xUrl && (
+              <Link className="button button--secondary" href={xUrl}>
+                X
               </Link>
             )}
           </div>
@@ -78,13 +78,13 @@ function TeamProfileCardCol(props: ProfileProps) {
   );
 }
 
-export function ActiveTeamRow(): JSX.Element {
+export function ActiveTeamRow(): ReactNode {
   return (
     <div className="row">
       <TeamProfileCardCol
         name="Sébastien Lorber"
         githubUrl="https://github.com/slorber"
-        twitterUrl="https://twitter.com/sebastienlorber">
+        xUrl="https://x.com/sebastienlorber">
         <Translate
           id="team.profile.Sebastien Lorber.body"
           values={{
@@ -99,7 +99,7 @@ export function ActiveTeamRow(): JSX.Element {
       <TeamProfileCardCol
         name="Sida Chen"
         githubUrl="https://github.com/Josh-Cena"
-        twitterUrl="https://twitter.com/SidaChen63">
+        xUrl="https://x.com/SidaChen63">
         <Translate id="team.profile.Sida Chen.body">
           Student from Shanghai, China. Enthusiastic open-source project
           creator, but never actually works hard on those projects he created.
@@ -117,13 +117,13 @@ export function ActiveTeamRow(): JSX.Element {
   );
 }
 
-export function HonoraryAlumniTeamRow(): JSX.Element {
+export function HonoraryAlumniTeamRow(): ReactNode {
   return (
     <div className="row">
       <TeamProfileCardCol
         name="Joel Marcey"
         githubUrl="https://github.com/JoelMarcey"
-        twitterUrl="https://twitter.com/joelmarcey">
+        xUrl="https://x.com/joelmarcey">
         <Translate id="team.profile.Joel Marcey.body">
           Docusaurus founder and now ever grateful Docusaurus cheerleader to
           those who actually write code for it.
@@ -140,7 +140,7 @@ export function HonoraryAlumniTeamRow(): JSX.Element {
       <TeamProfileCardCol
         name="Yangshun Tay"
         githubUrl="https://github.com/yangshun"
-        twitterUrl="https://twitter.com/yangshunz">
+        xUrl="https://x.com/yangshunz">
         <Translate id="team.profile.Yangshun Tay.body">
           Full Front End Stack developer who likes working on the Jamstack.
           Working on Docusaurus made him Facebook&apos;s unofficial part-time
@@ -150,7 +150,7 @@ export function HonoraryAlumniTeamRow(): JSX.Element {
       <TeamProfileCardCol
         name="Endilie Yacop Sucipto"
         githubUrl="https://github.com/endiliey"
-        twitterUrl="https://twitter.com/endiliey">
+        xUrl="https://x.com/endiliey">
         <Translate id="team.profile.Endilie Yacop Sucipto.body">
           Maintainer @docusaurus · 🔥🔥🔥
         </Translate>
@@ -158,23 +158,23 @@ export function HonoraryAlumniTeamRow(): JSX.Element {
       <TeamProfileCardCol
         name="Wei Gao"
         githubUrl="https://github.com/wgao19"
-        twitterUrl="https://twitter.com/wgao19">
+        xUrl="https://x.com/wgao19">
         <Translate id="team.profile.Wei Gao.body">
-          🏻‍🌾 Work in progress React developer, maintains Docusaurus, writes
-          docs and spams this world with many websites.
+          🏻‍🌾 Work in progress React developer, maintains Docusaurus, writes docs
+          and spams this world with many websites.
         </Translate>
       </TeamProfileCardCol>
     </div>
   );
 }
 
-export function StudentFellowsTeamRow(): JSX.Element {
+export function StudentFellowsTeamRow(): ReactNode {
   return (
     <div className="row">
       <TeamProfileCardCol
         name="Anshul Goyal"
         githubUrl="https://github.com/anshulrgoyal"
-        twitterUrl="https://twitter.com/ar_goyal">
+        xUrl="https://x.com/ar_goyal">
         <Translate
           id="team.profile.Anshul Goyal.body"
           values={{
@@ -202,7 +202,7 @@ export function StudentFellowsTeamRow(): JSX.Element {
       <TeamProfileCardCol
         name="Fanny Vieira"
         githubUrl="https://github.com/fanny"
-        twitterUrl="https://twitter.com/fannyvieiira">
+        xUrl="https://x.com/fannyvieiira">
         <Translate
           id="team.profile.Fanny Vieira.body"
           values={{
@@ -229,7 +229,7 @@ export function StudentFellowsTeamRow(): JSX.Element {
       <TeamProfileCardCol
         name="Sam Zhou"
         githubUrl="https://github.com/SamChou19815"
-        twitterUrl="https://twitter.com/SamChou19815">
+        xUrl="https://x.com/SamChou19815">
         <Translate
           id="team.profile.Sam Zhou.body"
           values={{
@@ -263,7 +263,7 @@ export function StudentFellowsTeamRow(): JSX.Element {
       <TeamProfileCardCol
         name="Tan Teik Jun"
         githubUrl="https://github.com/teikjun"
-        twitterUrl="https://twitter.com/teik_jun">
+        xUrl="https://x.com/teik_jun">
         <Translate id="team.profile.Tan Teik Jun.body">
           Open-source enthusiast who aims to become as awesome as the other
           humans on this page. Working on Docusaurus brought him closer to his
@@ -273,7 +273,7 @@ export function StudentFellowsTeamRow(): JSX.Element {
       <TeamProfileCardCol
         name="Nisarag Bhatt"
         githubUrl="https://github.com/FocalChord"
-        twitterUrl="https://twitter.com/focalchord_">
+        xUrl="https://x.com/focalchord_">
         <Translate id="team.profile.Nisarag Bhatt.body">
           Fullstack web developer who loves learning new technologies and
           applying them! Loves contributing to open source as well as writing

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`docsVersion first time versioning 1`] = `
+exports[`docsVersion > success cases > first time versioning 1`] = `
 {
   "docs": {
     "Guides": [
@@ -58,7 +58,7 @@ exports[`docsVersion first time versioning 1`] = `
 }
 `;
 
-exports[`docsVersion not the first time versioning 1`] = `
+exports[`docsVersion > success cases > not the first time versioning 1`] = `
 {
   "docs": {
     "Guides": [
@@ -71,7 +71,7 @@ exports[`docsVersion not the first time versioning 1`] = `
 }
 `;
 
-exports[`docsVersion second docs instance versioning 1`] = `
+exports[`docsVersion > success cases > second docs instance versioning 1`] = `
 {
   "community": [
     "team",
@@ -79,7 +79,7 @@ exports[`docsVersion second docs instance versioning 1`] = `
 }
 `;
 
-exports[`docsVersion works with custom i18n paths 1`] = `
+exports[`docsVersion > success cases > works with custom i18n paths 1`] = `
 [
   {
     "dirName": ".",

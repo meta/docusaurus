@@ -1,16 +1,6 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "noEmit": false,
-    "composite": true,
-    "incremental": true,
-    "tsBuildInfoFile": "./lib/.tsbuildinfo-client",
-    "moduleResolution": "bundler",
-    "module": "esnext",
-    "target": "esnext",
-    "rootDir": "src",
-    "outDir": "lib"
-  },
-  "include": ["src/gtag.ts", "src/*.d.ts"],
+  "extends": "../../tsconfig.base.client.json",
+  "compilerOptions": {},
+  "include": ["src/gtag.ts", "src/vendor-gtag.ts", "src/*.d.ts"],
   "exclude": ["**/__tests__/**"]
 }

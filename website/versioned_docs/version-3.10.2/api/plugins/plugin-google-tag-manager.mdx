@@ -1,0 +1,71 @@
+---
+sidebar_position: 8
+slug: /api/plugins/@docusaurus/plugin-google-tag-manager
+---
+
+# 📦 plugin-google-tag-manager
+
+import APITable from '@site/src/components/APITable';
+
+A plugin for adding [Google Tag Manager (gtm.js)](https://developers.google.com/tag-platform/tag-manager) to a Docusaurus site. Use this plugin in conjunction with the standard [gtag plugin](./plugin-google-gtag.mdx) for in-depth analysis of how users are using your site.
+
+:::tip
+
+You can use [Google's Tag Assistant](https://tagassistant.google.com/) tool to check if tag manager is set up correctly!
+
+:::
+
+:::warning production only
+
+This plugin is always inactive in development and **only active in production** to avoid polluting the analytics statistics.
+
+:::
+
+## Installation {/* #installation */}
+
+```bash npm2yarn
+npm install --save @docusaurus/plugin-google-tag-manager
+```
+
+:::tip
+
+If you use the preset `@docusaurus/preset-classic`, you don't need to install this plugin as a dependency.
+
+You can configure this plugin through the [preset options](../../using-plugins.mdx#docusauruspreset-classic).
+
+:::
+
+## Configuration {/* #configuration */}
+
+Accepted fields:
+
+```mdx-code-block
+<APITable>
+```
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `containerId` | `string` | **Required** | Your Tag Manager container Id (usually starts with `GTM-`). |
+
+```mdx-code-block
+</APITable>
+```
+
+### Example configuration {/* #ex-config */}
+
+You can configure this plugin through preset options or plugin options.
+
+:::tip
+
+Most Docusaurus users configure this plugin through the preset options.
+
+:::
+
+```js config-tabs
+// Preset Options: googleTagManager
+// Plugin Options: @docusaurus/plugin-google-tag-manager
+
+const config = {
+  containerId: 'GTM-12345',
+};
+```

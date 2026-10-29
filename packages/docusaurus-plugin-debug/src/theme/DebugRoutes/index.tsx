@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import routes from '@generated/routes';
 import DebugLayout from '@theme/DebugLayout';
 import DebugJsonView from '@theme/DebugJsonView';
 import styles from './styles.module.css';
 
-export default function DebugRoutes(): JSX.Element {
+export default function DebugRoutes(): ReactNode {
   return (
     <DebugLayout>
       <h2>Routes</h2>

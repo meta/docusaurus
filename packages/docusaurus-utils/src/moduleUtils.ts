@@ -5,38 +5,57 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import jiti from 'jiti';
 import logger from '@docusaurus/logger';
+import {createJiti} from 'jiti';
+
+const DEBUG = false;
+
+const jiti = createJiti(__filename, {
+  // Transpilation cache, can be safely enabled
+  fsCache: true,
+  // Bypass Node.js runtime require cache for hot reloads
+  moduleCache: false,
+
+  interopDefault: true,
+  debug: DEBUG,
+});
 
 /*
 jiti is able to load ESM, CJS, JSON, TS modules
  */
-export async function loadFreshModule(modulePath: string): Promise<unknown> {
+export async function loadFreshModule(
+  modulePath: string,
+  options?: {
+    default?: true; // Use this when only the default export matters
+  },
+): Promise<unknown> {
+  if (typeof modulePath !== 'string') {
+    throw new Error(
+      logger.interpolate`Invalid module path of type "name=${typeof modulePath}" with value "name=${modulePath}"`,
+    );
+  }
   try {
-    if (typeof modulePath !== 'string') {
-      throw new Error(
-        logger.interpolate`Invalid module path of type name=${modulePath}`,
-      );
-    }
-    const load = jiti(__filename, {
-      // Transpilation cache, can be safely enabled
-      cache: true,
-      // Bypass Node.js runtime require cache
-      // Same as "import-fresh" package we used previously
-      requireCache: false,
-      // Only take into consideration the default export
-      // For now we don't need named exports
-      // This also helps normalize return value for both CJS/ESM/TS modules
-      interopDefault: true,
-      // debug: true,
+    const module = await jiti.import(modulePath, {
+      default: options?.default,
     });
 
-    return load(modulePath);
+    if (DEBUG) {
+      console.log('Jiti module loaded', {
+        modulePath,
+        options,
+        type: typeof module,
+        keys:
+          module && typeof module === 'object'
+            ? Object.keys(module)
+            : undefined,
+        module,
+      });
+    }
+
+    return module;
   } catch (error) {
     throw new Error(
-      logger.interpolate`Docusaurus could not load module at path path=${modulePath}\nCause: ${
-        (error as Error).message
-      }`,
+      logger.interpolate`Docusaurus could not load module at path path=${modulePath}`,
       {cause: error},
     );
   }

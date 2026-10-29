@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import logger from '@docusaurus/logger';
-import openBrowser from 'react-dev-utils/openBrowser';
+import logger, {PerfLogger} from '@docusaurus/logger';
+import openBrowser from '../utils/openBrowser/openBrowser';
 import {setupSiteFileWatchers} from './watcher';
 import {createWebpackDevServer} from './webpack';
 import {createReloadableSite} from './utils';
@@ -19,9 +19,12 @@ export type StartCLIOptions = HostPortOptions &
     open?: boolean;
     poll?: boolean | number;
     minify?: boolean;
+    https?: true;
+    sslCert?: string;
+    sslKey?: string;
   };
 
-export async function start(
+async function doStart(
   siteDirParam: string = '.',
   cliOptions: Partial<StartCLIOptions> = {},
 ): Promise<void> {
@@ -59,6 +62,13 @@ export async function start(
 
   await devServer.start();
   if (cliOptions.open) {
-    openBrowser(reloadableSite.getOpenUrl());
+    await openBrowser(reloadableSite.getOpenUrl());
   }
+}
+
+export async function start(
+  siteDirParam: string = '.',
+  cliOptions: Partial<StartCLIOptions> = {},
+): Promise<void> {
+  return PerfLogger.async('CLI start', () => doStart(siteDirParam, cliOptions));
 }

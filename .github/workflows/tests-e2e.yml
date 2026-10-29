@@ -7,21 +7,24 @@ on:
       - docusaurus-v**
     paths:
       - package.json
-      - yarn.lock
-      - jest.config.mjs
+      - pnpm-lock.yaml
+      - vitest.config.ts
+      - test/**
       - packages/**
-      - tsconfig.json
+      - tsconfig.*.json
   pull_request:
     branches:
       - main
       - docusaurus-v**
     paths:
       - package.json
-      - yarn.lock
-      - jest.config.mjs
+      - pnpm-lock.yaml
+      - vitest.config.ts
+      - test/**
       - packages/**
-      - tsconfig.json
+      - tsconfig.*.json
       - admin/verdaccio.yaml
+      - admin/scripts/test-release.sh
       - .github/workflows/tests-e2e.yml
 
 concurrency:
@@ -32,27 +35,91 @@ permissions:
   contents: read
 
 jobs:
+  # e2e tests running on Windows
+  e2e-windows:
+    name: E2E — Windows
+    timeout-minutes: 30
+    runs-on: windows-8-core
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+        with:
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
+      - name: Use Node.js LTS
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          check-latest: true
+          # No pnpm cache on Windows on purpose: restoring it takes 20-80s,
+          # more than it saves on "pnpm install"
+          package-manager-cache: false
+      - name: Installation
+        run: pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || pnpm install --frozen-lockfile
+      - name: Generate test-website project against main branch
+        # Not using test-release.sh => no verdaccio docker image on Windows
+        # We have to generate the test website in workspace so that it uses
+        # current packages as dependencies instead of deps from npm
+        run: node ./packages/create-docusaurus/bin/index.js test-website-in-workspace classic --typescript
+      - name: Install test-website-in-workspace project
+        run: pnpm install --no-frozen-lockfile --ignore-scripts || pnpm install --no-frozen-lockfile --ignore-scripts || pnpm install --no-frozen-lockfile --ignore-scripts
+        working-directory: test-website-in-workspace
+      - name: Start test-website-in-workspace project
+        run: pnpm start --no-open
+        working-directory: test-website-in-workspace
+        env:
+          E2E_TEST: true
+      - name: Build test-website-in-workspace project
+        # We build 2 locales to ensure a localized site doesn't leak memory
+        # See https://github.com/facebook/docusaurus/issues/10944
+        run: pnpm build --locale en --locale fr
+        env:
+          # Our website should build even with limited memory
+          # See https://github.com/facebook/docusaurus/pull/10590
+          NODE_OPTIONS: '--max-old-space-size=200'
+          DOCUSAURUS_PERF_LOGGER: 'true'
+        working-directory: test-website-in-workspace
+      # Upload build artifacts to ease Windows-specific troubleshooting
+      - name: Upload website artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: website-e2e-windows
+          path: test-website-in-workspace/build
+          if-no-files-found: error
+      - name: TypeCheck website
+        working-directory: test-website-in-workspace
+        run: pnpm typecheck
+
   yarn-v1:
     name: E2E — Yarn v1
     timeout-minutes: 30
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['18.0', '18', '20']
+        node: ['24.21', '26']
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+        with:
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
       - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ matrix.node }}
-          cache: yarn
+          cache: pnpm
       - name: Installation
-        run: yarn
+        run: pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || pnpm install --frozen-lockfile
       - name: Generate test-website project against main branch
-        run: yarn test:build:website -s
+        run: pnpm test:build:website -s
       - name: Install test-website project with Yarn v1
-        run: yarn install
+        run: yarn install --frozen-lockfile || yarn install --frozen-lockfile || yarn install --frozen-lockfile
         working-directory: ../test-website
         env:
           npm_config_registry: http://localhost:4873
@@ -62,7 +129,14 @@ jobs:
         env:
           E2E_TEST: true
       - name: Build test-website project
-        run: yarn build
+        # We build 2 locales to ensure a localized site doesn't leak memory
+        # See https://github.com/facebook/docusaurus/issues/10944
+        run: yarn build --locale en --locale fr
+        env:
+          # Our website should build even with limited memory
+          # See https://github.com/facebook/docusaurus/pull/10590
+          NODE_OPTIONS: '--max-old-space-size=200'
+          DOCUSAURUS_PERF_LOGGER: 'true'
         working-directory: ../test-website
 
   yarn-berry:
@@ -75,52 +149,84 @@ jobs:
         variant: [-s, -st]
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Use Node.js 18
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
         with:
-          node-version: '18'
-          cache: yarn
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
+      - name: Use Node.js LTS
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          check-latest: true
+          cache: pnpm
       - name: Installation
-        run: yarn
+        run: pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || pnpm install --frozen-lockfile
       - name: Generate test-website project with ${{ matrix.variant }} against main branch
-        run: yarn test:build:website ${{ matrix.variant }}
+        run: pnpm test:build:website ${{ matrix.variant }}
       - name: Install test-website project with Yarn Berry and nodeLinker = ${{ matrix.nodeLinker }}
         run: |
           yarn set version berry
+
+          # Disable supply chain cooldown
+          # We don't need it in that workflow
+          # Our other workflows already have cooldown checks!
+          yarn config set npmMinimalAgeGate 0
+          yarn config get npmMinimalAgeGate --why
+          yarn config set npmMinimalAgeGate 0
 
           yarn config set nodeLinker ${{ matrix.nodeLinker }}
           yarn config set npmRegistryServer http://localhost:4873
           yarn config set unsafeHttpWhitelist --json '["localhost"]'
           yarn config set enableGlobalCache true
+          yarn config set npmPreapprovedPackages --json '["@docusaurus/*"]'
 
           # Make PnP as strict as possible
           # https://yarnpkg.com/features/pnp#fallback-mode
           yarn config set pnpFallbackMode none
 
-          yarn install
+          yarn || yarn || yarn
         working-directory: ../test-website
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false # Yarn berry should create the lockfile, despite CI env
-      - name: Install missing dependencies
-        if: matrix.variant == '-st' && matrix.nodeLinker == 'pnp'
-        run: |
-          # These dependencies are referenced in the init project, not by our packages
-          yarn add @docusaurus/theme-classic @docusaurus/types @types/node
-          yarn config set packageExtensions --json '{ "unified@^9.2.2": { "dependencies": { "@types/unist": "^2.0.6" } } }'
-        working-directory: ../test-website
       - name: Start test-website project
         run: yarn start --no-open
         working-directory: ../test-website
         env:
           E2E_TEST: true
-      - name: Type check
+
+      - name: TypeCheck website
         # TODO: there're some lingering issues with PnP + tsc. Enable tsc in PnP later.
         if: matrix.variant == '-st' && matrix.nodeLinker != 'pnp'
-        run: yarn typecheck
         working-directory: ../test-website
+        run: yarn typecheck
+
+      - name: TypeCheck website - min version - v6.0
+        # TODO: there're some lingering issues with PnP + tsc. Enable tsc in PnP later.
+        if: matrix.variant == '-st' && matrix.nodeLinker != 'pnp'
+        working-directory: ../test-website
+        run: |
+          yarn add typescript@6.0 --exact
+          yarn typecheck
+      - name: TypeCheck website - max version - Latest
+        # TODO: there're some lingering issues with PnP + tsc. Enable tsc in PnP later.
+        if: matrix.variant == '-st' && matrix.nodeLinker != 'pnp'
+        working-directory: ../test-website
+        run: |
+          yarn add typescript@latest --exact
+          yarn typecheck
+
       - name: Build test-website project
-        run: yarn build
+        # We build 2 locales to ensure a localized site doesn't leak memory
+        # See https://github.com/facebook/docusaurus/issues/10944
+        run: yarn build --locale en --locale fr
+        env:
+          # Our website should build even with limited memory
+          # See https://github.com/facebook/docusaurus/pull/10590
+          NODE_OPTIONS: '--max-old-space-size=200'
+          DOCUSAURUS_PERF_LOGGER: 'true'
         working-directory: ../test-website
 
   npm:
@@ -129,28 +235,45 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Use Node.js 18
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
         with:
-          node-version: '18'
-          cache: yarn
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
+      - name: Use Node.js LTS
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          check-latest: true
+          cache: pnpm
       - name: Installation
-        run: yarn
+        run: pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || pnpm install --frozen-lockfile
       - name: Generate test-website project against main branch
-        run: yarn test:build:website -s
+        run: pnpm test:build:website -st
       - name: Install test-website project with npm
         run: npm install
         working-directory: ../test-website
         env:
           npm_config_registry: http://localhost:4873
+      - name: TypeCheck website
+        working-directory: ../test-website
+        run: npm run typecheck
       - name: Start test-website project
         run: npm run start -- --no-open
         working-directory: ../test-website
         env:
           E2E_TEST: true
       - name: Build test-website project
-        run: npm run build
+        # We build 2 locales to ensure a localized site doesn't leak memory
+        # See https://github.com/facebook/docusaurus/issues/10944
+        run: npm run build -- --locale en --locale fr
+        env:
+          # Our website should build even with limited memory
+          # See https://github.com/facebook/docusaurus/pull/10590
+          NODE_OPTIONS: '--max-old-space-size=200'
+          DOCUSAURUS_PERF_LOGGER: 'true'
         working-directory: ../test-website
 
   pnpm:
@@ -159,29 +282,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Use Node.js 18
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
         with:
-          node-version: '18'
-          cache: yarn
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
+      - name: Use Node.js LTS
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          check-latest: true
+          cache: pnpm
       - name: Installation
-        run: yarn
+        run: pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || pnpm install --frozen-lockfile
       - name: Generate test-website project against main branch
-        run: yarn test:build:website -s
+        run: pnpm test:build:website -st
       - name: Install test-website project with pnpm
-        run: |
-          npm install -g pnpm
-          # Fix some peer dependencies errors
-          pnpm add @algolia/client-search @types/react@17 typescript
+        run: pnpm install
         working-directory: ../test-website
         env:
-          npm_config_registry: http://localhost:4873
+          pnpm_config_registry: http://localhost:4873
+      - name: TypeCheck website
+        working-directory: ../test-website
+        run: pnpm run typecheck
       - name: Start test-website project
         run: pnpm start --no-open
         working-directory: ../test-website
         env:
           E2E_TEST: true
       - name: Build test-website project
-        run: pnpm run build
+        # We build 2 locales to ensure a localized site doesn't leak memory
+        # See https://github.com/facebook/docusaurus/issues/10944
+        run: pnpm run build --locale en --locale fr
+        env:
+          # Our website should build even with limited memory
+          # See https://github.com/facebook/docusaurus/pull/10590
+          NODE_OPTIONS: '--max-old-space-size=200'
+          DOCUSAURUS_PERF_LOGGER: 'true'
         working-directory: ../test-website

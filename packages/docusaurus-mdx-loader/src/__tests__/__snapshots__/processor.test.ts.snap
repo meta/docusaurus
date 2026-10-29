@@ -1,0 +1,405 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MDX processor > md format > compiles GFM tables 1`] = `
+"import {jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
+import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+export const toc = [];
+function _createMdxContent(props) {
+  const _components = {
+    table: "table",
+    tbody: "tbody",
+    td: "td",
+    th: "th",
+    thead: "thead",
+    tr: "tr",
+    ..._provideComponents(),
+    ...props.components
+  };
+  return _jsxs(_components.table, {
+    children: [_jsx(_components.thead, {
+      children: _jsxs(_components.tr, {
+        children: [_jsx(_components.th, {
+          children: "a"
+        }), _jsx(_components.th, {
+          children: "b"
+        })]
+      })
+    }), _jsx(_components.tbody, {
+      children: _jsxs(_components.tr, {
+        children: [_jsx(_components.td, {
+          children: "c"
+        }), _jsx(_components.td, {
+          children: "d"
+        })]
+      })
+    })]
+  });
+}
+export default function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ..._provideComponents(),
+    ...props.components
+  };
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+"
+`;
+
+exports[`MDX processor > md format > exports the table of contents 1`] = `
+"import {jsx as _jsx} from "react/jsx-runtime";
+import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+export const toc = [{
+  "value": "Heading",
+  "id": "heading",
+  "level": 2
+}];
+function _createMdxContent(props) {
+  const _components = {
+    h2: "h2",
+    ..._provideComponents(),
+    ...props.components
+  };
+  return _jsx(_components.h2, {
+    id: "heading",
+    children: "Heading"
+  });
+}
+export default function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ..._provideComponents(),
+    ...props.components
+  };
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+"
+`;
+
+exports[`MDX processor > mdx format > compiles GFM tables 1`] = `
+"import {jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
+import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+export const toc = [];
+function _createMdxContent(props) {
+  const _components = {
+    table: "table",
+    tbody: "tbody",
+    td: "td",
+    th: "th",
+    thead: "thead",
+    tr: "tr",
+    ..._provideComponents(),
+    ...props.components
+  };
+  return _jsxs(_components.table, {
+    children: [_jsx(_components.thead, {
+      children: _jsxs(_components.tr, {
+        children: [_jsx(_components.th, {
+          children: "a"
+        }), _jsx(_components.th, {
+          children: "b"
+        })]
+      })
+    }), _jsx(_components.tbody, {
+      children: _jsxs(_components.tr, {
+        children: [_jsx(_components.td, {
+          children: "c"
+        }), _jsx(_components.td, {
+          children: "d"
+        })]
+      })
+    })]
+  });
+}
+export default function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ..._provideComponents(),
+    ...props.components
+  };
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+"
+`;
+
+exports[`MDX processor > mdx format > exports the table of contents 1`] = `
+"import {jsx as _jsx} from "react/jsx-runtime";
+import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+export const toc = [{
+  "value": "Heading",
+  "id": "heading",
+  "level": 2
+}];
+function _createMdxContent(props) {
+  const _components = {
+    h2: "h2",
+    ..._provideComponents(),
+    ...props.components
+  };
+  return _jsx(_components.h2, {
+    id: "heading",
+    children: "Heading"
+  });
+}
+export default function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ..._provideComponents(),
+    ...props.components
+  };
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+"
+`;
+
+exports[`MDX processor > preserves legacy admonition titles 1`] = `
+"import {jsx as _jsx} from "react/jsx-runtime";
+import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+export const toc = [];
+function _createMdxContent(props) {
+  const _components = {
+    admonition: "admonition",
+    p: "p",
+    ..._provideComponents(),
+    ...props.components
+  };
+  return _jsx(_components.admonition, {
+    title: "Custom title",
+    type: "note",
+    children: _jsx(_components.p, {
+      children: "Body"
+    })
+  });
+}
+export default function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ..._provideComponents(),
+    ...props.components
+  };
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+"
+`;
+
+exports[`MDX processor > preserves legacy comments 1`] = `
+"import {Fragment as _Fragment, jsx as _jsx} from "react/jsx-runtime";
+import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+export const toc = [];
+function _createMdxContent(props) {
+  return _jsx(_Fragment, {});
+}
+export default function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ..._provideComponents(),
+    ...props.components
+  };
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+"
+`;
+
+exports[`MDX processor > preserves legacy heading IDs 1`] = `
+"import {jsx as _jsx} from "react/jsx-runtime";
+import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+export const toc = [{
+  "value": "Heading",
+  "id": "custom-id",
+  "level": 2
+}];
+function _createMdxContent(props) {
+  const _components = {
+    h2: "h2",
+    ..._provideComponents(),
+    ...props.components
+  };
+  return _jsx(_components.h2, {
+    id: "custom-id",
+    children: "Heading"
+  });
+}
+export default function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ..._provideComponents(),
+    ...props.components
+  };
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+"
+`;
+
+exports[`MDX processor > preserves raw HTML in CommonMark 1`] = `
+"import {jsx as _jsx} from "react/jsx-runtime";
+import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+export const toc = [];
+function _createMdxContent(props) {
+  const _components = {
+    div: "div",
+    ..._provideComponents(),
+    ...props.components
+  };
+  return _jsx(_components.div, {
+    className: "custom",
+    children: "HTML content"
+  });
+}
+export default function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ..._provideComponents(),
+    ...props.components
+  };
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+"
+`;
+
+exports[`MDX processor > remarkMdxOptions > does not apply to the md format 1`] = `
+"import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
+import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+export const toc = [];
+function _createMdxContent(props) {
+  const _components = {
+    p: "p",
+    ..._provideComponents(),
+    ...props.components
+  };
+  return _jsxs(_Fragment, {
+    children: [_jsx(_components.p, {
+      children: "import text from './file.txt' with {type: 'text'};"
+    }), "/n", _jsx(_components.p, {
+      children: "{text}"
+    })]
+  });
+}
+export default function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ..._provideComponents(),
+    ...props.components
+  };
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+"
+`;
+
+exports[`MDX processor > remarkMdxOptions > parses import attributes by default (ES2025) 1`] = `
+"import {Fragment as _Fragment, jsx as _jsx} from "react/jsx-runtime";
+import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+import text from './file.txt' with { type: 'text' };
+export const toc = [];
+function _createMdxContent(props) {
+  return _jsx(_Fragment, {
+    children: text
+  });
+}
+export default function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ..._provideComponents(),
+    ...props.components
+  };
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+"
+`;
+
+exports[`MDX processor > supports emoji=false 1`] = `
+"import {jsx as _jsx} from "react/jsx-runtime";
+import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+export const toc = [];
+function _createMdxContent(props) {
+  const _components = {
+    p: "p",
+    ..._provideComponents(),
+    ...props.components
+  };
+  return _jsx(_components.p, {
+    children: "Hello :smile: :unknown_shortcode:"
+  });
+}
+export default function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ..._provideComponents(),
+    ...props.components
+  };
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+"
+`;
+
+exports[`MDX processor > supports emoji=true 1`] = `
+"import {jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
+import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+export const toc = [];
+function _createMdxContent(props) {
+  const _components = {
+    p: "p",
+    ..._provideComponents(),
+    ...props.components
+  };
+  return _jsxs(_components.p, {
+    children: ["Hello ", "😄", " :unknown_shortcode:"]
+  });
+}
+export default function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ..._provideComponents(),
+    ...props.components
+  };
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+"
+`;

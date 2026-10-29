@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {jest} from '@jest/globals';
-import path from 'path';
+import {describe, expect, it, vi} from 'vitest';
+import path from 'node:path';
 import {createSlugger} from '@docusaurus/utils';
 import {loadSidebars, DisabledSidebars} from '../index';
 import {DefaultSidebarItemsGenerator} from '../generator';
@@ -79,7 +79,7 @@ describe('loadSidebars', () => {
     await expect(() =>
       loadSidebars(sidebarPath, params),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `"Invalid sidebar items collection \`"doc1"\` in \`items\` of the category Category Label: it must either be an array of sidebar items or a shorthand notation (which doesn't contain a \`type\` property). See https://docusaurus.io/docs/sidebar/items for all valid syntaxes."`,
+      `[Error: Invalid sidebar items collection \`"doc1"\` in \`items\` of the category Category Label: it must either be an array of sidebar items or a shorthand notation (which doesn't contain a \`type\` property). See https://docusaurus.io/docs/sidebar/items for all valid syntaxes.]`,
     );
   });
 
@@ -156,16 +156,13 @@ describe('loadSidebars', () => {
   });
 
   it('duplicate category metadata files', async () => {
+    using warn = vi.spyOn(console, 'warn');
+    using error = vi.spyOn(console, 'error');
+
     const sidebarPath = path.join(
       fixtureDir,
       'sidebars-collapsed-first-level.json',
     );
-    const consoleWarnMock = jest
-      .spyOn(console, 'warn')
-      .mockImplementation(() => {});
-    const consoleErrorMock = jest
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
     await expect(() =>
       loadSidebars(sidebarPath, {
         ...params,
@@ -174,13 +171,15 @@ describe('loadSidebars', () => {
           contentPathLocalized: path.join(fixtureDir, 'invalid-docs'),
         } as VersionMetadata,
       }),
-    ).rejects.toThrowErrorMatchingInlineSnapshot(`""foo" is not allowed"`);
-    expect(consoleWarnMock).toHaveBeenCalledWith(
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: "foo" is not allowed]`,
+    );
+    expect(warn).toHaveBeenCalledWith(
       expect.stringMatching(
         /.*\[WARNING\].* There are more than one category metadata files for .*foo.*: foo\/_category_.json, foo\/_category_.yml. The behavior is undetermined./,
       ),
     );
-    expect(consoleErrorMock).toHaveBeenCalledWith(
+    expect(error).toHaveBeenCalledWith(
       expect.stringMatching(
         /.*\[ERROR\].* The docs sidebar category metadata file .*foo\/_category_.json.* looks invalid!/,
       ),

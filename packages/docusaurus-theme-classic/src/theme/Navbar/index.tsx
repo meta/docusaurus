@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import NavbarLayout from '@theme/Navbar/Layout';
 import NavbarContent from '@theme/Navbar/Content';
 
-export default function Navbar(): JSX.Element {
+export default function Navbar(): ReactNode {
   return (
     <NavbarLayout>
       <NavbarContent />

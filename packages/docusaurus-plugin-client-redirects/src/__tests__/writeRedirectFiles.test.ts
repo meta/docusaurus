@@ -5,9 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
+import {describe, expect, it} from 'vitest';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
+import {outputFile} from '@docusaurus/fs';
 import writeRedirectFiles, {
   toRedirectFiles,
   createToUrl,
@@ -231,7 +233,7 @@ describe('writeRedirectFiles', () => {
       },
     ];
 
-    await fs.outputFile(
+    await outputFile(
       filesMetadata[0]!.fileAbsolutePath,
       'file already exists!',
     );
@@ -239,7 +241,7 @@ describe('writeRedirectFiles', () => {
     await expect(
       writeRedirectFiles(filesMetadata),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `"The redirect plugin is not supposed to override existing files."`,
+      `[Error: The redirect plugin is not supposed to override existing files.]`,
     );
   });
 });

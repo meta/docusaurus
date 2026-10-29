@@ -1,0 +1,54 @@
+{
+  "name": "@docusaurus/babel",
+  "version": "4.0.0",
+  "description": "Docusaurus package for Babel-related utils.",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    "./preset": {
+      "types": "./lib/preset.d.ts",
+      "default": "./lib/preset.js"
+    },
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/facebook/docusaurus.git",
+    "directory": "packages/docusaurus-babel"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "catalog:",
+    "@babel/generator": "catalog:",
+    "@babel/plugin-transform-runtime": "catalog:",
+    "@babel/preset-env": "catalog:",
+    "@babel/preset-react": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@babel/runtime": "catalog:",
+    "@babel/traverse": "catalog:",
+    "@docusaurus/fs": "workspace:*",
+    "@docusaurus/logger": "workspace:*",
+    "@docusaurus/types": "workspace:*",
+    "@docusaurus/utils": "workspace:*",
+    "babel-plugin-dynamic-import-node": "catalog:",
+    "tslib": "catalog:"
+  },
+  "devDependencies": {
+    "@types/babel__core": "catalog:dev",
+    "@types/babel__generator": "catalog:dev",
+    "@types/babel__traverse": "catalog:dev"
+  },
+  "engines": {
+    "node": ">=24.21"
+  }
+}

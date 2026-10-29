@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {type ReactNode} from 'react';
+import type {ReactNode} from 'react';
 
 import clsx from 'clsx';
 
@@ -28,7 +28,7 @@ export default function Tweet({
   content,
   date,
   githubUsername,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   return (
     <div className={clsx('card', styles.tweet)}>
       <div className="card__header">
@@ -36,7 +36,7 @@ export default function Tweet({
           <img
             alt={name}
             className="avatar__photo"
-            src={`https://unavatar.io/twitter/${handle}?fallback=https://github.com/${githubUsername}.png`}
+            src={`https://unavatar.io/x/${handle}?fallback=https://github.com/${githubUsername}.png`}
             width="48"
             height="48"
             loading="lazy"

@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
+import path from 'node:path';
 import _ from 'lodash';
 import logger from '@docusaurus/logger';
 import leven from 'leven';
 import {askThemeName} from './prompts';
 import {findStringIgnoringCase, type SwizzlePlugin} from './common';
 
-export function pluginToThemeName(plugin: SwizzlePlugin): string | undefined {
+function pluginToThemeName(plugin: SwizzlePlugin): string | undefined {
   if (plugin.instance.getThemePath) {
     return (
       (plugin.instance.version as {name?: string}).name ?? plugin.instance.name

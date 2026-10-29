@@ -6,22 +6,41 @@
  */
 
 import {loadContext} from '../../server/site';
-import {initPlugins} from '../../server/plugins/init';
+import {initPluginsConfigs} from '../../server/plugins/init';
 import {loadPluginConfigs} from '../../server/plugins/configs';
-import type {SwizzleCLIOptions, SwizzleContext} from './common';
+import type {SwizzleCLIOptions, SwizzleContext, SwizzlePlugin} from './common';
+import type {LoadContext} from '@docusaurus/types';
+
+async function getSwizzlePlugins(
+  context: LoadContext,
+): Promise<SwizzlePlugin[]> {
+  const pluginConfigs = await loadPluginConfigs(context);
+  const pluginConfigInitResults = await initPluginsConfigs(
+    context,
+    pluginConfigs,
+  );
+
+  return pluginConfigInitResults.flatMap((initResult) => {
+    // Ignore self-disabling plugins returning null
+    if (initResult.plugin === null) {
+      return [];
+    }
+    return [
+      // TODO this is a bit confusing, need refactor
+      {
+        plugin: initResult.config,
+        instance: initResult.plugin,
+      },
+    ];
+  });
+}
 
 export async function initSwizzleContext(
   siteDir: string,
   options: SwizzleCLIOptions,
 ): Promise<SwizzleContext> {
   const context = await loadContext({siteDir, config: options.config});
-  const plugins = await initPlugins(context);
-  const pluginConfigs = await loadPluginConfigs(context);
-
   return {
-    plugins: plugins.map((plugin, pluginIndex) => ({
-      plugin: pluginConfigs[pluginIndex]!,
-      instance: plugin,
-    })),
+    plugins: await getSwizzlePlugins(context),
   };
 }

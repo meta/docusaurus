@@ -22,13 +22,20 @@ declare module 'vfile' {
 
 declare module 'unist' {
   interface Data {
+    admonitionTitle?: boolean;
     hName?: string;
     hProperties?: Record<string, unknown>;
   }
 }
 
 declare module 'mdast' {
-  interface HeadingData {
+  interface Data {
     id?: string;
+    hName?: string;
+    hProperties?: Record<string, unknown>;
+  }
+
+  interface HeadingData {
+    hProperties?: {id?: string};
   }
 }

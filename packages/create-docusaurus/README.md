@@ -54,3 +54,25 @@ yarn typecheck
 yarn build
 yarn start
 ```
+
+### End-to-end tests
+
+To run end-to-end tests similar to our CI workflows, publishing monorepo packages to a local Verdaccio repository inside Docker.
+
+**Important**: this modifies `package.json` files before publish, so make sure to commit your work first!
+
+```bash
+cd `git rev-parse --show-toplevel` # Back to repo root
+pnpm install
+
+docker rm -f verdaccio
+pnpm test:build:website -st
+
+cd ../test-website # website is generated outside of the monorepo
+
+pnpm_config_registry=http://localhost:4873 pnpm install
+
+pnpm run typecheck
+pnpm start --no-open
+pnpm run build --locale en --locale fr
+```

@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {ThemeClassNames} from '@docusaurus/theme-common';
-import {useDoc} from '@docusaurus/theme-common/internal';
+import {useDoc} from '@docusaurus/plugin-content-docs/client';
 
 import TOC from '@theme/TOC';
 
-export default function DocItemTOCDesktop(): JSX.Element {
+export default function DocItemTOCDesktop(): ReactNode {
   const {toc, frontMatter} = useDoc();
   return (
     <TOC

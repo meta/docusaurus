@@ -1,1 +1,0 @@
-[nonexistent](@site/foo.pdf)

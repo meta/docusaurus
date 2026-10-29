@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 import styles from './markdown-features-react.module.css';
 ```
 
-## Using JSX in Markdown {#using-jsx-in-markdown}
+## Using JSX in Markdown {/* #using-jsx-in-markdown */}
 
 Docusaurus has built-in support for [MDX v1](https://mdxjs.com/), which allows you to write JSX within your Markdown files and render them as React components.
 
@@ -25,7 +25,7 @@ While Docusaurus parses both `.md` and `.mdx` files using MDX, some of the synta
 
 Check out the [MDX docs](https://mdxjs.com/) to see what other fancy stuff you can do with MDX.
 
-### Exporting components {#exporting-components}
+### Exporting components {/* #exporting-components */}
 
 To define any custom component within an MDX file, you have to export it: only paragraphs that start with `export` will be parsed as components instead of prose.
 
@@ -90,7 +90,7 @@ In addition, MDX is not [100% compatible with CommonMark](https://github.com/fac
 
 :::
 
-### Importing components {#importing-components}
+### Importing components {/* #importing-components */}
 
 You can also import your own components defined in other files or third-party components installed via npm.
 
@@ -142,7 +142,7 @@ If you use the same component across a lot of files, you don't need to import it
 
 :::
 
-### MDX component scope {#mdx-component-scope}
+### MDX component scope {/* #mdx-component-scope */}
 
 Apart from [importing a component](#importing-components) and [exporting a component](#exporting-components), a third way to use a component in MDX is to **register it to the global scope**, which will make it automatically available in every MDX file, without any import statements.
 
@@ -229,7 +229,7 @@ If you don't wrap your imported MDX with `MDXContent`, the global scope will not
 
 :::
 
-### Markdown and JSX interoperability {#markdown-and-jsx-interoperability}
+### Markdown and JSX interoperability {/* #markdown-and-jsx-interoperability */}
 
 Docusaurus v2 is using MDX v1, which has a lot of known cases where the content fails to be correctly parsed as Markdown. Use the **[MDX playground](https://mdx-git-renovate-babel-monorepo-mdx.vercel.app/playground)** to ensure that your syntax is valid MDX.
 
@@ -453,7 +453,7 @@ Now I'm actually just text
 
 </details>
 
-## Importing code snippets {#importing-code-snippets}
+## Importing code snippets {/* #importing-code-snippets */}
 
 You can not only import a file containing a component definition, but also import any code file as raw text, and then insert it in a code block, thanks to [Webpack raw-loader](https://webpack.js.org/loaders/raw-loader/). In order to use `raw-loader`, you first need to install it in your project:
 
@@ -496,7 +496,7 @@ This feature is experimental and might be subject to breaking API changes in the
 
 :::
 
-## Importing Markdown {#importing-markdown}
+## Importing Markdown {/* #importing-markdown */}
 
 You can use Markdown files as components and import them elsewhere, either in Markdown files or in React pages.
 
@@ -531,7 +531,7 @@ Currently, the table of contents does not contain the imported Markdown headings
 
 :::
 
-## Available exports {#available-exports}
+## Available exports {/* #available-exports */}
 
 Within the MDX page, the following variables are available as globals:
 

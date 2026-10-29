@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`getTranslationFiles returns translation files matching snapshot 1`] = `
+exports[`getTranslationFiles > returns translation files matching snapshot 1`] = `
 [
   {
     "content": {
@@ -63,7 +63,7 @@ exports[`getTranslationFiles returns translation files matching snapshot 1`] = `
 ]
 `;
 
-exports[`getTranslationFiles returns translation files matching snapshot 2`] = `
+exports[`getTranslationFiles > returns translation files matching snapshot 2`] = `
 [
   {
     "content": {
@@ -114,7 +114,7 @@ exports[`getTranslationFiles returns translation files matching snapshot 2`] = `
 ]
 `;
 
-exports[`translateThemeConfig returns translated themeConfig 1`] = `
+exports[`translateThemeConfig > returns translated themeConfig 1`] = `
 {
   "announcementBar": {},
   "colorMode": {},

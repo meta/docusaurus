@@ -14,6 +14,46 @@
 
 :::
 
+## Rich titles
+
+:::tip[**Rich** title with `code`, a [link](/docs/markdown-features/admonitions), and :smile:]
+
+The title formatting should match the formatting in the body: **bold**, `code`, a [link](/docs/markdown-features/admonitions), and :smile:.
+
+:::
+
+:::info[JSX title: <span style={{color: 'red'}}>red</span> and {1 + 1}]
+
+JSX and expressions also work in the title.
+
+:::
+
+:::note[**Title only**]
+
+:::
+
+:::note[]
+
+An empty label keeps the default title.
+
+:::
+
+::::info[**Outer title**]
+
+:::warning[*Nested title*]
+
+Nested admonitions keep their own titles.
+
+:::
+
+::::
+
+## Rich titles in CommonMark
+
+import AdmonitionsCommonMark from './_admonitions-md.md';
+
+<AdmonitionsCommonMark />
+
 ## Large font icon
 
 import Admonition from '@theme/Admonition';
@@ -54,6 +94,73 @@ import InfoIcon from "@theme/Admonition/Icon/Info"
 </Admonition>
 ```
 
+## Admonitions with attributes
+
+<details>
+<summary>Relevant CSS for this section</summary>
+
+```css title="dogfooding.css"
+/* ... */
+.shadow {
+  --shadow-color: red;
+  box-shadow: 10px 10px 10px var(--shadow-color);
+
+  &.blue {
+    --shadow-color: blue;
+  }
+}
+
+#info-1 {
+  border: solid 2px blue;
+}
+
+#info-2 {
+  border: solid 2px green;
+}
+
+#info-3 {
+  border: solid 2px red;
+}
+```
+
+</details>
+
+### Classes
+
+:::info{.shadow}
+
+The class `shadow` was added by writing `:::info{.shadow}`.
+
+:::
+
+:::info{.shadow .blue}
+
+The class `shadow` and `blue` were added by writing `:::info{.shadow .blue}`.
+
+:::
+
+### Ids
+
+:::info{#info-1}
+
+The id `info-1` was added by writing `:::{#info-1}`
+
+:::
+
+:::info{#info-3 #info-1 #info-2}
+
+The last provided id `info-2` wins when writing `:::{#info-3 #info-1 #info-2}`
+
+:::
+
+### Combination
+
+:::info{.shadow #info-4 .blue #info-3}
+
+Multiple classes and ids: `{.shadow #info-4 .blue #info-3}`.
+
+:::
+
 ## Indented admonitions
 
 See admonition title v2 compat syntax bug: https://github.com/facebook/docusaurus/issues/9507
@@ -68,7 +175,7 @@ See admonition title v2 compat syntax bug: https://github.com/facebook/docusauru
 
 - **Scale-up cluster**
 
-  :::caution Warning
+  :::warning Warning
 
   Scaling up a cluster may cause several minutes of downtime. Please exercise caution.
 
@@ -76,13 +183,13 @@ See admonition title v2 compat syntax bug: https://github.com/facebook/docusauru
 
 ## Quoted admonitions
 
-> :::caution There be dragons
+> :::warning There be dragons
 >
 > This is the admonition content
 >
 > :::
 >
-> > :::caution There be dragons
+> > :::warning There be dragons
 > >
 > > This is the admonition content
 > >
@@ -119,31 +226,5 @@ warning
 :::danger
 
 danger
-
-:::
-
-## Legacy admonitions
-
-:::secondary
-
-secondary
-
-:::
-
-:::important
-
-important
-
-:::
-
-:::success
-
-success
-
-:::
-
-:::caution
-
-caution
 
 :::

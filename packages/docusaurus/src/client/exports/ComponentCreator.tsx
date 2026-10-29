@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type React from 'react';
 import Loadable from 'react-loadable';
 import routesChunkNames from '@generated/routesChunkNames';
 import registry from '@generated/registry';
@@ -13,12 +13,6 @@ import Loading from '@theme/Loading';
 import flat from '../flat';
 import {RouteContextProvider} from '../routeContext';
 import type {RouteContext} from '@docusaurus/types';
-
-declare global {
-  interface NodeRequire {
-    resolveWeak: (name: string) => number;
-  }
-}
 
 export default function ComponentCreator(
   path: string,
@@ -37,7 +31,7 @@ export default function ComponentCreator(
           <RouteContextProvider
             // Do we want a better name than native-default?
             value={{plugin: {name: 'native', id: 'default'}}}>
-            <NotFound {...(props as JSX.IntrinsicAttributes)} />
+            <NotFound {...(props as React.JSX.IntrinsicAttributes)} />
           </RouteContextProvider>
         );
       },
@@ -60,7 +54,6 @@ export default function ComponentCreator(
   Object.entries(flatChunkNames).forEach(([keyPath, chunkName]) => {
     const chunkRegistry = registry[chunkName];
     if (chunkRegistry) {
-      // eslint-disable-next-line prefer-destructuring
       loader[keyPath] = chunkRegistry[0];
       modules.push(chunkRegistry[1]);
       optsWebpack.push(chunkRegistry[2]);
@@ -123,14 +116,12 @@ export default function ComponentCreator(
         val[keyPaths[keyPaths.length - 1]!] = chunk;
       });
 
-      /* eslint-disable no-underscore-dangle */
       const Component = loadedModules.__comp!;
       delete loadedModules.__comp;
       const routeContext = loadedModules.__context!;
       delete loadedModules.__context;
       const routeProps = loadedModules.__props;
       delete loadedModules.__props;
-      /* eslint-enable no-underscore-dangle */
 
       // Is there any way to put this RouteContextProvider upper in the tree?
       return (

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`sortRoutes sorts route config correctly 1`] = `
+exports[`sortRoutes > sorts route config correctly 1`] = `
 [
   {
     "component": "",
@@ -55,7 +55,7 @@ exports[`sortRoutes sorts route config correctly 1`] = `
 ]
 `;
 
-exports[`sortRoutes sorts route config given a baseURL 1`] = `
+exports[`sortRoutes > sorts route config given a baseURL 1`] = `
 [
   {
     "component": "",
@@ -104,153 +104,7 @@ exports[`sortRoutes sorts route config given a baseURL 1`] = `
 ]
 `;
 
-exports[`sortRoutes sorts route config recursively 1`] = `
-[
-  {
-    "component": "",
-    "exact": true,
-    "path": "/some/page",
-  },
-  {
-    "component": "",
-    "path": "/docs",
-    "routes": [
-      {
-        "component": "",
-        "exact": true,
-        "path": "/docs/tags",
-      },
-      {
-        "component": "",
-        "exact": true,
-        "path": "/docs/tags/someTag",
-      },
-      {
-        "component": "",
-        "path": "/docs",
-        "routes": [
-          {
-            "component": "",
-            "exact": true,
-            "path": "/docs/doc1",
-          },
-          {
-            "component": "",
-            "exact": true,
-            "path": "/docs/doc2",
-          },
-        ],
-      },
-    ],
-  },
-]
-`;
-
-exports[`sortRoutes sorts route config correctly 1`] = `
-[
-  {
-    "component": "",
-    "path": "/community",
-  },
-  {
-    "component": "",
-    "path": "/some-page",
-  },
-  {
-    "component": "",
-    "path": "/docs",
-    "routes": [
-      {
-        "component": "",
-        "path": "/docs/someDoc",
-      },
-      {
-        "component": "",
-        "path": "/docs/someOtherDoc",
-      },
-    ],
-  },
-  {
-    "component": "",
-    "path": "/",
-  },
-  {
-    "component": "",
-    "path": "/",
-    "routes": [
-      {
-        "component": "",
-        "path": "/someDoc",
-      },
-      {
-        "component": "",
-        "path": "/someOtherDoc",
-      },
-    ],
-  },
-  {
-    "component": "",
-    "path": "/",
-    "routes": [
-      {
-        "component": "",
-        "path": "/subroute",
-      },
-    ],
-  },
-]
-`;
-
-exports[`sortRoutes sorts route config given a baseURL 1`] = `
-[
-  {
-    "component": "",
-    "path": "/latest/community",
-  },
-  {
-    "component": "",
-    "path": "/latest/example",
-  },
-  {
-    "component": "",
-    "path": "/latest/some-page",
-  },
-  {
-    "component": "",
-    "path": "/latest/docs",
-    "routes": [
-      {
-        "component": "",
-        "path": "/latest/docs/someDoc",
-      },
-      {
-        "component": "",
-        "path": "/latest/docs/someOtherDoc",
-      },
-    ],
-  },
-  {
-    "component": "",
-    "path": "/latest/",
-  },
-  {
-    "component": "",
-    "path": "/latest/",
-    "routes": [
-      {
-        "component": "",
-        "path": "/latest/someDoc",
-      },
-      {
-        "component": "",
-        "path": "/latest/someOtherDoc",
-      },
-    ],
-  },
-]
-`;
-
-exports[`sortRoutes sorts route config recursively 1`] = `
+exports[`sortRoutes > sorts route config recursively 1`] = `
 [
   {
     "component": "",

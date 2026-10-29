@@ -1,0 +1,17 @@
+a:
+  description: 'Description for tag a'
+b:
+  label: 'Label for tag b'
+c:
+  permalink: '/permalink-for-tag-c'
+d:
+e:
+  label: 'Label for tag e'
+  description: 'Description for tag e'
+  permalink: '/permalink-for-tag-e'
+some-tag:
+visibility:
+draft:
+listed:
+unlisted:
+d-custom-permalink:

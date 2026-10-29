@@ -1,9 +1,6 @@
 ---
 title: How I Converted Profilo to Docusaurus in Under 2 Hours
-author: Christine Abernathy
-authorURL: http://twitter.com/abernathyca
-authorImageURL: https://github.com/caabernathy.png
-authorTwitter: abernathyca
+authors: [abernathyca]
 tags: [profilo, adoption]
 ---
 
@@ -15,7 +12,7 @@ This is the story of the rather short journey it took to create the [Profilo](ht
 
 Profilo, an Android library for collecting performance traces from production, [was announced](https://code.fb.com/android/profilo-understanding-app-performance-in-the-wild/) earlier this year. The project was [published on GitHub](https://github.com/facebookincubator/profilo/tree/802042f90f990998a272387e371b893af52465b8) with a less than [a handful or Markdown files](https://github.com/facebookincubator/profilo/tree/802042f90f990998a272387e371b893af52465b8/docs) to describe its functionality and no website to showcase any branding and highlight the logo. The task at hand was to turn these existing docs and logo into a website.
 
-<!--truncate-->
+{/* truncate */}
 
 In general, when creating a website with Docusaurus you do the following:
 
@@ -29,7 +26,7 @@ In general, when creating a website with Docusaurus you do the following:
 
 Given I had pre-existing Markdown files, I didn't have to generate the core content but simply make sure that Docusaurus could process the files by adding the expected metadata to them. Most of the work would therefore consist of customizing the defaults provided by Docusaurus.
 
-## Overview of Steps Taken
+## Overview of Steps Taken {/* #overview-of-steps-taken */}
 
 Here's an overview of the steps taken to convert to a website. I'll discuss some of the design aspects in a later section.
 
@@ -86,7 +83,7 @@ Here's an overview of the steps taken to convert to a website. I'll discuss some
 
 The final website was published on https://facebookincubator.github.io/profilo/. It had taken 1.5 hours to get to the initial PR stage and another half an hour or so to respond to review feedback and publish the website.
 
-## Design
+## Design {/* #design */}
 
 Here's what the initial website looked like when the first pull request was sent out:
 
@@ -118,7 +115,7 @@ Lastly, I didn't have to worry about handling responsive design. You get this ou
 
 ![Mobile screenshots of the front page and sample doc page. The layout is automatically adjusted to make it appear more natural. The doc sidebar is hidden behind a button.](/img/profilo_blog_post_android_ios.png)
 
-## Final Thoughts
+## Final Thoughts {/* #final-thoughts */}
 
 The Profilo engineers were happy to see that they didn't have to change their workflow to update existing content. They were able to continue working with Markdown files. This will still be true in the future if new docs are added, although there may be some config changes needed if the sidebar navigation needs to be updated.
 

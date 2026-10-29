@@ -9,27 +9,19 @@
 Workaround to avoid rendering empty search container
 See https://github.com/facebook/docusaurus/pull/9385
 */
-/*
-TODO temporary @supports check, remove before 2025
-only needed for Firefox < 121
-see https://github.com/facebook/docusaurus/issues/9527#issuecomment-1805272379
- */
-@supports selector(:has(*)) {
-  .navbarSearchContainer:not(:has(> *)) {
-    display: none;
-  }
+.navbarSearchContainer:empty {
+  display: none;
 }
 
-@media (max-width: 996px) {
+@media (width <= 996px) {
   .navbarSearchContainer {
     position: absolute;
     right: var(--ifm-navbar-padding-horizontal);
   }
 }
 
-@media (min-width: 997px) {
+@media (width >= 997px) {
   .navbarSearchContainer {
-    padding: var(--ifm-navbar-item-padding-vertical)
-      var(--ifm-navbar-item-padding-horizontal);
+    padding: 0 var(--ifm-navbar-item-padding-horizontal);
   }
 }

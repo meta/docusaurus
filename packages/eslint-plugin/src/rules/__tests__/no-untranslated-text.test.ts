@@ -6,18 +6,9 @@
  */
 
 import rule from '../no-untranslated-text';
-import {getCommonValidTests, RuleTester} from './testUtils';
+import {getCommonValidTests, ruleTester} from './testUtils';
 
 const errorsJSX = [{messageId: 'translateChildren'}] as const;
-
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-});
 
 ruleTester.run('no-untranslated-text', rule, {
   valid: [

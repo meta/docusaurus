@@ -1,12 +1,8 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "references": [{"path": "./tsconfig.client.json"}],
   "compilerOptions": {
-    "noEmit": false,
-    "incremental": true,
-    "tsBuildInfoFile": "./lib/.tsbuildinfo",
-    "rootDir": "src",
-    "outDir": "lib"
+    "noEmit": false
   },
   "include": ["src"],
   "exclude": [

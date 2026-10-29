@@ -11,8 +11,9 @@ on:
       - main
       - docusaurus-v**
     paths:
+      - .github/workflows/build-perf.yml
       - package.json
-      - yarn.lock
+      - pnpm-lock.yaml
       - packages/**
       - website/**
       - '!website/docs/**'
@@ -25,54 +26,97 @@ permissions:
   contents: read
 
 jobs:
+  # Posts a PR comment with build size differences from PR vs main branches
   build-size:
     permissions:
       checks: write # for preactjs/compressed-size-action to create and update the checks
       contents: read # for actions/checkout to fetch code
       issues: write # for preactjs/compressed-size-action to create comments
       pull-requests: write # for preactjs/compressed-size-action to write a PR review
+    # ⚠️ No GitHub Actions cache on purpose, enforced by GitHub for every step
+    # This job can write to pull requests, issues and checks
+    # See https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax#cache-mode
+    cache-mode: none
     name: Build Size Report
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        DOCUSAURUS_INFRA: ['SLOWER', 'FASTER']
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Set up Node
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
         with:
-          node-version: '18'
-          cache: yarn
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          check-latest: true
       - name: Track build size changes
-        uses: preactjs/compressed-size-action@8119d3d31b6e57b167e09c81dfa877eada3bcb35 # v2
+        uses: preactjs/compressed-size-action@f322c295dde06a1cb7ccaef105732dd8a726d1d9 # v2.10.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          build-script: build:website:en
+          # Always rebuild packages, including for the base branch
+          install-script: bash -c "pnpm install --frozen-lockfile --ignore-scripts && pnpm build:packages"
+          build-script: build:website:fast
           clean-script: clear:website # see https://github.com/facebook/docusaurus/pull/6838
-          pattern: '{website/build/assets/js/main*js,website/build/assets/css/styles*css,website/.docusaurus/globalData.json,website/.docusaurus/registry.js,website/.docusaurus/routes.js,website/.docusaurus/routesChunkNames.json,website/.docusaurus/site-metadata.json,website/.docusaurus/codeTranslations.json,website/.docusaurus/i18n.json,website/.docusaurus/docusaurus.config.mjs,website/build/index.html,website/build/blog/index.html,website/build/blog/**/introducing-docusaurus/*,website/build/docs/index.html,website/build/docs/installation/index.html,website/build/tests/docs/index.html,website/build/tests/docs/standalone/index.html}'
-          strip-hash: '\.([^;]\w{7})\.'
+          pattern: '{website/build/assets/js/main*js,website/build/assets/js/runtime~main*js,website/build/assets/css/styles*css,website/.docusaurus/globalData.json,website/.docusaurus/registry.js,website/.docusaurus/routes.js,website/.docusaurus/routesChunkNames.json,website/.docusaurus/site-metadata.json,website/.docusaurus/codeTranslations.json,website/.docusaurus/i18n.json,website/.docusaurus/docusaurus.config.mjs,website/build/index.html,website/build/docs.html,website/build/docs/**/*.html,website/build/blog.html,website/build/blog/**/*.html}'
+          # HTML files: exclude versioned docs pages, tags pages, html redirect files
+          exclude: '{website/build/docs/?.?.?/**/*.html,website/build/docs/next/**/*.html,website/build/blog/tags/**/*.html,**/*.html.html}'
+          strip-hash: '\.([^;]\w{9})\.'
           minimum-change-threshold: 30
           compression: none
+          comment-key: DOCUSAURUS_INFRA_${{ matrix.DOCUSAURUS_INFRA }}
+        env:
+          DOCUSAURUS_SLOWER: ${{ matrix.DOCUSAURUS_INFRA == 'SLOWER' && 'true' || 'false'  }}
+          DOCUSAURUS_PERF_LOGGER: 'true'
+
+  # Ensures build times stay under reasonable thresholds
   build-time:
     name: Build Time Perf
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        DOCUSAURUS_INFRA: ['SLOWER', 'FASTER']
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Set up Node
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
         with:
-          cache: yarn
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          check-latest: true
+          cache: pnpm
       - name: Installation
-        run: yarn
+        run: pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || pnpm install --frozen-lockfile
 
       # Ensure build with a cold cache does not increase too much
       - name: Build (cold cache)
-        run: yarn workspace website build --locale en
-        timeout-minutes: 8
+        run: pnpm build:website:fast
+        timeout-minutes: ${{ matrix.DOCUSAURUS_INFRA == 'SLOWER' && 3 || 2  }}
+        env:
+          DOCUSAURUS_SLOWER: ${{ matrix.DOCUSAURUS_INFRA == 'SLOWER' && 'true' || 'false'  }}
+          DOCUSAURUS_PERF_LOGGER: 'true'
 
       # Ensure build with a warm cache does not increase too much
       - name: Build (warm cache)
-        run: yarn workspace website build --locale en
-        timeout-minutes: 2
+        run: pnpm build:website:fast
+        # Temporary: upper value for Rspack until incremental cache works better
+        timeout-minutes: ${{ matrix.DOCUSAURUS_INFRA == 'SLOWER' && 1 || 2  }}
+        env:
+          DOCUSAURUS_SLOWER: ${{ matrix.DOCUSAURUS_INFRA == 'SLOWER' && 'true' || 'false'  }}
+          DOCUSAURUS_PERF_LOGGER: 'true'
+
     # TODO post a GitHub comment with build with perf warnings?

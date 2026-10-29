@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`loadPresets array form 1`] = `
+exports[`loadPresets > array form 1`] = `
 {
   "plugins": [
     [
@@ -16,7 +16,7 @@ exports[`loadPresets array form 1`] = `
 }
 `;
 
-exports[`loadPresets array form composite 1`] = `
+exports[`loadPresets > array form composite 1`] = `
 {
   "plugins": [
     [
@@ -45,7 +45,7 @@ exports[`loadPresets array form composite 1`] = `
 }
 `;
 
-exports[`loadPresets array form with options 1`] = `
+exports[`loadPresets > array form with options 1`] = `
 {
   "plugins": [
     [
@@ -63,7 +63,7 @@ exports[`loadPresets array form with options 1`] = `
 }
 `;
 
-exports[`loadPresets cjs form 1`] = `
+exports[`loadPresets > cjs form 1`] = `
 {
   "plugins": [
     [
@@ -79,7 +79,7 @@ exports[`loadPresets cjs form 1`] = `
 }
 `;
 
-exports[`loadPresets esm form 1`] = `
+exports[`loadPresets > esm form 1`] = `
 {
   "plugins": [
     [
@@ -95,7 +95,7 @@ exports[`loadPresets esm form 1`] = `
 }
 `;
 
-exports[`loadPresets mixed form 1`] = `
+exports[`loadPresets > mixed form 1`] = `
 {
   "plugins": [
     [
@@ -122,7 +122,7 @@ exports[`loadPresets mixed form 1`] = `
 }
 `;
 
-exports[`loadPresets mixed form with themes 1`] = `
+exports[`loadPresets > mixed form with themes 1`] = `
 {
   "plugins": [
     [
@@ -159,7 +159,7 @@ exports[`loadPresets mixed form with themes 1`] = `
 }
 `;
 
-exports[`loadPresets string form composite 1`] = `
+exports[`loadPresets > string form composite 1`] = `
 {
   "plugins": [
     [
@@ -184,7 +184,7 @@ exports[`loadPresets string form composite 1`] = `
 }
 `;
 
-exports[`loadPresets ts form 1`] = `
+exports[`loadPresets > ts form 1`] = `
 {
   "plugins": [
     [

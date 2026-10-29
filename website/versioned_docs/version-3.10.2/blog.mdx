@@ -1,0 +1,783 @@
+---
+description: Deploy a full-featured blog in no time with Docusaurus.
+---
+
+# Blog
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The blog feature enables you to deploy a full-featured blog in no time.
+
+:::info
+
+Check the [Blog Plugin API Reference documentation](./api/plugins/plugin-content-blog.mdx) for an exhaustive list of options.
+
+:::
+
+## Initial setup {/* #initial-setup */}
+
+To set up your site's blog, start by creating a `blog` directory.
+
+Then, add an item link to your blog within `docusaurus.config.js`:
+
+```js title="docusaurus.config.js"
+export default {
+  themeConfig: {
+    // ...
+    navbar: {
+      items: [
+        // ...
+        // highlight-next-line
+        {to: 'blog', label: 'Blog', position: 'left'}, // or position: 'right'
+      ],
+    },
+  },
+};
+```
+
+## Adding posts {/* #adding-posts */}
+
+To publish in the blog, create a Markdown file within the blog directory.
+
+For example, create a file at `website/blog/2019-09-05-hello-docusaurus.md`:
+
+```md title="website/blog/2019-09-05-hello-docusaurus.md"
+---
+title: Welcome Docusaurus
+description: This is my first post on Docusaurus.
+slug: welcome-docusaurus-v2
+authors:
+  - name: Joel Marcey
+    title: Co-creator of Docusaurus 1
+    url: https://github.com/JoelMarcey
+    image_url: https://github.com/JoelMarcey.png
+    socials:
+      x: joelmarcey
+      github: JoelMarcey
+  - name: Sébastien Lorber
+    title: Docusaurus maintainer
+    url: https://sebastienlorber.com
+    image_url: https://github.com/slorber.png
+    socials:
+      x: sebastienlorber
+      github: slorber
+      email: seb@example.com
+tags: [hello, docusaurus-v2]
+image: https://i.imgur.com/mErPwqL.png
+hide_table_of_contents: false
+---
+
+Welcome to this blog. This blog is created with [**Docusaurus**](https://docusaurus.io/).
+
+<!-- truncate -->
+
+This is my first post on Docusaurus.
+
+A whole bunch of exploration to follow.
+```
+
+The [front matter](./guides/markdown-features/markdown-features-intro.mdx#front-matter) is useful to add more metadata to your blog post, for example, author information, but Docusaurus will be able to infer all necessary metadata without the front matter. For all possible fields, see [the API documentation](api/plugins/plugin-content-blog.mdx#markdown-front-matter).
+
+## Blog list {/* #blog-list */}
+
+The blog's index page (by default, it is at `/blog`) is the _blog list page_, where all blog posts are collectively displayed.
+
+Use the `<!--truncate-->` marker in your blog post to represent what will be shown as the summary when viewing all published blog posts. Anything above `<!--truncate-->` will be part of the summary. Note that the portion above the truncate marker must be standalone renderable Markdown. For example:
+
+```md title="website/blog/my-post.md" {7}
+---
+title: Markdown blog truncation example
+---
+
+All these will be part of the blog post summary.
+
+<!-- truncate -->
+
+But anything from here on down will not be.
+```
+
+For files using the `.mdx` extension, use a [MDX](https://mdxjs.com/) comment `{/* truncate */}` instead:
+
+{/* prettier-ignore */}
+```md title="website/blog/my-post.mdx" {7}
+---
+title: MDX blog truncation Example
+---
+
+All these will be part of the blog post summary.
+
+{/* truncate */}
+
+But anything from here on down will not be.
+```
+
+By default, 10 posts are shown on each blog list page, but you can control pagination with the `postsPerPage` option in the plugin configuration. If you set `postsPerPage: 'ALL'`, pagination will be disabled and all posts will be displayed on the first page. You can also add a meta description to the blog list page for better SEO:
+
+```js title="docusaurus.config.js"
+export default {
+  // ...
+  presets: [
+    [
+      '@docusaurus/preset-classic',
+      {
+        blog: {
+          // highlight-start
+          blogTitle: 'Docusaurus blog!',
+          blogDescription: 'A Docusaurus powered blog!',
+          postsPerPage: 'ALL',
+          // highlight-end
+        },
+      },
+    ],
+  ],
+};
+```
+
+## Blog sidebar {/* #blog-sidebar */}
+
+The blog sidebar displays recent blog posts. The default number of items shown is 5, but you can customize with the `blogSidebarCount` option in the plugin configuration. By setting `blogSidebarCount: 0`, the sidebar will be completely disabled, with the container removed as well. This will increase the width of the main container. Specially, if you have set `blogSidebarCount: 'ALL'`, _all_ posts will be displayed.
+
+You can also alter the sidebar heading text with the `blogSidebarTitle` option. For example, if you have set `blogSidebarCount: 'ALL'`, instead of the default "Recent posts", you may rather make it say "All posts":
+
+```js title="docusaurus.config.js"
+export default {
+  presets: [
+    [
+      '@docusaurus/preset-classic',
+      {
+        blog: {
+          // highlight-start
+          blogSidebarTitle: 'All posts',
+          blogSidebarCount: 'ALL',
+          // highlight-end
+        },
+      },
+    ],
+  ],
+};
+```
+
+## Blog post date {/* #blog-post-date */}
+
+Docusaurus will extract a `YYYY-MM-DD` date from many patterns such as `YYYY-MM-DD-my-blog-post-title.md` or `YYYY/MM/DD/my-blog-post-title.md`. This enables you to easily group blog posts by year, by month, or to use a flat structure.
+
+<details>
+<summary>Supported date extraction patterns</summary>
+
+| Pattern | Example |
+| --- | --- |
+| Single file | `2021-05-28-my-blog-post-title.md` |
+| MDX file | `2021-05-28-my-blog-post-title.mdx` |
+| Single folder + `index.md` | `2021-05-28-my-blog-post-title/index.md` |
+| Folder named by date | `2021-05-28/my-blog-post-title.md` |
+| Nested folders by date | `2021/05/28/my-blog-post-title.md` |
+| Partially nested folders by date | `2021/05-28-my-blog-post-title.md` |
+| Nested folders + `index.md` | `2021/05/28/my-blog-post-title/index.md` |
+| Date in the middle of path | `category/2021/05-28-my-blog-post-title.md` |
+
+Docusaurus can extract the date from the posts using any of the naming patterns above. It is advisable to choose one pattern and apply it to all posts to avoid confusion.
+
+</details>
+
+:::tip
+
+Using a folder can be convenient to co-locate blog post images alongside the Markdown file.
+
+:::
+
+This naming convention is optional, and you can also provide the date as front matter. Since the front matter follows YAML syntax where the datetime notation is supported, you can use front matter if you need more fine-grained publish dates. For example, if you have multiple posts published on the same day, you can order them according to the time of the day:
+
+```md title="earlier-post.md"
+---
+date: 2021-09-13T10:00
+---
+```
+
+```md title="later-post.md"
+---
+date: 2021-09-13T18:00
+---
+```
+
+## Blog post authors {/* #blog-post-authors */}
+
+Use the `authors` front matter field to declare blog post authors. An author should have at least a `name` or an `image_url`. Docusaurus uses information like `url`, `email`, and `title`, but any other information is allowed.
+
+### Inline authors {/* #inline-authors */}
+
+Blog post authors can be declared directly inside the front matter:
+
+```mdx-code-block
+<Tabs groupId="author-front-matter">
+<TabItem value="single" label="Single author">
+```
+
+```md title="my-blog-post.md"
+---
+authors:
+  name: Joel Marcey
+  title: Co-creator of Docusaurus 1
+  url: https://github.com/JoelMarcey
+  image_url: https://github.com/JoelMarcey.png
+  email: jimarcey@gmail.com
+  socials:
+    x: joelmarcey
+    github: JoelMarcey
+---
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="multiple" label="Multiple authors">
+```
+
+```md title="my-blog-post.md"
+---
+authors:
+  - name: Joel Marcey
+    title: Co-creator of Docusaurus 1
+    url: https://github.com/JoelMarcey
+    image_url: https://github.com/JoelMarcey.png
+    email: jimarcey@gmail.com
+    socials:
+      x: joelmarcey
+      github: JoelMarcey
+  - name: Sébastien Lorber
+    title: Docusaurus maintainer
+    url: https://sebastienlorber.com
+    image_url: https://github.com/slorber.png
+    socials:
+      x: sebastienlorber
+      github: slorber
+---
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::tip
+
+This option works best to get started, or for casual, irregular authors.
+
+:::
+
+:::info
+
+Prefer using the `authors` front matter, but the legacy `author_*` front matter remains supported:
+
+```md title="my-blog-post.md"
+---
+author: Joel Marcey
+author_title: Co-creator of Docusaurus 1
+author_url: https://github.com/JoelMarcey
+author_image_url: https://github.com/JoelMarcey.png
+---
+```
+
+:::
+
+### Global authors {/* #global-authors */}
+
+For regular blog post authors, it can be tedious to maintain authors' information inlined in each blog post.
+
+It is possible to declare those authors globally in a configuration file:
+
+```yml title="website/blog/authors.yml"
+jmarcey:
+  name: Joel Marcey
+  title: Co-creator of Docusaurus 1
+  url: https://github.com/JoelMarcey
+  image_url: https://github.com/JoelMarcey.png
+  email: jimarcey@gmail.com
+  socials:
+    x: joelmarcey
+    github: JoelMarcey
+
+slorber:
+  name: Sébastien Lorber
+  title: Docusaurus maintainer
+  url: https://sebastienlorber.com
+  image_url: https://github.com/slorber.png
+  socials:
+    x: sebastienlorber
+    github: slorber
+    email: seb@example.com
+```
+
+:::tip
+
+Use the `authorsMapPath` plugin option to configure the path. JSON is also supported.
+
+:::
+
+In blog posts front matter, you can reference the authors declared in the global configuration file:
+
+```mdx-code-block
+<Tabs groupId="author-front-matter">
+<TabItem value="single" label="Single author">
+```
+
+```md title="my-blog-post.md"
+---
+authors: jmarcey
+---
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="multiple" label="Multiple authors">
+```
+
+```md title="my-blog-post.md"
+---
+authors: [jmarcey, slorber]
+---
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::info
+
+The `authors` system is very flexible and can suit more advanced use-case:
+
+<details>
+  <summary>Mix inline authors and global authors</summary>
+
+You can use global authors most of the time, and still use inline authors:
+
+```md title="my-blog-post.md"
+---
+authors:
+  - jmarcey
+  - slorber
+  - name: Inline Author name
+    title: Inline Author Title
+    url: https://github.com/inlineAuthor
+    image_url: https://github.com/inlineAuthor
+---
+```
+
+</details>
+
+<details>
+  <summary>Local override of global authors</summary>
+
+You can customize the global author's data on per-blog-post basis:
+
+```md title="my-blog-post.md"
+---
+authors:
+  - key: jmarcey
+    title: Joel Marcey's new title
+  - key: slorber
+    name: Sébastien Lorber's new name
+---
+```
+
+</details>
+
+<details>
+  <summary>Localize the author's configuration file</summary>
+
+The configuration file can be localized, just create a localized copy of it at:
+
+```bash
+website/i18n/[locale]/docusaurus-plugin-content-blog/authors.yml
+```
+
+</details>
+
+:::
+
+An author, either declared through front matter or through the authors map, needs to have a name or an avatar, or both. If all authors of a post don't have names, Docusaurus will display their avatars compactly. See [this test post](/tests/blog/2022/01/20/image-only-authors) for the effect.
+
+:::warning Feed generation
+
+[RSS feeds](#feed) require the author's email to be set for the author to appear in the feed.
+
+:::
+
+### Authors pages {/* #authors-pages */}
+
+The authors pages feature is optional, and mainly useful for multi-author blogs.
+
+You can activate it independently for each author by adding a `page: true` attribute to the [global author configuration](#global-authors):
+
+```yml title="website/blog/authors.yml"
+slorber:
+  name: Sébastien Lorber
+  // highlight-start
+  page: true # Turns the feature on - route will be /authors/slorber
+  // highlight-end
+
+jmarcey:
+  name: Joel Marcey
+  // highlight-start
+  page:
+    # Turns the feature on - route will be /authors/custom-author-url
+    permalink: '/custom-author-url'
+  // highlight-end
+```
+
+The blog plugin will now generate:
+
+- a dedicated author page for each author ([example](/blog/authors/slorber)) listing all the blog posts they contributed to
+- an authors index page ([example](/blog/authors)) listing all these authors, in the order they appear in `authors.yml`
+
+:::warning About inline authors
+
+Only [global authors](#global-authors) can activate this feature. [Inline authors](#inline-authors) are not supported.
+
+:::
+
+## Blog post tags {/* #blog-post-tags */}
+
+Tags are declared in the front matter and introduce another dimension of categorization.
+
+It is possible to define tags inline, or to reference predefined tags declared in a [`tags file`](api/plugins/plugin-content-blog.mdx#tags-file) (optional, usually `blog/tags.yml`).
+
+In the following example:
+
+- `docusaurus` references a predefined tag key declared in `blog/tags.yml`
+- `Releases` is an inline tag, because it does not exist in `blog/tags.yml`
+
+```md title="blog/my-post.md"
+---
+title: 'My blog post'
+tags:
+  - Releases
+  - docusaurus
+---
+
+Content
+```
+
+```yml title="blog/tags.yml"
+docusaurus:
+  label: 'Docusaurus'
+  permalink: '/docusaurus'
+  description: 'Blog posts related to the Docusaurus framework'
+```
+
+## Reading time {/* #reading-time */}
+
+Docusaurus generates a reading time estimation for each blog post based on word count. We provide an option to customize this.
+
+```js title="docusaurus.config.js"
+export default {
+  presets: [
+    [
+      '@docusaurus/preset-classic',
+      {
+        blog: {
+          // highlight-start
+          showReadingTime: true, // When set to false, the "x min read" won't be shown
+          readingTime: ({content, locale, frontMatter, defaultReadingTime}) =>
+            defaultReadingTime({
+              content,
+              locale,
+              options: {wordsPerMinute: 300},
+            }),
+          // highlight-end
+        },
+      },
+    ],
+  ],
+};
+```
+
+The `readingTime` callback receives the following parameters:
+
+- `content`: the blog content text as a string
+- `frontMatter`: the front matter as a record of string keys and their values
+- `locale`: the locale of the current Docusaurus site
+- `defaultReadingTime`: the default built-in reading time function. It returns a number (reading time in minutes) or `undefined` (disable reading time for this page).
+
+The default reading time is able to accept additional options:
+
+- `wordsPerMinute` as a number (default: 300)
+
+:::tip
+
+Use the callback for all your customization needs:
+
+```mdx-code-block
+<Tabs>
+<TabItem value="disable-per-post" label="Per-post disabling">
+```
+
+**Disable reading time on one page:**
+
+```js title="docusaurus.config.js"
+export default {
+  presets: [
+    [
+      '@docusaurus/preset-classic',
+      {
+        blog: {
+          showReadingTime: true,
+          // highlight-start
+          readingTime: ({content, locale, frontMatter, defaultReadingTime}) =>
+            frontMatter.hide_reading_time
+              ? undefined
+              : defaultReadingTime({content, locale}),
+          // highlight-end
+        },
+      },
+    ],
+  ],
+};
+```
+
+Usage:
+
+```md "my-blog-post.md"
+---
+hide_reading_time: true
+---
+
+This page will no longer display the reading time stats!
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="passing-options" label="Passing options">
+```
+
+**Pass options to the default reading time function:**
+
+```js title="docusaurus.config.js"
+export default {
+  presets: [
+    [
+      '@docusaurus/preset-classic',
+      {
+        blog: {
+          // highlight-start
+          readingTime: ({content, locale, defaultReadingTime}) =>
+            defaultReadingTime({
+              content,
+              locale,
+              options: {wordsPerMinute: 100},
+            }),
+          // highlight-end
+        },
+      },
+    ],
+  ],
+};
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="using-custom-algo" label="Using custom algorithms">
+```
+
+**Use a custom implementation of reading time:**
+
+```js title="docusaurus.config.js"
+import myReadingTime from './myReadingTime';
+
+export default {
+  presets: [
+    [
+      '@docusaurus/preset-classic',
+      {
+        blog: {
+          // highlight-next-line
+          readingTime: ({content, locale}) => myReadingTime(content, locale),
+        },
+      },
+    ],
+  ],
+};
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::
+
+## Feed {/* #feed */}
+
+You can generate RSS / Atom / JSON feed by passing `feedOptions`. By default, RSS and Atom feeds are generated. To disable feed generation, set `feedOptions.type` to `null`.
+
+```ts
+type FeedType = 'rss' | 'atom' | 'json';
+
+type BlogOptions = {
+  feedOptions?: {
+    type?: FeedType | 'all' | FeedType[] | null;
+    title?: string;
+    description?: string;
+    copyright: string;
+
+    language?: string; // possible values: http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes
+    limit?: number | false | null; // defaults to 20
+    // XSLT permits browsers to style and render nicely the feed XML files
+    xslt?:
+      | boolean
+      | {
+          //
+          rss?: string | boolean;
+          atom?: string | boolean;
+        };
+    // Allow control over the construction of BlogFeedItems
+    createFeedItems?: (params: {
+      blogPosts: BlogPost[];
+      siteConfig: DocusaurusConfig;
+      outDir: string;
+      defaultCreateFeedItems: (params: {
+        blogPosts: BlogPost[];
+        siteConfig: DocusaurusConfig;
+        outDir: string;
+      }) => Promise<BlogFeedItem[]>;
+    }) => Promise<BlogFeedItem[]>;
+  };
+};
+```
+
+Example usage:
+
+```js title="docusaurus.config.js"
+export default {
+  // ...
+  presets: [
+    [
+      '@docusaurus/preset-classic',
+      {
+        blog: {
+          // highlight-start
+          feedOptions: {
+            type: 'all',
+            copyright: `Copyright © ${new Date().getFullYear()} Facebook, Inc.`,
+            createFeedItems: async (params) => {
+              const {blogPosts, defaultCreateFeedItems, ...rest} = params;
+              return defaultCreateFeedItems({
+                // keep only the 10 most recent blog posts in the feed
+                blogPosts: blogPosts.filter((item, index) => index < 10),
+                ...rest,
+              });
+            },
+          },
+          // highlight-end
+        },
+      },
+    ],
+  ],
+};
+```
+
+The feeds can be found at:
+
+<Tabs>
+<TabItem value="RSS">
+
+```text
+https://example.com/blog/rss.xml
+```
+
+</TabItem>
+<TabItem value="Atom">
+
+```text
+https://example.com/blog/atom.xml
+```
+
+</TabItem>
+<TabItem value="JSON">
+
+```text
+https://example.com/blog/feed.json
+```
+
+</TabItem>
+</Tabs>
+
+## Advanced topics {/* #advanced-topics */}
+
+### Blog-only mode {/* #blog-only-mode */}
+
+You can run your Docusaurus site without a dedicated landing page and instead have your blog's post list page as the index page. Set the `routeBasePath` to be `'/'` to serve the blog through the root route `example.com/` instead of the subroute `example.com/blog/`.
+
+```js title="docusaurus.config.js"
+export default {
+  // ...
+  presets: [
+    [
+      '@docusaurus/preset-classic',
+      {
+        // highlight-next-line
+        docs: false, // Optional: disable the docs plugin
+        blog: {
+          // highlight-next-line
+          routeBasePath: '/', // Serve the blog at the site's root
+          /* other blog options */
+        },
+      },
+    ],
+  ],
+};
+```
+
+:::warning
+
+Don't forget to delete the existing homepage at `./src/pages/index.js` or else there will be two files mapping to the same route!
+
+:::
+
+:::warning
+
+If you disable the docs plugin, don't forget to delete references to the docs plugin elsewhere in your configuration file. Notably, make sure to remove the docs-related navbar items.
+
+:::
+
+:::tip
+
+There's also a "Docs-only mode" for those who only want to use the docs. Read [Docs-only mode](./guides/docs/docs-introduction.mdx) for detailed instructions or a more elaborate explanation of `routeBasePath`.
+
+:::
+
+### Multiple blogs {/* #multiple-blogs */}
+
+By default, the classic theme assumes only one blog per website and hence includes only one instance of the blog plugin. If you would like to have multiple blogs on a single website, it's possible too! You can add another blog by specifying another blog plugin in the `plugins` option for `docusaurus.config.js`.
+
+Set the `routeBasePath` to the URL route that you want your second blog to be accessed on. Note that the `routeBasePath` here has to be different from the first blog or else there could be a collision of paths! Also, set `path` to the path to the directory containing your second blog's entries.
+
+As documented for [multi-instance plugins](./using-plugins.mdx#multi-instance-plugins-and-plugin-ids), you need to assign a unique ID to the plugins.
+
+```js title="docusaurus.config.js"
+export default {
+  // ...
+  plugins: [
+    [
+      '@docusaurus/plugin-content-blog',
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
+        id: 'second-blog',
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: 'my-second-blog',
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: './my-second-blog',
+      },
+    ],
+  ],
+};
+```
+
+As an example, we host a second blog [here](/tests/blog).

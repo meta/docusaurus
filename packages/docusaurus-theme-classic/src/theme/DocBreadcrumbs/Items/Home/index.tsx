@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import {translate} from '@docusaurus/Translate';
@@ -13,7 +13,7 @@ import IconHome from '@theme/Icon/Home';
 
 import styles from './styles.module.css';
 
-export default function HomeBreadcrumbItem(): JSX.Element {
+export default function HomeBreadcrumbItem(): ReactNode {
   const homeHref = useBaseUrl('/');
 
   return (

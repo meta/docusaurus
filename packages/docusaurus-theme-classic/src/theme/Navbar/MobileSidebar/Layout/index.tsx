@@ -5,26 +5,54 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import {useNavbarSecondaryMenu} from '@docusaurus/theme-common/internal';
+import {ThemeClassNames} from '@docusaurus/theme-common';
 import type {Props} from '@theme/Navbar/MobileSidebar/Layout';
+
+function NavbarMobileSidebarPanel({
+  children,
+  inert,
+}: {
+  children: ReactNode;
+  inert: boolean;
+}) {
+  return (
+    <div
+      className={clsx(
+        ThemeClassNames.layout.navbar.mobileSidebar.panel,
+        'navbar-sidebar__item menu',
+      )}
+      inert={inert}>
+      {children}
+    </div>
+  );
+}
 
 export default function NavbarMobileSidebarLayout({
   header,
   primaryMenu,
   secondaryMenu,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const {shown: secondaryMenuShown} = useNavbarSecondaryMenu();
   return (
-    <div className="navbar-sidebar">
+    <div
+      className={clsx(
+        ThemeClassNames.layout.navbar.mobileSidebar.container,
+        'navbar-sidebar',
+      )}>
       {header}
       <div
         className={clsx('navbar-sidebar__items', {
           'navbar-sidebar__items--show-secondary': secondaryMenuShown,
         })}>
-        <div className="navbar-sidebar__item menu">{primaryMenu}</div>
-        <div className="navbar-sidebar__item menu">{secondaryMenu}</div>
+        <NavbarMobileSidebarPanel inert={secondaryMenuShown}>
+          {primaryMenu}
+        </NavbarMobileSidebarPanel>
+        <NavbarMobileSidebarPanel inert={!secondaryMenuShown}>
+          {secondaryMenu}
+        </NavbarMobileSidebarPanel>
       </div>
     </div>
   );

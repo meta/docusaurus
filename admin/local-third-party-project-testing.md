@@ -19,12 +19,12 @@ Let's say you have an existing project with this snippet inside package.json:
 }
 ```
 
-Now, you have made changes to @docusaurus/core (this lives in packages/docusaurus) and would like to test the changes. In the local docusaurus repo, run `yarn install`. This will also build the local docusaurus packages and install them within the repo itself:
+Now, you have made changes to @docusaurus/core (this lives in packages/docusaurus) and would like to test the changes. In the local docusaurus repo, run `pnpm install`. This will also build the local docusaurus packages and install them within the repo itself:
 
 ```sh
 cd /path/to/local/docusaurus
-# can use yarn build:packages if dependencies have not been modified
-yarn install
+# can use pnpm build:packages if dependencies have not been modified
+pnpm install
 ```
 
 In the existing project, add the local package:
@@ -71,7 +71,7 @@ Verdaccio is a good local npm server that you can use to test your packages.
 We have a script `test:build:website` that starts a docker with verdaccio, publishes the packages, and initializes a new website in the parent directory. Alternatively, to install a package in the existing project, after you have started the verdaccio service, run
 
 ```bash
-npm_config_registry="http://localhost:4873" yarn install @docusaurus/core@"2.0.0-beta.8.NEW" # The version should be the latest
+pnpm_config_registry="http://localhost:4873" pnpm install @docusaurus/core@"2.0.0-beta.8.NEW" # The version should be the latest
 ```
 
 You can refer to [the implementation](./scripts/test-release.sh) for more details.

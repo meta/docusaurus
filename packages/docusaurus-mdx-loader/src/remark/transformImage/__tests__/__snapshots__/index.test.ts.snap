@@ -1,52 +1,56 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`transformImage plugin does not choke on invalid image 1`] = `
-"<img alt="invalid image" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/invalid.png").default} />
+exports[`transformImage plugin > does not choke on invalid image 1`] = `
+"<img alt="invalid image" src={require("!./../static/invalid.png?docusaurus-asset=image")} />
 "
 `;
 
-exports[`transformImage plugin fail if image does not exist 1`] = `"Image packages/docusaurus-mdx-loader/src/remark/transformImage/__tests__/__fixtures__/static/img/doesNotExist.png or packages/docusaurus-mdx-loader/src/remark/transformImage/__tests__/__fixtures__/static2/img/doesNotExist.png used in packages/docusaurus-mdx-loader/src/remark/transformImage/__tests__/__fixtures__/fail.md not found."`;
-
-exports[`transformImage plugin fail if image relative path does not exist 1`] = `"Image packages/docusaurus-mdx-loader/src/remark/transformImage/__tests__/__fixtures__/notFound.png used in packages/docusaurus-mdx-loader/src/remark/transformImage/__tests__/__fixtures__/fail2.md not found."`;
-
-exports[`transformImage plugin fail if image url is absent 1`] = `"Markdown image URL is mandatory in "packages/docusaurus-mdx-loader/src/remark/transformImage/__tests__/__fixtures__/noUrl.md" file"`;
-
-exports[`transformImage plugin pathname protocol 1`] = `
+exports[`transformImage plugin > pathname protocol 1`] = `
 "![img](/img/unchecked.png)
 "
 `;
 
-exports[`transformImage plugin transform md images to <img /> 1`] = `
+exports[`transformImage plugin > transform md images to <img /> 1`] = `
 "![img](https://example.com/img.png)
 
-<img src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/img.png").default} width="200" height="200" />
+<img src={require("!./static/img.png?docusaurus-asset=image")} width="200" height="200" />
 
-<img alt="img" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/img.png").default} width="200" height="200" />
+<img alt="img" src={require("!./static/img.png?docusaurus-asset=image")} width="200" height="200" />
 
-in paragraph <img alt="img" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/img.png").default} width="200" height="200" />
+in paragraph <img alt="img" src={require("!./static/img.png?docusaurus-asset=image")} width="200" height="200" />
 
-<img alt="img from second static folder" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static2/img2.png").default} width="256" height="82" />
+<img alt="img from second static folder" src={require("!./static2/img2.png?docusaurus-asset=image")} width="256" height="82" />
 
-<img alt="img from second static folder" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static2/img2.png").default} width="256" height="82" />
+<img alt="img from second static folder" src={require("!./static2/img2.png?docusaurus-asset=image")} width="256" height="82" />
 
-<img alt="img with URL encoded chars" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static2/img2 copy.png").default} width="256" height="82" />
+<img alt="img with URL encoded chars" src={require("!./static2/img2 copy.png?docusaurus-asset=image")} width="256" height="82" />
 
-<img alt="img" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/img.png").default} title="Title" width="200" height="200" /> <img alt="img" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/img.png").default} width="200" height="200" />
+<img alt="img" src={require("!./static/img.png?docusaurus-asset=image")} title="Title" width="200" height="200" /> <img alt="img" src={require("!./static/img.png?docusaurus-asset=image")} width="200" height="200" />
 
 !/[img with "quotes"]/(./static/img.png ''Quoted' title')
 
-<img alt="site alias" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/img.png").default} width="200" height="200" />
+<img alt="site alias" src={require("!./static/img.png?docusaurus-asset=image")} width="200" height="200" />
 
-<img alt="img with hash" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/img.png").default + '#light'} width="200" height="200" /> <img alt="img with hash" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/img.png").default + '#dark'} width="200" height="200" />
+<img alt="img with hash" src={require("!./static/img.png?docusaurus-asset=image") + '#light'} width="200" height="200" /> <img alt="img with hash" src={require("!./static/img.png?docusaurus-asset=image") + '#dark'} width="200" height="200" />
 
-<img alt="img with query" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/img.png?w=10").default} width="200" height="200" /> <img alt="img with query" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/img.png?w=10&h=10").default} width="200" height="200" />
+<img alt="img with query" src={require("!./static/img.png?w=10&docusaurus-asset=image")} width="200" height="200" /> <img alt="img with query" src={require("!./static/img.png?w=10&h=10&docusaurus-asset=image")} width="200" height="200" />
 
-<img alt="img with both" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/img.png?w=10&h=10").default + '#light'} width="200" height="200" />
+<img alt="img with both" src={require("!./static/img.png?w=10&h=10&docusaurus-asset=image") + '#light'} width="200" height="200" />
 
 ## Heading
 
 \`\`\`md
 ![img](./static/img.png)
 \`\`\`
+
+## Images with spaces
+
+<img alt="img" src={require("!./static/img with spaces.png?docusaurus-asset=image")} width="200" height="200" />
+
+<img alt="img" src={require("!./static/img with spaces.png?docusaurus-asset=image")} width="200" height="200" />
+
+<img alt="img" src={require("!./static/img with one encoded%20space.png?docusaurus-asset=image")} width="200" height="200" />
+
+<img alt="img" src={require("!./static/img with one encoded%20space.png?docusaurus-asset=image")} width="200" height="200" />
 "
 `;

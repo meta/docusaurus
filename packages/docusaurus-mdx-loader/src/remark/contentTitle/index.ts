@@ -4,19 +4,28 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-// @ts-expect-error: TODO see https://github.com/microsoft/TypeScript/issues/49721
-import type {Transformer} from 'unified';
-import type {Heading} from 'mdast';
-
-// TODO as of April 2023, no way to import/re-export this ESM type easily :/
-// TODO upgrade to TS 5.3
-// See https://github.com/microsoft/TypeScript/issues/49721#issuecomment-1517839391
-// import type {Plugin} from 'unified';
-type Plugin = any; // TODO fix this asap
+import {toString} from 'mdast-util-to-string';
+import {visit, EXIT} from 'unist-util-visit';
+import type {Transformer, Plugin} from 'unified';
+import type {Heading, Parent, Root} from 'mdast';
+import type {MdxJsxFlowElement} from 'mdast-util-mdx';
 
 interface PluginOptions {
   removeContentTitle?: boolean;
+}
+
+function wrapHeadingInJsxHeader(
+  headingNode: Heading,
+  parent: Parent,
+  index: number,
+) {
+  const header: MdxJsxFlowElement = {
+    type: 'mdxJsxFlowElement',
+    name: 'header',
+    attributes: [],
+    children: [headingNode],
+  };
+  parent.children[index] = header;
 }
 
 /**
@@ -24,29 +33,32 @@ interface PluginOptions {
  * This is exposed as "data.contentTitle" to the processed vfile
  * Also gives the ability to strip that content title (used for the blog plugin)
  */
-const plugin: Plugin = function plugin(
-  options: PluginOptions = {},
-): Transformer {
+const plugin: Plugin<PluginOptions[], Root> = function plugin(
+  options = {},
+): Transformer<Root> {
   // content title is
   const removeContentTitle = options.removeContentTitle ?? false;
 
-  return async (root, vfile) => {
-    const {toString} = await import('mdast-util-to-string');
-    const {visit, EXIT} = await import('unist-util-visit');
-
+  return (root, vfile) => {
     visit(root, ['heading', 'thematicBreak'], (node, index, parent) => {
+      if (!parent || index === undefined) {
+        return undefined;
+      }
       if (node.type === 'heading') {
-        const headingNode = node as Heading;
-        if (headingNode.depth === 1) {
-          vfile.data.contentTitle = toString(headingNode);
+        if (node.depth === 1) {
+          vfile.data.contentTitle = toString(node);
           if (removeContentTitle) {
-            // @ts-expect-error: TODO how to fix?
-            parent!.children.splice(index, 1);
+            parent.children.splice(index, 1);
+          } else {
+            // TODO in the future it might be better to export contentTitle as
+            // as JSX node to keep this logic a theme concern?
+            // See https://github.com/facebook/docusaurus/pull/10335#issuecomment-2250187371
+            wrapHeadingInJsxHeader(node, parent, index);
           }
           return EXIT; // We only handle the very first heading
         }
         // We only handle contentTitle if it's the very first heading found
-        if (headingNode.depth >= 1) {
+        if (node.depth >= 1) {
           return EXIT;
         }
       }

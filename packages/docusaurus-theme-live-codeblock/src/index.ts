@@ -29,16 +29,6 @@ export default function themeLiveCodeblock(context: LoadContext): Plugin {
         name: 'theme-live-codeblock',
       });
     },
-
-    configureWebpack() {
-      return {
-        resolve: {
-          alias: {
-            buble: require.resolve('./custom-buble.js'),
-          },
-        },
-      };
-    },
   };
 }
 

@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import type {Props} from '@theme/Admonition/Icon/Info';
 
-export default function AdmonitionIconInfo(props: Props): JSX.Element {
+export default function AdmonitionIconInfo(props: Props): ReactNode {
   return (
     <svg viewBox="0 0 14 16" {...props}>
       <path

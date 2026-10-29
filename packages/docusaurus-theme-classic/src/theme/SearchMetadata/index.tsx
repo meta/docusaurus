@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 
 import Head from '@docusaurus/Head';
 import type {Props} from '@theme/SearchMetadata';
@@ -19,7 +19,7 @@ export default function SearchMetadata({
   locale,
   version,
   tag,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   // Seems safe to consider here the locale is the language, as the existing
   // docsearch:language filter is afaik a regular string-based filter
   const language = locale;

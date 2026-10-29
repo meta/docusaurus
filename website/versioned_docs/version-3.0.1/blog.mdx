@@ -15,7 +15,7 @@ Check the [Blog Plugin API Reference documentation](./api/plugins/plugin-content
 
 :::
 
-## Initial setup {#initial-setup}
+## Initial setup {/* #initial-setup */}
 
 To set up your site's blog, start by creating a `blog` directory.
 
@@ -36,7 +36,7 @@ export default {
 };
 ```
 
-## Adding posts {#adding-posts}
+## Adding posts {/* #adding-posts */}
 
 To publish in the blog, create a Markdown file within the blog directory.
 
@@ -72,7 +72,7 @@ A whole bunch of exploration to follow.
 
 The [front matter](./guides/markdown-features/markdown-features-intro.mdx#front-matter) is useful to add more metadata to your blog post, for example, author information, but Docusaurus will be able to infer all necessary metadata without the front matter. For all possible fields, see [the API documentation](api/plugins/plugin-content-blog.mdx#markdown-front-matter).
 
-## Blog list {#blog-list}
+## Blog list {/* #blog-list */}
 
 The blog's index page (by default, it is at `/blog`) is the _blog list page_, where all blog posts are collectively displayed.
 
@@ -127,7 +127,7 @@ export default {
 };
 ```
 
-## Blog sidebar {#blog-sidebar}
+## Blog sidebar {/* #blog-sidebar */}
 
 The blog sidebar displays recent blog posts. The default number of items shown is 5, but you can customize with the `blogSidebarCount` option in the plugin configuration. By setting `blogSidebarCount: 0`, the sidebar will be completely disabled, with the container removed as well. This will increase the width of the main container. Specially, if you have set `blogSidebarCount: 'ALL'`, _all_ posts will be displayed.
 
@@ -151,7 +151,7 @@ export default {
 };
 ```
 
-## Blog post date {#blog-post-date}
+## Blog post date {/* #blog-post-date */}
 
 Docusaurus will extract a `YYYY-MM-DD` date from many patterns such as `YYYY-MM-DD-my-blog-post-title.md` or `YYYY/MM/DD/my-blog-post-title.md`. This enables you to easily group blog posts by year, by month, or to use a flat structure.
 
@@ -193,11 +193,11 @@ date: 2021-09-13T18:00
 ---
 ```
 
-## Blog post authors {#blog-post-authors}
+## Blog post authors {/* #blog-post-authors */}
 
 Use the `authors` front matter field to declare blog post authors. An author should have at least a `name` or an `image_url`. Docusaurus uses information like `url`, `email`, and `title`, but any other information is allowed.
 
-### Inline authors {#inline-authors}
+### Inline authors {/* #inline-authors */}
 
 Blog post authors can be declared directly inside the front matter:
 
@@ -263,7 +263,7 @@ author_image_url: https://github.com/JoelMarcey.png
 
 :::
 
-### Global authors {#global-authors}
+### Global authors {/* #global-authors */}
 
 For regular blog post authors, it can be tedious to maintain authors' information inlined in each blog post.
 
@@ -380,7 +380,7 @@ An author, either declared through front matter or through the authors map, need
 
 :::
 
-## Reading time {#reading-time}
+## Reading time {/* #reading-time */}
 
 Docusaurus generates a reading time estimation for each blog post based on word count. We provide an option to customize this.
 
@@ -506,7 +506,7 @@ export default {
 
 :::
 
-## Feed {#feed}
+## Feed {/* #feed */}
 
 You can generate RSS / Atom / JSON feed by passing `feedOptions`. By default, RSS and Atom feeds are generated. To disable feed generation, set `feedOptions.type` to `null`.
 
@@ -593,9 +593,9 @@ https://example.com/blog/feed.json
 </TabItem>
 </Tabs>
 
-## Advanced topics {#advanced-topics}
+## Advanced topics {/* #advanced-topics */}
 
-### Blog-only mode {#blog-only-mode}
+### Blog-only mode {/* #blog-only-mode */}
 
 You can run your Docusaurus site without a dedicated landing page and instead have your blog's post list page as the index page. Set the `routeBasePath` to be `'/'` to serve the blog through the root route `example.com/` instead of the subroute `example.com/blog/`.
 
@@ -631,7 +631,7 @@ There's also a "Docs-only mode" for those who only want to use the docs. Read [D
 
 :::
 
-### Multiple blogs {#multiple-blogs}
+### Multiple blogs {/* #multiple-blogs */}
 
 By default, the classic theme assumes only one blog per website and hence includes only one instance of the blog plugin. If you would like to have multiple blogs on a single website, it's possible too! You can add another blog by specifying another blog plugin in the `plugins` option for `docusaurus.config.js`.
 

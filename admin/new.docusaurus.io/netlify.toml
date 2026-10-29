@@ -3,31 +3,31 @@
 directory = "functions"
 
 [[redirects]]
-from    = "/"
-to      = "/.netlify/functions/index"
-status  = 200
+from = "/"
+to = "/.netlify/functions/index"
+status = 200
 
 [[redirects]]
-from    = "/codesandbox"
-to      = "/.netlify/functions/codesandbox"
-status  = 200
+from = "/codesandbox"
+to = "/.netlify/functions/codesandbox"
+status = 200
 
 [[redirects]]
-from    = "/codesandbox-ts"
-to      = "/.netlify/functions/codesandbox-ts"
-status  = 200
+from = "/codesandbox-ts"
+to = "/.netlify/functions/codesandbox-ts"
+status = 200
 
 [[redirects]]
-from    = "/stackblitz"
-to      = "/.netlify/functions/stackblitz"
-status  = 200
+from = "/stackblitz"
+to = "/.netlify/functions/stackblitz"
+status = 200
 
 [[redirects]]
-from    = "/stackblitz-ts"
-to      = "/.netlify/functions/stackblitz-ts"
-status  = 200
+from = "/stackblitz-ts"
+to = "/.netlify/functions/stackblitz-ts"
+status = 200
 
 [[redirects]]
-from    = "/*"
-to      = "/.netlify/functions/index"
-status  = 200
+from = "/*"
+to = "/.netlify/functions/index"
+status = 200

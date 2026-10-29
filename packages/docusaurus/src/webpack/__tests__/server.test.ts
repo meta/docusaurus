@@ -5,28 +5,31 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {jest} from '@jest/globals';
-import webpack from 'webpack';
-
+import {describe, it} from 'vitest';
 import createServerConfig from '../server';
-import {loadSetup} from '../../server/__tests__/testUtils';
+import {
+  BundlerNames,
+  createTestConfigureWebpackUtils,
+  loadBundlerSiteFixture,
+  validateBundlerConfig,
+} from './testUtils';
 
-describe('webpack production config', () => {
+describe.each(BundlerNames)('%s server config', (bundlerName) => {
   it('simple', async () => {
-    jest.spyOn(console, 'log').mockImplementation(() => {});
-    const {props} = await loadSetup('simple-site');
+    const props = await loadBundlerSiteFixture('simple-site', bundlerName);
     const {config} = await createServerConfig({
       props,
+      configureWebpackUtils: await createTestConfigureWebpackUtils(bundlerName),
     });
-    webpack.validate(config);
+    validateBundlerConfig(config, bundlerName);
   });
 
   it('custom', async () => {
-    jest.spyOn(console, 'log').mockImplementation(() => {});
-    const {props} = await loadSetup('custom-site');
+    const props = await loadBundlerSiteFixture('custom-site', bundlerName);
     const {config} = await createServerConfig({
       props,
+      configureWebpackUtils: await createTestConfigureWebpackUtils(bundlerName),
     });
-    webpack.validate(config);
+    validateBundlerConfig(config, bundlerName);
   });
 });

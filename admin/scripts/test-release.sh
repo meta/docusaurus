@@ -5,10 +5,12 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
-set -euo pipefail
+set -xeuo pipefail
+
+rm -rf ../test-website
 
 CUSTOM_REGISTRY_URL="http://localhost:4873"
-NEW_VERSION="$(node -p "require('./packages/docusaurus/package.json').version")-NEW"
+NEW_VERSION="$(node -p "require('./packages/docusaurus/package.json').version")-NEW-$RANDOM"
 CONTAINER_NAME="verdaccio"
 EXTRA_OPTS=""
 
@@ -30,29 +32,44 @@ done
 shift $((OPTIND-1))
 
 
-if [ ! -z $EXTRA_OPTS ]
+if [ -n "$EXTRA_OPTS" ]
 then
   echo create-docusaurus extra options = ${EXTRA_OPTS}
 fi
 
 # Run Docker container with private npm registry Verdaccio
+docker rm -f verdaccio
 docker run -d --rm --name "$CONTAINER_NAME" -p 4873:4873 -v "$PWD/admin/verdaccio.yaml":/verdaccio/conf/config.yaml verdaccio/verdaccio:latest
 
 # Build packages
-yarn build:packages
+pnpm build:packages
 
-# Publish the monorepo
-npx --no-install lerna publish --exact --yes --no-verify-access --no-git-reset --no-git-tag-version --no-push --registry "$CUSTOM_REGISTRY_URL" "$NEW_VERSION"
+# Version the monorepo
+# Private init templates are versioned too, create-docusaurus ships them
+npx --no-install lerna version "$NEW_VERSION" \
+  --exact \
+  --force-publish \
+  --yes \
+  --no-git-tag-version \
+  --no-push
+
+# Publish the monorepo, private packages are skipped
+pnpm --recursive publish --registry "$CUSTOM_REGISTRY_URL" --no-git-checks
 
 # Revert version changes
-git diff --name-only -- '*.json' | sed 's, ,\\&,g' | xargs git checkout --
+git restore -- '**/package.json' lerna.json pnpm-lock.yaml
 
 
-# The website is generated outside the repo to minimize chances of yarn resolving the wrong version
+# The website is generated outside the repo to minimize chances of pnpm resolving the wrong version
 cd ..
 
+echo Generating test-website in `pwd`
+
 # Build skeleton website with new version
-npm_config_registry="$CUSTOM_REGISTRY_URL" npx create-docusaurus@"$NEW_VERSION" test-website classic --javascript $EXTRA_OPTS
+pnpm_config_registry="$CUSTOM_REGISTRY_URL" \
+  pnpm_config_minimum_release_age_exclude='["create-docusaurus","@docusaurus/*","stylelint-copyright"]' \
+  pnpm --loglevel debug dlx create-docusaurus@"$NEW_VERSION" test-website classic --javascript $EXTRA_OPTS
+
 
 # Stop Docker container
 if [[ -z "${KEEP_CONTAINER:-true}" ]] && ( $(docker container inspect "$CONTAINER_NAME" > /dev/null 2>&1) ); then

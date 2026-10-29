@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
+import {describe, expect, it} from 'vitest';
+import path from 'node:path';
 import {DOCUSAURUS_VERSION} from '@docusaurus/utils';
 import {loadPluginVersion, createSiteMetadata} from '../siteMetadata';
 import type {LoadedPlugin} from '@docusaurus/types';

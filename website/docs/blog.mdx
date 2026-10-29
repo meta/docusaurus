@@ -15,7 +15,7 @@ Check the [Blog Plugin API Reference documentation](./api/plugins/plugin-content
 
 :::
 
-## Initial setup {#initial-setup}
+## Initial setup {/* #initial-setup */}
 
 To set up your site's blog, start by creating a `blog` directory.
 
@@ -36,7 +36,7 @@ export default {
 };
 ```
 
-## Adding posts {#adding-posts}
+## Adding posts {/* #adding-posts */}
 
 To publish in the blog, create a Markdown file within the blog directory.
 
@@ -52,27 +52,34 @@ authors:
     title: Co-creator of Docusaurus 1
     url: https://github.com/JoelMarcey
     image_url: https://github.com/JoelMarcey.png
+    socials:
+      x: joelmarcey
+      github: JoelMarcey
   - name: Sébastien Lorber
     title: Docusaurus maintainer
     url: https://sebastienlorber.com
     image_url: https://github.com/slorber.png
+    socials:
+      x: sebastienlorber
+      github: slorber
+      email: seb@example.com
 tags: [hello, docusaurus-v2]
 image: https://i.imgur.com/mErPwqL.png
 hide_table_of_contents: false
 ---
 
-Welcome to this blog. This blog is created with [**Docusaurus 2**](https://docusaurus.io/).
+Welcome to this blog. This blog is created with [**Docusaurus**](https://docusaurus.io/).
 
 <!-- truncate -->
 
-This is my first post on Docusaurus 2.
+This is my first post on Docusaurus.
 
 A whole bunch of exploration to follow.
 ```
 
 The [front matter](./guides/markdown-features/markdown-features-intro.mdx#front-matter) is useful to add more metadata to your blog post, for example, author information, but Docusaurus will be able to infer all necessary metadata without the front matter. For all possible fields, see [the API documentation](api/plugins/plugin-content-blog.mdx#markdown-front-matter).
 
-## Blog list {#blog-list}
+## Blog list {/* #blog-list */}
 
 The blog's index page (by default, it is at `/blog`) is the _blog list page_, where all blog posts are collectively displayed.
 
@@ -127,7 +134,7 @@ export default {
 };
 ```
 
-## Blog sidebar {#blog-sidebar}
+## Blog sidebar {/* #blog-sidebar */}
 
 The blog sidebar displays recent blog posts. The default number of items shown is 5, but you can customize with the `blogSidebarCount` option in the plugin configuration. By setting `blogSidebarCount: 0`, the sidebar will be completely disabled, with the container removed as well. This will increase the width of the main container. Specially, if you have set `blogSidebarCount: 'ALL'`, _all_ posts will be displayed.
 
@@ -151,7 +158,7 @@ export default {
 };
 ```
 
-## Blog post date {#blog-post-date}
+## Blog post date {/* #blog-post-date */}
 
 Docusaurus will extract a `YYYY-MM-DD` date from many patterns such as `YYYY-MM-DD-my-blog-post-title.md` or `YYYY/MM/DD/my-blog-post-title.md`. This enables you to easily group blog posts by year, by month, or to use a flat structure.
 
@@ -193,11 +200,11 @@ date: 2021-09-13T18:00
 ---
 ```
 
-## Blog post authors {#blog-post-authors}
+## Blog post authors {/* #blog-post-authors */}
 
 Use the `authors` front matter field to declare blog post authors. An author should have at least a `name` or an `image_url`. Docusaurus uses information like `url`, `email`, and `title`, but any other information is allowed.
 
-### Inline authors {#inline-authors}
+### Inline authors {/* #inline-authors */}
 
 Blog post authors can be declared directly inside the front matter:
 
@@ -214,6 +221,9 @@ authors:
   url: https://github.com/JoelMarcey
   image_url: https://github.com/JoelMarcey.png
   email: jimarcey@gmail.com
+  socials:
+    x: joelmarcey
+    github: JoelMarcey
 ---
 ```
 
@@ -230,10 +240,16 @@ authors:
     url: https://github.com/JoelMarcey
     image_url: https://github.com/JoelMarcey.png
     email: jimarcey@gmail.com
+    socials:
+      x: joelmarcey
+      github: JoelMarcey
   - name: Sébastien Lorber
     title: Docusaurus maintainer
     url: https://sebastienlorber.com
     image_url: https://github.com/slorber.png
+    socials:
+      x: sebastienlorber
+      github: slorber
 ---
 ```
 
@@ -248,22 +264,7 @@ This option works best to get started, or for casual, irregular authors.
 
 :::
 
-:::info
-
-Prefer using the `authors` front matter, but the legacy `author_*` front matter remains supported:
-
-```md title="my-blog-post.md"
----
-author: Joel Marcey
-author_title: Co-creator of Docusaurus 1
-author_url: https://github.com/JoelMarcey
-author_image_url: https://github.com/JoelMarcey.png
----
-```
-
-:::
-
-### Global authors {#global-authors}
+### Global authors {/* #global-authors */}
 
 For regular blog post authors, it can be tedious to maintain authors' information inlined in each blog post.
 
@@ -276,12 +277,19 @@ jmarcey:
   url: https://github.com/JoelMarcey
   image_url: https://github.com/JoelMarcey.png
   email: jimarcey@gmail.com
+  socials:
+    x: joelmarcey
+    github: JoelMarcey
 
 slorber:
   name: Sébastien Lorber
   title: Docusaurus maintainer
   url: https://sebastienlorber.com
   image_url: https://github.com/slorber.png
+  socials:
+    x: sebastienlorber
+    github: slorber
+    email: seb@example.com
 ```
 
 :::tip
@@ -380,7 +388,69 @@ An author, either declared through front matter or through the authors map, need
 
 :::
 
-## Reading time {#reading-time}
+### Authors pages {/* #authors-pages */}
+
+The authors pages feature is optional, and mainly useful for multi-author blogs.
+
+You can activate it independently for each author by adding a `page: true` attribute to the [global author configuration](#global-authors):
+
+```yml title="website/blog/authors.yml"
+slorber:
+  name: Sébastien Lorber
+  // highlight-start
+  page: true # Turns the feature on - route will be /authors/slorber
+  // highlight-end
+
+jmarcey:
+  name: Joel Marcey
+  // highlight-start
+  page:
+    # Turns the feature on - route will be /authors/custom-author-url
+    permalink: '/custom-author-url'
+  // highlight-end
+```
+
+The blog plugin will now generate:
+
+- a dedicated author page for each author ([example](/blog/authors/slorber)) listing all the blog posts they contributed to
+- an authors index page ([example](/blog/authors)) listing all these authors, in the order they appear in `authors.yml`
+
+:::warning About inline authors
+
+Only [global authors](#global-authors) can activate this feature. [Inline authors](#inline-authors) are not supported.
+
+:::
+
+## Blog post tags {/* #blog-post-tags */}
+
+Tags are declared in the front matter and introduce another dimension of categorization.
+
+It is possible to define tags inline, or to reference predefined tags declared in a [`tags file`](api/plugins/plugin-content-blog.mdx#tags-file) (optional, usually `blog/tags.yml`).
+
+In the following example:
+
+- `docusaurus` references a predefined tag key declared in `blog/tags.yml`
+- `Releases` is an inline tag, because it does not exist in `blog/tags.yml`
+
+```md title="blog/my-post.md"
+---
+title: 'My blog post'
+tags:
+  - Releases
+  - docusaurus
+---
+
+Content
+```
+
+```yml title="blog/tags.yml"
+docusaurus:
+  label: 'Docusaurus'
+  permalink: '/docusaurus'
+  description: 'Blog posts related to the Docusaurus framework'
+```
+
+## Reading time {/* #reading-time */}
 
 Docusaurus generates a reading time estimation for each blog post based on word count. We provide an option to customize this.
 
@@ -393,8 +463,12 @@ export default {
         blog: {
           // highlight-start
           showReadingTime: true, // When set to false, the "x min read" won't be shown
-          readingTime: ({content, frontMatter, defaultReadingTime}) =>
-            defaultReadingTime({content, options: {wordsPerMinute: 300}}),
+          readingTime: ({content, locale, frontMatter, defaultReadingTime}) =>
+            defaultReadingTime({
+              content,
+              locale,
+              options: {wordsPerMinute: 300},
+            }),
           // highlight-end
         },
       },
@@ -403,9 +477,16 @@ export default {
 };
 ```
 
-The `readingTime` callback receives three parameters: the blog content text as a string, front matter as a record of string keys and their values, and the default reading time function. It returns a number (reading time in minutes) or `undefined` (disable reading time for this page).
+The `readingTime` callback receives the following parameters:
 
-The default reading time is able to accept additional options: `wordsPerMinute` as a number (default: 300), and `wordBound` as a function from string to boolean. If the string passed to `wordBound` should be a word bound (spaces, tabs, and line breaks by default), the function should return `true`.
+- `content`: the blog content text as a string
+- `frontMatter`: the front matter as a record of string keys and their values
+- `locale`: the locale of the current Docusaurus site
+- `defaultReadingTime`: the default built-in reading time function. It returns a number (reading time in minutes) or `undefined` (disable reading time for this page).
+
+The default reading time is able to accept additional options:
+
+- `wordsPerMinute` as a number (default: 300)
 
 :::tip
 
@@ -427,10 +508,10 @@ export default {
         blog: {
           showReadingTime: true,
           // highlight-start
-          readingTime: ({content, frontMatter, defaultReadingTime}) =>
+          readingTime: ({content, locale, frontMatter, defaultReadingTime}) =>
             frontMatter.hide_reading_time
               ? undefined
-              : defaultReadingTime({content}),
+              : defaultReadingTime({content, locale}),
           // highlight-end
         },
       },
@@ -464,8 +545,12 @@ export default {
       {
         blog: {
           // highlight-start
-          readingTime: ({content, defaultReadingTime}) =>
-            defaultReadingTime({content, options: {wordsPerMinute: 100}}),
+          readingTime: ({content, locale, defaultReadingTime}) =>
+            defaultReadingTime({
+              content,
+              locale,
+              options: {wordsPerMinute: 100},
+            }),
           // highlight-end
         },
       },
@@ -491,7 +576,7 @@ export default {
       {
         blog: {
           // highlight-next-line
-          readingTime: ({content}) => myReadingTime(content),
+          readingTime: ({content, locale}) => myReadingTime(content, locale),
         },
       },
     ],
@@ -506,7 +591,7 @@ export default {
 
 :::
 
-## Feed {#feed}
+## Feed {/* #feed */}
 
 You can generate RSS / Atom / JSON feed by passing `feedOptions`. By default, RSS and Atom feeds are generated. To disable feed generation, set `feedOptions.type` to `null`.
 
@@ -519,9 +604,18 @@ type BlogOptions = {
     title?: string;
     description?: string;
     copyright: string;
+
     language?: string; // possible values: http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes
     limit?: number | false | null; // defaults to 20
-    /** Allow control over the construction of BlogFeedItems */
+    // XSLT permits browsers to style and render nicely the feed XML files
+    xslt?:
+      | boolean
+      | {
+          //
+          rss?: string | boolean;
+          atom?: string | boolean;
+        };
+    // Allow control over the construction of BlogFeedItems
     createFeedItems?: (params: {
       blogPosts: BlogPost[];
       siteConfig: DocusaurusConfig;
@@ -593,9 +687,9 @@ https://example.com/blog/feed.json
 </TabItem>
 </Tabs>
 
-## Advanced topics {#advanced-topics}
+## Advanced topics {/* #advanced-topics */}
 
-### Blog-only mode {#blog-only-mode}
+### Blog-only mode {/* #blog-only-mode */}
 
 You can run your Docusaurus site without a dedicated landing page and instead have your blog's post list page as the index page. Set the `routeBasePath` to be `'/'` to serve the blog through the root route `example.com/` instead of the subroute `example.com/blog/`.
 
@@ -637,7 +731,7 @@ There's also a "Docs-only mode" for those who only want to use the docs. Read [D
 
 :::
 
-### Multiple blogs {#multiple-blogs}
+### Multiple blogs {/* #multiple-blogs */}
 
 By default, the classic theme assumes only one blog per website and hence includes only one instance of the blog plugin. If you would like to have multiple blogs on a single website, it's possible too! You can add another blog by specifying another blog plugin in the `plugins` option for `docusaurus.config.js`.
 

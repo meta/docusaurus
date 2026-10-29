@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 
 import DebugLayout from '@theme/DebugLayout';
 import DebugJsonView from '@theme/DebugJsonView';
@@ -52,7 +52,7 @@ function PluginContent({
   );
 }
 
-export default function DebugContent({allContent}: Props): JSX.Element {
+export default function DebugContent({allContent}: Props): ReactNode {
   return (
     <DebugLayout>
       <h2>Plugin content</h2>

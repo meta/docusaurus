@@ -12,7 +12,7 @@ import BrowserWindow from '@site/src/components/BrowserWindow';
 
 Docusaurus supports search engine optimization in a variety of ways.
 
-## Global metadata {#global-metadata}
+## Global metadata {/* #global-metadata */}
 
 Provide global meta attributes for the entire site through the [site configuration](./configuration.mdx#site-metadata). The metadata will all be rendered in the HTML `<head>` using the key-value pairs as the prop name and value. The `metadata` attribute is a convenient shortcut to declare `<meta>` tags, but it is also possible to inject arbitrary tags in `<head>` with the `headTags` attribute.
 
@@ -56,7 +56,7 @@ Docusaurus adds some metadata out-of-the-box. For example, if you have configure
 
 To read more about types of meta tags, visit [the MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta).
 
-## Single page metadata {#single-page-metadata}
+## Single page metadata {/* #single-page-metadata */}
 
 Similar to [global metadata](#global-metadata), Docusaurus also allows for the addition of meta-information to individual pages. Follow [this guide](./guides/markdown-features/markdown-features-head-metadata.mdx) for configuring the `<head>` tag. In short:
 
@@ -146,11 +146,11 @@ For convenience, the default theme `<Layout>` component accept `title` and `desc
 
 :::
 
-## Static HTML generation {#static-html-generation}
+## Static HTML generation {/* #static-html-generation */}
 
 Docusaurus is a static site generator—HTML files are statically generated for every URL route, which helps search engines discover your content more easily.
 
-## Image meta description {#image-meta-description}
+## Image meta description {/* #image-meta-description */}
 
 The alt tag for an image tells the search engine what the image is about, and is used when the image can't be visually seen, e.g. when using a screen reader, or when the image is broken. Alt tags are commonly supported in Markdown.
 
@@ -166,11 +166,11 @@ You may also add a title for your image—this doesn't impact SEO much but is di
 
 </BrowserWindow>
 
-## Rich search information {#rich-search-information}
+## Rich search information {/* #rich-search-information */}
 
 Docusaurus blogs support [rich search results](https://search.google.com/test/rich-results) out-of-the-box to get maximum search engine experience. The information is created depending on your meta information in blog/global configuration. In order to get the benefits of the rich search information, fill in the information about the post's publish date, authors, and image, etc. Read more about the meta-information [here](./blog.mdx).
 
-## Robots file {#robots-file}
+## Robots file {/* #robots-file */}
 
 A `robots.txt` file regulates search engines' behavior about which should be displayed and which shouldn't. You can provide it as [static asset](./static-assets.mdx). The following would allow access to all sub-pages from all requests:
 
@@ -191,7 +191,7 @@ To prevent a single page from being indexed, use `<meta name="robots" content="n
 
 :::
 
-## Sitemap file {#sitemap-file}
+## Sitemap file {/* #sitemap-file */}
 
 Docusaurus provides the [`@docusaurus/plugin-sitemap`](./api/plugins/plugin-sitemap.mdx) plugin, which is shipped with `preset-classic` by default. It autogenerates a `sitemap.xml` file which will be available at `https://example.com/[baseUrl]/sitemap.xml` after the production build. This sitemap metadata helps search engine crawlers crawl your site more accurately.
 
@@ -209,11 +209,11 @@ For example, [`/examples/noIndex`](/examples/noIndex) is not included in the [Do
 
 :::
 
-## Human readable links {#human-readable-links}
+## Human readable links {/* #human-readable-links */}
 
 Docusaurus uses your file names as links, but you can always change that using slugs, see this [tutorial](./guides/docs/docs-create-doc.mdx#document-id) for more details.
 
-## Structured content {#structured-content}
+## Structured content {/* #structured-content */}
 
 Search engines rely on the HTML markup such as `<h2>`, `<table>`, etc., to understand the structure of your webpage. When Docusaurus renders your pages, semantic markup, e.g. `<aside>`, `<nav>`, `<main>`, are used to divide the different sections of the page, helping the search engine to locate parts like sidebar, navbar, and the main page content.
 

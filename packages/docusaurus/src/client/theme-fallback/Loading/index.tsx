@@ -8,14 +8,14 @@
 // Should we translate theme-fallback?
 /* eslint-disable @docusaurus/no-untranslated-text */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import type {LoadingComponentProps} from 'react-loadable';
 
 export default function Loading({
   error,
   retry,
   pastDelay,
-}: LoadingComponentProps): JSX.Element | null {
+}: LoadingComponentProps): ReactNode {
   if (error) {
     return (
       <div

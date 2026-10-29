@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {normalizePluginOptions} from '@docusaurus/utils-validation';
 import {validateOptions, DEFAULT_OPTIONS} from '../options';
 import type {Options} from '../options';

@@ -5,118 +5,254 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it, vi} from 'vitest';
 import {
-  normalizeFrontMatterTags,
+  reportInlineTags,
   groupTaggedItems,
-  type Tag,
   getTagVisibility,
-} from '../tags';
+} from '@docusaurus/utils';
+import {normalizeTag} from '../tags';
+import type {TagMetadata, TagsFile} from '../tags';
 
-describe('normalizeFrontMatterTags', () => {
-  it('normalizes simple string tag', () => {
-    const tagsPath = '/all/tags';
-    const input = 'tag';
-    const expectedOutput = {
-      label: 'tag',
-      permalink: `${tagsPath}/tag`,
+describe('normalizeTag', () => {
+  const tagsBaseRoutePath = '/all/tags';
+
+  describe('inline', () => {
+    it('normalizes simple string tag', () => {
+      const input = 'tag';
+      const expectedOutput: TagMetadata = {
+        inline: true,
+        label: 'tag',
+        permalink: `${tagsBaseRoutePath}/tag`,
+        description: undefined,
+      };
+      expect(
+        normalizeTag({tagsBaseRoutePath, tagsFile: null, tag: input}),
+      ).toEqual(expectedOutput);
+    });
+
+    it('normalizes complex string tag', () => {
+      const input = 'some more Complex_tag';
+      const expectedOutput: TagMetadata = {
+        inline: true,
+        label: 'some more Complex_tag',
+        permalink: `${tagsBaseRoutePath}/some-more-complex-tag`,
+        description: undefined,
+      };
+      expect(
+        normalizeTag({tagsBaseRoutePath, tagsFile: null, tag: input}),
+      ).toEqual(expectedOutput);
+    });
+  });
+
+  describe('with tags file', () => {
+    const tagsFile: TagsFile = {
+      tag1: {
+        label: 'Tag 1 label',
+        permalink: 'tag-1-permalink',
+        description: 'Tag 1 description',
+      },
+      tag2: {
+        label: 'Tag 2 label',
+        permalink: '/tag-2-permalink',
+        description: undefined,
+      },
     };
-    expect(normalizeFrontMatterTags(tagsPath, [input])).toEqual([
-      expectedOutput,
-    ]);
+
+    it('normalizes tag1 ref', () => {
+      const input = 'tag1';
+      const expectedOutput: TagMetadata = {
+        inline: false,
+        label: tagsFile.tag1!.label,
+        description: tagsFile.tag1!.description,
+        permalink: `${tagsBaseRoutePath}/tag-1-permalink`,
+      };
+      expect(normalizeTag({tagsBaseRoutePath, tagsFile, tag: input})).toEqual(
+        expectedOutput,
+      );
+    });
+
+    it('normalizes tag2 ref', () => {
+      const input = 'tag2';
+      const expectedOutput: TagMetadata = {
+        inline: false,
+        label: tagsFile.tag2!.label,
+        description: tagsFile.tag2!.description,
+        permalink: `${tagsBaseRoutePath}/tag-2-permalink`,
+      };
+      expect(normalizeTag({tagsBaseRoutePath, tagsFile, tag: input})).toEqual(
+        expectedOutput,
+      );
+    });
+
+    it('normalizes inline tag not declared in tags file', () => {
+      const input = 'inlineTag';
+      const expectedOutput: TagMetadata = {
+        inline: true,
+        label: 'inlineTag',
+        description: undefined,
+        permalink: `${tagsBaseRoutePath}/inline-tag`,
+      };
+      expect(normalizeTag({tagsBaseRoutePath, tagsFile, tag: input})).toEqual(
+        expectedOutput,
+      );
+    });
+  });
+});
+
+describe('reportInlineTags', () => {
+  const tagsFile: TagsFile = {
+    hello: {
+      label: 'Hello',
+      permalink: '/hello',
+      description: undefined,
+    },
+    test: {
+      label: 'Test',
+      permalink: '/test',
+      description: undefined,
+    },
+    open: {
+      label: 'Open Source',
+      permalink: '/open',
+      description: undefined,
+    },
+  };
+
+  it('throw when inline tags found', () => {
+    const testFn = () =>
+      reportInlineTags({
+        tags: [
+          {
+            label: 'hello',
+            permalink: 'hello',
+            inline: true,
+            description: undefined,
+          },
+          {
+            label: 'world',
+            permalink: 'world',
+            inline: true,
+            description: undefined,
+          },
+        ],
+        source: 'wrong.md',
+        options: {onInlineTags: 'throw', tags: 'tags.yml'},
+      });
+
+    expect(testFn).toThrowErrorMatchingInlineSnapshot(
+      `[Error: Tags [hello, world] used in wrong.md are not defined in tags.yml]`,
+    );
   });
 
-  it('normalizes complex string tag', () => {
-    const tagsPath = '/all/tags';
-    const input = 'some more Complex_tag';
-    const expectedOutput = {
-      label: 'some more Complex_tag',
-      permalink: `${tagsPath}/some-more-complex-tag`,
-    };
-    expect(normalizeFrontMatterTags(tagsPath, [input])).toEqual([
-      expectedOutput,
-    ]);
+  it('warn when docs has invalid tags', () => {
+    using warn = vi.spyOn(console, 'warn');
+
+    reportInlineTags({
+      tags: [
+        {
+          label: 'hello',
+          permalink: 'hello',
+          inline: false,
+          description: undefined,
+        },
+        {
+          label: 'world',
+          permalink: 'world',
+          inline: true,
+          description: undefined,
+        },
+      ],
+      source: 'wrong.md',
+      options: {onInlineTags: 'warn', tags: 'tags.yml'},
+    });
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls).toMatchInlineSnapshot(`
+      [
+        [
+          "[WARNING] Tags [world] used in wrong.md are not defined in tags.yml",
+        ],
+      ]
+    `);
+
+    warn.mockRestore();
   });
 
-  it('normalizes simple object tag', () => {
-    const tagsPath = '/all/tags';
-    const input = {label: 'tag', permalink: 'tagPermalink'};
-    const expectedOutput = {
-      label: 'tag',
-      permalink: `${tagsPath}/tagPermalink`,
-    };
-    expect(normalizeFrontMatterTags(tagsPath, [input])).toEqual([
-      expectedOutput,
-    ]);
+  it('ignore when docs has invalid tags', () => {
+    using error = vi.spyOn(console, 'error');
+    using warn = vi.spyOn(console, 'warn');
+    using log = vi.spyOn(console, 'log');
+
+    reportInlineTags({
+      tags: [
+        {
+          label: 'hello',
+          permalink: 'hello',
+          inline: false,
+          description: undefined,
+        },
+        {
+          label: 'world',
+          permalink: 'world',
+          inline: true,
+          description: undefined,
+        },
+      ],
+      source: 'wrong.md',
+      options: {onInlineTags: 'ignore', tags: 'tags.yml'},
+    });
+    expect(error).not.toHaveBeenCalled();
+    expect(warn).not.toHaveBeenCalled();
+    expect(log).not.toHaveBeenCalled();
+
+    error.mockRestore();
+    warn.mockRestore();
+    log.mockRestore();
   });
 
-  it('normalizes complex string tag with object tag', () => {
-    const tagsPath = '/all/tags';
-    const input = {
-      label: 'tag complex Label',
-      permalink: '/MoreComplex/Permalink',
-    };
-    const expectedOutput = {
-      label: 'tag complex Label',
-      permalink: `${tagsPath}/MoreComplex/Permalink`,
-    };
-    expect(normalizeFrontMatterTags(tagsPath, [input])).toEqual([
-      expectedOutput,
-    ]);
+  it('throw for unknown string and object tag', () => {
+    const frontmatter = ['open', 'world'];
+    const tags = frontmatter.map((tag) =>
+      normalizeTag({
+        tagsBaseRoutePath: '/tags',
+        tagsFile,
+        tag,
+      }),
+    );
+
+    const testFn = () =>
+      reportInlineTags({
+        tags,
+        source: 'default.md',
+        options: {
+          onInlineTags: 'throw',
+          tags: 'tags.yml',
+        },
+      });
+    expect(testFn).toThrowErrorMatchingInlineSnapshot(
+      `[Error: Tags [world] used in default.md are not defined in tags.yml]`,
+    );
   });
 
-  type Input = Parameters<typeof normalizeFrontMatterTags>[1];
-  type Output = ReturnType<typeof normalizeFrontMatterTags>;
-
-  it('normalizes string list', () => {
-    const tagsPath = '/all/tags';
-    const input: Input = ['tag 1', 'tag-1', 'tag 3', 'tag1', 'tag-2'];
-    // Keep user input order but remove tags that lead to same permalink
-    const expectedOutput: Output = [
-      {
-        label: 'tag 1',
-        permalink: `${tagsPath}/tag-1`,
-      },
-      {
-        label: 'tag 3',
-        permalink: `${tagsPath}/tag-3`,
-      },
-      {
-        label: 'tag-2',
-        permalink: `${tagsPath}/tag-2`,
-      },
-    ];
-    expect(normalizeFrontMatterTags(tagsPath, input)).toEqual(expectedOutput);
-  });
-
-  it('succeeds for empty list', () => {
-    expect(normalizeFrontMatterTags('/foo')).toEqual([]);
-  });
-
-  it('normalizes complex mixed list', () => {
-    const tagsPath = '/all/tags';
-    const input: Input = [
-      'tag 1',
-      {label: 'tag-1', permalink: '/tag-1'},
-      'tag 3',
-      'tag1',
-      {label: 'tag 4', permalink: '/tag4Permalink'},
-    ];
-    // Keep user input order but remove tags that lead to same permalink
-    const expectedOutput: Output = [
-      {
-        label: 'tag 1',
-        permalink: `${tagsPath}/tag-1`,
-      },
-      {
-        label: 'tag 3',
-        permalink: `${tagsPath}/tag-3`,
-      },
-      {
-        label: 'tag 4',
-        permalink: `${tagsPath}/tag4Permalink`,
-      },
-    ];
-    expect(normalizeFrontMatterTags(tagsPath, input)).toEqual(expectedOutput);
+  it('does not throw when docs has valid tags', () => {
+    const frontmatter = ['open'];
+    const tags = frontmatter.map((tag) =>
+      normalizeTag({
+        tagsBaseRoutePath: '/tags',
+        tagsFile,
+        tag,
+      }),
+    );
+    const testFn = () =>
+      reportInlineTags({
+        tags,
+        source: 'wrong.md',
+        options: {
+          onInlineTags: 'throw',
+          tags: 'tags.yml',
+        },
+      });
+    expect(testFn).not.toThrow();
   });
 });
 
@@ -124,7 +260,7 @@ describe('groupTaggedItems', () => {
   type SomeTaggedItem = {
     id: string;
     nested: {
-      tags: Tag[];
+      tags: TagMetadata[];
     };
   };
   function groupItems(items: SomeTaggedItem[]) {
@@ -135,14 +271,31 @@ describe('groupTaggedItems', () => {
   type Output = ReturnType<typeof groupItems>;
 
   it('groups items by tag permalink', () => {
-    const tagGuide = {label: 'Guide', permalink: '/guide'};
-    const tagTutorial = {label: 'Tutorial', permalink: '/tutorial'};
-    const tagAPI = {label: 'API', permalink: '/api'};
+    const tagGuide = {
+      label: 'Guide',
+      permalink: '/guide',
+      description: undefined,
+      inline: false,
+    };
+    const tagTutorial = {
+      label: 'Tutorial',
+      permalink: '/tutorial',
+      description: undefined,
+      inline: false,
+    };
+    const tagAPI = {
+      label: 'API',
+      permalink: '/api',
+      description: undefined,
+      inline: false,
+    };
 
     // This one will be grouped under same permalink and label is ignored
     const tagTutorialOtherLabel = {
       label: 'TutorialOtherLabel',
       permalink: '/tutorial',
+      description: undefined,
+      inline: false,
     };
 
     const item1: SomeTaggedItem = {

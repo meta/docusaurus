@@ -2,7 +2,7 @@
 
 A curated list of interesting Docusaurus community projects.
 
-## Community documentation {#community-documentation}
+## Community documentation {/* #community-documentation */}
 
 The **[Docusaurus.community](https://docusaurus.community)** site extends the [official docs](/docs) with more complex examples and full articles that recommend best practices and provide solutions to common problems.
 
@@ -16,23 +16,23 @@ We are also contemplating further integration into the official documentation at
 
 :::
 
-## Videos {#videos}
+## Videos {/* #videos */}
 
 - [F8 2019: Using Docusaurus to Create Open Source Websites](https://www.youtube.com/watch?v=QcGJsf6mgZE)
 
-## Articles {#articles}
+## Articles {/* #articles */}
 
 - [Awesome Docusaurus](https://github.com/webbertakken/awesome-docusaurus#readme) - Community curated list of Docusaurus resources.
 - [Live code editing in Docusaurus](https://dev.to/mrmuhammadali/live-code-editing-in-docusaurus-ux-at-its-best-2hj1)
 - [The definitive guide to migrating from Blogger to Docusaurus](https://blog.johnnyreilly.com/definitive-guide-to-migrating-from-blogger-to-docusaurus)
 
-## Showcase {#showcase}
+## Showcase {/* #showcase */}
 
 See the <a href={require('@docusaurus/useBaseUrl').default('showcase')}>showcase</a>.
 
-## Community plugins {#community-plugins}
+## Community plugins {/* #community-plugins */}
 
-### Search {#search}
+### Search {/* #search */}
 
 - [docusaurus-plugin-lunr](https://github.com/daldridge/docusaurus-plugin-lunr) - Docusaurus plugin to create a local search index for use with Lunr.js
 - [docusaurus-lunr-search](https://github.com/lelouch77/docusaurus-lunr-search) - Offline Search for Docusaurus
@@ -43,15 +43,31 @@ See the <a href={require('@docusaurus/useBaseUrl').default('showcase')}>showcase
 - [meilisearch-docsearch](https://github.com/tauri-apps/meilisearch-docsearch) - Docusaurus plugin for [Meilisearch](https://www.meilisearch.com)
 - [@orama/plugin-docusaurus](https://github.com/askorama/orama/tree/main/packages/plugin-docusaurus) - [Orama](https://askorama.ai/) plugin for Docusaurus v2
 - [@orama/plugin-docusaurus-v3](https://github.com/askorama/orama/tree/main/packages/plugin-docusaurus-v3) - [Orama](https://askorama.ai/) plugin for Docusaurus v3
+- [@getcanary/docusaurus-theme-search-pagefind](https://getcanary.dev/docs/integrations/docusaurus.html) - Create [Pagefind](https://pagefind.app/) index and use [Canary](https://github.com/fastrepl/canary) as UI primitives.
+- [docusaurus-biel](https://github.com/TechDocsStudio/docusaurus-biel) - Docusaurus plugin to add an AI chatbot and AI search with source-cited answers, powered by [Biel.ai](https://biel.ai)
+- [docusaurus-plugin-rangefind](https://github.com/xjodoin/rangefind/tree/main/packages/docusaurus-plugin-rangefind) - Local/offline search over a static [rangefind](https://rangefind.dev) index queried with HTTP range requests — BM25F relevance, typo correction, autocomplete; no search server
+- [docusaurus-plugin-pagefind](https://github.com/toasty-kj/docusaurus-plugin-pagefind) - Local/offline search using a static [Pagefind](https://pagefind.app) index
 
-### Integrations {#integrations}
+### Integrations {/* #integrations */}
 
 - [docusaurus2-dotenv](https://github.com/jonnynabors/docusaurus2-dotenv) - A Docusaurus plugin that supports dotenv and other environment variables
 - [posthog-docusaurus](https://github.com/PostHog/posthog-docusaurus) - Integrate [PostHog](https://posthog.com/) product analytics with Docusaurus
 - [docusaurus-plugin-moesif](https://github.com/Moesif/docusaurus-plugin-moesif) - Adds [Moesif API Analytics](https://www.moesif.com/) to track user behavior and pinpoint where developers drop off in your activation funnel.
 - [docusaurus-plugin-yandex-metrica](https://github.com/sgromkov/docusaurus-plugin-yandex-metrica) - Adds [Yandex Metrika](https://metrika.yandex.ru/) counter for evaluating site traffic and analyzing user behavior.
+- [docusaurus-plugin-dhub](https://github.com/dhub-dev/docusaurus-plugin-dhub) - Adds edit links that open a page's source file in the [Dhub](https://dhub.dev/docusaurus) visual MDX editor, and emits a `dhub.json` manifest mapping every route to its source file.
+- [docusaurus-plugin-statuspage](https://github.com/mcclowes/docusaurus-plugin-statuspage) - Shows a discreet banner when your [Statuspage](https://www.atlassian.com/software/statuspage) reports degraded service or an ongoing incident, linking readers to the status page.
 
-### Features {#features}
+### AI / Agents {/* #ai-agents */}
+
+- [docusaurus-plugin-copy-page-button](https://github.com/portdeveloper/docusaurus-plugin-copy-page-button) - Adds a "Copy page" button that exports doc pages as clean Markdown for use with ChatGPT, Claude, and Gemini. Used by Ethereum, Sui, Monad, and Flare docs.
+- [docusaurus-plugin-llms](https://github.com/rachfop/docusaurus-plugin-llms) - Generates `llms.txt` and `llms-full.txt` files from your docs, following the [llmstxt.org](https://llmstxt.org/) standard.
+- [docusaurus-plugin-llms-txt](https://github.com/din0s/docusaurus-plugin-llms-txt) - Generates a concatenated Markdown `llms.txt` file from your documentation.
+- [expose-markdown-docusaurus-plugin](https://github.com/FlyNumber/markdown_docusaurus_plugin) - Exposes your /docs Markdown files as raw `.md` URLs (for LLM consumption).
+- [@agentreadyweb/docusaurus-plugin](https://github.com/AshutoshRaj97/agentready-mcp/tree/main/docusaurus-plugin) - Auto-indexes your docs in [AgentReady](https://www.agentready.it.com) after every build, making them instantly queryable by AI agents (Claude, Cursor, Windsurf) via MCP with cited answers.
+- [@deskcrew/docusaurus-plugin](https://github.com/webmilmind1/docusaurus-deskcrew) - Adds AI live chat, a help center and ticketing from [DeskCrew](https://deskcrew.io) to every docs page. Answers reader questions from your own help articles, and files a support ticket when it cannot.
+- [Doc Bridge](https://github.com/AgentsKit-io/doc-bridge) - Indexes Docusaurus docs and sidebars into deterministic, package-scoped handoffs for coding agents, with freshness and coverage gates.
+
+### Features {/* #features */}
 
 - [docusaurus-theme-github-codeblock](https://github.com/saucelabs/docusaurus-theme-github-codeblock). A Docusaurus plugin that supports referencing code examples from public GitHub repositories
 - [docs-to-pdf](https://github.com/jean-humann/docs-to-pdf) - Generate documentation into PDF format
@@ -65,11 +81,17 @@ See the <a href={require('@docusaurus/useBaseUrl').default('showcase')}>showcase
 - [docusaurus-prince-pdf](https://github.com/signcl/docusaurus-prince-pdf) - Generate PDF with PrinceXML for better font subsetting and ToC features. Support Docusaurus sites
 - [redocusaurus](https://github.com/rohit-gohri/redocusaurus) - A Docusaurus preset for integrating OpenAPI documentation into your docs with [Redoc](https://github.com/redocly/redoc)
 - [plugin-image-zoom](https://github.com/flexanalytics/plugin-image-zoom) - An Image Zoom plugin for Docusaurus
+- [docusaurus-theme-zoom-image](https://github.com/rmaacario/docusaurus-theme-zoom-image) - Zero-dependency theme that makes every Markdown image zoomable: hover magnifier badge + full-screen lightbox
 - [docusaurus-plugin-typedoc](https://github.com/tgreyuk/typedoc-plugin-markdown/tree/master/packages/docusaurus-plugin-typedoc) - A Docusaurus plugin to build documentation with [TypeDoc](https://typedoc.org/)
 - [docusaurus-openapi-docs](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs) - A Docusaurus plugin and theme for generating interactive OpenAPI docs
 - [docusaurus-post-generator](https://github.com/moojing/docusaurus-post-generator) - A command line tool for user to add a blog/doc file quickly by command like `yarn gen-post new [template] [post_name]`.
+- [docusaurus-graph](https://github.com/Arsero/docusaurus-graph) - A Docusaurus plugin for generating a graph view showing links between documentation files.
+- [docusaurus-i18n](https://github.com/moonrailgun/docusaurus-i18n) - Auto-translate docusaurus documents with openai.
+- [docusaurus-plugin-glossary](https://github.com/mcclowes/docusaurus-plugin-glossary) - A docusaurus plugin for helping users understand key terms.
+- [docusaurus-plugin-cookie-consent](https://github.com/mcclowes/docusaurus-plugin-cookie-consent) - A Docusaurus plugin for allowing users to opt in/out of cookies, and accessing those settings in code.
+- [docusaurus-plugin-native-ideal-image](https://github.com/Legend-Master/docusaurus-plugin-native-ideal-image) - A Docusaurus plugin for pre-processing images to multiple formats, sizes and low quality image placeholders, replacing the official [@docusaurus/plugin-ideal-image](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-ideal-image) through modern browser native [`srcset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/srcset) and [lazy loading](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#loading).
 
-## Enterprise usage {#enterprise-usage}
+## Enterprise usage {/* #enterprise-usage */}
 
 - Facebook
 - Google

@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {applyRouteTrailingSlash, sortRoutes} from '../routeConfig';
 import type {RouteConfig} from '@docusaurus/types';
 import type {ApplyTrailingSlashParams} from '@docusaurus/utils-common';

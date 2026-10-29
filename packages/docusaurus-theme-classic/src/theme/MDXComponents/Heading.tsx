@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Heading from '@theme/Heading';
 import type {Props} from '@theme/MDXComponents/Heading';
 
-export default function MDXHeading(props: Props): JSX.Element {
+export default function MDXHeading(props: Props): ReactNode {
   return <Heading {...props} />;
 }

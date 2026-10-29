@@ -1,5 +1,6 @@
 {
   "label": "Category Links",
+  "description": "Category Links - Custom Description",
   "link": {
     "type": "generated-index",
     "slug": "/category-links-generated-index-slug"

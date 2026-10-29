@@ -14,6 +14,7 @@ import {
   FrontMatterLastUpdateSchema,
 } from '@docusaurus/utils-validation';
 import type {PageFrontMatter} from '@docusaurus/plugin-content-pages';
+/* eslint-disable camelcase */
 
 const PageFrontMatterSchema = Joi.object<PageFrontMatter>({
   // See https://github.com/facebook/docusaurus/issues/4591#issuecomment-822372398
@@ -22,6 +23,7 @@ const PageFrontMatterSchema = Joi.object<PageFrontMatter>({
   description: Joi.string().allow(''),
   keywords: Joi.array().items(Joi.string().required()),
   image: URISchema,
+  slug: Joi.string(),
   wrapperClassName: Joi.string(),
   hide_table_of_contents: Joi.boolean(),
   ...FrontMatterTOCHeadingLevels,

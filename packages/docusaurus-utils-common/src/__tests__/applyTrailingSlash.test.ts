@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import applyTrailingSlash, {
   addTrailingSlash,
   type ApplyTrailingSlashParams,
@@ -87,6 +88,15 @@ describe('applyTrailingSlash', () => {
     expect(applyTrailingSlash('/abc/', params(true))).toBe('/abc/');
     expect(applyTrailingSlash('/abc/', params(false))).toBe('/abc');
     expect(applyTrailingSlash('/abc/', params(undefined))).toBe('/abc/');
+  });
+
+  it('keeps dollar signs in the pathname', () => {
+    // Regression test for edge case bug
+    // see https://github.com/facebook/docusaurus/pull/12219
+    expect(applyTrailingSlash('/docs/a$$b', params(true))).toBe('/docs/a$$b/');
+    expect(applyTrailingSlash('/docs/a$&b', params(true))).toBe('/docs/a$&b/');
+    expect(applyTrailingSlash("/docs/a$'b", params(true))).toBe("/docs/a$'b/");
+    expect(applyTrailingSlash('/docs/a$$b/', params(false))).toBe('/docs/a$$b');
   });
 
   it('applies to path with #anchor', () => {

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {type ComponentProps} from 'react';
+import type {ComponentProps} from 'react';
 import Head from '@docusaurus/Head';
 import MDXCode from '@theme/MDXComponents/Code';
 import MDXA from '@theme/MDXComponents/A';

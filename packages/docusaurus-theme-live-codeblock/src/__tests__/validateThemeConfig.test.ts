@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {validateThemeConfig, DEFAULT_CONFIG} from '../validateThemeConfig';
 import type {Joi} from '@docusaurus/utils-validation';
 
@@ -81,7 +82,7 @@ describe('validateThemeConfig', () => {
     expect(() =>
       testValidateThemeConfig({liveCodeBlock}),
     ).toThrowErrorMatchingInlineSnapshot(
-      `""liveCodeBlock.playgroundPosition" must be one of [top, bottom]"`,
+      `[ValidationError: "liveCodeBlock.playgroundPosition" must be one of [top, bottom]]`,
     );
   });
   it('playgroundPosition invalid boolean', () => {
@@ -89,7 +90,7 @@ describe('validateThemeConfig', () => {
     expect(() =>
       testValidateThemeConfig({liveCodeBlock}),
     ).toThrowErrorMatchingInlineSnapshot(
-      `""liveCodeBlock.playgroundPosition" must be one of [top, bottom]"`,
+      `[ValidationError: "liveCodeBlock.playgroundPosition" must be one of [top, bottom]]`,
     );
   });
 });

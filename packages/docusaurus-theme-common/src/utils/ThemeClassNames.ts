@@ -18,6 +18,8 @@ export const ThemeClassNames = {
     blogPostPage: 'blog-post-page',
     blogTagsListPage: 'blog-tags-list-page',
     blogTagPostListPage: 'blog-tags-post-list-page',
+    blogAuthorsListPage: 'blog-authors-list-page',
+    blogAuthorsPostsPage: 'blog-authors-posts-page',
 
     docsDocPage: 'docs-doc-page',
     docsTagsListPage: 'docs-tags-list-page',
@@ -25,15 +27,7 @@ export const ThemeClassNames = {
 
     mdxPage: 'mdx-page',
   },
-  wrapper: {
-    main: 'main-wrapper',
-    // TODO these wrapper class names are now quite useless
-    // TODO do breaking change later in 3.0
-    // we already add plugin name/id class on <html>: that's enough
-    blogPages: 'blog-wrapper',
-    docsPages: 'docs-wrapper',
-    mdxPages: 'mdx-wrapper',
-  },
+
   common: {
     editThisPage: 'theme-edit-this-page',
     lastUpdated: 'theme-last-updated',
@@ -41,11 +35,36 @@ export const ThemeClassNames = {
     codeBlock: 'theme-code-block',
     admonition: 'theme-admonition',
     unlistedBanner: 'theme-unlisted-banner',
+    draftBanner: 'theme-draft-banner',
 
     admonitionType: (type: string) => `theme-admonition-${type}`,
   },
+
+  announcementBar: {
+    container: 'theme-announcement-bar',
+  },
+
+  tabs: {
+    container: 'theme-tabs-container',
+  },
+
   layout: {
-    // TODO add other stable classNames here
+    navbar: {
+      container: 'theme-layout-navbar',
+      containerLeft: 'theme-layout-navbar-left',
+      containerRight: 'theme-layout-navbar-right',
+      mobileSidebar: {
+        container: 'theme-layout-navbar-sidebar',
+        panel: 'theme-layout-navbar-sidebar-panel',
+      },
+    },
+    main: {
+      container: 'theme-layout-main',
+    },
+    footer: {
+      container: 'theme-layout-footer',
+      column: 'theme-layout-footer-column',
+    },
   },
 
   /**
@@ -70,6 +89,13 @@ export const ThemeClassNames = {
     docSidebarItemLinkLevel: (level: number) =>
       `theme-doc-sidebar-item-link-level-${level}` as const,
     // TODO add other stable classNames here
+    docCard: {
+      container: 'theme-doc-card-container',
+      heading: 'theme-doc-card-heading',
+      icon: 'theme-doc-card-icon',
+      title: 'theme-doc-card-title',
+      description: 'theme-doc-card-description',
+    },
   },
   blog: {
     // TODO add other stable classNames here

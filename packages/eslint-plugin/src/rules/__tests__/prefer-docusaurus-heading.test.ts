@@ -6,18 +6,9 @@
  */
 
 import rule from '../prefer-docusaurus-heading';
-import {RuleTester} from './testUtils';
+import {ruleTester} from './testUtils';
 
 const errorsJSX = [{messageId: 'headings'}] as const;
-
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-});
 
 ruleTester.run('prefer-docusaurus-heading', rule, {
   valid: [

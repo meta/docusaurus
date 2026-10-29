@@ -1,4 +1,4 @@
-# Docusaurus Theme Mermaid
+# `@docusaurus/theme-mermaid`
 
 The mermaid components for Docusaurus.
 

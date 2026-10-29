@@ -11,7 +11,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 Code blocks within documentation are super-powered 💪.
 
-## Code title {#code-title}
+## Code title {/* #code-title */}
 
 You can add a title to the code block by adding a `title` key after the language (leave a space between them).
 
@@ -37,9 +37,9 @@ function HelloCodeTitle(props) {
 </BrowserWindow>
 ```
 
-## Syntax highlighting {#syntax-highlighting}
+## Syntax highlighting {/* #syntax-highlighting */}
 
-Code blocks are text blocks wrapped around by strings of 3 backticks. You may check out [this reference](https://github.com/mdx-js/specification) for the specifications of MDX.
+Code blocks are text blocks wrapped around by strings of 3 backticks. You may check out [this reference](https://mdxjs.com/docs/) for the specifications of MDX.
 
 ````md
 ```js
@@ -57,9 +57,9 @@ console.log('Every repo must come with a mascot.');
 
 </BrowserWindow>
 
-### Theming {#theming}
+### Theming {/* #theming */}
 
-By default, the Prism [syntax highlighting theme](https://github.com/FormidableLabs/prism-react-renderer#theming) we use is [Palenight](https://github.com/FormidableLabs/prism-react-renderer/blob/master/packages/prism-react-renderer/src/themes/palenight.ts). You can change this to another theme by passing `theme` field in `prism` as `themeConfig` in your docusaurus.config.js.
+By default, the Prism [syntax highlighting theme](https://github.com/FormidableLabs/prism-react-renderer#theming) we use is [Palenight](https://github.com/FormidableLabs/prism-react-renderer/blob/master/packages/prism-react-renderer/src/themes/palenight.ts). You can change this to another theme by passing the `theme` field in `prism` as `themeConfig` in your docusaurus.config.js.
 
 For example, if you prefer to use the `dracula` highlighting theme:
 
@@ -78,9 +78,9 @@ export default {
 
 Because a Prism theme is just a JS object, you can also write your own theme if you are not satisfied with the default. Docusaurus enhances the `github` and `vsDark` themes to provide richer highlight, and you can check our implementations for the [light](https://github.com/facebook/docusaurus/blob/main/website/src/utils/prismLight.ts) and [dark](https://github.com/facebook/docusaurus/blob/main/website/src/utils/prismDark.ts) code block themes.
 
-### Supported Languages {#supported-languages}
+### Supported Languages {/* #supported-languages */}
 
-By default, Docusaurus comes with a subset of [commonly used languages](https://github.com/FormidableLabs/prism-react-renderer/blob/master/packages/generate-prism-languages/index.ts#L9-L23).
+By default, Docusaurus comes with a subset of [commonly used languages](https://github.com/FormidableLabs/prism-react-renderer/blob/master/packages/generate-prism-languages/index.ts#L10-L25).
 
 :::warning
 
@@ -140,9 +140,9 @@ You can refer to [Prism's official language definitions](https://github.com/Pris
 
 When adding a custom language definition, you do not need to add the language to the `additionalLanguages` config array, since Docusaurus only looks up the `additionalLanguages` strings in languages that Prism provides. Adding the language import in `prism-include-languages.js` is sufficient.
 
-## Line highlighting {#line-highlighting}
+## Line highlighting {/* #line-highlighting */}
 
-### Highlighting with comments {#highlighting-with-comments}
+### Highlighting with comments {/* #highlighting-with-comments */}
 
 You can use comments with `highlight-next-line`, `highlight-start`, and `highlight-end` to select which lines are highlighted.
 
@@ -223,9 +223,9 @@ You can set your own background color for highlighted code line in your `src/css
 }
 ```
 
-If you also need to style the highlighted code line in some other way, you can target on `theme-code-block-highlighted-line` CSS class.
+If you also need to style the highlighted code line in some other way, you can target the `theme-code-block-highlighted-line` CSS class.
 
-### Highlighting with metadata string {#highlighting-with-metadata-string}
+### Highlighting with metadata string {/* #highlighting-with-metadata-string */}
 
 You can also specify highlighted line ranges within the language meta string (leave a space after the language). To highlight multiple lines, separate the line numbers by commas or use the range syntax to select a chunk of lines. This feature uses the `parse-number-range` library and you can find [more syntax](https://www.npmjs.com/package/parse-numeric-range) on their project details.
 
@@ -289,7 +289,7 @@ Below, we will introduce how the magic comment system can be extended to define 
 
 :::
 
-### Custom magic comments {#custom-magic-comments}
+### Custom magic comments {/* #custom-magic-comments */}
 
 `// highlight-next-line` and `// highlight-start` etc. are called "magic comments", because they will be parsed and removed, and their purposes are to add metadata to the next line, or the section that the pair of start- and end-comments enclose.
 
@@ -380,7 +380,7 @@ If you use number ranges in metastring (the `{1,3-4}` syntax), Docusaurus will a
 
 You can disable the default line highlighting comments with `magicComments: []`. If there's no magic comment config, but Docusaurus encounters a code block containing a metastring range, it will error because there will be no class name to apply—the highlighting class name, after all, is just a magic comment entry.
 
-Every magic comment entry will contain three keys: `className` (required), `line`, which applies to the directly next line, or `block` (containing `start` and `end`), which applies to the entire block enclosed by the two comments.
+Every magic comment entry will contain three keys: `className` (required), `line`, which applies to the directly following line, or `block` (containing `start` and `end`), which applies to the entire block enclosed by the two comments.
 
 Using CSS to target the class can already do a lot, but you can unlock the full potential of this feature through [swizzling](../../swizzling.mdx).
 
@@ -390,23 +390,17 @@ npm run swizzle @docusaurus/theme-classic CodeBlock/Line
 
 The `Line` component will receive the list of class names, based on which you can conditionally render different markup.
 
-## Line numbering {#line-numbering}
+## Line numbering {/* #line-numbering */}
 
 You can enable line numbering for your code block by using `showLineNumbers` key within the language meta string (don't forget to add space directly before the key).
 
 ````md
-```jsx {1,4-6,11} showLineNumbers
+```jsx showLineNumbers
 import React from 'react';
 
-function MyComponent(props) {
-  if (props.isBar) {
-    return <div>Bar</div>;
-  }
-
+export default function MyComponent(props) {
   return <div>Foo</div>;
 }
-
-export default MyComponent;
 ```
 ````
 
@@ -414,25 +408,43 @@ export default MyComponent;
 <BrowserWindow>
 ```
 
-```jsx {1,4-6,11} showLineNumbers
+```jsx showLineNumbers
 import React from 'react';
 
-function MyComponent(props) {
-  if (props.isBar) {
-    return <div>Bar</div>;
-  }
-
+export default function MyComponent(props) {
   return <div>Foo</div>;
 }
-
-export default MyComponent;
 ```
 
 ```mdx-code-block
 </BrowserWindow>
 ```
 
-## Interactive code editor {#interactive-code-editor}
+By default, the counter starts at line number 1. It's possible to pass a custom counter start value to split large code blocks for readability:
+
+````md
+```jsx showLineNumbers=3
+export default function MyComponent(props) {
+  return <div>Foo</div>;
+}
+```
+````
+
+```mdx-code-block
+<BrowserWindow>
+```
+
+```jsx showLineNumbers=3
+export default function MyComponent(props) {
+  return <div>Foo</div>;
+}
+```
+
+```mdx-code-block
+</BrowserWindow>
+```
+
+## Interactive code editor {/* #interactive-code-editor */}
 
 (Powered by [React Live](https://github.com/FormidableLabs/react-live))
 
@@ -458,23 +470,15 @@ To use the plugin, create a code block with `live` attached to the language meta
 ```jsx live
 function Clock(props) {
   const [date, setDate] = useState(new Date());
+
   useEffect(() => {
-    const timerID = setInterval(() => tick(), 1000);
+    const id = setInterval(() => {
+      setDate(new Date());
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
 
-    return function cleanup() {
-      clearInterval(timerID);
-    };
-  });
-
-  function tick() {
-    setDate(new Date());
-  }
-
-  return (
-    <div>
-      <h2>It is {date.toLocaleTimeString()}.</h2>
-    </div>
-  );
+  return <h2>It is {date.toLocaleTimeString()}.</h2>;
 }
 ```
 ````
@@ -488,23 +492,15 @@ The code block will be rendered as an interactive editor. Changes to the code wi
 ```jsx live
 function Clock(props) {
   const [date, setDate] = useState(new Date());
+
   useEffect(() => {
-    const timerID = setInterval(() => tick(), 1000);
+    const id = setInterval(() => {
+      setDate(new Date());
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
 
-    return function cleanup() {
-      clearInterval(timerID);
-    };
-  });
-
-  function tick() {
-    setDate(new Date());
-  }
-
-  return (
-    <div>
-      <h2>It is {date.toLocaleTimeString()}.</h2>
-    </div>
-  );
+  return <h2>It is {date.toLocaleTimeString()}.</h2>;
 }
 ```
 
@@ -512,7 +508,7 @@ function Clock(props) {
 </BrowserWindow>
 ```
 
-### Imports {#imports}
+### Imports {/* #imports */}
 
 :::warning react-live and imports
 
@@ -577,7 +573,7 @@ function MyPlayground(props) {
 </BrowserWindow>
 ```
 
-### Imperative Rendering (noInline)
+### Imperative Rendering (noInline) {/* #imperative-rendering-noinline */}
 
 The `noInline` option should be used to avoid errors when your code spans multiple components or variables.
 
@@ -613,9 +609,9 @@ render(
 </BrowserWindow>
 ````
 
-## Using JSX markup in code blocks {#using-jsx-markup}
+## Using JSX markup in code blocks {/* #using-jsx-markup */}
 
-Code block in Markdown always preserves its content as plain text, meaning you can't do something like:
+Code blocks in Markdown always preserve their content as plain text, meaning you can't do something like:
 
 ```ts
 type EditUrlFunction = (params: {
@@ -658,7 +654,7 @@ Syntax highlighting only works on plain strings. Docusaurus will not attempt to 
 
 :::
 
-## Multi-language support code blocks {#multi-language-support-code-blocks}
+## Multi-language support code blocks {/* #multi-language-support-code-blocks */}
 
 With MDX, you can easily create interactive components within your documentation, for example, to display code in multiple programming languages and switch between them using a tabs component.
 
@@ -747,7 +743,7 @@ class HelloWorld {
 
 If you have multiple of these multi-language code tabs, and you want to sync the selection across the tab instances, refer to the [Syncing tab choices section](markdown-features-tabs.mdx#syncing-tab-choices).
 
-### Docusaurus npm2yarn remark plugin {#npm2yarn-remark-plugin}
+### Docusaurus npm2yarn remark plugin {/* #npm2yarn-remark-plugin */}
 
 Displaying CLI commands in both npm and Yarn is a very common need, for example:
 
@@ -800,14 +796,14 @@ npm install @docusaurus/remark-plugin-npm2yarn
 ```
 ````
 
-#### Configuration {#npm2yarn-remark-plugin-configuration}
+#### Configuration {/* #npm2yarn-remark-plugin-configuration */}
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `sync` | `boolean` | `false` | Whether to sync the selected converter across all code blocks. |
 | `converters` | `array` | `'yarn'`, `'pnpm'` | The list of converters to use. The order of the converters is important, as the first converter will be used as the default choice. |
 
-## Usage in JSX {#usage-in-jsx}
+## Usage in JSX {/* #usage-in-jsx */}
 
 Outside of Markdown, you can use the `@theme/CodeBlock` component to get the same output.
 
@@ -849,4 +845,6 @@ The props accepted are `language`, `title` and `showLineNumbers`, in the same wa
 
 Although discouraged, you can also pass in a `metastring` prop like `metastring='{1-2} title="/src/components/HelloCodeTitle.js" showLineNumbers'`, which is how Markdown code blocks are handled under the hood. However, we recommend you [use comments for highlighting lines](#highlighting-with-comments).
 
-As [previously stated](#using-jsx-markup), syntax highlighting is only applied when the children is a simple string.
+With [`@docusaurus/theme-live-codeblock`](#interactive-code-editor), pass `metastring="live"` to render an interactive code editor.
+
+As [previously stated](#using-jsx-markup), syntax highlighting is only applied when the child is a simple string.

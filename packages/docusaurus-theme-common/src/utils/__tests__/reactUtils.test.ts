@@ -4,8 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-import {renderHook} from '@testing-library/react-hooks';
+// @vitest-environment jsdom
+import {describe, expect, it} from 'vitest';
+import {renderHook} from '@testing-library/react';
 import {usePrevious, useShallowMemoObject} from '../reactUtils';
 
 describe('usePrevious', () => {

@@ -7,6 +7,12 @@ slug: /preparing-your-site-for-docusaurus-v3
 image: ./img/social-card.png
 ---
 
+:::warning
+
+This blog post was written when Docusaurus v3 was in beta. There are some changes in dependency versions and upgrade steps you should be aware of if upgrading to Docusaurus v3 current stable releases. Use the [upgrade guide](https://docusaurus.io/docs/next/migration/v3) for the most up-to-date migration steps.
+
+:::
+
 **Docusaurus v3** is now [**in beta**](https://github.com/facebook/docusaurus/discussions/9312) and the official release is around the corner. This is the perfect time to start **preparing your site** for this new major version.
 
 Docusaurus v3 comes with a few **breaking changes**, many of which can be **handled today under Docusaurus v2**. Preparing your site ahead of time can be done incrementally, and will make it easier to upgrade to v3.
@@ -17,7 +23,7 @@ This article will mostly focus on how to prepare your content for this new MDX v
 
 ![Preparing your site for Docusaurus v3 - social card](./img/social-card.png)
 
-<!--truncate-->
+{/* truncate */}
 
 :::warning
 
@@ -33,7 +39,7 @@ If your site is relatively small, with only a few customizations, you can probab
 
 :::
 
-## Preparatory work
+## Preparatory work {/* #preparatory-work */}
 
 Before preparing for the Docusaurus v3 upgrade, we recommend upgrading to the latest [Docusaurus v2 version](/versions).
 
@@ -41,7 +47,7 @@ Depending on the complexity of your site, it may be a good idea to adopt the [vi
 
 We also recommend using the `.mdx` extension whenever you use JSX, `import`, or `export` (i.e. MDX features) inside a Markdown file. It is semantically more correct and improves compatibility with external tools (IDEs, formatters, linters, etc.). In future versions of Docusaurus, `.md` files will be parsed as standard [CommonMark](https://commonmark.org/), which does not support these features. In Docusaurus v3, `.md` files keep being compiled as MDX files, but it will be possible to [opt-in for CommonMark](https://github.com/facebook/docusaurus/issues/3018).
 
-## Preparing content for MDX v3
+## Preparing content for MDX v3 {/* #preparing-content-for-mdx-v3 */}
 
 MDX is a major dependency of Docusaurus responsible for compiling your `.md` and `.mdx` files to React components.
 
@@ -57,7 +63,7 @@ We have a dedicated [MDX v3 - Upgrade Support](https://github.com/facebook/docus
 
 :::
 
-### Using the MDX playground
+### Using the MDX playground {/* #using-the-mdx-playground */}
 
 The MDX playground is your new best friend. It permits to understand how your content is **compiled to React components**, and troubleshoot compilation or rendering issues in isolation.
 
@@ -87,7 +93,7 @@ The goal will be to refactor your problematic content so that it **works fine wi
 
 :::
 
-### Using the MDX checker CLI
+### Using the MDX checker CLI {/* #using-the-mdx-checker-cli */}
 
 We provide a [docusaurus-mdx-checker](https://github.com/slorber/docusaurus-mdx-checker) CLI that permits to easily spot problematic content. Run this command today on your Docusaurus v2 site to obtain a list of files that will fail to compile under MDX v3.
 
@@ -113,7 +119,7 @@ It will not report subtle compilation changes that do not produce errors but can
 
 :::
 
-### Common MDX problems
+### Common MDX problems {/* #common-mdx-problems */}
 
 We upgraded a few Docusaurus sites to Docusaurus v3 and MDX v3:
 
@@ -123,7 +129,7 @@ We upgraded a few Docusaurus sites to Docusaurus v3 and MDX v3:
 
 These upgrades permitted us to aggregate the most common content problems, and document how to best handle them.
 
-#### Bad usage of `{`
+#### Bad usage of `{` {/* #bad-usage-of- */}
 
 The `{` character is used for opening [JavaScript expressions](https://mdxjs.com/docs/what-is-mdx/#expressions). MDX will now fail if what you put inside `{expression}` is not a valid expression.
 
@@ -147,7 +153,7 @@ Available options to fix this error:
 
 :::
 
-#### Bad usage of `<`
+#### Bad usage of `<` {/* #bad-usage-of--1 */}
 
 The `<` character is used for opening [JSX tags](https://mdxjs.com/docs/what-is-mdx/#jsx). MDX will now fail if it thinks your JSX is invalid.
 
@@ -179,7 +185,7 @@ Available options to fix this error:
 
 :::
 
-#### Bad usage of GFM Autolink
+#### Bad usage of GFM Autolink {/* #bad-usage-of-gfm-autolink */}
 
 Docusaurus supports [GitHub Flavored Markdown (GFM)](https://github.github.com/gfm/), but [autolink](https://github.github.com/gfm/#autolinks) using the `<link>` syntax is not supported anymore by MDX.
 
@@ -212,7 +218,7 @@ http://localhost:3000
 
 :::
 
-#### Lower-case MDXComponent mapping
+#### Lower-case MDXComponent mapping {/* #lower-case-mdxcomponent-mapping */}
 
 For users providing a [custom `MDXComponent`mapping](/docs/markdown-features/react#mdx-component-scope), components are now "sandboxed":
 
@@ -244,7 +250,7 @@ For any other element, **use upper-case names**.
 
 :::
 
-#### Unintended extra paragraphs
+#### Unintended extra paragraphs {/* #unintended-extra-paragraphs */}
 
 In MDX, it is now possible to interleave JSX and Markdown more easily without requiring extra line breaks. Writing content on multiple lines can also produce new expected `<p>` tags.
 
@@ -291,7 +297,7 @@ If your content contains "Markdown inlines" (`**`, `*`, `_`, `[link](/path)`), y
 
 :::
 
-#### Unintended usage of directives
+#### Unintended usage of directives {/* #unintended-usage-of-directives */}
 
 Docusaurus v3 now uses [Markdown Directives](https://talk.commonmark.org/t/generic-directives-plugins-syntax/444) (implemented with [remark-directive](https://github.com/remarkjs/remark-directive)) as a generic way to provide support for admonitions, and other upcoming Docusaurus features.
 
@@ -332,7 +338,7 @@ conf is great
 
 :::
 
-#### Unsupported indented code blocks
+#### Unsupported indented code blocks {/* #unsupported-indented-code-blocks */}
 
 MDX does not transform indented text as code blocks anymore.
 
@@ -358,7 +364,7 @@ console.log('hello');
 
 :::
 
-### MDX plugins
+### MDX plugins {/* #mdx-plugins */}
 
 All the official packages (Unified, Remark, Rehype...) in the MDX ecosystem are now [**ES Modules only**](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) and do not support [CommonJS](https://nodejs.org/api/modules.html#modules-commonjs-modules) anymore.
 
@@ -396,11 +402,11 @@ If you created custom Remark or Rehype plugins, you may need to refactor those, 
 
 :::
 
-## Other breaking changes
+## Other breaking changes {/* #other-breaking-changes */}
 
 Apart from MDX, there are other breaking changes that you can already prepare your site for, notably major version upgrades of important dependencies.
 
-### Node.js 18.0
+### Node.js 18.0 {/* #nodejs-180 */}
 
 Node.js 16 [reached End-of-Life](https://nodejs.org/en/blog/announcements/nodejs16-eol), and Docusaurus v3 now requires **Node.js >= 18.0**.
 
@@ -410,7 +416,7 @@ Upgrade your Docusaurus v2 site to Node.js 18 before upgrading to Docusaurus v3.
 
 :::
 
-### React 18.0
+### React 18.0 {/* #react-180 */}
 
 Docusaurus v3 now requires **React >= 18.0**.
 
@@ -429,7 +435,7 @@ We recommend to particularly look for:
 
 :::
 
-### TypeScript 5.0
+### TypeScript 5.0 {/* #typescript-50 */}
 
 Docusaurus v3 now requires **TypeScript >= 5.0**.
 
@@ -439,7 +445,7 @@ Upgrade your Docusaurus v2 site to TypeScript 5 before upgrading to Docusaurus v
 
 :::
 
-### TypeScript base config
+### TypeScript base config {/* #typescript-base-config */}
 
 The official Docusaurus TypeScript config has been re-internalized from the external package [`@tsconfig/docusaurus`](https://www.npmjs.com/package/@tsconfig/docusaurus) to our new monorepo package [`@docusaurus/tsconfig`](https://www.npmjs.com/package/@docusaurus/tsconfig).
 
@@ -470,7 +476,7 @@ The new Docusaurus v3 TypeScript config is sensibly the same as the former Docus
 
 :::
 
-### Admonition warning
+### Admonition warning {/* #admonition-warning */}
 
 For historical reasons, we support an undocumented admonition `:::warning` that renders with a red color.
 
@@ -496,7 +502,7 @@ Docusaurus v3 also [deprecated the `:::caution`](https://github.com/facebook/doc
 
 :::
 
-### Versioned sidebars
+### Versioned sidebars {/* #versioned-sidebars */}
 
 This breaking change will only affect **Docusaurus v2 early adopters** who versioned their docs before `v2.0.0-beta.10` (December 2021).
 
@@ -525,7 +531,7 @@ You can remove the useless versioned prefix from your versioned sidebars.
 
 :::
 
-## Try Docusaurus v3 today {#try-docusaurus-v3-today}
+## Try Docusaurus v3 today {/* #try-docusaurus-v3-today */}
 
 Docusaurus v3 is now [in beta](https://github.com/facebook/docusaurus/discussions/9312), and already used in production by [React-Native](https://reactnative.dev), [Jest](https://jestjs.io), and [our own website](https://docusaurus.io/).
 
@@ -558,7 +564,7 @@ For most sites, the upgrade should be easy. If you prepared your site ahead of t
  }
 ```
 
-## Ask for help
+## Ask for help {/* #ask-for-help */}
 
 We will be there to help you upgrade through the following support channels:
 
@@ -570,7 +576,7 @@ We will be there to help you upgrade through the following support channels:
 
 Alternatively, you can look for a paid [Docusaurus Service Provider](https://github.com/facebook/docusaurus/discussions/9281) to execute this upgrade for you. If your site is open source, you can also ask our community for [free, benevolent help](https://github.com/facebook/docusaurus/discussions/9283).
 
-## Conclusion
+## Conclusion {/* #conclusion */}
 
 Docusaurus v3 is ready to try, and will be released soon. This article already gives you a good idea of all the major changes required to upgrade.
 

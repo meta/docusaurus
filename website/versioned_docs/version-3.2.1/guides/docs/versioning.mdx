@@ -21,7 +21,7 @@ Most of the time, you don't need versioning as it will just increase your build 
 
 To better understand how versioning works and see if it suits your needs, you can read on below.
 
-## Overview {#overview}
+## Overview {/* #overview */}
 
 A typical versioned doc site looks like below:
 
@@ -67,7 +67,7 @@ By default, the `current` docs version is labeled as `Next` and hosted under `/d
 
 :::
 
-### Terminology {#terminology}
+### Terminology {/* #terminology */}
 
 Note the terminology we use here.
 
@@ -92,9 +92,9 @@ Note the terminology we use here.
 
 Current version is defined by the **file system location**, while latest version is defined by the **the navigation behavior**. They may or may not be the same version! (And the default configuration, as shown in the table above, would treat them as different: current version at `/docs/next` and latest at `/docs`.)
 
-## Tutorials {#tutorials}
+## Tutorials {/* #tutorials */}
 
-### Tagging a new version {#tagging-a-new-version}
+### Tagging a new version {/* #tagging-a-new-version */}
 
 1. First, make sure the current docs version (the `./docs` directory) is ready to be frozen.
 2. Enter a new version number.
@@ -109,7 +109,7 @@ When tagging a new version, the document versioning mechanism will:
 - Create a versioned sidebars file based from your current [sidebar](./sidebar/index.mdx) configuration (if it exists) - saved as `versioned_sidebars/version-[versionName]-sidebars.json`.
 - Append the new version number to `versions.json`.
 
-### Creating new docs {#creating-new-docs}
+### Creating new docs {/* #creating-new-docs */}
 
 1. Place the new file into the corresponding version folder.
 2. Include the reference to the new file in the corresponding sidebar file according to the version number.
@@ -176,7 +176,7 @@ or for a manual sidebar:
 
 :::
 
-### Updating an existing version {#updating-an-existing-version}
+### Updating an existing version {/* #updating-an-existing-version */}
 
 You can update multiple docs versions at the same time because each directory in `versioned_docs/` represents specific routes when published.
 
@@ -186,7 +186,7 @@ You can update multiple docs versions at the same time because each directory in
 
 Example: When you change any file in `versioned_docs/version-2.6/`, it will only affect the docs for version `2.6`.
 
-### Deleting an existing version {#deleting-an-existing-version}
+### Deleting an existing version {/* #deleting-an-existing-version */}
 
 You can delete/remove versions as well.
 
@@ -206,7 +206,7 @@ Example:
 2. Delete the versioned docs directory. Example: `versioned_docs/version-1.8.0`.
 3. Delete the versioned sidebars file. Example: `versioned_sidebars/version-1.8.0-sidebars.json`.
 
-## Configuring versioning behavior {#configuring-versioning-behavior}
+## Configuring versioning behavior {/* #configuring-versioning-behavior */}
 
 The "current" version is the version name for the `./docs` folder. There are different ways to manage versioning, but two very common patterns are:
 
@@ -256,7 +256,7 @@ We offer these plugin options to customize versioning behavior:
 
 See [docs plugin configuration](../../api/plugins/plugin-content-docs.mdx#configuration) for more details.
 
-## Navbar items {#navbar-items}
+## Navbar items {/* #navbar-items */}
 
 We offer several navbar items to help you quickly set up navigation without worrying about versioned routes.
 
@@ -271,15 +271,15 @@ These links would all look for an appropriate version to link to, in the followi
 2. **Preferred version**: the version that the user last viewed. If there's no history, fall back to...
 3. **Latest version**: the default version that we navigate to, configured by the `lastVersion` option.
 
-## Recommended practices {#recommended-practices}
+## Recommended practices {/* #recommended-practices */}
 
-### Version your documentation only when needed {#version-your-documentation-only-when-needed}
+### Version your documentation only when needed {/* #version-your-documentation-only-when-needed */}
 
 For example, you are building documentation for your npm package `foo` and you are currently in version 1.0.0. You then release a patch version for a minor bug fix and it's now 1.0.1.
 
 Should you cut a new documentation version 1.0.1? **You probably shouldn't**. 1.0.1 and 1.0.0 docs shouldn't differ according to semver because there are no new features!. Cutting a new version for it will only just create unnecessary duplicated files.
 
-### Keep the number of versions small {#keep-the-number-of-versions-small}
+### Keep the number of versions small {/* #keep-the-number-of-versions-small */}
 
 As a good rule of thumb, try to keep the number of your versions below 10. You will **very likely** to have a lot of obsolete versioned documentation that nobody even reads anymore. For example, [Jest](https://jestjs.io/versions) is currently in version `27.4`, and only maintains several latest documentation versions with the lowest being `25.X`. Keep it small 😊
 
@@ -289,7 +289,7 @@ If you deploy your site on a Jamstack provider (e.g. [Netlify](../../deployment.
 
 :::
 
-### Use absolute import within the docs {#use-absolute-import-within-the-docs}
+### Use absolute import within the docs {/* #use-absolute-import-within-the-docs */}
 
 Don't use relative paths import within the docs. Because when we cut a version the paths no longer work (the nesting level is different, among other reasons). You can utilize the `@site` alias provided by Docusaurus that points to the `website` directory. Example:
 
@@ -298,7 +298,7 @@ Don't use relative paths import within the docs. Because when we cut a version t
 + import Foo from '@site/src/components/Foo';
 ```
 
-### Link docs by file paths {#link-docs-by-file-paths}
+### Link docs by file paths {/* #link-docs-by-file-paths */}
 
 Refer to other docs by relative file paths with the `.md` extension, so that Docusaurus can rewrite them to actual URL paths during building. Files will be linked to the correct corresponding version.
 
@@ -308,7 +308,7 @@ The [@hello](hello.mdx#paginate) document is great!
 See the [Tutorial](../getting-started/tutorial.mdx) for more info.
 ```
 
-### Global or versioned collocated assets {#global-or-versioned-collocated-assets}
+### Global or versioned collocated assets {/* #global-or-versioned-collocated-assets */}
 
 You should decide if assets like images and files are per-version or shared between versions.
 

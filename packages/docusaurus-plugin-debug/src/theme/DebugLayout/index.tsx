@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {type ReactNode} from 'react';
+import type {ReactNode} from 'react';
 import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
 import styles from './styles.module.css';
@@ -29,7 +29,7 @@ export default function DebugLayout({
   children,
 }: {
   children: ReactNode;
-}): JSX.Element {
+}): ReactNode {
   return (
     <>
       <Head>

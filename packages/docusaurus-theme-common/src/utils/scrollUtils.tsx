@@ -9,18 +9,18 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   type ReactNode,
 } from 'react';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import useIsomorphicLayoutEffect from '@docusaurus/useIsomorphicLayoutEffect';
 import {useEvent, ReactContextError} from './reactUtils';
 
 type ScrollController = {
   /** A boolean ref tracking whether scroll events are enabled. */
-  scrollEventsEnabledRef: React.MutableRefObject<boolean>;
+  scrollEventsEnabledRef: React.RefObject<boolean>;
   /** Enable scroll events in `useScrollPosition`. */
   enableScrollEvents: () => void;
   /** Disable scroll events in `useScrollPosition`. */
@@ -52,13 +52,9 @@ export function ScrollControllerProvider({
   children,
 }: {
   children: ReactNode;
-}): JSX.Element {
+}): ReactNode {
   const value = useScrollControllerContextValue();
-  return (
-    <ScrollMonitorContext.Provider value={value}>
-      {children}
-    </ScrollMonitorContext.Provider>
-  );
+  return <ScrollMonitorContext value={value}>{children}</ScrollMonitorContext>;
 }
 
 /**
@@ -68,7 +64,7 @@ export function ScrollControllerProvider({
  * This API permits to temporarily disable/ignore scroll events. Motivated by
  * https://github.com/facebook/docusaurus/pull/5618
  */
-export function useScrollController(): ScrollController {
+function useScrollController(): ScrollController {
   const context = useContext(ScrollMonitorContext);
   if (context == null) {
     throw new ReactContextError('ScrollControllerProvider');
@@ -221,7 +217,7 @@ export function useScrollPositionBlocker(): {
     [scrollController, scrollPositionSaver],
   );
 
-  useIsomorphicLayoutEffect(() => {
+  useLayoutEffect(() => {
     // Queuing permits to restore scroll position after all useLayoutEffect
     // have run, and yet preserve the sync nature of the scroll restoration
     // See https://github.com/facebook/docusaurus/issues/8625

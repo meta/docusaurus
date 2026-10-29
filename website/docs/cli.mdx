@@ -25,15 +25,15 @@ Once your website is bootstrapped, the website source will contain the Docusauru
 }
 ```
 
-## Docusaurus CLI commands {#docusaurus-cli-commands}
+## Docusaurus CLI commands {/* #docusaurus-cli-commands */}
 
 Below is a list of Docusaurus CLI commands and their usages:
 
-### `docusaurus start [siteDir]` {#docusaurus-start-sitedir}
+### `docusaurus start [siteDir]` {/* #docusaurus-start-sitedir */}
 
 Builds and serves a preview of your site locally with [Webpack Dev Server](https://webpack.js.org/configuration/dev-server).
 
-#### Options {#options}
+#### Options {/* #options */}
 
 | Name | Default | Description |
 | --- | --- | --- |
@@ -45,6 +45,9 @@ Builds and serves a preview of your site locally with [Webpack Dev Server](https
 | `--config` | `undefined` | Path to Docusaurus config file, default to `[siteDir]/docusaurus.config.js` |
 | `--poll [optionalIntervalMs]` | `false` | Use polling of files rather than watching for live reload as a fallback in environments where watching doesn't work. More information [here](https://webpack.js.org/configuration/watch/#watchoptionspoll). |
 | `--no-minify` | `false` | Build website without minimizing JS/CSS bundles. |
+| `--https` | `false` | Serve the dev site over HTTPS using a self-signed certificate. Implied when both `--ssl-cert` and `--ssl-key` are provided. |
+| `--ssl-cert` | `undefined` | Path to a TLS certificate file (implies HTTPS). |
+| `--ssl-key` | `undefined` | Path to a TLS private key file (implies HTTPS). |
 
 :::info
 
@@ -62,7 +65,7 @@ npm run start -- --host 0.0.0.0
 
 :::
 
-#### Enabling HTTPS {#enabling-https}
+#### Enabling HTTPS {/* #enabling-https */}
 
 There are multiple ways to obtain a certificate. We will use [mkcert](https://github.com/FiloSottile/mkcert) as an example.
 
@@ -70,38 +73,47 @@ There are multiple ways to obtain a certificate. We will use [mkcert](https://gi
 
 2. Run `mkcert -install` to install the cert in your trust store, and restart your browser
 
-3. Start the app with Docusaurus HTTPS env variables:
+3. Start the app with the Docusaurus HTTPS CLI options:
 
-```bash
-HTTPS=true SSL_CRT_FILE=localhost.pem SSL_KEY_FILE=localhost-key.pem yarn start
+```bash npm2yarn
+npm run start -- --ssl-cert localhost.pem --ssl-key localhost-key.pem
 ```
 
 4. Open `https://localhost:3000/`
 
-### `docusaurus build [siteDir]` {#docusaurus-build-sitedir}
+:::tip Self-signed certificate
+
+Use the `--https` option to serve the dev site over HTTPS with an automatically generated self-signed certificate:
+
+```bash npm2yarn
+npm run start -- --https
+```
+
+:::
+
+### `docusaurus build [siteDir]` {/* #docusaurus-build-sitedir */}
 
 Compiles your site for production.
 
-#### Options {#options-1}
+#### Options {/* #options-1 */}
 
 | Name | Default | Description |
 | --- | --- | --- |
 | `--dev` |  | Builds the website in dev mode, including full React error messages. |
-| `--bundle-analyzer` | `false` | Analyze your bundle with the [webpack bundle analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). |
 | `--out-dir` | `build` | The full path for the new output directory, relative to the current workspace. |
 | `--config` | `undefined` | Path to Docusaurus config file, default to `[siteDir]/docusaurus.config.js` |
-| `--locale` |  | Build the site in the specified locale. If not specified, all known locales are built. |
+| `--locale` |  | Build the site in the specified locale(s). If not specified, all known locales are built. |
 | `--no-minify` | `false` | Build website without minimizing JS/CSS bundles. |
 
 :::info
 
-For advanced minification of CSS bundle, we use the [advanced cssnano preset](https://github.com/cssnano/cssnano/tree/master/packages/cssnano-preset-advanced) (along with additional several PostCSS plugins) and [level 2 optimization of clean-css](https://github.com/jakubpawlowicz/clean-css#level-2-optimizations). If as a result of this advanced CSS minification you find broken CSS, build your website with the environment variable `USE_SIMPLE_CSS_MINIFIER=true` to minify CSS with the [default cssnano preset](https://github.com/cssnano/cssnano/tree/master/packages/cssnano-preset-default). **Please [fill out an issue](https://github.com/facebook/docusaurus/issues/new?labels=bug%2C+needs+triage&template=bug.md) if you experience CSS minification bugs.**
+CSS bundles are minified with [Lightning CSS](https://lightningcss.dev/), using your site's [Browserslist config](./browser-support.mdx) as targets. **Please [fill out an issue](https://github.com/facebook/docusaurus/issues/new?labels=bug%2C+needs+triage&template=bug.md) if you experience CSS minification bugs.**
 
 You can skip the HTML minification with the environment variable `SKIP_HTML_MINIFICATION=true`.
 
 :::
 
-### `docusaurus swizzle [themeName] [componentName] [siteDir]` {#docusaurus-swizzle}
+### `docusaurus swizzle [themeName] [componentName] [siteDir]` {/* #docusaurus-swizzle */}
 
 [Swizzle](./swizzling.mdx) a theme component to customize it.
 
@@ -114,7 +126,7 @@ npm run swizzle @docusaurus/theme-classic Footer -- --eject
 
 The swizzle CLI is interactive and will guide you through the whole [swizzle process](./swizzling.mdx).
 
-#### Options {#options-swizzle}
+#### Options {/* #options-swizzle */}
 
 | Name | Description |
 | --- | --- |
@@ -125,6 +137,7 @@ The swizzle CLI is interactive and will guide you through the whole [swizzle pro
 | `--wrap` | [Wrap](./swizzling.mdx#wrapping) the theme component |
 | `--danger` | Allow immediate swizzling of unsafe components |
 | `--typescript` | Swizzle the TypeScript variant component |
+| `--javascript` | Swizzle the JavaScript variant component |
 | `--config` | Path to docusaurus config file, default to `[siteDir]/docusaurus.config.js` |
 
 :::warning
@@ -133,21 +146,21 @@ Unsafe components have a higher risk of breaking changes due to internal refacto
 
 :::
 
-### `docusaurus deploy [siteDir]` {#docusaurus-deploy-sitedir}
+### `docusaurus deploy [siteDir]` {/* #docusaurus-deploy-sitedir */}
 
-Deploys your site with [GitHub Pages](https://pages.github.com/). Check out the docs on [deployment](deployment.mdx#deploying-to-github-pages) for more details.
+Deploys your site with [GitHub Pages](https://pages.github.com/). Check out the docs on [deployment](deployment/github-pages.mdx) for more details.
 
-#### Options {#options-3}
+#### Options {/* #options-3 */}
 
 | Name | Default | Description |
 | --- | --- | --- |
-| `--locale` |  | Deploy the site in the specified locale. If not specified, all known locales are deployed. |
+| `--locale` |  | Deploy the site in the specified locale(s). If not specified, all known locales are deployed. |
 | `--out-dir` | `build` | The full path for the new output directory, relative to the current workspace. |
 | `--skip-build` | `false` | Deploy website without building it. This may be useful when using a custom deploy script. |
 | `--target-dir` | `.` | Path to the target directory to deploy to. |
 | `--config` | `undefined` | Path to Docusaurus config file, default to `[siteDir]/docusaurus.config.js` |
 
-### `docusaurus serve [siteDir]` {#docusaurus-serve-sitedir}
+### `docusaurus serve [siteDir]` {/* #docusaurus-serve-sitedir */}
 
 Serve your built website locally.
 
@@ -160,13 +173,13 @@ Serve your built website locally.
 | `--host` | `localhost` | Specify a host to use. For example, if you want your server to be accessible externally, you can use `--host 0.0.0.0`. |
 | `--no-open` | `false` locally, `true` in CI | Do not open a browser window to the server location. |
 
-### `docusaurus clear [siteDir]` {#docusaurus-clear-sitedir}
+### `docusaurus clear [siteDir]` {/* #docusaurus-clear-sitedir */}
 
 Clear a Docusaurus site's generated assets, caches, build artifacts.
 
 We recommend running this command before reporting bugs, after upgrading versions, or anytime you have issues with your Docusaurus site.
 
-### `docusaurus write-translations [siteDir]` {#docusaurus-write-translations-sitedir}
+### `docusaurus write-translations [siteDir]` {/* #docusaurus-write-translations-sitedir */}
 
 Write the JSON translation files that you will have to translate.
 
@@ -179,12 +192,14 @@ By default, the files are written in `website/i18n/<defaultLocale>/...`.
 | `--config` | `undefined` | Path to Docusaurus config file, default to `[siteDir]/docusaurus.config.js` |
 | `--messagePrefix` | `''` | Allows adding a prefix to each translation message, to help you highlight untranslated strings |
 
-### `docusaurus write-heading-ids [siteDir] [files]` {#docusaurus-write-heading-ids-sitedir}
+### `docusaurus write-heading-ids [siteDir] [files]` {/* #docusaurus-write-heading-ids-sitedir */}
 
 Add [explicit heading IDs](./guides/markdown-features/markdown-features-toc.mdx#heading-ids) to the Markdown documents of your site.
 
 | Name | Default | Description |
 | --- | --- | --- |
 | `files` | All MD files used by plugins | The files that you want heading IDs to be written to. |
+| `--syntax` | Inferred | Heading ID syntax to use: `classic` (`{#id}`) or `mdx-comment` (`{/* #id */}`). By default, it uses `classic` for files compiled as CommonMark, and `mdx-comment` for files compiled as MDX, according to the [`markdown.format`](./api/docusaurus.config.js.mdx#markdown) config option. |
+| `--migrate` | `false` | Migrate existing heading IDs to the target `--syntax`, if they are using a different syntax. |
+| `--overwrite` | `false` | Overwrite existing heading IDs, re-generate them from the heading text. |
 | `--maintain-case` | `false` | Keep the headings' casing, otherwise make all lowercase. |
-| `--overwrite` | `false` | Overwrite existing heading IDs. |

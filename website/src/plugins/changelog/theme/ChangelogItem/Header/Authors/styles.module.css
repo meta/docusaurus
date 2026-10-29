@@ -32,7 +32,3 @@
   height: var(--ifm-avatar-photo-size);
   background-color: var(--ifm-color-emphasis-100);
 }
-
-.toggleButtonIconExpanded {
-  transform: rotate(180deg);
-}

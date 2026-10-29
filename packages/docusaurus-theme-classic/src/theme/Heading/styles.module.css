@@ -5,19 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*
-When the navbar is sticky, ensure that on anchor click,
-the browser does not scroll that anchor behind the navbar
-See https://twitter.com/JoshWComeau/status/1332015868725891076
- */
-.anchorWithStickyNavbar {
-  scroll-margin-top: calc(var(--ifm-navbar-height) + 0.5rem);
-}
-
-.anchorWithHideOnScrollNavbar {
-  scroll-margin-top: 0.5rem;
-}
-
 :global(.hash-link) {
   opacity: 0;
   padding-left: 0.5rem;

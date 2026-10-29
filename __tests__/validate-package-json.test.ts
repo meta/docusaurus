@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import {Globby} from '@docusaurus/utils';
+import {describe, expect, it} from 'vitest';
+import {glob} from '@docusaurus/glob';
+import {readJSON} from '@docusaurus/fs';
 
 type PackageJsonFile = {
   file: string;
@@ -26,12 +27,13 @@ type PackageJsonFile = {
 };
 
 async function getPackagesJsonFiles(): Promise<PackageJsonFile[]> {
-  const files = await Globby('packages/*/package.json');
+  const files = await glob('packages/*/package.json');
   return Promise.all(
     files.map((file) =>
-      fs
-        .readJSON(file)
-        .then((content: PackageJsonFile['content']) => ({file, content})),
+      readJSON(file).then((content) => ({
+        file,
+        content: content as PackageJsonFile['content'],
+      })),
     ),
   );
 }
@@ -70,11 +72,6 @@ describe('packages', () => {
         packageJsonFile.content.name?.startsWith('@'),
       )
       .forEach((packageJsonFile) => {
-        // Unfortunately jest custom message do not exist in loops,
-        // so using an exception instead to show failing package file
-        // (see https://github.com/facebook/jest/issues/3293)
-        // expect(packageJsonFile.content.publishConfig?.access)
-        //  .toEqual('public');
         if (packageJsonFile.content.publishConfig?.access !== 'public') {
           throw new Error(
             `Package ${packageJsonFile.file} does not have publishConfig.access: 'public'`,

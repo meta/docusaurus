@@ -1,0 +1,7 @@
+---
+id: doc
+---
+
+# Hello
+
+World

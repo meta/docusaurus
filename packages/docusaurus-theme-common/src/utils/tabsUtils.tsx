@@ -8,13 +8,14 @@
 import React, {
   isValidElement,
   useCallback,
+  useLayoutEffect,
   useState,
   useMemo,
+  createContext,
   type ReactNode,
   type ReactElement,
 } from 'react';
 import {useHistory} from '@docusaurus/router';
-import useIsomorphicLayoutEffect from '@docusaurus/useIsomorphicLayoutEffect';
 import {useQueryStringValue} from '@docusaurus/theme-common/internal';
 import {duplicates, useStorageSlot} from '../index';
 
@@ -29,12 +30,9 @@ export interface TabValue {
   readonly default?: boolean;
 }
 
-type TabItem = ReactElement<TabItemProps> | null | false | undefined;
-
 export interface TabsProps {
   readonly lazy?: boolean;
-  readonly block?: boolean;
-  readonly children: TabItem[] | TabItem;
+  readonly children: ReactNode;
   readonly defaultValue?: string | null;
   readonly values?: readonly TabValue[];
   readonly groupId?: string;
@@ -47,41 +45,45 @@ export interface TabItemProps {
   readonly value: string;
   readonly default?: boolean;
   readonly label?: string;
-  readonly hidden?: boolean;
   readonly className?: string;
   readonly attributes?: {[key: string]: unknown};
 }
 
-// A very rough duck type, but good enough to guard against mistakes while
-// allowing customization
-function isTabItem(
-  comp: ReactElement<unknown>,
-): comp is ReactElement<TabItemProps> {
-  const {props} = comp;
-  return !!props && typeof props === 'object' && 'value' in props;
+export function sanitizeTabsChildren(children: ReactNode): ReactNode {
+  return React.Children.toArray(children).filter((child) => child !== '\n');
 }
 
-export function sanitizeTabsChildren(children: TabsProps['children']) {
-  return (React.Children.toArray(children)
-    .filter((child) => child !== '\n')
-    .map((child) => {
-      if (!child || (isValidElement(child) && isTabItem(child))) {
-        return child;
-      }
-      // child.type.name will give non-sensical values in prod because of
-      // minification, but we assume it won't throw in prod.
-      throw new Error(
-        `Docusaurus error: Bad <Tabs> child <${
-          // @ts-expect-error: guarding against unexpected cases
-          typeof child.type === 'string' ? child.type : child.type.name
-        }>: all children of the <Tabs> component should be <TabItem>, and every <TabItem> should have a unique "value" prop.`,
-      );
-    })
-    ?.filter(Boolean) ?? []) as ReactElement<TabItemProps>[];
-}
+function extractChildrenTabValues(children: ReactNode): TabValue[] {
+  // ✅ <TabItem value="red"/> => true
+  // ✅ <CustomTabItem value="red"/> => true
+  // ❌ <RedTabItem value="tab-value"/> => requires <Tabs values> prop
+  function isTabItemWithValueProp(
+    comp: ReactElement,
+  ): comp is ReactElement<TabItemProps> {
+    const {props} = comp;
+    return !!props && typeof props === 'object' && 'value' in props;
+  }
 
-function extractChildrenTabValues(children: TabsProps['children']): TabValue[] {
-  return sanitizeTabsChildren(children).map(
+  const elements = React.Children.toArray(children).flatMap((child) => {
+    // Historical case, not sure when it happens, do we really need this?
+    if (!child) {
+      return [];
+    }
+    if (isValidElement(child) && isTabItemWithValueProp(child)) {
+      return [child];
+    }
+    // child.type.name will give non-sensical values in prod because of
+    // minification, but we assume it won't throw in prod.
+    const badChildTypeName =
+      // @ts-expect-error: guarding against unexpected cases
+      typeof child.type === 'string' ? child.type : child.type.name;
+    throw new Error(
+      `Docusaurus error: Bad <Tabs> child <${badChildTypeName}>: all children of the <Tabs> component should be <TabItem>, and every <TabItem> should have a unique "value" prop.
+If you do not want to pass on a "value" prop to the direct children of <Tabs>, you can also pass an explicit <Tabs values={...}> prop.`,
+    );
+  });
+
+  return elements.map(
     ({props: {value, label, attributes, default: isDefault}}) => ({
       value,
       label,
@@ -96,7 +98,7 @@ function ensureNoDuplicateValue(values: readonly TabValue[]) {
   if (dup.length > 0) {
     throw new Error(
       `Docusaurus error: Duplicate values "${dup
-        .map((a) => a.value)
+        .map((a) => `'${a.value}'`)
         .join(', ')}" found in <Tabs>. Every value needs to be unique.`,
     );
   }
@@ -221,11 +223,14 @@ function useTabStorage({groupId}: Pick<TabsProps, 'groupId'>) {
   return [value, setValue] as const;
 }
 
-export function useTabs(props: TabsProps): {
+type TabsContextValue = {
   selectedValue: string;
   selectValue: (value: string) => void;
   tabValues: readonly TabValue[];
-} {
+  lazy: boolean;
+};
+
+export function useTabsContextValue(props: TabsProps): TabsContextValue {
   const {defaultValue, queryString = false, groupId} = props;
   const tabValues = useTabValues(props);
 
@@ -252,7 +257,7 @@ export function useTabs(props: TabsProps): {
   })();
   // Sync in a layout/sync effect is important, for useScrollPositionBlocker
   // See https://github.com/facebook/docusaurus/issues/8625
-  useIsomorphicLayoutEffect(() => {
+  useLayoutEffect(() => {
     if (valueToSync) {
       setSelectedValue(valueToSync);
     }
@@ -270,5 +275,27 @@ export function useTabs(props: TabsProps): {
     [setQueryString, setStorageValue, tabValues],
   );
 
-  return {selectedValue, selectValue, tabValues};
+  return {
+    selectedValue,
+    selectValue,
+    tabValues,
+    lazy: props.lazy ?? false,
+  };
+}
+
+const TabsContext = createContext<TabsContextValue | null>(null);
+
+export function useTabs(): TabsContextValue {
+  const contextValue = React.useContext(TabsContext);
+  if (!contextValue) {
+    throw new Error('useTabsContext() must be used within a Tabs component');
+  }
+  return contextValue;
+}
+
+export function TabsProvider(props: {
+  children: ReactNode;
+  value: TabsContextValue;
+}): ReactNode {
+  return <TabsContext value={props.value}>{props.children}</TabsContext>;
 }

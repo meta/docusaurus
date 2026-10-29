@@ -9,7 +9,7 @@ The [Open Source Guides](https://opensource.guide/) website has a collection of 
 
 ## Code of Conduct
 
-Facebook has adopted a Code of Conduct that we expect project participants to adhere to. Please read [the full text](https://code.fb.com/codeofconduct) so that you can understand what actions will and will not be tolerated.
+Meta has adopted a Code of Conduct that we expect project participants to adhere to. Please read [the full text](https://code.fb.com/codeofconduct) so that you can understand what actions will and will not be tolerated.
 
 ## Get Involved
 
@@ -21,7 +21,7 @@ There are many ways to contribute to Docusaurus, and many of them do not involve
 - Read through the [Docusaurus docs](https://docusaurus.io/docs/installation). If you find anything that is confusing or can be improved, you can click "Edit this page" at the bottom of most docs, which takes you to the GitHub interface to make and propose changes.
 - Take a look at the [features requested](https://github.com/facebook/docusaurus/labels/feature) by others in the community and consider opening a pull request if you see something you want to work on.
 
-Contributions are very welcome. If you think you need help planning your contribution, please ping us on Twitter at [@docusaurus](https://twitter.com/docusaurus) and let us know you are looking for a bit of help.
+Contributions are very welcome. If you think you need help planning your contribution, please ping us on X at [@docusaurus](https://x.com/docusaurus) and let us know you are looking for a bit of help.
 
 ### Join our Discord Channel
 
@@ -63,7 +63,7 @@ If you're only fixing a bug, it's fine to submit a pull request right away but w
 
 ### Security Bugs
 
-Facebook has a [bounty program](https://www.facebook.com/whitehat/) for the safe disclosure of security bugs. With that in mind, please do not file public issues; go through the process outlined on that page.
+Meta has a [bounty program](https://www.facebook.com/whitehat/) for the safe disclosure of security bugs. With that in mind, please do not file public issues; go through the process outlined on that page.
 
 ### Feature requests
 
@@ -82,7 +82,7 @@ Apart from the `good first issue`, the following labels are also worth looking a
 - [`help wanted`](https://github.com/facebook/docusaurus/labels/help%20wanted): if you have specific knowledge in one domain, working on these issues can make your expertise shine.
 - [`status: accepting pr`](https://github.com/facebook/docusaurus/labels/status%3A%20accepting%20pr): community contributors can feel free to claim any of these.
 
-If you want to work on any of these issues, just drop a message saying "I'd like to work on this", and we will assign the issue to you and update the issue's status as "claimed". **You are expected to send a pull request within seven days** after that, so we can still delegate the issue to someone else if you are unavailable.
+If you want to work on any of these issues, just drop a message saying "I am working on this". **You do not need to ask for assignment to work on any issue explicitly marked as welcoming external contributions.** However, don't "cookie lick", or squat on an issue without actually sending a PR. You are automatically considered as giving up if you don't **send a PR within seven days after your comment**, and the issue automatically becomes up for grabs again.
 
 Alternatively, when opening an issue, you can also click the "self service" checkbox to indicate that you'd like to work on the issue yourself, which will also make us see the issue as "claimed".
 
@@ -94,7 +94,7 @@ You can use Gitpod (a free, online, VS Code-like IDE) for contributing. With a s
 
 - clone the docusaurus repo.
 - install the dependencies.
-- run `yarn start`
+- run `pnpm start`
 
 So that you can start contributing straight away.
 
@@ -104,15 +104,15 @@ You can also try using the new [github.dev](https://github.dev/facebook/docusaur
 
 ### Installation
 
-1. Ensure you have [Yarn](https://yarnpkg.com/) installed.
-2. After cloning the repository, run `yarn install` in the root of the repository. This will install all dependencies as well as build all local packages.
-3. To start a development server, run `yarn workspace website start`.
+1. Ensure you have [pnpm](https://pnpm.io/) installed.
+2. After cloning the repository, run `pnpm install` in the root of the repository. This will install all dependencies as well as build all local packages.
+3. To start a development server, run `pnpm --filter website start`.
 
 ### Code Conventions
 
 - **Most important: Look around.** Match the style you see used in the rest of the project. This includes formatting, naming files, naming things in code, naming things in documentation, etc.
 - "Attractive"
-- We do have Prettier (a formatter) and ESLint (a syntax linter) to catch most stylistic problems. If you are working locally, they should automatically fix some issues during every git commit.
+- We do have oxfmt (a formatter) and ESLint (a syntax linter) to catch most stylistic problems. If you are working locally, they should automatically fix some issues during every git commit.
 - **For documentation**: Do not wrap lines at 80 characters - configure your editor to soft-wrap when editing documentation.
 
 Don't worry too much about styles in general—the maintainers will help you fix them as they review your code.
@@ -185,7 +185,7 @@ A good test plan has the exact commands you ran and their output and provides sc
 Tests are integrated into our continuous integration system, so you don't always need to run local tests. However, for significant code changes, it saves both your and the maintainers' time if you can do exhaustive tests locally first to make sure your PR is in good shape. There are many types of tests:
 
 - **Build and typecheck.** We use TypeScript in our codebase, which can make sure your code is consistent and catches some obvious mistakes early.
-- **Unit tests.** We use [Jest](https://jestjs.io/) for unit tests of API endpoints' behavior. You can run `yarn test` in the root directory to run all tests, or `yarn test path/to/your/file.test.ts` to run a specific test.
+- **Unit tests.** We use [Vitest](https://vitest.dev/) for unit tests of API endpoints' behavior. You can run `pnpm test` in the root directory to run all tests, or `pnpm test path/to/your/file.test.ts` to run a specific test.
 - **Dogfooding.** Our website itself covers all kinds of potential configuration cases and we even have a dedicated [tests area](https://docusaurus.io/tests). Don't be afraid to update our website's configuration in your PR—it can help the maintainers preview the effects. We can decide if the website change should be kept when merging and deploying for production.
 - **E2E tests.** You can simulate the distribution and installation of the code with your fresh changes. If you need help testing your changes locally, you can check out the doc on doing [local third-party testing](https://github.com/facebook/docusaurus/blob/main/admin/local-third-party-project-testing.md).
 
@@ -206,13 +206,23 @@ This is also auto-fixable with the `header/header` ESLint rule.
 
 ### Contributor License Agreement (CLA)
 
-In order to accept your pull request, we need you to submit a CLA. You only need to do this once, so if you've done this for another Facebook open source project, you're good to go. If you are submitting a pull request for the first time, the Facebook GitHub Bot will reply with a link to the CLA form. You may also [complete your CLA here](https://code.facebook.com/cla).
+In order to accept your pull request, we need you to submit a CLA. You only need to do this once, so if you've done this for another Meta open source project, you're good to go. If you are submitting a pull request for the first time, the Meta GitHub Bot will reply with a link to the CLA form. You may also [complete your CLA here](https://code.facebook.com/cla).
 
 After you have signed the CLA, the CLA bot would automatically update the PR status. There's no need to open a new PR.
 
 **CLAs are required for us to merge your pull request.** While we value your effort and are willing to wait for you to come back and address the reviews in case you are unavailable after sending the pull request, pull requests that are ready to merge but have CLA missing and no response from the author **will be closed within two weeks of opening**. If you have further questions about the CLA, please stay in touch with us.
 
 If it happens that you were unavailable and your PR gets closed, feel free to reopen once it's ready! We are still happy to review it, help you complete it, and eventually merge it.
+
+### AI-assisted PRs
+
+We welcome the use of AI tools for authoring PRs, and we love to see people pushing the boundaries of AI capabilities. The core team actively uses different AI tools in our development process. However, we are aware that **many people are sending entirely AI-generated PRs as a low-effort way to farm OSS contributions**, so please be mindful of the following etiquette to show your respect for our time and our codebase:
+
+- **Be transparent**: If a significant portion of your code is AI generated, please indicate that in your PR description.
+- **Be accountable**: You are responsible for the code you submit, regardless of whether it was generated by AI or written by you. You should be able to explain every line of the code, ensure all tests pass, and address our reviews.
+- **Be reasonable**: Sometimes we receive 1k LOC PRs that are obviously AI-generated and implement unsolicited features. Please note that significant changes require prior communication and approval from the team in the form of an issue.
+
+We retain the right to close any PR that we deem as unproductive or low-effort, even when we agree with the spirit of the change.
 
 ### Breaking Changes
 
@@ -226,6 +236,10 @@ When adding a new breaking change, follow this template in your pull request:
 - **Why make this breaking change**:
 - **Severity (number of people affected x effort)**:
 ```
+
+> [!NOTE]
+>
+> Breaking changes should be discussed in the issue tracker before being implemented.
 
 ### What Happens Next?
 

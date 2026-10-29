@@ -2,11 +2,11 @@
 
 Plugins are the building blocks of features in a Docusaurus site. Each plugin handles its own individual feature. Plugins may work and be distributed as part of a bundle via presets.
 
-## Creating plugins {#creating-plugins}
+## Creating plugins {/* #creating-plugins */}
 
 A plugin is a function that takes two parameters: `context` and `options`. It returns a plugin instance object (or a promise). You can create plugins as functions or modules. For more information, refer to the [plugin method references section](../api/plugin-methods/README.mdx).
 
-### Function definition {#function-definition}
+### Function definition {/* #function-definition */}
 
 You can use a plugin as a function directly included in the Docusaurus config file:
 
@@ -33,7 +33,7 @@ export default {
 };
 ```
 
-### Module definition {#module-definition}
+### Module definition {/* #module-definition */}
 
 You can use a plugin as a module path referencing a separate file or npm package:
 
@@ -80,11 +80,11 @@ Plugins come as several types:
 
 You can access them on the client side with `useDocusaurusContext().siteMetadata.pluginVersions`.
 
-## Plugin design {#plugin-design}
+## Plugin design {/* #plugin-design */}
 
 Docusaurus' implementation of the plugins system provides us with a convenient way to hook into the website's lifecycle to modify what goes on during development/build, which involves (but is not limited to) extending the webpack config, modifying the data loaded, and creating new components to be used in a page.
 
-### Theme design {#theme-design}
+### Theme design {/* #theme-design */}
 
 When plugins have loaded their content, the data is made available to the client side through actions like [`createData` + `addRoute`](../api/plugin-methods/lifecycle-apis.mdx#addRoute) or [`setGlobalData`](../api/plugin-methods/lifecycle-apis.mdx#setGlobalData). This data has to be _serialized_ to plain strings, because [plugins and themes run in different environments](./architecture.mdx). Once the data arrives on the client side, the rest becomes familiar to React developers: data is passed along components, components are bundled with Webpack, and rendered to the window through `ReactDOM.render`...
 

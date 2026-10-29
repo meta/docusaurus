@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {PerfLogger} from '@docusaurus/logger';
+import {getLocaleConfig} from '@docusaurus/utils';
 import {initPlugins} from './init';
 import {createBootstrapPlugin, createMDXFallbackPlugin} from './synthetic';
 import {localizePluginTranslationFile} from '../translations/translations';
 import {sortRoutes} from './routeConfig';
-import {PerfLogger} from '../../utils';
 import {createPluginActionsUtils} from './actions';
 import {
   aggregateAllContent,
@@ -81,14 +82,20 @@ async function executePluginContentLoading({
       plugin.loadContent?.(),
     );
 
-    content = await PerfLogger.async('translatePluginContent()', () =>
-      translatePluginContent({
-        plugin,
-        content,
-        context,
-      }),
-    );
+    const shouldTranslate = getLocaleConfig(context.i18n).translate;
 
+    if (shouldTranslate) {
+      content = await PerfLogger.async('translatePluginContent()', () =>
+        translatePluginContent({
+          plugin,
+          content,
+          context,
+        }),
+      );
+    }
+
+    // If shouldTranslate === false, we still need the code translations
+    // Otherwise an unlocalized French site would show code strings in English
     const defaultCodeTranslations =
       (await PerfLogger.async('getDefaultCodeTranslationMessages()', () =>
         plugin.getDefaultCodeTranslationMessages?.(),
@@ -266,7 +273,7 @@ export async function loadPlugins(
     // TODO probably not the ideal place to hardcode those plugins
     initializedPlugins.push(
       createBootstrapPlugin(context),
-      createMDXFallbackPlugin(context),
+      await createMDXFallbackPlugin(context),
     );
 
     const plugins = await executeAllPluginsContentLoading({
@@ -310,15 +317,10 @@ export async function reloadPlugin({
         context,
       });
 
-      /*
-    // TODO Docusaurus v4 - upgrade to Node 20, use array.with()
-    const plugins = previousPlugins.with(
-      previousPlugins.indexOf(previousPlugin),
-      plugin,
-    );
-     */
-      const plugins = [...previousPlugins];
-      plugins[previousPlugins.indexOf(previousPlugin)] = plugin;
+      const plugins = previousPlugins.with(
+        previousPlugins.indexOf(previousPlugin),
+        plugin,
+      );
 
       const allContentLoadedResult = await executeAllPluginsAllContentLoaded({
         plugins,

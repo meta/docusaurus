@@ -1,5 +1,5 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`validateOptions throws Error in case of invalid feed type 1`] = `""feedOptions.type" does not match any of the allowed types"`;
+exports[`validateOptions > feed > throws Error in case of invalid feed type 1`] = `[ValidationError: "feedOptions.type" does not match any of the allowed types]`;
 
-exports[`validateOptions throws Error in case of invalid options 1`] = `""postsPerPage" must be greater than or equal to 1"`;
+exports[`validateOptions > throws Error in case of invalid options 1`] = `[ValidationError: "postsPerPage" must be greater than or equal to 1]`;

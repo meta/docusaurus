@@ -1,7 +1,23 @@
 {
-  "name": "docu-scripts",
-  "description": "These are the scripts used in various places of Docusaurus maintenance",
+  "name": "@docusaurus/monorepo-scripts",
+  "version": "4.0.0",
+  "description": "Scripts used in various places of Docusaurus maintenance",
   "private": true,
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "bin": {
+    "copy-untyped-files": "copyUntypedFiles.js",
+    "format-gitignored-files": "formatGitignoredFiles.js"
+  },
+  "dependencies": {
+    "@docusaurus/fs": "workspace:*",
+    "@docusaurus/logger": "workspace:*",
+    "commander": "catalog:",
+    "execa": "catalog:",
+    "image-size": "catalog:",
+    "js-yaml": "catalog:",
+    "lodash": "catalog:",
+    "oxfmt": "catalog:",
+    "sharp": "catalog:"
+  }
 }

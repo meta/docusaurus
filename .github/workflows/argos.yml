@@ -14,6 +14,9 @@ on:
       # We want trigger workflow on labeled too!
       - labeled
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -23,25 +26,55 @@ jobs:
     # Argos is heavy to run
     # We only want to trigger Argos on PRs with the 'Argos' label
     # See https://stackoverflow.com/questions/62325286/run-github-actions-when-pull-requests-have-a-specific-label
-    if: ${{ (github.event_name != 'pull_request' && github.ref_name == 'main') || (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Argos')) }}
-    runs-on: ubuntu-latest
+    if: |
+      github.repository == 'facebook/docusaurus' &&
+      (
+        (github.event_name != 'pull_request' && github.ref_name == 'main') ||
+        (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Argos'))
+      )
+    # runs-on: ubuntu-latest
+    runs-on: 8-core-ubuntu
     steps:
       - name: Check out repository code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+        with:
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
 
       - name: Use Node.js
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 18
+          node-version: lts/*
+          check-latest: true
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || pnpm install --frozen-lockfile
 
+      # Playwright is a dependency of the argos workspace package
+      # With the pnpm isolated nodeLinker, its binary isn't available at the root
+      # Installed in the background, concurrently with the website build
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        id: playwright-install
+        run: pnpm --filter argos exec playwright install --with-deps chromium
+        background: true
 
-      - name: Build website fast
-        run: yarn build:website:fast
+      - name: Build website for screenshots
+        run: pnpm argos:build
+      - name: Wait for Playwright browsers
+        wait: playwright-install
+      - name: Take and upload Argos screenshots
+        run: pnpm argos:screenshot
 
-      - name: Take Argos screenshots
-        run: yarn argos:screenshot
+        # We rebuild the site with unminified assets
+        # This makes it easier to review text snapshots on Argos
+      - name: Build website for text snapshots
+        run: pnpm argos:build:text-snapshots
+      - name: Format HTML for easier Argos diffs
+        run: pnpm argos:format:text-snapshots
+      - name: Upload Argos text snapshots
+        run: pnpm argos:upload:text-snapshots

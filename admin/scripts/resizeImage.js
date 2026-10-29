@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
-import {fileURLToPath} from 'url';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {program} from 'commander';
-import logger from '@docusaurus/logger';
+import {logger} from '@docusaurus/logger';
 import sharp from 'sharp';
-import imageSize from 'image-size';
+import {imageSizeFromFile} from 'image-size/fromFile';
 
 // You can use it as:
 //
@@ -64,7 +64,7 @@ program
 
     await Promise.all(
       images.map(async (imgPath) => {
-        const {width, height} = imageSize(imgPath);
+        const {width, height} = await imageSizeFromFile(imgPath);
         const targetWidth =
           options.width ?? (imgPath.includes(showcasePath) ? 640 : 1000);
         const targetHeight =

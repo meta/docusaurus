@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import OriginalToggle from '@theme-original/ColorModeToggle';
 import {
   lightStorage,
@@ -24,7 +24,7 @@ import type {Props} from '@theme/ColorModeToggle';
 // session storage, and we need to apply the same style when toggling modes even
 // when we are not on the styling-layout page. The only way to do this so far is
 // by hooking into the Toggle component.
-export default function ColorModeToggle(props: Props): JSX.Element {
+export default function ColorModeToggle(props: Props): ReactNode {
   return (
     <OriginalToggle
       {...props}

@@ -9,12 +9,11 @@ import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import {createStorageSlot} from '@docusaurus/theme-common';
 
 // First: read the env variables (provided by Webpack)
-/* eslint-disable prefer-destructuring */
+
 const PWA_SERVICE_WORKER_URL = process.env.PWA_SERVICE_WORKER_URL!;
 const PWA_OFFLINE_MODE_ACTIVATION_STRATEGIES = process.env
   .PWA_OFFLINE_MODE_ACTIVATION_STRATEGIES as unknown as (keyof typeof OfflineModeActivationStrategiesImplementations)[];
 const PWA_DEBUG = process.env.PWA_DEBUG;
-/* eslint-enable prefer-destructuring */
 
 const MAX_MOBILE_WIDTH = 996;
 
@@ -75,7 +74,7 @@ async function getIsAppInstalledRelatedApps() {
   try {
     const relatedApps = await navigator.getInstalledRelatedApps();
     return relatedApps.some((app) => app.platform === 'webapp');
-  } catch (e) {
+  } catch {
     // Error might be thrown when Docusaurus is embedded in an iframe:
     // registerSW failed DOMException: Failed to execute 'getInstalledRelatedApps' on 'Navigator': getInstalledRelatedApps() is only supported in top-level browsing contexts.
     return false;

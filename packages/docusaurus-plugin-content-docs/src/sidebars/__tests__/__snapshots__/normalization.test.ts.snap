@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`normalization adds a translatable marker for labels defined in sidebars.js 1`] = `
+exports[`normalization > adds a translatable marker for labels defined in sidebars.js 1`] = `
 {
   "sidebar": [
     {
@@ -47,7 +47,7 @@ exports[`normalization adds a translatable marker for labels defined in sidebars
 }
 `;
 
-exports[`normalization normalizes shorthands 1`] = `
+exports[`normalization > normalizes shorthands 1`] = `
 {
   "sidebar": [
     {
@@ -102,7 +102,7 @@ exports[`normalization normalizes shorthands 1`] = `
 }
 `;
 
-exports[`normalization normalizes shorthands 2`] = `
+exports[`normalization > normalizes shorthands 2`] = `
 {
   "sidebar": [
     {

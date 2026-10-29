@@ -1,6 +1,6 @@
 {
   "name": "@docusaurus/theme-search-algolia",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Algolia search component for Docusaurus.",
   "main": "lib/index.js",
   "sideEffects": [
@@ -27,37 +27,40 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "tsc --build && node ../../admin/scripts/copyUntypedFiles.js && prettier --config ../../.prettierrc --write \"lib/theme/**/*.js\"",
+    "build": "tsc --build && copy-untyped-files && format-gitignored-files \"lib/theme/**/*.js\"",
     "watch": "run-p -c copy:watch build:watch",
     "build:watch": "tsc --build --watch",
-    "copy:watch": "node ../../admin/scripts/copyUntypedFiles.js --watch"
+    "copy:watch": "copy-untyped-files --watch"
   },
   "dependencies": {
-    "@docsearch/react": "^3.5.2",
-    "@docusaurus/core": "3.2.1",
-    "@docusaurus/logger": "3.2.1",
-    "@docusaurus/plugin-content-docs": "3.2.1",
-    "@docusaurus/theme-common": "3.2.1",
-    "@docusaurus/theme-translations": "3.2.1",
-    "@docusaurus/utils": "3.2.1",
-    "@docusaurus/utils-validation": "3.2.1",
-    "algoliasearch": "^4.18.0",
-    "algoliasearch-helper": "^3.13.3",
-    "clsx": "^2.0.0",
-    "eta": "^2.2.0",
-    "fs-extra": "^11.1.1",
-    "lodash": "^4.17.21",
-    "tslib": "^2.6.0",
-    "utility-types": "^3.10.0"
+    "@algolia/autocomplete-core": "catalog:",
+    "@docsearch/react": "catalog:",
+    "@docusaurus/core": "workspace:*",
+    "@docusaurus/fs": "workspace:*",
+    "@docusaurus/plugin-content-docs": "workspace:*",
+    "@docusaurus/theme-classic": "workspace:*",
+    "@docusaurus/theme-common": "workspace:*",
+    "@docusaurus/theme-translations": "workspace:*",
+    "@docusaurus/utils": "workspace:*",
+    "@docusaurus/utils-validation": "workspace:*",
+    "algoliasearch": "catalog:",
+    "algoliasearch-helper": "catalog:",
+    "clsx": "catalog:",
+    "eta": "catalog:",
+    "lodash": "catalog:",
+    "tslib": "catalog:",
+    "utility-types": "catalog:"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.2.1"
+    "@docusaurus/module-type-aliases": "workspace:*",
+    "@docusaurus/types": "workspace:*",
+    "@types/react-dom": "catalog:"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   }
 }

@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {addPrefix, addSuffix, removePrefix, removeSuffix} from '../stringUtils';
 
 describe('removePrefix', () => {

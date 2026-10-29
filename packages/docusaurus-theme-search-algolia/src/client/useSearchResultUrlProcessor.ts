@@ -43,7 +43,7 @@ export function useSearchResultUrlProcessor(): (url: string) => string {
       }
 
       // Otherwise => transform to relative URL for SPA navigation
-      const relativeUrl = `${parsedURL.pathname + parsedURL.hash}`;
+      const relativeUrl = `${parsedURL.pathname}${parsedURL.search}${parsedURL.hash}`;
 
       return withBaseUrl(
         replacePathname(relativeUrl, replaceSearchResultPathname),

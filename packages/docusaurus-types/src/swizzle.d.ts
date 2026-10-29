@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {JSXElementConstructor} from 'react';
+import type {JSX, JSXElementConstructor} from 'react';
 
 export type SwizzleAction = 'eject' | 'wrap';
 export type SwizzleActionStatus = 'safe' | 'unsafe' | 'forbidden';
@@ -32,12 +32,11 @@ export type SwizzleConfig = {
 export type WrapperProps<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
-> = T extends JSXElementConstructor<infer P>
-  ? unknown extends P
-    ? // eslint-disable-next-line @typescript-eslint/ban-types
-      {}
-    : P
-  : T extends keyof JSX.IntrinsicElements
-  ? JSX.IntrinsicElements[T]
-  : // eslint-disable-next-line @typescript-eslint/ban-types
-    {};
+> =
+  T extends JSXElementConstructor<infer P>
+    ? unknown extends P
+      ? {}
+      : P
+    : T extends keyof JSX.IntrinsicElements
+      ? JSX.IntrinsicElements[T]
+      : {};

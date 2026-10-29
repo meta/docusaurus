@@ -1,0 +1,7 @@
+{
+  "theme.IdealImageMessage.404error": "404. Pilti ei leitud",
+  "theme.IdealImageMessage.error": "Viga. Klõpsa värskendamiseks",
+  "theme.IdealImageMessage.load": "Klõpsa, et laadida{sizeMessage}",
+  "theme.IdealImageMessage.loading": "Laeb...",
+  "theme.IdealImageMessage.offline": "Veebilehitsejal puudub ühendus. Pilti ei laetud"
+}

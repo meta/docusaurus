@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`validateRedirect throw for bad redirects 1`] = `"{"from":"https://fb.com/fromSomePath","to":"/toSomePath"} => Validation error: "from" (https://fb.com/fromSomePath) is not a valid pathname. Pathname should start with slash and not contain any domain or query string."`;
+exports[`validateRedirect > throw for bad redirects 1`] = `[Error: {"from":"https://fb.com/fromSomePath","to":"/toSomePath"} => Validation error: "from" (https://fb.com/fromSomePath) is not a valid pathname. Pathname should start with slash and not contain any domain or query string.]`;
 
-exports[`validateRedirect throw for bad redirects 2`] = `"{"from":"/fromSomePath?a=1","to":"/toSomePath"} => Validation error: "from" (/fromSomePath?a=1) is not a valid pathname. Pathname should start with slash and not contain any domain or query string."`;
+exports[`validateRedirect > throw for bad redirects 2`] = `[Error: {"from":"/fromSomePath?a=1","to":"/toSomePath"} => Validation error: "from" (/fromSomePath?a=1) is not a valid pathname. Pathname should start with slash and not contain any domain or query string.]`;
 
-exports[`validateRedirect throw for bad redirects 3`] = `"{"from":"/fromSomePath#anchor","to":"/toSomePath"} => Validation error: "from" (/fromSomePath#anchor) is not a valid pathname. Pathname should start with slash and not contain any domain or query string."`;
+exports[`validateRedirect > throw for bad redirects 3`] = `[Error: {"from":"/fromSomePath#anchor","to":"/toSomePath"} => Validation error: "from" (/fromSomePath#anchor) is not a valid pathname. Pathname should start with slash and not contain any domain or query string.]`;

@@ -17,7 +17,10 @@ export function addTrailingSlash(str: string): string {
   return str.endsWith('/') ? str : `${str}/`;
 }
 
-// Trailing slash handling depends in some site configuration options
+/**
+ * Apply/remove a trailing slash on an URL path according to site config options
+ * Usually applied on permalinks / URL paths, but also works with absolute URL
+ */
 export default function applyTrailingSlash(
   path: string,
   options: ApplyTrailingSlashParams,
@@ -40,6 +43,7 @@ export default function applyTrailingSlash(
 
   // The trailing slash should be handled before the ?search#hash !
   const [pathname] = path.split(/[#?]/) as [string, ...string[]];
+  const queryHash = path.slice(pathname.length);
 
   // Never transform '/' to ''
   // Never remove the baseUrl trailing slash!
@@ -51,7 +55,7 @@ export default function applyTrailingSlash(
     ? pathname
     : handleTrailingSlash(pathname, trailingSlash);
 
-  return path.replace(pathname, newPathname);
+  return `${newPathname}${queryHash}`;
 }
 
 /** Appends a leading slash to `str`, if one doesn't exist. */

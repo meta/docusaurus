@@ -12,15 +12,15 @@ The upgrade should be easy: as explained in our [release process documentation](
 
 ![Docusaurus blog post social card](./img/social-card.png)
 
-<!--truncate-->
+{/* truncate */}
 
 import BrowserWindow from '@site/src/components/BrowserWindow';
 import IframeWindow from '@site/src/components/BrowserWindow/IframeWindow';
 import ErrorBoundaryTestButton from '@site/src/components/ErrorBoundaryTestButton';
 
-## Highlights
+## Highlights {/* #highlights */}
 
-### Sidebar item description
+### Sidebar item description {/* #sidebar-item-description */}
 
 In [#8236](https://github.com/facebook/docusaurus/pull/8236), we made it possible to provide a new `description` attribute for docs sidebar items of type `link` and `category`.
 
@@ -47,7 +47,7 @@ These descriptions will be used in category generated index pages.
 
 ![Show sidebar category generated index with custom descriptions](./img/sidebar-item-description.jpg)
 
-### Theme Query String
+### Theme Query String {/* #theme-query-string */}
 
 In [#8708](https://github.com/facebook/docusaurus/pull/8708), we added the possibility to force Docusaurus to initialize itself in `light` or `dark` mode through a new `docusaurus-theme` query-string parameter.
 
@@ -56,7 +56,7 @@ This is useful to ensure a consistent theme when embedding an existing Docusauru
 <IframeWindow url="/docs/?docusaurus-theme=light" />
 <IframeWindow url="/docs/?docusaurus-theme=dark" />
 
-### Remark plugin npm2yarn upgrade
+### Remark plugin npm2yarn upgrade {/* #remark-plugin-npm2yarn-upgrade */}
 
 In [#8690](https://github.com/facebook/docusaurus/pull/8690), we upgraded our Remark plugin [@docusaurus/remark-plugin-npm2yarn](https://github.com/facebook/docusaurus/tree/main/packages/docusaurus-remark-plugin-npm2yarn) with many conversion bug fixes, first-class support for pnpm, and the ability to register custom converters producing new tabs.
 
@@ -80,7 +80,7 @@ npm run myCustomScript -- --some-arg
 
 </BrowserWindow>
 
-### gtag support for multiple tracking IDs
+### gtag support for multiple tracking IDs {/* #gtag-support-for-multiple-tracking-ids */}
 
 In [#8620](https://github.com/facebook/docusaurus/pull/8620) we added support for the [@docusaurus/plugin-google-gtag](/docs/api/plugins/@docusaurus/plugin-google-gtag) plugin to declare multiple tracking IDs.
 
@@ -114,7 +114,7 @@ To preserve the continuity of your analytics, we temporarily recommend that you 
 
 :::
 
-### Developer Experience
+### Developer Experience {/* #developer-experience */}
 
 In [#8736](https://github.com/facebook/docusaurus/pull/8736), we improved how we render error messages and added initial support to render the full causal chain of an error (see [ES2022 Error Cause](https://h3manth.com/ES2022/#error-cause)).
 
@@ -128,7 +128,7 @@ In [#8735](https://github.com/facebook/docusaurus/pull/8735) we also made navbar
 
 ![Docusaurus navbar error message screenshot](./img/navbar-error.jpg)
 
-### Translations
+### Translations {/* #translations */}
 
 We made it possible to translate some new elements:
 
@@ -146,7 +146,7 @@ Completing theme translations is an [ongoing effort](https://github.com/facebook
 
 :::
 
-## Other changes
+## Other changes {/* #other-changes */}
 
 Other notable changes include:
 

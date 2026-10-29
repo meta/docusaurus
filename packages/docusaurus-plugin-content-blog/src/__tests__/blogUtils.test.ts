@@ -5,21 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {jest} from '@jest/globals';
-import fs from 'fs-extra';
-import path from 'path';
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+import fs from 'node:fs/promises';
 import {fromPartial} from '@total-typescript/shoehorn';
 import {
   truncate,
   parseBlogFileName,
-  linkify,
-  getSourceToPermalink,
+  parseFrontMatterDate,
+  getBlogPostDate,
   paginateBlogPosts,
   applyProcessBlogPosts,
-  type LinkifyParams,
+  reportUntruncatedBlogPosts,
 } from '../blogUtils';
-import type {BlogBrokenMarkdownLink, BlogContentPaths} from '../types';
 import type {BlogPost} from '@docusaurus/plugin-content-blog';
+import type {VcsConfig} from '@docusaurus/types';
 
 describe('truncate', () => {
   it('truncates texts', () => {
@@ -36,6 +35,106 @@ describe('truncate', () => {
       'aaa\nbbb\n ccc',
     );
     expect(truncate('', /<!-- truncate -->/)).toBe('');
+  });
+});
+
+describe('reportUntruncatedBlogPosts', () => {
+  function testPost({
+    source,
+    hasTruncateMarker,
+  }: {
+    source: string;
+    hasTruncateMarker: boolean;
+  }): BlogPost {
+    return fromPartial({
+      metadata: {
+        source,
+        hasTruncateMarker,
+      },
+    });
+  }
+
+  it('throw for untruncated blog posts', () => {
+    const blogPosts = [
+      testPost({source: '@site/blog/post1.md', hasTruncateMarker: false}),
+      testPost({source: '@site/blog/post2.md', hasTruncateMarker: true}),
+      testPost({
+        source: '@site/blog/subDir/post3.md',
+        hasTruncateMarker: false,
+      }),
+    ];
+    expect(() =>
+      reportUntruncatedBlogPosts({blogPosts, onUntruncatedBlogPosts: 'throw'}),
+    ).toThrowErrorMatchingInlineSnapshot(`
+      [Error: Docusaurus found blog posts without truncation markers:
+      - "blog/post1.md"
+      - "blog/subDir/post3.md"
+
+      We recommend using truncation markers (\`<!-- truncate -->\` or \`{/* truncate */}\`) in blog posts to create shorter previews on blog paginated lists.
+      Tip: turn this security off with the \`onUntruncatedBlogPosts: 'ignore'\` blog plugin option.]
+    `);
+  });
+
+  it('warn for untruncated blog posts', () => {
+    using warn = vi.spyOn(console, 'warn');
+
+    const blogPosts = [
+      testPost({source: '@site/blog/post1.md', hasTruncateMarker: false}),
+      testPost({source: '@site/blog/post2.md', hasTruncateMarker: true}),
+      testPost({
+        source: '@site/blog/subDir/post3.md',
+        hasTruncateMarker: false,
+      }),
+    ];
+    expect(() =>
+      reportUntruncatedBlogPosts({blogPosts, onUntruncatedBlogPosts: 'warn'}),
+    ).not.toThrow();
+
+    expect(warn.mock.calls).toMatchInlineSnapshot(`
+      [
+        [
+          "[WARNING] Docusaurus found blog posts without truncation markers:
+      - "blog/post1.md"
+      - "blog/subDir/post3.md"
+
+      We recommend using truncation markers (\`<!-- truncate -->\` or \`{/* truncate */}\`) in blog posts to create shorter previews on blog paginated lists.
+      Tip: turn this security off with the \`onUntruncatedBlogPosts: 'ignore'\` blog plugin option.",
+        ],
+      ]
+    `);
+    warn.mockRestore();
+  });
+
+  it('ignore untruncated blog posts', () => {
+    using log = vi.spyOn(console, 'log');
+    using warn = vi.spyOn(console, 'warn');
+    using error = vi.spyOn(console, 'error');
+
+    const blogPosts = [
+      testPost({source: '@site/blog/post1.md', hasTruncateMarker: false}),
+      testPost({source: '@site/blog/post2.md', hasTruncateMarker: true}),
+      testPost({
+        source: '@site/blog/subDir/post3.md',
+        hasTruncateMarker: false,
+      }),
+    ];
+    expect(() =>
+      reportUntruncatedBlogPosts({blogPosts, onUntruncatedBlogPosts: 'ignore'}),
+    ).not.toThrow();
+
+    expect(log).not.toHaveBeenCalled();
+    expect(warn).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+  });
+
+  it('does not throw for truncated posts', () => {
+    const blogPosts = [
+      testPost({source: '@site/blog/post1.md', hasTruncateMarker: true}),
+      testPost({source: '@site/blog/post2.md', hasTruncateMarker: true}),
+    ];
+    expect(() =>
+      reportUntruncatedBlogPosts({blogPosts, onUntruncatedBlogPosts: 'throw'}),
+    ).not.toThrow();
   });
 });
 
@@ -59,6 +158,24 @@ describe('paginateBlogPosts', () => {
         pageBasePath: 'page',
       }),
     ).toMatchSnapshot();
+  });
+
+  it('generates pages - 0 blog post', () => {
+    const pages = paginateBlogPosts({
+      blogPosts: [],
+      basePageUrl: '/blog',
+      blogTitle: 'Blog Title',
+      blogDescription: 'Blog Description',
+      postsPerPageOption: 2,
+      pageBasePath: 'page',
+    });
+    // As part ot https://github.com/facebook/docusaurus/pull/10216
+    // it was decided that authors with "page: true" that haven't written any
+    // blog posts yet should still have a dedicated author page
+    // For this purpose, we generate an empty first page
+    expect(pages).toHaveLength(1);
+    expect(pages[0]!.items).toHaveLength(0);
+    expect(pages).toMatchSnapshot();
   });
 
   it('generates pages at blog root', () => {
@@ -98,6 +215,113 @@ describe('paginateBlogPosts', () => {
         pageBasePath: 'customPageBasePath',
       }),
     ).toMatchSnapshot();
+  });
+});
+
+describe.each(['UTC', 'America/New_York', 'Asia/Tokyo'])(
+  'parseFrontMatterDate in %s',
+  (timeZone) => {
+    beforeEach(() => vi.stubEnv('TZ', timeZone));
+    afterEach(() => vi.unstubAllEnvs());
+    it.each([
+      ['2026-09-18', '2026-09-18T00:00:00.000Z'],
+      ['2026-09-18T12:00:00', '2026-09-18T12:00:00.000Z'],
+      ['2026-09-18T12:00:00Z', '2026-09-18T12:00:00.000Z'],
+      ['2026-09-18T12:00:00+02:00', '2026-09-18T10:00:00.000Z'],
+      ['2026-09-18T12:00:00-0430', '2026-09-18T16:30:00.000Z'],
+      ['2026-09-18 12:00:00 +02', '2026-09-18T10:00:00.000Z'],
+      ['2026-09-18 2:00:00 -5', '2026-09-18T07:00:00.000Z'],
+      ['2026-09-18\t12:00:00+02:00', '2026-09-18T10:00:00.000Z'],
+      ['2026-09-18 12:00:00 +02:00 ', '2026-09-18T10:00:00.000Z'],
+      [' 2026-09-18 ', '2026-09-18T00:00:00.000Z'],
+      ['2026/09/18', '2026-09-18T00:00:00.000Z'],
+      ['2001-12-14t21:59:43.10-05:00', '2001-12-15T02:59:43.100Z'],
+      ['2001-12-15 2:59:43.10', '2001-12-15T02:59:43.100Z'],
+      ['2026-09-18T12:00:00+05:45', '2026-09-18T06:15:00.000Z'],
+    ])('preserves the publication date for %s', (date, expected) => {
+      expect(parseFrontMatterDate(date).toISOString()).toBe(expected);
+    });
+
+    it('preserves Date objects returned by custom front matter parsers', () => {
+      const date = new Date('2026-09-18T12:00:00Z');
+      expect(parseFrontMatterDate(date)).toBe(date);
+    });
+  },
+);
+
+describe('getBlogPostDate', () => {
+  function setup() {
+    const getFileCreationInfo = vi.fn<VcsConfig['getFileCreationInfo']>();
+    const params = {
+      filePath: '/blog/post.md',
+      vcs: fromPartial<VcsConfig>({getFileCreationInfo}),
+    };
+    return {params, getFileCreationInfo};
+  }
+
+  it.each(['2026-09-18', new Date('2026-09-18')])(
+    'prefers front matter over the filename and VCS: %s',
+    async (frontMatterDate) => {
+      const {params, getFileCreationInfo} = setup();
+      await expect(
+        getBlogPostDate({
+          ...params,
+          frontMatterDate,
+          filenameDate: new Date('2020-01-01'),
+        }),
+      ).resolves.toEqual(new Date('2026-09-18'));
+      expect(getFileCreationInfo).not.toHaveBeenCalled();
+    },
+  );
+
+  it('prefers the filename over VCS', async () => {
+    const {params, getFileCreationInfo} = setup();
+    const filenameDate = new Date('2020-01-01');
+    await expect(getBlogPostDate({...params, filenameDate})).resolves.toBe(
+      filenameDate,
+    );
+    expect(getFileCreationInfo).not.toHaveBeenCalled();
+  });
+
+  it.each([0, Date.UTC(2020, 0, 1)])(
+    'uses the VCS creation timestamp: %s',
+    async (timestamp) => {
+      const {params, getFileCreationInfo} = setup();
+      getFileCreationInfo.mockResolvedValue({timestamp, author: 'Author'});
+      await expect(getBlogPostDate(params)).resolves.toEqual(
+        new Date(timestamp),
+      );
+      expect(getFileCreationInfo).toHaveBeenCalledExactlyOnceWith(
+        params.filePath,
+      );
+    },
+  );
+
+  it('falls back to filesystem birthtime when VCS has no creation info', async () => {
+    const {params, getFileCreationInfo} = setup();
+    getFileCreationInfo.mockResolvedValue(null);
+    const birthtime = new Date('2020-01-01');
+    using stat = vi
+      .spyOn(fs, 'stat')
+      .mockResolvedValue(fromPartial({birthtime}));
+    await expect(getBlogPostDate(params)).resolves.toBe(birthtime);
+    expect(stat).toHaveBeenCalledExactlyOnceWith(params.filePath);
+  });
+
+  it('propagates VCS errors', async () => {
+    const {params, getFileCreationInfo} = setup();
+    const error = new Error('VCS unavailable');
+    getFileCreationInfo.mockRejectedValue(error);
+    await expect(getBlogPostDate(params)).rejects.toBe(error);
+  });
+
+  it('propagates filesystem errors', async () => {
+    const {params, getFileCreationInfo} = setup();
+    getFileCreationInfo.mockResolvedValue(null);
+    const error = new Error('File not found');
+    using stat = vi.spyOn(fs, 'stat').mockRejectedValue(error);
+    await expect(getBlogPostDate(params)).rejects.toBe(error);
+    expect(stat).toHaveBeenCalledExactlyOnceWith(params.filePath);
   });
 });
 
@@ -206,95 +430,6 @@ describe('parseBlogFileName', () => {
       text: 'hey/announcing-docusaurus-two-beta',
       slug: '/2021/05/12/team-a-hey/announcing-docusaurus-two-beta',
     });
-  });
-});
-
-describe('linkify', () => {
-  const siteDir = path.join(__dirname, '__fixtures__', 'website');
-  const contentPaths: BlogContentPaths = {
-    contentPath: path.join(siteDir, 'blog-with-ref'),
-    contentPathLocalized: path.join(siteDir, 'blog-with-ref-localized'),
-  };
-  const pluginDir = 'blog-with-ref';
-
-  const blogPosts: BlogPost[] = [
-    {
-      id: 'Happy 1st Birthday Slash!',
-      metadata: {
-        permalink: '/blog/2018/12/14/Happy-First-Birthday-Slash',
-        source: path.posix.join(
-          '@site',
-          pluginDir,
-          '2018-12-14-Happy-First-Birthday-Slash.md',
-        ),
-        title: 'Happy 1st Birthday Slash!',
-        description: `pattern name`,
-        date: new Date('2018-12-14'),
-        tags: [],
-        prevItem: {
-          permalink: '/blog/2019/01/01/date-matter',
-          title: 'date-matter',
-        },
-        hasTruncateMarker: false,
-        frontMatter: {},
-        authors: [],
-        unlisted: false,
-      },
-      content: '',
-    },
-  ];
-
-  async function transform(filePath: string, options?: Partial<LinkifyParams>) {
-    const fileContent = await fs.readFile(filePath, 'utf-8');
-    const transformedContent = linkify({
-      filePath,
-      fileString: fileContent,
-      siteDir,
-      contentPaths,
-      sourceToPermalink: getSourceToPermalink(blogPosts),
-      onBrokenMarkdownLink: (brokenMarkdownLink) => {
-        throw new Error(
-          `Broken markdown link found: ${JSON.stringify(brokenMarkdownLink)}`,
-        );
-      },
-      ...options,
-    });
-    return [fileContent, transformedContent];
-  }
-
-  it('transforms to correct link', async () => {
-    const post = path.join(contentPaths.contentPath, 'post.md');
-    const [content, transformedContent] = await transform(post);
-    expect(transformedContent).toMatchSnapshot();
-    expect(transformedContent).toContain(
-      '](/blog/2018/12/14/Happy-First-Birthday-Slash',
-    );
-    expect(transformedContent).not.toContain(
-      '](2018-12-14-Happy-First-Birthday-Slash.md)',
-    );
-    expect(content).not.toEqual(transformedContent);
-  });
-
-  it('reports broken markdown links', async () => {
-    const filePath = 'post-with-broken-links.md';
-    const folderPath = contentPaths.contentPath;
-    const postWithBrokenLinks = path.join(folderPath, filePath);
-    const onBrokenMarkdownLink = jest.fn();
-    const [, transformedContent] = await transform(postWithBrokenLinks, {
-      onBrokenMarkdownLink,
-    });
-    expect(transformedContent).toMatchSnapshot();
-    expect(onBrokenMarkdownLink).toHaveBeenCalledTimes(2);
-    expect(onBrokenMarkdownLink).toHaveBeenNthCalledWith(1, {
-      filePath: path.resolve(folderPath, filePath),
-      contentPaths,
-      link: 'postNotExist1.md',
-    } as BlogBrokenMarkdownLink);
-    expect(onBrokenMarkdownLink).toHaveBeenNthCalledWith(2, {
-      filePath: path.resolve(folderPath, filePath),
-      contentPaths,
-      link: './postNotExist2.mdx',
-    } as BlogBrokenMarkdownLink);
   });
 });
 

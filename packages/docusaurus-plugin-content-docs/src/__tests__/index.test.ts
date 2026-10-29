@@ -5,25 +5,29 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {jest} from '@jest/globals';
-import path from 'path';
-import fs from 'fs-extra';
+import {describe, expect, it, vi} from 'vitest';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 import _ from 'lodash';
 import {isMatch} from 'picomatch';
-import commander from 'commander';
+import {Command} from 'commander';
 import webpack from 'webpack';
 import {loadContext} from '@docusaurus/core/src/server/site';
-import {applyConfigureWebpack} from '@docusaurus/core/src/webpack/utils';
+import {
+  applyConfigureWebpack,
+  createConfigureWebpackUtils,
+} from '@docusaurus/core/src/webpack/configure';
 import {sortRoutes} from '@docusaurus/core/src/server/plugins/routeConfig';
-import {posixPath} from '@docusaurus/utils';
+import {getLocaleConfig, posixPath} from '@docusaurus/utils';
 import {normalizePluginOptions} from '@docusaurus/utils-validation';
 
 import pluginContentDocs from '../index';
 import {toSidebarsProp} from '../props';
 import {DefaultSidebarItemsGenerator} from '../sidebars/generator';
 import {DisabledSidebars} from '../sidebars';
-import * as cliDocs from '../cli';
+import cliDocs from '../cli';
 import {validateOptions} from '../options';
+import {toFullVersion} from '../versions/version';
 
 import type {RouteConfig, Validate, Plugin} from '@docusaurus/types';
 import type {
@@ -37,11 +41,12 @@ import type {
   NormalizedSidebar,
 } from '../sidebars/types';
 
+// Returns the doc with its navigation, only computed in contentLoaded
 function findDocById(version: LoadedVersion | undefined, id: string) {
   if (!version) {
     throw new Error('Version not found');
   }
-  return version.docs.find((item) => item.id === id);
+  return toFullVersion(version).docs.find((item) => item.id === id);
 }
 function getDocById(version: LoadedVersion | undefined, id: string) {
   if (!version) {
@@ -131,12 +136,12 @@ describe('sidebar', () => {
 
       await plugin.loadContent!();
     }).rejects.toThrowErrorMatchingInlineSnapshot(`
-            "The path to the sidebar file does not exist at "wrong-path-sidebar.json".
-            Please set the docs "sidebarPath" field in your config file to:
-            - a sidebars path that exists
-            - false: to disable the sidebar
-            - undefined: for Docusaurus to generate it automatically"
-          `);
+      [Error: The path to the sidebar file does not exist at "wrong-path-sidebar.json".
+      Please set the docs "sidebarPath" field in your config file to:
+      - a sidebars path that exists
+      - false: to disable the sidebar
+      - undefined: for Docusaurus to generate it automatically]
+    `);
   });
 
   it('site with undefined sidebar', async () => {
@@ -181,7 +186,7 @@ describe('empty/no docs website', () => {
 
   it('no files in docs folder', async () => {
     const context = await loadContext({siteDir});
-    await fs.ensureDir(path.join(siteDir, 'docs'));
+    await fs.mkdir(path.join(siteDir, 'docs'), {recursive: true});
     const plugin = await pluginContentDocs(
       context,
       validateOptions({
@@ -192,7 +197,7 @@ describe('empty/no docs website', () => {
     await expect(
       plugin.loadContent!(),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `"Docs version "current" has no docs! At least one doc should exist at "docs"."`,
+      `[Error: Docs version "current" has no docs! At least one doc should exist at "docs".]`,
     );
   });
 
@@ -209,15 +214,19 @@ describe('empty/no docs website', () => {
         }),
       ),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `"The docs folder does not exist for version "current". A docs folder is expected to be found at path/does/not/exist."`,
+      `[Error: The docs folder does not exist for version "current". A docs folder is expected to be found at path/does/not/exist.]`,
     );
   });
 });
 
 describe('simple website', () => {
-  async function loadSite() {
+  async function loadSite({translate}: {translate?: boolean} = {}) {
     const siteDir = path.join(__dirname, '__fixtures__', 'simple-site');
     const context = await loadContext({siteDir});
+
+    // hacky but gets the job done
+    getLocaleConfig(context.i18n).translate = translate ?? true;
+
     const sidebarPath = path.join(siteDir, 'sidebars.json');
     const options = validateOptions({
       validate: normalizePluginOptions as Validate<Options, PluginOptions>,
@@ -229,17 +238,28 @@ describe('simple website', () => {
     const plugin = await pluginContentDocs(context, options);
     const pluginContentDir = path.join(context.generatedFilesDir, plugin.name);
 
-    return {siteDir, context, sidebarPath, plugin, options, pluginContentDir};
+    return {
+      siteDir,
+      context,
+      sidebarPath,
+      plugin,
+      options,
+      pluginContentDir,
+      getPathsToWatch: () => {
+        const pathToWatch = plugin.getPathsToWatch!();
+        return pathToWatch.map((filepath) =>
+          posixPath(path.relative(siteDir, filepath)),
+        );
+      },
+    };
   }
 
   it('extendCli - docsVersion', async () => {
     const {plugin, options, context} = await loadSite();
-    const mock = jest
+    const mock = vi
       .spyOn(cliDocs, 'cliDocsVersionCommand')
       .mockImplementation(async () => {});
-    const cli = new commander.Command();
-    // @ts-expect-error: in actual usage, we pass the static commander instead
-    // of the new command
+    const cli = new Command();
     plugin.extendCli!(cli);
     cli.parse(['node', 'test', 'docs:version', '1.0.0']);
     expect(mock).toHaveBeenCalledTimes(1);
@@ -247,45 +267,73 @@ describe('simple website', () => {
     mock.mockRestore();
   });
 
-  it('getPathToWatch', async () => {
-    const {siteDir, plugin} = await loadSite();
+  describe('getPathToWatch', () => {
+    it('translate: false', async () => {
+      const {getPathsToWatch} = await loadSite({translate: false});
+      expect(getPathsToWatch()).toMatchInlineSnapshot(`
+        [
+          "sidebars.json",
+          "docs/**/*.{md,mdx}",
+          "docs/tags.yml",
+          "docs/**/_category_.{json,yml,yaml}",
+        ]
+      `);
+    });
 
-    const pathToWatch = plugin.getPathsToWatch!();
-    const matchPattern = pathToWatch.map((filepath) =>
-      posixPath(path.relative(siteDir, filepath)),
-    );
-    expect(matchPattern).toMatchSnapshot();
-    expect(isMatch('docs/hello.md', matchPattern)).toBe(true);
-    expect(isMatch('docs/hello.mdx', matchPattern)).toBe(true);
-    expect(isMatch('docs/foo/bar.md', matchPattern)).toBe(true);
-    expect(isMatch('docs/hello.js', matchPattern)).toBe(false);
-    expect(isMatch('docs/super.mdl', matchPattern)).toBe(false);
-    expect(isMatch('docs/mdx', matchPattern)).toBe(false);
-    expect(isMatch('docs/headingAsTitle.md', matchPattern)).toBe(true);
-    expect(isMatch('sidebars.json', matchPattern)).toBe(true);
-    expect(isMatch('versioned_docs/hello.md', matchPattern)).toBe(false);
-    expect(isMatch('hello.md', matchPattern)).toBe(false);
-    expect(isMatch('super/docs/hello.md', matchPattern)).toBe(false);
+    it('translate: true', async () => {
+      const {getPathsToWatch} = await loadSite({translate: true});
+      expect(getPathsToWatch()).toMatchInlineSnapshot(`
+        [
+          "sidebars.json",
+          "i18n/en/docusaurus-plugin-content-docs/current/**/*.{md,mdx}",
+          "docs/**/*.{md,mdx}",
+          "i18n/en/docusaurus-plugin-content-docs/current/tags.yml",
+          "docs/tags.yml",
+          "docs/**/_category_.{json,yml,yaml}",
+        ]
+      `);
+    });
+
+    it('returns patterns matching docs', async () => {
+      const {getPathsToWatch} = await loadSite();
+      const matchPattern = getPathsToWatch();
+      expect(isMatch('docs/hello.md', matchPattern)).toBe(true);
+      expect(isMatch('docs/hello.mdx', matchPattern)).toBe(true);
+      expect(isMatch('docs/foo/bar.md', matchPattern)).toBe(true);
+      expect(isMatch('docs/hello.js', matchPattern)).toBe(false);
+      expect(isMatch('docs/super.mdl', matchPattern)).toBe(false);
+      expect(isMatch('docs/mdx', matchPattern)).toBe(false);
+      expect(isMatch('docs/headingAsTitle.md', matchPattern)).toBe(true);
+      expect(isMatch('sidebars.json', matchPattern)).toBe(true);
+      expect(isMatch('versioned_docs/hello.md', matchPattern)).toBe(false);
+      expect(isMatch('hello.md', matchPattern)).toBe(false);
+      expect(isMatch('super/docs/hello.md', matchPattern)).toBe(false);
+    });
   });
 
   it('configureWebpack', async () => {
-    const {plugin} = await loadSite();
+    const {siteDir, plugin} = await loadSite();
 
     const content = await plugin.loadContent?.();
 
-    const config = applyConfigureWebpack(
-      plugin.configureWebpack as NonNullable<Plugin['configureWebpack']>,
-      {
+    const config = applyConfigureWebpack({
+      configureWebpack: plugin.configureWebpack as NonNullable<
+        Plugin['configureWebpack']
+      >,
+      config: {
         entry: './src/index.js',
         output: {
           filename: 'main.js',
           path: path.resolve(__dirname, 'dist'),
         },
       },
-      false,
-      undefined,
+      isServer: false,
+      configureWebpackUtils: await createConfigureWebpackUtils({
+        siteDir,
+        siteConfig: {},
+      }),
       content,
-    );
+    });
     const errors = webpack.validate(config);
     expect(errors).toBeUndefined();
   });
@@ -318,9 +366,13 @@ describe('simple website', () => {
 });
 
 describe('versioned website', () => {
-  async function loadSite() {
+  async function loadSite({translate}: {translate?: boolean} = {}) {
     const siteDir = path.join(__dirname, '__fixtures__', 'versioned-site');
     const context = await loadContext({siteDir});
+
+    // hacky but gets the job done
+    getLocaleConfig(context.i18n).translate = translate ?? true;
+
     const sidebarPath = path.join(siteDir, 'sidebars.json');
     const routeBasePath = 'docs';
     const options = validateOptions({
@@ -345,17 +397,22 @@ describe('versioned website', () => {
       options,
       plugin,
       pluginContentDir,
+
+      getPathsToWatch: () => {
+        const pathToWatch = plugin.getPathsToWatch!();
+        return pathToWatch.map((filepath) =>
+          posixPath(path.relative(siteDir, filepath)),
+        );
+      },
     };
   }
 
   it('extendCli - docsVersion', async () => {
     const {plugin, context, options} = await loadSite();
-    const mock = jest
+    const mock = vi
       .spyOn(cliDocs, 'cliDocsVersionCommand')
       .mockImplementation(async () => {});
-    const cli = new commander.Command();
-    // @ts-expect-error: in actual usage, we pass the static commander instead
-    // of the new command
+    const cli = new Command();
     plugin.extendCli!(cli);
     cli.parse(['node', 'test', 'docs:version', '2.0.0']);
     expect(mock).toHaveBeenCalledTimes(1);
@@ -363,48 +420,101 @@ describe('versioned website', () => {
     mock.mockRestore();
   });
 
-  it('getPathToWatch', async () => {
-    const {siteDir, plugin} = await loadSite();
-    const pathToWatch = plugin.getPathsToWatch!();
-    const matchPattern = pathToWatch.map((filepath) =>
-      posixPath(path.relative(siteDir, filepath)),
-    );
-    expect(matchPattern).not.toEqual([]);
-    expect(matchPattern).toMatchSnapshot();
-    expect(isMatch('docs/hello.md', matchPattern)).toBe(true);
-    expect(isMatch('docs/hello.mdx', matchPattern)).toBe(true);
-    expect(isMatch('docs/foo/bar.md', matchPattern)).toBe(true);
-    expect(isMatch('sidebars.json', matchPattern)).toBe(true);
-    expect(isMatch('versioned_docs/version-1.0.0/hello.md', matchPattern)).toBe(
-      true,
-    );
-    expect(
-      isMatch('versioned_docs/version-1.0.0/foo/bar.md', matchPattern),
-    ).toBe(true);
-    expect(
-      isMatch('versioned_sidebars/version-1.0.0-sidebars.json', matchPattern),
-    ).toBe(true);
+  describe('getPathToWatch', () => {
+    it('translate: false', async () => {
+      const {getPathsToWatch} = await loadSite({translate: false});
+      expect(getPathsToWatch()).toMatchInlineSnapshot(`
+        [
+          "sidebars.json",
+          "docs/**/*.{md,mdx}",
+          "docs/tags.yml",
+          "docs/**/_category_.{json,yml,yaml}",
+          "versioned_sidebars/version-1.0.1-sidebars.json",
+          "versioned_docs/version-1.0.1/**/*.{md,mdx}",
+          "versioned_docs/version-1.0.1/tags.yml",
+          "versioned_docs/version-1.0.1/**/_category_.{json,yml,yaml}",
+          "versioned_sidebars/version-1.0.0-sidebars.json",
+          "versioned_docs/version-1.0.0/**/*.{md,mdx}",
+          "versioned_docs/version-1.0.0/tags.yml",
+          "versioned_docs/version-1.0.0/**/_category_.{json,yml,yaml}",
+          "versioned_sidebars/version-withSlugs-sidebars.json",
+          "versioned_docs/version-withSlugs/**/*.{md,mdx}",
+          "versioned_docs/version-withSlugs/tags.yml",
+          "versioned_docs/version-withSlugs/**/_category_.{json,yml,yaml}",
+        ]
+      `);
+    });
 
-    // Non existing version
-    expect(
-      isMatch('versioned_docs/version-2.0.0/foo/bar.md', matchPattern),
-    ).toBe(false);
-    expect(isMatch('versioned_docs/version-2.0.0/hello.md', matchPattern)).toBe(
-      false,
-    );
-    expect(
-      isMatch('versioned_sidebars/version-2.0.0-sidebars.json', matchPattern),
-    ).toBe(false);
+    it('translate: true', async () => {
+      const {getPathsToWatch} = await loadSite({translate: true});
+      expect(getPathsToWatch()).toMatchInlineSnapshot(`
+        [
+          "sidebars.json",
+          "i18n/en/docusaurus-plugin-content-docs/current/**/*.{md,mdx}",
+          "docs/**/*.{md,mdx}",
+          "i18n/en/docusaurus-plugin-content-docs/current/tags.yml",
+          "docs/tags.yml",
+          "docs/**/_category_.{json,yml,yaml}",
+          "versioned_sidebars/version-1.0.1-sidebars.json",
+          "i18n/en/docusaurus-plugin-content-docs/version-1.0.1/**/*.{md,mdx}",
+          "versioned_docs/version-1.0.1/**/*.{md,mdx}",
+          "i18n/en/docusaurus-plugin-content-docs/version-1.0.1/tags.yml",
+          "versioned_docs/version-1.0.1/tags.yml",
+          "versioned_docs/version-1.0.1/**/_category_.{json,yml,yaml}",
+          "versioned_sidebars/version-1.0.0-sidebars.json",
+          "i18n/en/docusaurus-plugin-content-docs/version-1.0.0/**/*.{md,mdx}",
+          "versioned_docs/version-1.0.0/**/*.{md,mdx}",
+          "i18n/en/docusaurus-plugin-content-docs/version-1.0.0/tags.yml",
+          "versioned_docs/version-1.0.0/tags.yml",
+          "versioned_docs/version-1.0.0/**/_category_.{json,yml,yaml}",
+          "versioned_sidebars/version-withSlugs-sidebars.json",
+          "i18n/en/docusaurus-plugin-content-docs/version-withSlugs/**/*.{md,mdx}",
+          "versioned_docs/version-withSlugs/**/*.{md,mdx}",
+          "i18n/en/docusaurus-plugin-content-docs/version-withSlugs/tags.yml",
+          "versioned_docs/version-withSlugs/tags.yml",
+          "versioned_docs/version-withSlugs/**/_category_.{json,yml,yaml}",
+        ]
+      `);
+    });
 
-    expect(isMatch('docs/hello.js', matchPattern)).toBe(false);
-    expect(isMatch('docs/super.mdl', matchPattern)).toBe(false);
-    expect(isMatch('docs/mdx', matchPattern)).toBe(false);
-    expect(isMatch('hello.md', matchPattern)).toBe(false);
-    expect(isMatch('super/docs/hello.md', matchPattern)).toBe(false);
+    it('returns patterns matching docs', async () => {
+      const {getPathsToWatch} = await loadSite();
+      const matchPattern = getPathsToWatch();
+      expect(isMatch('docs/hello.md', matchPattern)).toBe(true);
+      expect(isMatch('docs/hello.mdx', matchPattern)).toBe(true);
+      expect(isMatch('docs/foo/bar.md', matchPattern)).toBe(true);
+      expect(isMatch('sidebars.json', matchPattern)).toBe(true);
+      expect(
+        isMatch('versioned_docs/version-1.0.0/hello.md', matchPattern),
+      ).toBe(true);
+      expect(
+        isMatch('versioned_docs/version-1.0.0/foo/bar.md', matchPattern),
+      ).toBe(true);
+      expect(
+        isMatch('versioned_sidebars/version-1.0.0-sidebars.json', matchPattern),
+      ).toBe(true);
+
+      // Non existing version
+      expect(
+        isMatch('versioned_docs/version-2.0.0/foo/bar.md', matchPattern),
+      ).toBe(false);
+      expect(
+        isMatch('versioned_docs/version-2.0.0/hello.md', matchPattern),
+      ).toBe(false);
+      expect(
+        isMatch('versioned_sidebars/version-2.0.0-sidebars.json', matchPattern),
+      ).toBe(false);
+
+      expect(isMatch('docs/hello.js', matchPattern)).toBe(false);
+      expect(isMatch('docs/super.mdl', matchPattern)).toBe(false);
+      expect(isMatch('docs/mdx', matchPattern)).toBe(false);
+      expect(isMatch('hello.md', matchPattern)).toBe(false);
+      expect(isMatch('super/docs/hello.md', matchPattern)).toBe(false);
+    });
   });
 
   it('content', async () => {
-    const {plugin, pluginContentDir} = await loadSite();
+    const {plugin, pluginContentDir} = await loadSite({translate: true});
     const content = await plugin.loadContent!();
     expect(content.loadedVersions).toHaveLength(4);
     const [currentVersion, version101, version100, versionWithSlugs] =
@@ -442,9 +552,13 @@ describe('versioned website', () => {
 });
 
 describe('versioned website (community)', () => {
-  async function loadSite() {
+  async function loadSite({translate}: {translate?: boolean} = {}) {
     const siteDir = path.join(__dirname, '__fixtures__', 'versioned-site');
     const context = await loadContext({siteDir});
+
+    // hacky but gets the job done
+    getLocaleConfig(context.i18n).translate = translate ?? true;
+
     const sidebarPath = path.join(siteDir, 'community_sidebars.json');
     const routeBasePath = 'community';
     const pluginId = 'community';
@@ -468,17 +582,22 @@ describe('versioned website (community)', () => {
       options,
       plugin,
       pluginContentDir,
+
+      getPathsToWatch: () => {
+        const pathToWatch = plugin.getPathsToWatch!();
+        return pathToWatch.map((filepath) =>
+          posixPath(path.relative(siteDir, filepath)),
+        );
+      },
     };
   }
 
   it('extendCli - docsVersion', async () => {
     const {pluginId, plugin, options, context} = await loadSite();
-    const mock = jest
+    const mock = vi
       .spyOn(cliDocs, 'cliDocsVersionCommand')
       .mockImplementation(async () => {});
-    const cli = new commander.Command();
-    // @ts-expect-error: in actual usage, we pass the static commander instead
-    // of the new command
+    const cli = new Command();
     plugin.extendCli!(cli);
     cli.parse(['node', 'test', `docs:version:${pluginId}`, '2.0.0']);
     expect(mock).toHaveBeenCalledTimes(1);
@@ -486,34 +605,67 @@ describe('versioned website (community)', () => {
     mock.mockRestore();
   });
 
-  it('getPathToWatch', async () => {
-    const {siteDir, plugin} = await loadSite();
-    const pathToWatch = plugin.getPathsToWatch!();
-    const matchPattern = pathToWatch.map((filepath) =>
-      posixPath(path.relative(siteDir, filepath)),
-    );
-    expect(matchPattern).not.toEqual([]);
-    expect(matchPattern).toMatchSnapshot();
-    expect(isMatch('community/team.md', matchPattern)).toBe(true);
-    expect(
-      isMatch('community_versioned_docs/version-1.0.0/team.md', matchPattern),
-    ).toBe(true);
+  describe('getPathToWatch', () => {
+    it('translate: false', async () => {
+      const {getPathsToWatch} = await loadSite({translate: false});
+      expect(getPathsToWatch()).toMatchInlineSnapshot(`
+        [
+          "community_sidebars.json",
+          "community/**/*.{md,mdx}",
+          "community/tags.yml",
+          "community/**/_category_.{json,yml,yaml}",
+          "community_versioned_sidebars/version-1.0.0-sidebars.json",
+          "community_versioned_docs/version-1.0.0/**/*.{md,mdx}",
+          "community_versioned_docs/version-1.0.0/tags.yml",
+          "community_versioned_docs/version-1.0.0/**/_category_.{json,yml,yaml}",
+        ]
+      `);
+    });
 
-    // Non existing version
-    expect(
-      isMatch('community_versioned_docs/version-2.0.0/team.md', matchPattern),
-    ).toBe(false);
-    expect(
-      isMatch(
-        'community_versioned_sidebars/version-2.0.0-sidebars.json',
-        matchPattern,
-      ),
-    ).toBe(false);
+    it('translate: true', async () => {
+      const {getPathsToWatch} = await loadSite({translate: true});
+      expect(getPathsToWatch()).toMatchInlineSnapshot(`
+        [
+          "community_sidebars.json",
+          "i18n/en/docusaurus-plugin-content-docs-community/current/**/*.{md,mdx}",
+          "community/**/*.{md,mdx}",
+          "i18n/en/docusaurus-plugin-content-docs-community/current/tags.yml",
+          "community/tags.yml",
+          "community/**/_category_.{json,yml,yaml}",
+          "community_versioned_sidebars/version-1.0.0-sidebars.json",
+          "i18n/en/docusaurus-plugin-content-docs-community/version-1.0.0/**/*.{md,mdx}",
+          "community_versioned_docs/version-1.0.0/**/*.{md,mdx}",
+          "i18n/en/docusaurus-plugin-content-docs-community/version-1.0.0/tags.yml",
+          "community_versioned_docs/version-1.0.0/tags.yml",
+          "community_versioned_docs/version-1.0.0/**/_category_.{json,yml,yaml}",
+        ]
+      `);
+    });
 
-    expect(isMatch('community/team.js', matchPattern)).toBe(false);
-    expect(
-      isMatch('community_versioned_docs/version-1.0.0/team.js', matchPattern),
-    ).toBe(false);
+    it('returns patterns matching docs', async () => {
+      const {getPathsToWatch} = await loadSite();
+      const matchPattern = getPathsToWatch();
+      expect(isMatch('community/team.md', matchPattern)).toBe(true);
+      expect(
+        isMatch('community_versioned_docs/version-1.0.0/team.md', matchPattern),
+      ).toBe(true);
+
+      // Non existing version
+      expect(
+        isMatch('community_versioned_docs/version-2.0.0/team.md', matchPattern),
+      ).toBe(false);
+      expect(
+        isMatch(
+          'community_versioned_sidebars/version-2.0.0-sidebars.json',
+          matchPattern,
+        ),
+      ).toBe(false);
+
+      expect(isMatch('community/team.js', matchPattern)).toBe(false);
+      expect(
+        isMatch('community_versioned_docs/version-1.0.0/team.js', matchPattern),
+      ).toBe(false);
+    });
   });
 
   it('content', async () => {
@@ -571,14 +723,16 @@ describe('site with doc label', () => {
     );
   });
 
-  it('sidebar_label in doc has higher precedence over label in sidebar.json', async () => {
+  it('frontMatter.sidebar_* data in doc has higher precedence over sidebar.json data', async () => {
     const {content} = await loadSite();
     const loadedVersion = content.loadedVersions[0]!;
     const sidebarProps = toSidebarsProp(loadedVersion);
 
-    expect((sidebarProps.docs![1] as PropSidebarItemLink).label).toBe(
-      'Hello 2 From Doc',
-    );
+    const item = sidebarProps.docs![1] as PropSidebarItemLink;
+
+    expect(item.label).toBe('Hello 2 From Doc');
+    expect(item.className).toBe('front-matter-class-name');
+    expect(item.customProps).toStrictEqual({custom: 'from front matter'});
   });
 });
 
@@ -753,7 +907,7 @@ describe('site with custom sidebar items generator', () => {
   }
 
   it('sidebarItemsGenerator is called with appropriate data', async () => {
-    const customSidebarItemsGeneratorMock = jest.fn(async () => []);
+    const customSidebarItemsGeneratorMock = vi.fn(async () => []);
     const {siteDir} = await loadSite(customSidebarItemsGeneratorMock);
 
     const generatorArg = (

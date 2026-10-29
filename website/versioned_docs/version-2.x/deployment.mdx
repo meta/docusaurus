@@ -24,7 +24,7 @@ You can deploy your site to static site hosting services such as [Vercel](https:
 
 A Docusaurus site is statically rendered, and it can generally work without JavaScript!
 
-## Configuration {#configuration}
+## Configuration {/* #configuration */}
 
 The following parameters are required in `docusaurus.config.js` to optimize routing and serve files from the correct location:
 
@@ -33,7 +33,7 @@ The following parameters are required in `docusaurus.config.js` to optimize rout
 | `url` | URL for your site. For a site deployed at `https://my-org.com/my-project/`, `url` is `https://my-org.com/`. |
 | `baseUrl` | Base URL for your project, with a trailing slash. For a site deployed at `https://my-org.com/my-project/`, `baseUrl` is `/my-project/`. |
 
-## Testing your Build Locally {#testing-build-locally}
+## Testing your Build Locally {/* #testing-build-locally */}
 
 It is important to test your build locally before deploying it for production. Docusaurus provides a [`docusaurus serve`](cli.mdx#docusaurus-serve-sitedir) command for that:
 
@@ -43,7 +43,7 @@ npm run serve
 
 By default, this will load your site at [`http://localhost:3000/`](http://localhost:3000/).
 
-## Trailing slash configuration {#trailing-slashes}
+## Trailing slash configuration {/* #trailing-slashes */}
 
 Docusaurus has a [`trailingSlash` config](./api/docusaurus.config.js.mdx#trailingSlash), to allow customizing URLs/links and emitted filename patterns.
 
@@ -55,7 +55,7 @@ Use [slorber/trailing-slash-guide](https://github.com/slorber/trailing-slash-gui
 
 :::
 
-## Using environment variables {#using-environment-variables}
+## Using environment variables {/* #using-environment-variables */}
 
 Putting potentially sensitive information in the environment is common practice. However, in a typical Docusaurus website, the `docusaurus.config.js` file is the only interface to the Node.js environment (see [our architecture overview](advanced/architecture.mdx)), while everything else—MDX pages, React components... are client side and do not have direct access to the `process` global. In this case, you can consider using [`customFields`](api/docusaurus.config.js.mdx#customfields) to pass environment variables to the client side.
 
@@ -86,7 +86,7 @@ export default function Home() {
 }
 ```
 
-## Choosing a hosting provider {#choosing-a-hosting-provider}
+## Choosing a hosting provider {/* #choosing-a-hosting-provider */}
 
 There are a few common hosting options:
 
@@ -130,7 +130,7 @@ If you are unsure of which one to choose, ask the following questions:
 
 There isn't a silver bullet. You need to weigh your needs and resources before making a choice.
 
-## Self-Hosting {#self-hosting}
+## Self-Hosting {/* #self-hosting */}
 
 Docusaurus can be self-hosted using [`docusaurus serve`](cli.mdx#docusaurus-serve-sitedir). Change port using `--port` and `--host` to change host.
 
@@ -152,7 +152,7 @@ For the same concern of up-to-datedness, we have stopped accepting PRs adding ne
 
 :::
 
-## Deploying to Netlify {#deploying-to-netlify}
+## Deploying to Netlify {/* #deploying-to-netlify */}
 
 To deploy your Docusaurus 2 sites to [Netlify](https://www.netlify.com/), first make sure the following options are properly configured:
 
@@ -210,7 +210,7 @@ Refer to [slorber/trailing-slash-guide](https://github.com/slorber/trailing-slas
 
 :::
 
-## Deploying to Vercel {#deploying-to-vercel}
+## Deploying to Vercel {/* #deploying-to-vercel */}
 
 Deploying your Docusaurus project to [Vercel](https://vercel.com/) will provide you with [various benefits](https://vercel.com/) in the areas of performance and ease of use.
 
@@ -220,11 +220,11 @@ Import the project into Vercel using the [Import Flow](https://vercel.com/import
 
 After your project has been imported, all subsequent pushes to branches will generate [Preview Deployments](https://vercel.com/docs/platform/deployments#preview), and all changes made to the [Production Branch](https://vercel.com/docs/git-integrations#production-branch) (usually "main" or "master") will result in a [Production Deployment](https://vercel.com/docs/platform/deployments#production).
 
-## Deploying to GitHub Pages {#deploying-to-github-pages}
+## Deploying to GitHub Pages {/* #deploying-to-github-pages */}
 
 Docusaurus provides an easy way to publish to [GitHub Pages](https://pages.github.com/), which comes for free with every GitHub repository.
 
-### Overview {#github-pages-overview}
+### Overview {/* #github-pages-overview */}
 
 Usually, there are two repositories (at least, two branches) involved in a publishing process: the branch containing the source files, and the branch containing the build output to be served with GitHub Pages. In the following tutorial, they will be referred to as **"source"** and **"deployment"**, respectively.
 
@@ -242,7 +242,7 @@ GitHub Pages picks up deploy-ready files (the output from `docusaurus build`) fr
 
 We provide a `docusaurus deploy` command that helps you deploy your site from the source branch to the deployment branch in one command: clone, build, and commit.
 
-### `docusaurus.config.js` settings {#docusaurusconfigjs-settings}
+### `docusaurus.config.js` settings {/* #docusaurusconfigjs-settings */}
 
 First, modify your `docusaurus.config.js` and add the following params:
 
@@ -282,7 +282,7 @@ By default, GitHub Pages runs published files through [Jekyll](https://jekyllrb.
 
 :::
 
-### Environment settings {#environment-settings}
+### Environment settings {/* #environment-settings */}
 
 | Name | Description |
 | --- | --- |
@@ -298,7 +298,7 @@ GitHub enterprise installations should work in the same manner as github.com; yo
 | `GITHUB_HOST` | The domain name of your GitHub enterprise site. |
 | `GITHUB_PORT` | The port of your GitHub enterprise site.        |
 
-### Deploy {#deploy}
+### Deploy {/* #deploy */}
 
 Finally, to deploy your site to GitHub Pages, run:
 
@@ -342,7 +342,7 @@ Alternatively, you can use SSH (`USE_SSH=true`) to log in.
 
 :::
 
-### Triggering deployment with GitHub Actions {#triggering-deployment-with-github-actions}
+### Triggering deployment with GitHub Actions {/* #triggering-deployment-with-github-actions */}
 
 [GitHub Actions](https://help.github.com/en/actions) allow you to automate, customize, and execute your software development workflows right in your repository.
 
@@ -467,7 +467,7 @@ A cross-repo publish is more difficult to set up, because you need to push to an
 3. Copy the key to clipboard with `pbcopy < ~/.ssh/id_rsa.pub` and paste it as a [deploy key](https://developer.github.com/v3/guides/managing-deploy-keys/#deploy-keys) in the deployment repository. Copy the file content if the command line doesn't work for you. Check the box for `Allow write access` before saving your deployment key.
 4. You'll need your private key as a [GitHub secret](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets) to allow Docusaurus to run the deployment for you.
 5. Copy your private key with `pbcopy < ~/.ssh/id_rsa` and paste a GitHub secret with the name `GH_PAGES_DEPLOY` on your source repository. Copy the file content if the command line doesn't work for you. Save your secret.
-6. Create your [documentation workflow file](https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#creating-a-workflow-file) in `.github/workflows/`. In this example it's `deploy.yml`.
+6. Create your [documentation workflow](https://docs.github.com/en/actions/use-cases-and-examples/creating-an-example-workflow) in the `.github/workflows/` directory. In this example it's the `deploy.yml` file.
 7. You should have essentially: the source repo with the GitHub workflow set with the private SSH key as GitHub Secret and your deployment repo set with the public SSH key in GitHub Deploy Keys.
 
 <details>
@@ -551,7 +551,7 @@ After pushing to main, if you don't see your site published at the desired locat
 
 </details>
 
-### Triggering deployment with Travis CI {#triggering-deployment-with-travis-ci}
+### Triggering deployment with Travis CI {/* #triggering-deployment-with-travis-ci */}
 
 Continuous integration (CI) services are typically used to perform routine tasks whenever new commits are checked in to source control. These tasks can be any combination of running unit tests and integration tests, automating builds, publishing packages to npm, and deploying changes to your website. All you need to do to automate the deployment of your website is to invoke the `yarn deploy` script whenever your website is updated. The following section covers how to do just that using [Travis CI](https://travis-ci.com/), a popular continuous integration service provider.
 
@@ -580,7 +580,7 @@ script:
 
 Now, whenever a new commit lands in `main`, Travis CI will run your suite of tests and if everything passes, your website will be deployed via the `yarn deploy` script.
 
-### Triggering deployment with Buddy {#triggering-deployment-with-buddy}
+### Triggering deployment with Buddy {/* #triggering-deployment-with-buddy */}
 
 [Buddy](https://buddy.works/) is an easy-to-use CI/CD tool that allows you to automate the deployment of your portal to different environments, including GitHub Pages.
 
@@ -603,7 +603,7 @@ yarn deploy
 
 After creating this simple pipeline, each new commit pushed to the branch you selected deploys your website to GitHub Pages using `yarn deploy`. Read [this guide](https://buddy.works/guides/react-docusaurus) to learn more about setting up a CI/CD pipeline for Docusaurus.
 
-### Using Azure Pipelines {#using-azure-pipelines}
+### Using Azure Pipelines {/* #using-azure-pipelines */}
 
 1. Sign Up at [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/) if you haven't already.
 2. Create an organization. Within the organization, create a project and connect your repository from GitHub.
@@ -640,7 +640,7 @@ steps:
     displayName: Install and build
 ```
 
-### Using Drone {#using-drone}
+### Using Drone {/* #using-drone */}
 
 1. Create a new SSH key that will be the [deploy key](https://docs.github.com/en/free-pro-team@latest/developers/overview/managing-deploy-keys#deploy-keys) for your project.
 2. Name your private and public keys to be specific and so that it does not overwrite your other [SSH keys](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
@@ -673,15 +673,15 @@ trigger:
 
 Now, whenever you push a new tag to GitHub, this trigger will start the drone CI job to publish your website.
 
-## Deploying to Koyeb {#deploying-to-koyeb}
+## Deploying to Koyeb {/* #deploying-to-koyeb */}
 
 [Koyeb](https://www.koyeb.com) is a developer-friendly serverless platform to deploy apps globally. The platform lets you seamlessly run Docker containers, web apps, and APIs with git-based deployment, native autoscaling, a global edge network, and built-in service mesh and discovery. Check out the [Koyeb's Docusaurus deployment guide](https://www.koyeb.com/tutorials/deploy-docusaurus-on-koyeb) to get started.
 
-## Deploying to Render {#deploying-to-render}
+## Deploying to Render {/* #deploying-to-render */}
 
 [Render](https://render.com) offers [free static site hosting](https://render.com/docs/static-sites) with fully managed SSL, custom domains, a global CDN, and continuous auto-deploy from your Git repo. Get started in just a few minutes by following [Render's guide to deploying Docusaurus](https://render.com/docs/deploy-docusaurus).
 
-## Deploying to Qovery {#deploying-to-qovery}
+## Deploying to Qovery {/* #deploying-to-qovery */}
 
 [Qovery](https://www.qovery.com) is a fully-managed cloud platform that runs on your AWS, Digital Ocean, and Scaleway account where you can host static sites, backend APIs, databases, cron jobs, and all your other apps in one place.
 
@@ -704,7 +704,7 @@ Now, whenever you push a new tag to GitHub, this trigger will start the drone CI
 
 That's it. Watch the status and wait till the app is deployed. To open the application in your browser, click on **Action** and **Open** in your application overview.
 
-## Deploying to Hostman {#deploying-to-hostman}
+## Deploying to Hostman {/* #deploying-to-hostman */}
 
 [Hostman](https://hostman.com/) allows you to host static websites for free. Hostman automates everything, you just need to connect your repository and follow easy steps:
 
@@ -744,7 +744,7 @@ That's it. Watch the status and wait till the app is deployed. To open the appli
 
    When the deployment is complete, you will receive an email notification and also see a log entry. All done! Your project is up and ready.
 
-## Deploying to Surge {#deploying-to-surge}
+## Deploying to Surge {/* #deploying-to-surge */}
 
 Surge is a [static web hosting platform](https://surge.sh/help/getting-started-with-surge), it is used to deploy your Docusaurus project from the command line in a minute. Deploying your project to Surge is easy and it is also free (including a custom domain and SSL).
 
@@ -767,7 +767,7 @@ First-time users of Surge would be prompted to create an account from the comman
 
 Confirm that the site you want to publish is in the `build` directory, a randomly generated subdomain `*.surge.sh subdomain` is always given (which can be edited).
 
-### Using your domain {#using-your-domain}
+### Using your domain {/* #using-your-domain */}
 
 If you have a domain name you can deploy your site using surge to your domain using the command:
 
@@ -777,7 +777,7 @@ surge build/ your-domain.com
 
 Your site is now deployed for free at `subdomain.surge.sh` or `your-domain.com` depending on the method you chose.
 
-### Setting up CNAME file {#setting-up-cname-file}
+### Setting up CNAME file {/* #setting-up-cname-file */}
 
 Store your domain in a CNAME file for future deployments with the following command:
 
@@ -787,7 +787,7 @@ echo subdomain.surge.sh > CNAME
 
 You can deploy any other changes in the future with the command `surge`.
 
-## Deploying to QuantCDN {#deploying-to-quantcdn}
+## Deploying to QuantCDN {/* #deploying-to-quantcdn */}
 
 1. Install [Quant CLI](https://docs.quantcdn.io/docs/cli/get-started)
 2. Create a QuantCDN account by [signing up](https://dashboard.quantcdn.io/register)
@@ -802,14 +802,14 @@ You can deploy any other changes in the future with the command `surge`.
 
 See [docs](https://docs.quantcdn.io/docs/cli/continuous-integration) and [blog](https://www.quantcdn.io/blog) for more examples and use cases for deploying to QuantCDN.
 
-## Deploying to Layer0 {#deploying-to-layer0}
+## Deploying to Layer0 {/* #deploying-to-layer0 */}
 
 [Layer0](https://www.layer0.co) is an all-in-one platform to develop, deploy, preview, experiment on, monitor, and run your headless frontend. It is focused on large, dynamic websites and best-in-class performance through EdgeJS (a JavaScript-based Content Delivery Network), predictive prefetching, and performance monitoring. Layer0 offers a free tier. Get started in just a few minutes by following [Layer0's guide to deploying Docusaurus](https://docs.layer0.co/guides/docusaurus).
 
-## Deploying to Cloudflare Pages {#deploying-to-cloudflare-pages}
+## Deploying to Cloudflare Pages {/* #deploying-to-cloudflare-pages */}
 
 [Cloudflare Pages](https://pages.cloudflare.com/) is a Jamstack platform for frontend developers to collaborate and deploy websites. Get started within a few minutes by following [this article](https://dev.to/apidev234/deploying-docusaurus-to-cloudflare-pages-565g).
 
-## Deploying to Azure Static Web Apps {#deploying-to-azure-static-web-apps}
+## Deploying to Azure Static Web Apps {/* #deploying-to-azure-static-web-apps */}
 
 [Azure Static Web Apps](https://docs.microsoft.com/en-us/azure/static-web-apps/overview) is a service that automatically builds and deploys full-stack web apps to Azure directly from the code repository, simplifying the developer experience for CI/CD. Static Web Apps separates the web application's static assets from its dynamic (API) endpoints. Static assets are served from globally-distributed content servers, making it faster for clients to retrieve files using servers nearby. Dynamic APIs are scaled with serverless architectures, using an event-driven functions-based approach that is more cost-effective and scales on demand. Get started in a few minutes by following [this step-by-step guide](https://dev.to/azure/11-share-content-with-docusaurus-azure-static-web-apps-30hc).

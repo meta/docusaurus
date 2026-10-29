@@ -1,10 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "references": [{"path": "./tsconfig.build.json"}],
   "compilerOptions": {
     "noEmit": true,
     "rootDir": "."
   },
-  "include": ["bin"],
+  "include": ["package.json", "bin"],
   "exclude": ["**/__tests__/**"]
 }

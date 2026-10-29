@@ -37,10 +37,11 @@ export default function preset(
     blog,
     pages,
     sitemap,
+    svgr,
     theme,
-    googleAnalytics,
     gtag,
     googleTagManager,
+    cssCascadeLayers,
     ...rest
   } = opts;
 
@@ -49,18 +50,29 @@ export default function preset(
   if (algolia) {
     themes.push(require.resolve('@docusaurus/theme-search-algolia'));
   }
-  if ('gtag' in themeConfig) {
+  // TODO Docusaurus v5: remove
+  if ('googleAnalytics' in opts || 'googleAnalytics' in themeConfig) {
     throw new Error(
-      'The "gtag" field in themeConfig should now be specified as option for plugin-google-gtag. For preset-classic, simply move themeConfig.gtag to preset options. More information at https://github.com/facebook/docusaurus/pull/5832.',
-    );
-  }
-  if ('googleAnalytics' in themeConfig) {
-    throw new Error(
-      'The "googleAnalytics" field in themeConfig should now be specified as option for plugin-google-analytics. For preset-classic, simply move themeConfig.googleAnalytics to preset options. More information at https://github.com/facebook/docusaurus/pull/5832.',
+      `In Docusaurus v4, the Google Analytics plugin has been removed.
+You can now use either:
+- @docusaurus/plugin-google-gtag - presetOptions.gtag
+- @docusaurus/plugin-google-tag-manager - presetOptions.googleTagManager
+
+See also: https://github.com/facebook/docusaurus/issues/7221`,
     );
   }
 
   const plugins: PluginConfig[] = [];
+
+  if (cssCascadeLayers !== false) {
+    plugins.push(
+      makePluginConfig(
+        '@docusaurus/plugin-css-cascade-layers',
+        cssCascadeLayers,
+      ),
+    );
+  }
+
   if (docs !== false) {
     plugins.push(makePluginConfig('@docusaurus/plugin-content-docs', docs));
   }
@@ -69,11 +81,6 @@ export default function preset(
   }
   if (pages !== false) {
     plugins.push(makePluginConfig('@docusaurus/plugin-content-pages', pages));
-  }
-  if (googleAnalytics) {
-    plugins.push(
-      makePluginConfig('@docusaurus/plugin-google-analytics', googleAnalytics),
-    );
   }
   if (debug || (debug === undefined && !isProd)) {
     plugins.push(require.resolve('@docusaurus/plugin-debug'));
@@ -89,14 +96,17 @@ export default function preset(
       ),
     );
   }
-  if (isProd && sitemap !== false) {
+  if (sitemap !== false && (isProd || debug)) {
     plugins.push(makePluginConfig('@docusaurus/plugin-sitemap', sitemap));
+  }
+  if (svgr !== false) {
+    plugins.push(makePluginConfig('@docusaurus/plugin-svgr', svgr));
   }
   if (Object.keys(rest).length > 0) {
     throw new Error(
       `Unrecognized keys ${Object.keys(rest).join(
         ', ',
-      )} found in preset-classic configuration. The allowed keys are debug, docs, blog, pages, sitemap, theme, googleAnalytics, gtag, and googleTagManager. Check the documentation: https://docusaurus.io/docs/using-plugins#docusauruspreset-classic for more information on how to configure individual plugins.`,
+      )} found in preset-classic configuration. The allowed keys are debug, docs, blog, pages, sitemap, svgr, theme, gtag, googleTagManager, and cssCascadeLayers. Check the documentation: https://docusaurus.io/docs/using-plugins#docusauruspreset-classic for more information on how to configure individual plugins.`,
     );
   }
 

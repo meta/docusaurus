@@ -1,149 +1,159 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`validation schemas admonitionsSchema: for value=[] 1`] = `""value" does not look like a valid admonitions config"`;
+exports[`validation schemas > admonitionsSchema > for value=[] 1`] = `[ValidationError: "value" does not look like a valid admonitions config]`;
 
-exports[`validation schemas admonitionsSchema: for value={"customTypes":{"myKeyword":{"keyword":"myKeyword","infima":true,"svg":"<svg width=\\"512px\\" height=\\"512px\\" viewBox=\\"0 0 512 512\\" xmlns=\\"http://www.w3.org/2000/svg\\"></svg>"}}} 1`] = `""customTypes" is not allowed"`;
+exports[`validation schemas > admonitionsSchema > for value={"customTypes":{"myKeyword":{"keyword":"myKeyword","infima":true,"svg":"<svg width=\\"512px\\" height=\\"512px\\" viewBox=\\"0 0 512 512\\" xmlns=\\"http://www.w3.org/2000/svg\\"></svg>"}}} 1`] = `[ValidationError: "customTypes" is not allowed]`;
 
-exports[`validation schemas admonitionsSchema: for value={"icons":"emoji"} 1`] = `""icons" is not allowed"`;
+exports[`validation schemas > admonitionsSchema > for value={"icons":"emoji"} 1`] = `[ValidationError: "icons" is not allowed]`;
 
-exports[`validation schemas admonitionsSchema: for value={"infima":true} 1`] = `""infima" is not allowed"`;
+exports[`validation schemas > admonitionsSchema > for value={"infima":true} 1`] = `[ValidationError: "infima" is not allowed]`;
 
-exports[`validation schemas admonitionsSchema: for value={"keywords":["custom-keyword"],"extendDefaults":42} 1`] = `""extendDefaults" must be a boolean"`;
+exports[`validation schemas > admonitionsSchema > for value={"keywords":["custom-keyword"],"extendDefaults":42} 1`] = `[ValidationError: "extendDefaults" must be a boolean]`;
 
-exports[`validation schemas admonitionsSchema: for value={"tag":""} 1`] = `"It is not possible anymore to use a custom admonition tag. The only admonition tag supported is ':::' (Markdown Directive syntax)"`;
+exports[`validation schemas > admonitionsSchema > for value={"unknownAttribute":"val"} 1`] = `[ValidationError: "unknownAttribute" is not allowed]`;
 
-exports[`validation schemas admonitionsSchema: for value={"tag":"+++","keywords":["info","tip"]} 1`] = `"It is not possible anymore to use a custom admonition tag. The only admonition tag supported is ':::' (Markdown Directive syntax)"`;
+exports[`validation schemas > admonitionsSchema > for value=3 1`] = `[ValidationError: "value" does not look like a valid admonitions config]`;
 
-exports[`validation schemas admonitionsSchema: for value={"tag":"+++"} 1`] = `"It is not possible anymore to use a custom admonition tag. The only admonition tag supported is ':::' (Markdown Directive syntax)"`;
+exports[`validation schemas > contentVisibilitySchema > for value={"draft":"bad string"} 1`] = `[ValidationError: "draft" must be a boolean]`;
 
-exports[`validation schemas admonitionsSchema: for value={"unknownAttribute":"val"} 1`] = `""unknownAttribute" is not allowed"`;
+exports[`validation schemas > contentVisibilitySchema > for value={"draft":42} 1`] = `[ValidationError: "draft" must be a boolean]`;
 
-exports[`validation schemas admonitionsSchema: for value=3 1`] = `""value" does not look like a valid admonitions config"`;
+exports[`validation schemas > contentVisibilitySchema > for value={"draft":true,"unlisted":true} 1`] = `[ValidationError: Can't be draft and unlisted at the same time.]`;
 
-exports[`validation schemas contentVisibilitySchema: for value={"draft":"bad string"} 1`] = `""draft" must be a boolean"`;
+exports[`validation schemas > contentVisibilitySchema > for value={"unlisted":"bad string"} 1`] = `[ValidationError: "unlisted" must be a boolean]`;
 
-exports[`validation schemas contentVisibilitySchema: for value={"draft":42} 1`] = `""draft" must be a boolean"`;
+exports[`validation schemas > contentVisibilitySchema > for value={"unlisted":42} 1`] = `[ValidationError: "unlisted" must be a boolean]`;
 
-exports[`validation schemas contentVisibilitySchema: for value={"draft":true,"unlisted":true} 1`] = `"Can't be draft and unlisted at the same time."`;
+exports[`validation schemas > frontMatterLastUpdateSchema schema > for value="string" 1`] = `[ValidationError: "value" does not look like a valid last update object. Please use an author key with a string or a date with a string or Date.]`;
 
-exports[`validation schemas contentVisibilitySchema: for value={"unlisted":"bad string"} 1`] = `""unlisted" must be a boolean"`;
+exports[`validation schemas > frontMatterLastUpdateSchema schema > for value=[] 1`] = `[ValidationError: "value" does not look like a valid last update object. Please use an author key with a string or a date with a string or Date.]`;
 
-exports[`validation schemas contentVisibilitySchema: for value={"unlisted":42} 1`] = `""unlisted" must be a boolean"`;
+exports[`validation schemas > frontMatterLastUpdateSchema schema > for value={"author":23} 1`] = `[ValidationError: "author" must be a string]`;
 
-exports[`validation schemas frontMatterLastUpdateSchema schema: for value="string" 1`] = `""value" does not look like a valid last update object. Please use an author key with a string or a date with a string or Date."`;
+exports[`validation schemas > frontMatterLastUpdateSchema schema > for value={"date":"20-20-20"} 1`] = `[ValidationError: "date" must be a valid date]`;
 
-exports[`validation schemas frontMatterLastUpdateSchema schema: for value=[] 1`] = `""value" does not look like a valid last update object. Please use an author key with a string or a date with a string or Date."`;
+exports[`validation schemas > frontMatterLastUpdateSchema schema > for value={} 1`] = `[ValidationError: "value" does not look like a valid last update object. Please use an author key with a string or a date with a string or Date.]`;
 
-exports[`validation schemas frontMatterLastUpdateSchema schema: for value={"author":23} 1`] = `""author" must be a string"`;
+exports[`validation schemas > frontMatterLastUpdateSchema schema > for value=42 1`] = `[ValidationError: "value" does not look like a valid last update object. Please use an author key with a string or a date with a string or Date.]`;
 
-exports[`validation schemas frontMatterLastUpdateSchema schema: for value={"date":"20-20-20"} 1`] = `""date" must be a valid date"`;
+exports[`validation schemas > frontMatterLastUpdateSchema schema > for value=null 1`] = `[ValidationError: "value" does not look like a valid last update object. Please use an author key with a string or a date with a string or Date.]`;
 
-exports[`validation schemas frontMatterLastUpdateSchema schema: for value={} 1`] = `""value" does not look like a valid last update object. Please use an author key with a string or a date with a string or Date."`;
+exports[`validation schemas > frontMatterLastUpdateSchema schema > for value=true 1`] = `[ValidationError: "value" does not look like a valid last update object. Please use an author key with a string or a date with a string or Date.]`;
 
-exports[`validation schemas frontMatterLastUpdateSchema schema: for value=42 1`] = `""value" does not look like a valid last update object. Please use an author key with a string or a date with a string or Date."`;
+exports[`validation schemas > frontMatterTagsSchema schema > for value="tag" 1`] = `[ValidationError: "value" does not look like a valid front matter Yaml array.]`;
 
-exports[`validation schemas frontMatterLastUpdateSchema schema: for value=null 1`] = `""value" does not look like a valid last update object. Please use an author key with a string or a date with a string or Date."`;
+exports[`validation schemas > frontMatterTagsSchema schema > for value=[""] 1`] = `[ValidationError: "[0]" is not allowed to be empty]`;
 
-exports[`validation schemas frontMatterLastUpdateSchema schema: for value=true 1`] = `""value" does not look like a valid last update object. Please use an author key with a string or a date with a string or Date."`;
-
-exports[`validation schemas pathnameSchema: for value="foo" 1`] = `""value" (foo) is not a valid pathname. Pathname should start with slash and not contain any domain or query string."`;
-
-exports[`validation schemas pathnameSchema: for value="https://github.com/foo" 1`] = `""value" (https://github.com/foo) is not a valid pathname. Pathname should start with slash and not contain any domain or query string."`;
-
-exports[`validation schemas pluginIdSchema: for value="/docs" 1`] = `"Illegal plugin ID value "/docs": it should only contain alphanumerics, underscores, and dashes."`;
-
-exports[`validation schemas pluginIdSchema: for value="do cs" 1`] = `"Illegal plugin ID value "do cs": it should only contain alphanumerics, underscores, and dashes."`;
-
-exports[`validation schemas pluginIdSchema: for value="do/cs" 1`] = `"Illegal plugin ID value "do/cs": it should only contain alphanumerics, underscores, and dashes."`;
-
-exports[`validation schemas pluginIdSchema: for value="docs/" 1`] = `"Illegal plugin ID value "docs/": it should only contain alphanumerics, underscores, and dashes."`;
-
-exports[`validation schemas pluginIdSchema: for value=[] 1`] = `""value" must be a string"`;
-
-exports[`validation schemas pluginIdSchema: for value=3 1`] = `""value" must be a string"`;
-
-exports[`validation schemas pluginIdSchema: for value=null 1`] = `""value" must be a string"`;
-
-exports[`validation schemas pluginIdSchema: for value=true 1`] = `""value" must be a string"`;
-
-exports[`validation schemas rehypePluginsSchema: for value=[[]] 1`] = `
-""[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
-- A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
-- A simple module, like \`require("remark-math")\`"
+exports[`validation schemas > frontMatterTagsSchema schema > for value=[{"label":"Tag","permalink":"/tag"}] 1`] = `
+[ValidationError: "[0]" does not look like a valid tag: front matter tags must be strings.
+Tag objects with a custom label or permalink are not supported anymore: declare tags in a tags file (usually tags.yml) and reference them by key instead.
+See https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs#tags-file]
 `;
 
-exports[`validation schemas rehypePluginsSchema: for value=[[null,null]] 1`] = `
-""[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
-- A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
-- A simple module, like \`require("remark-math")\`"
+exports[`validation schemas > frontMatterTagsSchema schema > for value=[true] 1`] = `
+[ValidationError: "[0]" does not look like a valid tag: front matter tags must be strings.
+Tag objects with a custom label or permalink are not supported anymore: declare tags in a tags file (usually tags.yml) and reference them by key instead.
+See https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs#tags-file]
 `;
 
-exports[`validation schemas rehypePluginsSchema: for value=[3] 1`] = `
-""[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
+exports[`validation schemas > pathnameSchema > for value="foo" 1`] = `[ValidationError: "value" (foo) is not a valid pathname. Pathname should start with slash and not contain any domain or query string.]`;
+
+exports[`validation schemas > pathnameSchema > for value="https://github.com/foo" 1`] = `[ValidationError: "value" (https://github.com/foo) is not a valid pathname. Pathname should start with slash and not contain any domain or query string.]`;
+
+exports[`validation schemas > pluginIdSchema > for value="/docs" 1`] = `[ValidationError: Illegal plugin ID value "/docs": it should only contain alphanumerics, underscores, and dashes.]`;
+
+exports[`validation schemas > pluginIdSchema > for value="do cs" 1`] = `[ValidationError: Illegal plugin ID value "do cs": it should only contain alphanumerics, underscores, and dashes.]`;
+
+exports[`validation schemas > pluginIdSchema > for value="do/cs" 1`] = `[ValidationError: Illegal plugin ID value "do/cs": it should only contain alphanumerics, underscores, and dashes.]`;
+
+exports[`validation schemas > pluginIdSchema > for value="docs/" 1`] = `[ValidationError: Illegal plugin ID value "docs/": it should only contain alphanumerics, underscores, and dashes.]`;
+
+exports[`validation schemas > pluginIdSchema > for value=[] 1`] = `[ValidationError: "value" must be a string]`;
+
+exports[`validation schemas > pluginIdSchema > for value=3 1`] = `[ValidationError: "value" must be a string]`;
+
+exports[`validation schemas > pluginIdSchema > for value=null 1`] = `[ValidationError: "value" must be a string]`;
+
+exports[`validation schemas > pluginIdSchema > for value=true 1`] = `[ValidationError: "value" must be a string]`;
+
+exports[`validation schemas > rehypePluginsSchema > for value=[[]] 1`] = `
+[ValidationError: "[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
 - A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
-- A simple module, like \`require("remark-math")\`"
+- A simple module, like \`require("remark-math")\`]
 `;
 
-exports[`validation schemas rehypePluginsSchema: for value=[false] 1`] = `
-""[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
+exports[`validation schemas > rehypePluginsSchema > for value=[[null,null]] 1`] = `
+[ValidationError: "[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
 - A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
-- A simple module, like \`require("remark-math")\`"
+- A simple module, like \`require("remark-math")\`]
 `;
 
-exports[`validation schemas rehypePluginsSchema: for value=[null] 1`] = `
-""[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
+exports[`validation schemas > rehypePluginsSchema > for value=[3] 1`] = `
+[ValidationError: "[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
 - A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
-- A simple module, like \`require("remark-math")\`"
+- A simple module, like \`require("remark-math")\`]
 `;
 
-exports[`validation schemas rehypePluginsSchema: for value=3 1`] = `""value" must be an array"`;
-
-exports[`validation schemas rehypePluginsSchema: for value=false 1`] = `""value" must be an array"`;
-
-exports[`validation schemas rehypePluginsSchema: for value=null 1`] = `""value" must be an array"`;
-
-exports[`validation schemas remarkPluginsSchema: for value=[[]] 1`] = `
-""[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
+exports[`validation schemas > rehypePluginsSchema > for value=[false] 1`] = `
+[ValidationError: "[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
 - A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
-- A simple module, like \`require("remark-math")\`"
+- A simple module, like \`require("remark-math")\`]
 `;
 
-exports[`validation schemas remarkPluginsSchema: for value=[[null,null]] 1`] = `
-""[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
+exports[`validation schemas > rehypePluginsSchema > for value=[null] 1`] = `
+[ValidationError: "[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
 - A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
-- A simple module, like \`require("remark-math")\`"
+- A simple module, like \`require("remark-math")\`]
 `;
 
-exports[`validation schemas remarkPluginsSchema: for value=[3] 1`] = `
-""[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
+exports[`validation schemas > rehypePluginsSchema > for value=3 1`] = `[ValidationError: "value" must be an array]`;
+
+exports[`validation schemas > rehypePluginsSchema > for value=false 1`] = `[ValidationError: "value" must be an array]`;
+
+exports[`validation schemas > rehypePluginsSchema > for value=null 1`] = `[ValidationError: "value" must be an array]`;
+
+exports[`validation schemas > remarkPluginsSchema > for value=[[]] 1`] = `
+[ValidationError: "[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
 - A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
-- A simple module, like \`require("remark-math")\`"
+- A simple module, like \`require("remark-math")\`]
 `;
 
-exports[`validation schemas remarkPluginsSchema: for value=[false] 1`] = `
-""[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
+exports[`validation schemas > remarkPluginsSchema > for value=[[null,null]] 1`] = `
+[ValidationError: "[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
 - A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
-- A simple module, like \`require("remark-math")\`"
+- A simple module, like \`require("remark-math")\`]
 `;
 
-exports[`validation schemas remarkPluginsSchema: for value=[null] 1`] = `
-""[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
+exports[`validation schemas > remarkPluginsSchema > for value=[3] 1`] = `
+[ValidationError: "[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
 - A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
-- A simple module, like \`require("remark-math")\`"
+- A simple module, like \`require("remark-math")\`]
 `;
 
-exports[`validation schemas remarkPluginsSchema: for value=3 1`] = `""value" must be an array"`;
+exports[`validation schemas > remarkPluginsSchema > for value=[false] 1`] = `
+[ValidationError: "[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
+- A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
+- A simple module, like \`require("remark-math")\`]
+`;
 
-exports[`validation schemas remarkPluginsSchema: for value=false 1`] = `""value" must be an array"`;
+exports[`validation schemas > remarkPluginsSchema > for value=[null] 1`] = `
+[ValidationError: "[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
+- A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
+- A simple module, like \`require("remark-math")\`]
+`;
 
-exports[`validation schemas remarkPluginsSchema: for value=null 1`] = `""value" must be an array"`;
+exports[`validation schemas > remarkPluginsSchema > for value=3 1`] = `[ValidationError: "value" must be an array]`;
 
-exports[`validation schemas routeBasePathSchema: for value=[] 1`] = `""value" must be a string"`;
+exports[`validation schemas > remarkPluginsSchema > for value=false 1`] = `[ValidationError: "value" must be an array]`;
 
-exports[`validation schemas routeBasePathSchema: for value={} 1`] = `""value" must be a string"`;
+exports[`validation schemas > remarkPluginsSchema > for value=null 1`] = `[ValidationError: "value" must be an array]`;
 
-exports[`validation schemas routeBasePathSchema: for value=3 1`] = `""value" must be a string"`;
+exports[`validation schemas > routeBasePathSchema > for value=[] 1`] = `[ValidationError: "value" must be a string]`;
 
-exports[`validation schemas routeBasePathSchema: for value=null 1`] = `""value" must be a string"`;
+exports[`validation schemas > routeBasePathSchema > for value={} 1`] = `[ValidationError: "value" must be a string]`;
 
-exports[`validation schemas uRISchema: for value="spaces are invalid in a URL" 1`] = `""value" does not look like a valid url (value='')"`;
+exports[`validation schemas > routeBasePathSchema > for value=3 1`] = `[ValidationError: "value" must be a string]`;
+
+exports[`validation schemas > routeBasePathSchema > for value=null 1`] = `[ValidationError: "value" must be a string]`;
+
+exports[`validation schemas > uRISchema > for value="spaces are invalid in a URL" 1`] = `[ValidationError: "value" does not look like a valid url (value='')]`;

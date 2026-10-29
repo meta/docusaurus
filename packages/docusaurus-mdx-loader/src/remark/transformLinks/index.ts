@@ -5,47 +5,90 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
-import url from 'url';
-import fs from 'fs-extra';
+import path from 'node:path';
+import {visit} from 'unist-util-visit';
 import {
   toMessageRelativeFilePath,
   posixPath,
   escapePath,
-  getFileLoaderUtils,
   findAsyncSequential,
+  createAssetRequest,
+  parseURLOrPath,
+  parseLocalURLPath,
 } from '@docusaurus/utils';
-import escapeHtml from 'escape-html';
-import {assetRequireAttributeValue, transformNode} from '../utils';
-// @ts-expect-error: TODO see https://github.com/microsoft/TypeScript/issues/49721
-import type {Transformer} from 'unified';
-// @ts-expect-error: TODO see https://github.com/microsoft/TypeScript/issues/49721
+import logger from '@docusaurus/logger';
+import {fs} from '@docusaurus/fs';
+import {
+  assetRequireAttributeValue,
+  formatNodePositionExtraMessage,
+  transformNode,
+} from '../utils';
+import type {Plugin, Transformer} from 'unified';
 import type {MdxJsxTextElement} from 'mdast-util-mdx';
 import type {Parent} from 'unist';
-import type {Link, Literal} from 'mdast';
+import type {Link, Root} from 'mdast';
+import type {
+  MarkdownConfig,
+  OnBrokenMarkdownLinksFunction,
+} from '@docusaurus/types';
 
-const {
-  loaders: {inlineMarkdownLinkFileLoader},
-} = getFileLoaderUtils();
-
-type PluginOptions = {
+export type PluginOptions = {
   staticDirs: string[];
   siteDir: string;
+  onBrokenMarkdownLinks: MarkdownConfig['hooks']['onBrokenMarkdownLinks'];
 };
 
 type Context = PluginOptions & {
+  staticDirs: string[];
+  siteDir: string;
+  onBrokenMarkdownLinks: OnBrokenMarkdownLinksFunction;
   filePath: string;
 };
 
 type Target = [node: Link, index: number, parent: Parent];
 
+function asFunction(
+  onBrokenMarkdownLinks: PluginOptions['onBrokenMarkdownLinks'],
+): OnBrokenMarkdownLinksFunction {
+  if (typeof onBrokenMarkdownLinks === 'string') {
+    const extraHelp =
+      onBrokenMarkdownLinks === 'throw'
+        ? logger.interpolate`\nTo ignore this error, use the code=${'siteConfig.markdown.hooks.onBrokenMarkdownLinks'} option, or apply the code=${'pathname://'} protocol to the broken link URLs.`
+        : '';
+
+    return ({sourceFilePath, url: linkUrl, node}) => {
+      const relativePath = toMessageRelativeFilePath(sourceFilePath);
+      if (linkUrl) {
+        logger.report(
+          onBrokenMarkdownLinks,
+        )`Markdown link with URL code=${linkUrl} in source file path=${relativePath}${formatNodePositionExtraMessage(
+          node,
+        )} couldn't be resolved.
+Make sure it references a local Markdown file that exists within the current plugin.${extraHelp}`;
+      } else {
+        logger.report(
+          onBrokenMarkdownLinks,
+        )`Markdown link with empty URL found in source file path=${relativePath}${formatNodePositionExtraMessage(
+          node,
+        )}.${extraHelp}`;
+      }
+    };
+  } else {
+    return (params) =>
+      onBrokenMarkdownLinks({
+        ...params,
+        sourceFilePath: toMessageRelativeFilePath(params.sourceFilePath),
+      });
+  }
+}
+
 /**
  * Transforms the link node to a JSX `<a>` element with a `require()` call.
  */
-async function toAssetRequireNode(
+function toAssetRequireNode(
   [node]: Target,
   assetPath: string,
-  filePath: string,
+  context: Context,
 ) {
   // MdxJsxTextElement => see https://github.com/facebook/docusaurus/pull/8288#discussion_r1125871405
   const jsxNode = node as unknown as MdxJsxTextElement;
@@ -53,19 +96,18 @@ async function toAssetRequireNode(
 
   // require("assets/file.pdf") means requiring from a package called assets
   const relativeAssetPath = `./${posixPath(
-    path.relative(path.dirname(filePath), assetPath),
+    path.relative(path.dirname(context.filePath), assetPath),
   )}`;
 
-  const parsedUrl = url.parse(node.url);
+  const parsedUrl = parseURLOrPath(node.url);
   const hash = parsedUrl.hash ?? '';
   const search = parsedUrl.search ?? '';
 
-  const requireString = `${
-    // A hack to stop Webpack from using its built-in loader to parse JSON
-    path.extname(relativeAssetPath) === '.json'
-      ? `${relativeAssetPath.replace('.json', '.raw')}!=`
-      : ''
-  }${inlineMarkdownLinkFileLoader}${escapePath(relativeAssetPath) + search}`;
+  const requireString = createAssetRequest({
+    assetPath: escapePath(relativeAssetPath),
+    search,
+    type: 'file',
+  });
 
   attributes.push({
     type: 'mdxJsxAttribute',
@@ -111,7 +153,7 @@ async function toAssetRequireNode(
     attributes.push({
       type: 'mdxJsxAttribute',
       name: 'title',
-      value: escapeHtml(node.title),
+      value: node.title,
     });
   }
 
@@ -125,38 +167,38 @@ async function toAssetRequireNode(
   });
 }
 
-async function ensureAssetFileExist(assetPath: string, sourceFilePath: string) {
-  const assetExists = await fs.pathExists(assetPath);
-  if (!assetExists) {
-    throw new Error(
-      `Asset ${toMessageRelativeFilePath(
-        assetPath,
-      )} used in ${toMessageRelativeFilePath(sourceFilePath)} not found.`,
-    );
+/**
+ * Checks if the given file path exists and is a file.
+ * Returns true if it exists, false otherwise.
+ */
+async function isExistingFile(filePath: string): Promise<boolean> {
+  try {
+    return (await fs.stat(filePath)).isFile();
+  } catch {
+    return false;
   }
 }
 
-async function getAssetAbsolutePath(
+async function getLocalFileAbsolutePath(
   assetPath: string,
   {siteDir, filePath, staticDirs}: Context,
 ) {
   if (assetPath.startsWith('@site/')) {
     const assetFilePath = path.join(siteDir, assetPath.replace('@site/', ''));
-    // The @site alias is the only way to believe that the user wants an asset.
-    // Everything else can just be a link URL
-    await ensureAssetFileExist(assetFilePath, filePath);
-    return assetFilePath;
+    if (await isExistingFile(assetFilePath)) {
+      return assetFilePath;
+    }
   } else if (path.isAbsolute(assetPath)) {
     const assetFilePath = await findAsyncSequential(
       staticDirs.map((dir) => path.join(dir, assetPath)),
-      fs.pathExists,
+      isExistingFile,
     );
     if (assetFilePath) {
       return assetFilePath;
     }
   } else {
     const assetFilePath = path.join(path.dirname(filePath), assetPath);
-    if (await fs.pathExists(assetFilePath)) {
+    if (await isExistingFile(assetFilePath)) {
       return assetFilePath;
     }
   }
@@ -166,53 +208,74 @@ async function getAssetAbsolutePath(
 async function processLinkNode(target: Target, context: Context) {
   const [node] = target;
   if (!node.url) {
-    // Try to improve error feedback
-    // see https://github.com/facebook/docusaurus/issues/3309#issuecomment-690371675
-    const title =
-      node.title ?? (node.children[0] as Literal | undefined)?.value ?? '?';
-    const line = node.position?.start.line ?? '?';
-    throw new Error(
-      `Markdown link URL is mandatory in "${toMessageRelativeFilePath(
-        context.filePath,
-      )}" file (title: ${title}, line: ${line}).`,
-    );
+    node.url =
+      context.onBrokenMarkdownLinks({
+        url: node.url,
+        sourceFilePath: context.filePath,
+        node,
+      }) ?? node.url;
+    return;
   }
 
-  const parsedUrl = url.parse(node.url);
-  if (parsedUrl.protocol || !parsedUrl.pathname) {
+  const localUrlPath = parseLocalURLPath(node.url);
+  if (!localUrlPath) {
     // Don't process pathname:// here, it's used by the <Link> component
     return;
   }
-  const hasSiteAlias = parsedUrl.pathname.startsWith('@site/');
+
+  const hasSiteAlias = localUrlPath.pathname.startsWith('@site/');
   const hasAssetLikeExtension =
-    path.extname(parsedUrl.pathname) &&
-    !parsedUrl.pathname.match(/\.(?:mdx?|html)(?:#|$)/);
+    path.extname(localUrlPath.pathname) &&
+    !localUrlPath.pathname.match(/\.(?:mdx?|html)(?:#|$)/);
   if (!hasSiteAlias && !hasAssetLikeExtension) {
     return;
   }
 
-  const assetPath = await getAssetAbsolutePath(
-    decodeURIComponent(parsedUrl.pathname),
+  const localFilePath = await getLocalFileAbsolutePath(
+    decodeURIComponent(localUrlPath.pathname),
     context,
   );
-  if (assetPath) {
-    await toAssetRequireNode(target, assetPath, context.filePath);
+
+  if (localFilePath) {
+    toAssetRequireNode(target, localFilePath, context);
+  } else {
+    // The @site alias is the only way to believe that the user wants an asset.
+    if (hasSiteAlias) {
+      node.url =
+        context.onBrokenMarkdownLinks({
+          url: node.url,
+          sourceFilePath: context.filePath,
+          node,
+        }) ?? node.url;
+    } else {
+      // Even if the url has a dot, and it looks like a file extension
+      // it can be risky to throw and fail fast by default
+      // It's perfectly valid for a route path segment to look like a filename
+    }
   }
 }
 
-export default function plugin(options: PluginOptions): Transformer {
+const plugin: Plugin<PluginOptions[], Root> = function plugin(
+  options,
+): Transformer<Root> {
+  const onBrokenMarkdownLinks = asFunction(options.onBrokenMarkdownLinks);
+
   return async (root, vfile) => {
-    const {visit} = await import('unist-util-visit');
+    const context: Context = {
+      ...options,
+      filePath: vfile.path!,
+      onBrokenMarkdownLinks,
+    };
 
     const promises: Promise<void>[] = [];
-    visit(root, 'link', (node: Link, index, parent) => {
-      promises.push(
-        processLinkNode([node, index, parent!], {
-          ...options,
-          filePath: vfile.path!,
-        }),
-      );
+    visit(root, 'link', (node, index, parent) => {
+      if (!parent || index === undefined) {
+        return;
+      }
+      promises.push(processLinkNode([node, index, parent], context));
     });
     await Promise.all(promises);
   };
-}
+};
+
+export default plugin;

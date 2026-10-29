@@ -17,13 +17,3 @@ export function sortBy<T>(
   );
   return sortedArray;
 }
-
-export function toggleListItem<T>(list: T[], item: T): T[] {
-  const itemIndex = list.indexOf(item);
-  if (itemIndex === -1) {
-    return list.concat(item);
-  }
-  const newList = [...list];
-  newList.splice(itemIndex, 1);
-  return newList;
-}

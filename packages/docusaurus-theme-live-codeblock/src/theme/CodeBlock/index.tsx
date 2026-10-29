@@ -5,21 +5,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-import Playground from '@theme/Playground';
-import ReactLiveScope from '@theme/ReactLiveScope';
-import CodeBlock, {type Props} from '@theme-init/CodeBlock';
+import type {ReactNode} from 'react';
+import type {Props as CodeBlockProps} from '@theme/CodeBlock';
+import OriginalCodeBlock from '@theme-init/CodeBlock';
+import LiveCodeBlock from '@theme/LiveCodeBlock';
 
-const withLiveEditor = (Component: typeof CodeBlock) => {
-  function WrappedComponent(props: Props) {
-    if (props.live) {
-      return <Playground scope={ReactLiveScope} {...props} />;
-    }
+function isLiveCodeBlock(
+  props: CodeBlockProps,
+): props is CodeBlockProps & {children: string | undefined} {
+  return (
+    !!props.metastring?.split(/\s+/).includes('live') &&
+    (typeof props.children === 'undefined' ||
+      typeof props.children === 'string')
+  );
+}
 
-    return <Component {...props} />;
-  }
-
-  return WrappedComponent;
-};
-
-export default withLiveEditor(CodeBlock);
+export default function CodeBlockEnhancer(props: CodeBlockProps): ReactNode {
+  return isLiveCodeBlock(props) ? (
+    <LiveCodeBlock {...props} />
+  ) : (
+    <OriginalCodeBlock {...props} />
+  );
+}

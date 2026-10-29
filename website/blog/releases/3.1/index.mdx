@@ -12,15 +12,15 @@ The upgrade should be easy: as explained in our [release process documentation](
 
 ![Docusaurus blog post social card](./img/social-card.png)
 
-<!--truncate-->
+{/* truncate */}
 
 import BrowserWindow from '@site/src/components/BrowserWindow';
 import IframeWindow from '@site/src/components/BrowserWindow/IframeWindow';
 import ErrorBoundaryTestButton from '@site/src/components/ErrorBoundaryTestButton';
 
-## Highlights
+## Highlights {/* #highlights */}
 
-### Broken anchors checker
+### Broken anchors checker {/* #broken-anchors-checker */}
 
 In [#9528](https://github.com/facebook/docusaurus/pull/9528), we improved the built-in broken links checker to also detect broken anchors.
 
@@ -42,7 +42,7 @@ For users and plugin authors implementing custom `<Heading>` and `<Link>` compon
 
 :::
 
-### `parseFrontMatter` hook
+### `parseFrontMatter` hook {/* #parsefrontmatter-hook */}
 
 In [#9624](https://github.com/facebook/docusaurus/pull/9624), we added a new [`siteConfig.markdown.parseFrontMatter` function hook](/docs/api/docusaurus-config#markdown).
 
@@ -81,7 +81,7 @@ export default {
 
 Read the [front matter guide](/docs/markdown-features#front-matter) and the [`parseFrontMatter` API ref](/docs/api/docusaurus-config#markdown) for details.
 
-## Other changes
+## Other changes {/* #other-changes */}
 
 Other notable changes include:
 

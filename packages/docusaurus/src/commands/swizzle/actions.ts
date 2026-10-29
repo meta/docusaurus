@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import _ from 'lodash';
 import logger from '@docusaurus/logger';
-import {Globby, posixPath, THEME_PATH} from '@docusaurus/utils';
+import {posixPath, THEME_PATH} from '@docusaurus/utils';
+import {fs, pathExists, outputFile} from '@docusaurus/fs';
+import {glob} from '@docusaurus/glob';
 import {askSwizzleAction} from './prompts';
 import type {SwizzleAction, SwizzleComponentConfig} from '@docusaurus/types';
 import type {SwizzleCLIOptions} from './common';
@@ -41,9 +42,7 @@ export type ActionResult = {
 };
 
 async function isDir(dirPath: string): Promise<boolean> {
-  return (
-    (await fs.pathExists(dirPath)) && (await fs.stat(dirPath)).isDirectory()
-  );
+  return (await pathExists(dirPath)) && (await fs.stat(dirPath)).isDirectory();
 }
 
 export async function eject({
@@ -61,7 +60,13 @@ export async function eject({
 
   const globPatternPosix = posixPath(globPattern);
 
-  const filesToCopy = await Globby(globPatternPosix, {
+  const filesToCopy = await glob(globPatternPosix, {
+    // Workaround for Tinyglobby bug?
+    // We glob absolute from the theme root path, not from cwd
+    // See https://github.com/SuperchupuDev/tinyglobby/issues/186
+    cwd: themePath,
+    absolute: true,
+
     ignore: _.compact([
       '**/*.{story,stories,test,tests}.{js,jsx,ts,tsx}',
       // When ejecting JS components, we want to avoid emitting TS files
@@ -80,7 +85,7 @@ export async function eject({
 
   const toPath = path.join(siteDir, THEME_PATH);
 
-  await fs.ensureDir(toPath);
+  await fs.mkdir(toPath, {recursive: true});
 
   const createdFiles = await Promise.all(
     filesToCopy.map(async (sourceFile: string) => {
@@ -90,7 +95,7 @@ export async function eject({
       );
       try {
         const fileContents = await fs.readFile(sourceFile, 'utf-8');
-        await fs.outputFile(
+        await outputFile(
           targetFile,
           fileContents.trimStart().replace(/^\/\*.+?\*\/\s*/ms, ''),
         );
@@ -123,19 +128,19 @@ export async function wrap({
     typescript ? '.tsx' : '.js'
   }`;
 
-  await fs.ensureDir(path.resolve(siteDir, THEME_PATH));
+  await fs.mkdir(path.resolve(siteDir, THEME_PATH), {recursive: true});
 
   const toPath = path.resolve(siteDir, THEME_PATH, wrapperFileName);
 
   const content = typescript
-    ? `import React from 'react';
+    ? `import type {ReactNode} from 'react';
 import ${componentName} from '@theme-${importType}/${themeComponentName}';
 import type ${componentName}Type from '@theme/${themeComponentName}';
 import type {WrapperProps} from '@docusaurus/types';
 
 type Props = WrapperProps<typeof ${componentName}Type>;
 
-export default function ${wrapperComponentName}(props: Props): JSX.Element {
+export default function ${wrapperComponentName}(props: Props): ReactNode {
   return (
     <>
       <${componentName} {...props} />
@@ -143,8 +148,7 @@ export default function ${wrapperComponentName}(props: Props): JSX.Element {
   );
 }
 `
-    : `import React from 'react';
-import ${componentName} from '@theme-${importType}/${themeComponentName}';
+    : `import ${componentName} from '@theme-${importType}/${themeComponentName}';
 
 export default function ${wrapperComponentName}(props) {
   return (
@@ -155,7 +159,7 @@ export default function ${wrapperComponentName}(props) {
 }
 `;
 
-  await fs.outputFile(toPath, content);
+  await outputFile(toPath, content);
 
   return {createdFiles: [toPath]};
 }

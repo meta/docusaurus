@@ -126,13 +126,13 @@ It is possible to only render the default tab with `<Tabs lazy />`.
 
 :::
 
-## Displaying a default tab {#displaying-a-default-tab}
+## Displaying a default tab {/* #displaying-a-default-tab */}
 
 The first tab is displayed by default, and to override this behavior, you can specify a default tab by adding `default` to one of the tab items. You can also set the `defaultValue` prop of the `Tabs` component to the label value of your choice. For example, in the example above, either setting `default` for the `value="apple"` tab or setting `defaultValue="apple"` for the tabs forces the "Apple" tab to be open by default.
 
 Docusaurus will throw an error if a `defaultValue` is provided for the `Tabs` but it refers to a non-existing value. If you want none of the tabs to be shown by default, use `defaultValue={null}`.
 
-## Syncing tab choices {#syncing-tab-choices}
+## Syncing tab choices {/* #syncing-tab-choices */}
 
 You may want choices of the same kind of tabs to sync with each other. For example, you might want to provide different instructions for users on Windows vs users on macOS, and you want to change all OS-specific instructions tabs in one click. To achieve that, you can give all related tabs the same `groupId` prop. Note that doing this will persist the choice in `localStorage` and all `<Tab>` instances with the same `groupId` will update automatically when the value of one of them is changed. Note that group IDs are globally namespaced.
 
@@ -222,7 +222,7 @@ Tab choices with different group IDs will not interfere with each other:
 </BrowserWindow>
 ```
 
-## Customizing tabs {#customizing-tabs}
+## Customizing tabs {/* #customizing-tabs */}
 
 You might want to customize the appearance of a certain set of tabs. You can pass the string in `className` prop, and the specified CSS class will be added to the `Tabs` component:
 
@@ -245,7 +245,7 @@ You might want to customize the appearance of a certain set of tabs. You can pas
 </BrowserWindow>
 ```
 
-### Customizing tab headings {#customizing-tab-headings}
+### Customizing tab headings {/* #customizing-tab-headings */}
 
 You can also customize each tab heading independently by using the `attributes` field. The extra props can be passed to the headings either through the `values` prop in `Tabs`, or props of each `TabItem`—in the same way as you declare `label`.
 
@@ -317,7 +317,7 @@ li[role='tab'][data-value='apple'] {
 
 :::
 
-## Query string {#query-string}
+## Query string {/* #query-string */}
 
 It is possible to persist the selected tab into the url search parameters. This enables you to share a link to a page which pre-selects the tab - linking from your Android app to documentation with the Android tabs pre-selected. This feature does not provide an anchor link - the browser will not scroll to the tab.
 

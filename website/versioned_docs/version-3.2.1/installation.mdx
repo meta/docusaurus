@@ -19,12 +19,12 @@ Use **[docusaurus.new](https://docusaurus.new)** to test Docusaurus immediately 
 
 :::
 
-## Requirements {#requirements}
+## Requirements {/* #requirements */}
 
 - [Node.js](https://nodejs.org/en/download/) version 18.0 or above (which can be checked by running `node -v`). You can use [nvm](https://github.com/nvm-sh/nvm) for managing multiple Node versions on a single machine installed.
   - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
 
-## Scaffold project website {#scaffold-project-website}
+## Scaffold project website {/* #scaffold-project-website */}
 
 The easiest way to install Docusaurus is to use the command line tool that helps you scaffold a skeleton Docusaurus website. You can run this command anywhere in a new empty repository or within an existing repository, it will create a new directory containing the scaffolded files.
 
@@ -63,7 +63,7 @@ npm init docusaurus
 
 Run `npx create-docusaurus@latest --help`, or check out its [API docs](./api/misc/create-docusaurus.mdx) for more information about all available flags.
 
-## Project structure {#project-structure}
+## Project structure {/* #project-structure */}
 
 Assuming you chose the classic template and named your site `my-website`, you will see the following files generated under a new directory `my-website/`:
 
@@ -93,7 +93,7 @@ my-website
 └── yarn.lock
 ```
 
-### Project structure rundown {#project-structure-rundown}
+### Project structure rundown {/* #project-structure-rundown */}
 
 - `/blog/` - Contains the blog Markdown files. You can delete the directory if you've disabled the blog plugin, or you can change its name after setting the `path` option. More details can be found in the [blog guide](blog.mdx)
 - `/docs/` - Contains the Markdown files for the docs. Customize the order of the docs sidebar in `sidebars.js`. You can delete the directory if you've disabled the docs plugin, or you can change its name after setting the `path` option. More details can be found in the [docs guide](./guides/docs/docs-introduction.mdx)
@@ -104,7 +104,7 @@ my-website
 - `/package.json` - A Docusaurus website is a React app. You can install and use any npm packages you like in them
 - `/sidebars.js` - Used by the documentation to specify the order of documents in the sidebar
 
-### Monorepos {#monorepos}
+### Monorepos {/* #monorepos */}
 
 If you are using Docusaurus for documentation of an existing project, a monorepo may be the solution for you. Monorepos allow you to share dependencies between similar projects. For example, your website may use your local packages to showcase latest features instead of depending on a released version. Then, your contributors can update the docs as they implement features. An example monorepo folder structure is below:
 
@@ -126,7 +126,7 @@ If you're using a hosting provider such as Netlify or Vercel, you will need to c
 
 Read more about monorepos in the [Yarn documentation](https://yarnpkg.com/features/workspaces) (Yarn is not the only way to set up a monorepo, but it's a common solution), or checkout [Docusaurus](https://github.com/facebook/docusaurus) and [Jest](https://github.com/facebook/jest) for some real-world examples.
 
-## Running the development server {#running-the-development-server}
+## Running the development server {/* #running-the-development-server */}
 
 To preview your changes as you edit the files, you can run a local development server that will serve your website and reflect the latest changes.
 
@@ -139,7 +139,7 @@ By default, a browser window will open at [`http://localhost:3000`](http://local
 
 Congratulations! You have just created your first Docusaurus site! Browse around the site to see what's available.
 
-## Build {#build}
+## Build {/* #build */}
 
 Docusaurus is a modern static website generator so we need to build the website into a directory of static contents and put it on a web server so that it can be viewed. To build the website:
 
@@ -149,7 +149,7 @@ npm run build
 
 and contents will be generated within the `/build` directory, which can be copied to any static file hosting service like [GitHub pages](https://pages.github.com/), [Vercel](https://vercel.com/) or [Netlify](https://www.netlify.com/). Check out the docs on [deployment](deployment.mdx) for more details.
 
-## Updating your Docusaurus version {#updating-your-docusaurus-version}
+## Updating your Docusaurus version {/* #updating-your-docusaurus-version */}
 
 There are many ways to update your Docusaurus version. One guaranteed way is to manually change the version number in `package.json` to the desired version. Note that all `@docusaurus/`-namespaced packages should be using the same version.
 
@@ -183,6 +183,6 @@ Use new unreleased features of Docusaurus with the [`@canary` npm dist tag](/com
 
 :::
 
-## Problems? {#problems}
+## Problems? {/* #problems */}
 
-Ask for help on [Stack Overflow](https://stackoverflow.com/questions/tagged/docusaurus), on our [GitHub repository](https://github.com/facebook/docusaurus), our [Discord server](https://discordapp.com/invite/docusaurus), or [Twitter](https://twitter.com/docusaurus).
+Ask for help on [Stack Overflow](https://stackoverflow.com/questions/tagged/docusaurus), on our [GitHub repository](https://github.com/facebook/docusaurus), our [Discord server](https://discordapp.com/invite/docusaurus), or [X](https://x.com/docusaurus).

@@ -26,7 +26,7 @@ Use this **[community-driven GitHub discussion](https://github.com/facebook/docu
 
 :::
 
-## Crowdin overview {#crowdin-overview}
+## Crowdin overview {/* #crowdin-overview */}
 
 Crowdin is a translation SaaS, offering a [free plan for open-source projects](https://crowdin.com/page/open-source-project-setup-request).
 
@@ -42,13 +42,13 @@ The [`crowdin.yml` configuration file](https://support.crowdin.com/configuration
 
 Read the **[official documentation](https://support.crowdin.com/)** to know more about advanced features and different translation workflows.
 
-## Crowdin tutorial {#crowdin-tutorial}
+## Crowdin tutorial {/* #crowdin-tutorial */}
 
 This is a walk-through of using Crowdin to translate a newly initialized English Docusaurus website into French, and assume you already followed the [i18n tutorial](./i18n-tutorial.mdx).
 
 The end result can be seen at [docusaurus-crowdin-example.netlify.app](https://docusaurus-crowdin-example.netlify.app/) ([repository](https://github.com/slorber/docusaurus-crowdin-example)).
 
-### Prepare the Docusaurus site {#prepare-the-docusaurus-site}
+### Prepare the Docusaurus site {/* #prepare-the-docusaurus-site */}
 
 Initialize a new Docusaurus site:
 
@@ -100,7 +100,7 @@ export default function Home() {
 }
 ```
 
-### Create a Crowdin project {#create-a-crowdin-project}
+### Create a Crowdin project {/* #create-a-crowdin-project */}
 
 Sign up on [Crowdin](https://crowdin.com/), and create a project.
 
@@ -110,7 +110,7 @@ Use English as the source language, and French as the target language.
 
 Your project is created, but it is empty for now. We will upload the files to translate in the next steps.
 
-### Create the Crowdin configuration {#create-the-crowdin-configuration}
+### Create the Crowdin configuration {/* #create-the-crowdin-configuration */}
 
 This configuration ([doc](https://support.crowdin.com/configuration-file/)) provides a mapping for the Crowdin CLI to understand:
 
@@ -154,7 +154,7 @@ We advise to:
 
 :::
 
-#### Access token {#access-token}
+#### Access token {/* #access-token */}
 
 The `api_token_env` attribute defines the **env variable name** read by the Crowdin CLI.
 
@@ -174,12 +174,12 @@ You should **not commit** it, and it may be a good idea to create a dedicated **
 
 :::
 
-#### Other configuration fields {#other-configuration-fields}
+#### Other configuration fields {/* #other-configuration-fields */}
 
 - `project_id`: can be hardcoded, and is found on `https://crowdin.com/project/<MY_PROJECT_NAME>/settings#api`
 - `preserve_hierarchy`: preserve the folder's hierarchy of your docs on Crowdin UI instead of flattening everything
 
-### Install the Crowdin CLI {#install-the-crowdin-cli}
+### Install the Crowdin CLI {/* #install-the-crowdin-cli */}
 
 This tutorial uses the CLI version `3.5.2`, but we expect `3.x` releases to keep working.
 
@@ -215,7 +215,7 @@ Temporarily, you can hardcode your personal token in `crowdin.yml` with `api_tok
 
 :::
 
-### Upload the sources {#upload-the-sources}
+### Upload the sources {/* #upload-the-sources */}
 
 Generate the JSON translation files for the default language in `website/i18n/en`:
 
@@ -235,7 +235,7 @@ Your source files are now visible on the Crowdin interface: `https://crowdin.com
 
 ![Crowdin UI showing Docusaurus source files](/img/crowdin/crowdin-source-files.png)
 
-### Translate the sources {#translate-the-sources}
+### Translate the sources {/* #translate-the-sources */}
 
 On `https://crowdin.com/project/<MY_PROJECT_NAME>`, click on the French target language.
 
@@ -274,7 +274,7 @@ Use the `Hide String` feature first, as Crowdin is pre-translating things too op
 
 :::
 
-### Download the translations {#download-the-translations}
+### Download the translations {/* #download-the-translations */}
 
 Use the Crowdin CLI to download the translated JSON and Markdown files.
 
@@ -292,7 +292,7 @@ npm run start -- --locale fr
 
 Make sure that your website is now translated in French at [`http://localhost:3000/fr/`](http://localhost:3000/fr/).
 
-### Automate with CI {#automate-with-ci}
+### Automate with CI {/* #automate-with-ci */}
 
 We will configure the CI to **download the Crowdin translations at build time** and keep them outside of Git.
 
@@ -324,9 +324,9 @@ Crowdin does not support well multiple concurrent uploads/downloads: it is prefe
 
 :::
 
-## Advanced Crowdin topics {#advanced-crowdin-topics}
+## Advanced Crowdin topics {/* #advanced-crowdin-topics */}
 
-### MDX {#mdx}
+### MDX {/* #mdx */}
 
 :::warning
 
@@ -336,13 +336,13 @@ Pay special attention to the JSX fragments in MDX documents!
 
 Crowdin **does not support officially MDX**, but they added **support for the `.mdx` extension**, and interpret such files as Markdown (instead of plain text).
 
-#### MDX problems {#mdx-problems}
+#### MDX problems {/* #mdx-problems */}
 
 Crowdin thinks that the JSX syntax is embedded HTML and can mess up with the JSX markup when you download the translations, leading to a site that fails to build due to invalid JSX.
 
 Simple JSX fragments using simple string props like `<Username name="Sebastien"/>` will work fine; more complex JSX fragments using object/array props like `<User person={{name: "Sebastien"}}/>` are more likely to fail due to a syntax that does not look like HTML.
 
-#### MDX solutions {#mdx-solutions}
+#### MDX solutions {/* #mdx-solutions */}
 
 We recommend extracting the complex embedded JSX code as separate standalone components. We also added an `mdx-code-block` escape hatch syntax:
 
@@ -382,7 +382,7 @@ This will:
 - be interpreted by Docusaurus as regular JSX (as if it was not wrapped by any code block)
 - unfortunately opt-out of MDX tooling (IDE syntax highlighting, Prettier...)
 
-### Docs versioning {#docs-versioning}
+### Docs versioning {/* #docs-versioning */}
 
 Configure translation files for the `website/versioned_docs` folder.
 
@@ -400,7 +400,7 @@ Not using `Hide` leads to a much larger amount of `source strings` in quotas, an
 
 :::
 
-### Multi-instance plugins {#multi-instance-plugins}
+### Multi-instance plugins {/* #multi-instance-plugins */}
 
 You need to configure translation files for each plugin instance.
 
@@ -409,7 +409,7 @@ If you have a docs plugin instance with `id=ios`, you will need to configure tho
 - `website/ios`
 - `website/ios_versioned_docs` (if versioned)
 
-### Maintaining your site {#maintaining-your-site}
+### Maintaining your site {/* #maintaining-your-site */}
 
 Sometimes, you will **remove or rename a source file** on Git, and Crowdin will display CLI warnings:
 
@@ -419,7 +419,7 @@ When your sources are refactored, you should use the Crowdin UI to **update your
 
 ![Crowdin UI: renaming a file](/img/crowdin/crowdin-files-rename.png)
 
-### VCS (Git) integrations {#vcs-git-integrations}
+### VCS (Git) integrations {/* #vcs-git-integrations */}
 
 Crowdin has multiple VCS integrations for [GitHub](https://support.crowdin.com/github-integration/), GitLab, Bitbucket.
 
@@ -439,7 +439,7 @@ In practice, **it didn't work very reliably** for a few reasons:
 - 2 users concurrently editing on Git and Crowdin can lead to a translation loss
 - It requires the `crowdin.yml` file to be at the root of the repository
 
-### In-Context localization {#in-context-localization}
+### In-Context localization {/* #in-context-localization */}
 
 Crowdin has an [In-Context localization](https://support.crowdin.com/in-context-localization/) feature.
 
@@ -451,7 +451,7 @@ Crowdin replaces Markdown strings with technical IDs such as `crowdin:id12345`, 
 
 :::
 
-### Localize edit URLs {#localize-edit-urls}
+### Localize edit URLs {/* #localize-edit-urls */}
 
 When the user is browsing a page at `/fr/doc1`, the edit button will link by default to the unlocalized doc at `website/docs/doc1.md`.
 
@@ -499,7 +499,7 @@ It is currently **not possible to link to a specific file** in Crowdin.
 
 :::
 
-### Example configuration {#example-configuration}
+### Example configuration {/* #example-configuration */}
 
 The **Docusaurus configuration file** is a good example of using versioning and multi-instance:
 

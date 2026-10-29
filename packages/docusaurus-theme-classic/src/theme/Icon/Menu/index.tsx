@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import type {Props} from '@theme/Icon/Menu';
 
 export default function IconMenu({
@@ -13,7 +13,7 @@ export default function IconMenu({
   height = 30,
   className,
   ...restProps
-}: Props): JSX.Element {
+}: Props): ReactNode {
   return (
     <svg
       className={className}

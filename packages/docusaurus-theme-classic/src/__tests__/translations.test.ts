@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {describe, expect, it} from 'vitest';
 import {updateTranslationFileMessages} from '@docusaurus/utils';
 import {getTranslationFiles, translateThemeConfig} from '../translations';
 import type {ThemeConfig} from '@docusaurus/theme-common';

@@ -5,17 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import type {Props} from '@theme/BlogPostItem/Header/Author';
+import type {Props} from '@theme/Blog/Components/Author';
 
 import styles from './styles.module.css';
 
-export default function ChangelogAuthor({
-  author,
-  className,
-}: Props): JSX.Element {
+export default function ChangelogAuthor({author, className}: Props): ReactNode {
   const {name, url, imageURL} = author;
   return (
     <div className={clsx('avatar margin-bottom--sm', className)}>

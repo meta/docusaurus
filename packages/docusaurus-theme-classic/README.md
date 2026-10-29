@@ -1,4 +1,4 @@
-# Docusaurus Theme Classic
+# `@docusaurus/theme-classic`
 
 The classic theme for Docusaurus.
 

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`createRedirectPageContent encodes uri special chars 1`] = `
+exports[`createRedirectPageContent > encodes uri special chars 1`] = `
 "<!DOCTYPE html>
 <html>
   <head>
@@ -14,7 +14,7 @@ exports[`createRedirectPageContent encodes uri special chars 1`] = `
 </html>"
 `;
 
-exports[`createRedirectPageContent works 1`] = `
+exports[`createRedirectPageContent > works 1`] = `
 "<!DOCTYPE html>
 <html>
   <head>

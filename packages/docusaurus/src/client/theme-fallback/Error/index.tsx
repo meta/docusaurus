@@ -8,7 +8,7 @@
 // Should we translate theme-fallback?
 /* eslint-disable @docusaurus/no-untranslated-text */
 
-import React, {type ReactNode} from 'react';
+import type {ReactNode} from 'react';
 import Head from '@docusaurus/Head';
 import ErrorBoundary from '@docusaurus/ErrorBoundary';
 import {getErrorCausalChain} from '@docusaurus/utils-common';
@@ -16,7 +16,7 @@ import Layout from '@theme/Layout';
 import type {Props} from '@theme/Error';
 import {RouteContextProvider} from '../../routeContext';
 
-function ErrorDisplay({error, tryAgain}: Props): JSX.Element {
+function ErrorDisplay({error, tryAgain}: Props): ReactNode {
   return (
     <div
       style={{
@@ -49,7 +49,7 @@ function ErrorDisplay({error, tryAgain}: Props): JSX.Element {
   );
 }
 
-function ErrorBoundaryError({error}: {error: Error}): JSX.Element {
+function ErrorBoundaryError({error}: {error: Error}): ReactNode {
   const causalChain = getErrorCausalChain(error);
   const fullMessage = causalChain.map((e) => e.message).join('\n\nCause:\n');
   return <p style={{whiteSpace: 'pre-wrap'}}>{fullMessage}</p>;
@@ -70,7 +70,7 @@ function ErrorRouteContextProvider({children}: {children: ReactNode}) {
   );
 }
 
-export default function Error({error, tryAgain}: Props): JSX.Element {
+export default function Error({error, tryAgain}: Props): ReactNode {
   // We wrap the error in its own error boundary because the layout can actually
   // throw too... Only the ErrorDisplay component is simple enough to be
   // considered safe to never throw

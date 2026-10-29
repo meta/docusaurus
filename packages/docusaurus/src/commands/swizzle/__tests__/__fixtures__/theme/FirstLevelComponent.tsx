@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-
 export default function FirstLevelComponent() {
   return <div>First level component</div>;
 }

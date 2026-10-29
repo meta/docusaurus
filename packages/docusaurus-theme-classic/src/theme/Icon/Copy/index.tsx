@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import type {Props} from '@theme/Icon/Copy';
 
-export default function IconCopy(props: Props): JSX.Element {
+export default function IconCopy(props: Props): ReactNode {
   return (
     <svg viewBox="0 0 24 24" {...props}>
       <path

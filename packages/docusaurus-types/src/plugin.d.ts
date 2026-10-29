@@ -8,13 +8,13 @@
 import type {CodeTranslations, TranslationFile} from './i18n';
 import type {RuleSetRule, Configuration as WebpackConfiguration} from 'webpack';
 import type {CustomizeRuleString} from 'webpack-merge/dist/types';
-import type {CommanderStatic} from 'commander';
+import type {Command} from 'commander';
 import type Joi from 'joi';
-import type {HelmetServerState} from 'react-helmet-async';
 import type {ThemeConfig} from './config';
 import type {LoadContext, Props} from './context';
 import type {SwizzleConfig} from './swizzle';
 import type {RouteConfig} from './routing';
+import type {CurrentBundler} from './bundler';
 
 export type PluginOptions = {id?: string} & {[key: string]: unknown};
 
@@ -54,14 +54,12 @@ export type PluginContentLoadedActions = {
 };
 
 export type ConfigureWebpackUtils = {
+  currentBundler: CurrentBundler;
   getStyleLoaders: (
     isServer: boolean,
     cssOptions: {[key: string]: unknown},
   ) => RuleSetRule[];
-  getJSLoader: (options: {
-    isServer: boolean;
-    babelOptions?: {[key: string]: unknown};
-  }) => RuleSetRule;
+  getJSLoader: (options: {isServer: boolean}) => RuleSetRule;
 };
 
 export type AllContent = {
@@ -100,9 +98,23 @@ export type HtmlTagObject = {
   tagName: string;
   /** The inner HTML */
   innerHTML?: string;
+  /** Allow custom html elements, e.g. `<custom-element>` */
+  customElement?: boolean;
 };
 
 export type HtmlTags = string | HtmlTagObject | (string | HtmlTagObject)[];
+
+export type ConfigureWebpackResult = WebpackConfiguration & {
+  mergeStrategy?: {
+    [key: string]: CustomizeRuleString;
+  };
+};
+
+export type RouteBuildMetadata = {
+  // We'll add extra metadata on a case by case basis here
+  // For now the only need is our sitemap plugin to filter noindex pages
+  noIndex: boolean;
+};
 
 export type Plugin<Content = unknown> = {
   name: string;
@@ -119,27 +131,24 @@ export type Plugin<Content = unknown> = {
   postBuild?: (
     props: Props & {
       content: Content;
-      head: {[location: string]: HelmetServerState};
+      routesBuildMetadata: {[location: string]: RouteBuildMetadata};
     },
   ) => Promise<void> | void;
-  // TODO refactor the configureWebpack API surface: use an object instead of
-  // multiple params (requires breaking change)
+  // TODO Docusaurus v4 ?
+  //  refactor the configureWebpack API surface: use an object instead of
+  //  multiple params (requires breaking change)
   configureWebpack?: (
     config: WebpackConfiguration,
     isServer: boolean,
-    utils: ConfigureWebpackUtils,
+    configureWebpackUtils: ConfigureWebpackUtils,
     content: Content,
-  ) => WebpackConfiguration & {
-    mergeStrategy?: {
-      [key: string]: CustomizeRuleString;
-    };
-  };
+  ) => ConfigureWebpackResult | void;
   configurePostCss?: (options: PostCssOptions) => PostCssOptions;
   getThemePath?: () => string;
   getTypeScriptThemePath?: () => string;
   getPathsToWatch?: () => string[];
   getClientModules?: () => string[];
-  extendCli?: (cli: CommanderStatic) => void;
+  extendCli?: (cli: Command) => void;
   injectHtmlTags?: (args: {content: Content}) => {
     headTags?: HtmlTags;
     preBodyTags?: HtmlTags;
@@ -189,13 +198,19 @@ export type LoadedPlugin = InitializedPlugin & {
 };
 
 export type PluginModule<Content = unknown> = {
-  (context: LoadContext, options: unknown):
-    | Plugin<Content>
-    | Promise<Plugin<Content>>;
+  (
+    context: LoadContext,
+    options: unknown,
+  ): Plugin<Content> | null | Promise<Plugin<Content> | null>;
+
   validateOptions?: <T, U>(data: OptionValidationContext<T, U>) => U;
   validateThemeConfig?: <T>(data: ThemeConfigValidationContext<T>) => T;
 
-  getSwizzleComponentList?: () => string[] | undefined; // TODO deprecate this one later
+  // TODO Docusaurus v5: remove the deprecated getSwizzleComponentList() API
+  /**
+   * @deprecated Use `getSwizzleConfig` instead.
+   */
+  getSwizzleComponentList?: () => string[] | undefined;
   getSwizzleConfig?: () => SwizzleConfig | undefined;
 };
 

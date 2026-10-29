@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import type {Props} from '@theme/MDXComponents/Img';
 
@@ -15,7 +15,7 @@ function transformImgClassName(className?: string): string {
   return clsx(className, styles.img);
 }
 
-export default function MDXImg(props: Props): JSX.Element {
+export default function MDXImg(props: Props): ReactNode {
   return (
     // eslint-disable-next-line jsx-a11y/alt-text
     <img

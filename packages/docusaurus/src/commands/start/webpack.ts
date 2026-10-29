@@ -5,25 +5,33 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
+import path from 'node:path';
 import merge from 'webpack-merge';
-import webpack from 'webpack';
+import {
+  formatStatsErrorMessage,
+  printStatsWarnings,
+  RspackDevServer,
+} from '@docusaurus/bundler';
 import logger from '@docusaurus/logger';
-import WebpackDevServer from 'webpack-dev-server';
-import evalSourceMapMiddleware from 'react-dev-utils/evalSourceMapMiddleware';
 import {createPollingOptions} from './watcher';
 import {
-  executePluginsConfigurePostCss,
+  createConfigureWebpackUtils,
   executePluginsConfigureWebpack,
-  formatStatsErrorMessage,
-  getHttpsConfig,
-  printStatsWarnings,
-} from '../../webpack/utils';
+} from '../../webpack/configure';
 import {createStartClientConfig} from '../../webpack/client';
 import type {StartCLIOptions} from './start';
-import type {Props} from '@docusaurus/types';
+import type {
+  ConfigureWebpackUtils,
+  CurrentBundler,
+  Props,
+} from '@docusaurus/types';
 import type {Compiler} from 'webpack';
+import type WebpackDevServer from 'webpack-dev-server';
+import type {Configuration as DevServerConfig} from 'webpack-dev-server';
+import type {Compiler as RspackCompiler} from '@rspack/core';
+import type {Configuration as RspackDevServerConfig} from '@rspack/dev-server';
 import type {OpenUrlContext} from './utils';
+import type {HttpsConfig} from '../../webpack/utils/getHttpsConfig';
 
 // E2E_TEST=true docusaurus start
 // Makes "docusaurus start" exit immediately on success/error, for E2E test
@@ -46,22 +54,22 @@ function registerWebpackE2ETestHook(compiler: Compiler) {
   });
 }
 
-async function createDevServerConfig({
+function createDevServerConfig({
   cliOptions,
   props,
   host,
   port,
+  httpsConfig,
 }: {
   cliOptions: StartCLIOptions;
   props: Props;
   host: string;
   port: number;
-}): Promise<WebpackDevServer.Configuration> {
+  httpsConfig: HttpsConfig;
+}): DevServerConfig {
   const {baseUrl, siteDir, siteConfig} = props;
 
   const pollingOptions = createPollingOptions(cliOptions);
-
-  const httpsConfig = await getHttpsConfig();
 
   // https://webpack.js.org/configuration/dev-server
   return {
@@ -82,7 +90,8 @@ async function createDevServerConfig({
       'access-control-allow-origin': '*',
     },
     devMiddleware: {
-      publicPath: baseUrl,
+      publicPath:
+        siteConfig.future.experimental_router === 'hash' ? 'auto' : baseUrl,
       // Reduce log verbosity, see https://github.com/facebook/docusaurus/pull/5420#issuecomment-906613105
       stats: 'summary',
     },
@@ -112,11 +121,6 @@ async function createDevServerConfig({
     allowedHosts: 'all',
     host,
     port,
-    setupMiddlewares: (middlewares, devServer) => {
-      // This lets us fetch source contents from webpack for the error overlay.
-      middlewares.unshift(evalSourceMapMiddleware(devServer));
-      return middlewares;
-    },
   };
 }
 
@@ -124,23 +128,25 @@ async function getStartClientConfig({
   props,
   minify,
   poll,
+  configureWebpackUtils,
 }: {
   props: Props;
   minify: boolean;
   poll: number | boolean | undefined;
+  configureWebpackUtils: ConfigureWebpackUtils;
 }) {
-  const {plugins, siteConfig} = props;
+  const {plugins} = props;
   let {clientConfig: config} = await createStartClientConfig({
     props,
     minify,
     poll,
+    configureWebpackUtils,
   });
-  config = executePluginsConfigurePostCss({plugins, config});
   config = executePluginsConfigureWebpack({
     plugins,
     config,
     isServer: false,
-    jsLoader: siteConfig.webpack?.jsLoader,
+    configureWebpackUtils,
   });
   return config;
 }
@@ -153,27 +159,59 @@ export async function createWebpackDevServer({
   props: Props;
   cliOptions: StartCLIOptions;
   openUrlContext: OpenUrlContext;
-}): Promise<WebpackDevServer> {
+}): Promise<WebpackDevServer | RspackDevServer> {
+  const configureWebpackUtils = await createConfigureWebpackUtils({
+    siteDir: props.siteDir,
+    siteConfig: props.siteConfig,
+  });
+
   const config = await getStartClientConfig({
     props,
     minify: cliOptions.minify ?? true,
     poll: cliOptions.poll,
+    configureWebpackUtils,
   });
 
-  const compiler = webpack(config);
+  const compiler = props.currentBundler.instance(config);
   registerWebpackE2ETestHook(compiler);
 
-  const defaultDevServerConfig = await createDevServerConfig({
+  const defaultDevServerConfig: DevServerConfig = createDevServerConfig({
     cliOptions,
     props,
     host: openUrlContext.host,
     port: openUrlContext.port,
+    httpsConfig: openUrlContext.httpsConfig,
   });
 
   // Allow plugin authors to customize/override devServer config
-  const devServerConfig: WebpackDevServer.Configuration = merge(
+  const devServerConfig: DevServerConfig = merge(
     [defaultDevServerConfig, config.devServer].filter(Boolean),
   );
 
-  return new WebpackDevServer(devServerConfig, compiler);
+  return createDevServer({
+    devServerConfig,
+    compiler,
+    currentBundler: props.currentBundler,
+  });
+}
+
+async function createDevServer({
+  devServerConfig,
+  compiler,
+  currentBundler,
+}: {
+  devServerConfig: DevServerConfig;
+  compiler: Compiler;
+  currentBundler: CurrentBundler;
+}): Promise<WebpackDevServer | RspackDevServer> {
+  if (currentBundler.name === 'webpack') {
+    // Imported lazily, only when Webpack is used
+    const {default: WebpackDevServer} = await import('webpack-dev-server');
+    return new WebpackDevServer(devServerConfig, compiler);
+  }
+  // Docusaurus bundler configs are typed with Webpack types
+  return new RspackDevServer(
+    devServerConfig as RspackDevServerConfig,
+    compiler as unknown as RspackCompiler,
+  );
 }

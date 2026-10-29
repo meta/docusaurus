@@ -1,0 +1,52 @@
+---
+slug: /migration
+---
+
+# Upgrading Docusaurus
+
+Docusaurus versioning is based on the `major.minor.patch` scheme and respects [**Semantic Versioning**](https://semver.org/).
+
+**Breaking changes** are only released on major version upgrades, and thoroughly documented in the following upgrade guides.
+
+import DocCardList from '@theme/DocCardList';
+
+<DocCardList />
+
+## Troubleshooting upgrades {/* #troubleshooting-upgrades */}
+
+When upgrading Docusaurus you may experience issues caused by mismatching cached dependencies - there are a few troubleshooting steps you should perform to resolve these common issues before reporting a bug or seeking support.
+
+### Run the `clear` command {/* #run-the-clear-command */}
+
+This CLI command is used to clear a Docusaurus site's generated assets, caches and build artifacts.
+
+```bash npm2yarn
+npm run clear
+```
+
+### Remove `node_modules` and your lock file(s) {/* #remove-node_modules-and-your-lock-files */}
+
+Remove the `node_modules` folder and your package manager's lock file using the following:
+
+<Tabs>
+<TabItem label="Bash" value="bash">
+
+```bash
+rm -rf node_modules yarn.lock package-lock.json
+```
+
+</TabItem>
+<TabItem label="PowerShell" value="powershell">
+
+```powershell
+@('node_modules','yarn.lock','package-lock.json') | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
+```
+
+</TabItem>
+</Tabs>
+
+Then reinstall packages and regenerate the `lock` file using:
+
+```bash npm2yarn
+npm install
+```

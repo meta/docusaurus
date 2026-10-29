@@ -14,9 +14,9 @@ The upgrade should be easy: as explained in our [release process documentation](
 
 {/* truncate */}
 
-## Highlights
+## Highlights {/* #highlights */}
 
-### Mermaid diagrams
+### Mermaid diagrams {/* #mermaid-diagrams */}
 
 In [#7490](https://github.com/facebook/docusaurus/pull/7490), we added support for Mermaid diagrams. This fills the gap between GitHub Flavored Markdown which also [added support recently](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/). You can create Mermaid diagrams using Markdown code blocks:
 
@@ -61,7 +61,7 @@ sequenceDiagram
 
 Make sure to check the [documentation](/docs/markdown-features/diagrams), and the [more advanced examples](/tests/pages/diagrams)
 
-### Config `headTags`
+### Config `headTags` {/* #config-headtags */}
 
 In [#8151](https://github.com/facebook/docusaurus/pull/8151), we added the ability to apply arbitrary HTML `<head>` tags to all pages of your site.
 
@@ -79,7 +79,7 @@ module.exports = {
 };
 ```
 
-### Accessibility
+### Accessibility {/* #accessibility */}
 
 We did several accessibility improvements:
 
@@ -88,7 +88,7 @@ We did several accessibility improvements:
 - [#8204](https://github.com/facebook/docusaurus/pull/8204): makes the skip to content button support progressive enhancement
 - [#8174](https://github.com/facebook/docusaurus/pull/8174): improves screen reader announcement when toggling between light/dark mode
 
-### Developer Experience
+### Developer Experience {/* #developer-experience */}
 
 We made validation stricter and improved error messages:
 
@@ -96,7 +96,7 @@ We made validation stricter and improved error messages:
 - [#8192](https://github.com/facebook/docusaurus/pull/8192) and [#8159](https://github.com/facebook/docusaurus/pull/8159): validates `siteConfig.url` more strictly and with better error message
 - [#8066](https://github.com/facebook/docusaurus/pull/8066): makes config `url` and `baseUrl` fail-safe and less sensitive to the presence or absence of a leading or trailing slash
 
-### Translations
+### Translations {/* #translations */}
 
 We completed the default theme translation support for multiple languages:
 
@@ -111,7 +111,7 @@ Completing theme translations is an [ongoing effort](https://github.com/facebook
 
 :::
 
-## Other changes
+## Other changes {/* #other-changes */}
 
 Other notable changes include:
 

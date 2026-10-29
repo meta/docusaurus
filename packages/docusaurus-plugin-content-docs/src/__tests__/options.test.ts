@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {GlobExcludeDefault} from '@docusaurus/utils';
+import {describe, expect, it} from 'vitest';
+import {GlobExcludeDefault} from '@docusaurus/glob';
 import {normalizePluginOptions} from '@docusaurus/utils-validation';
 import {validateOptions, DEFAULT_OPTIONS} from '../options';
 import {DefaultSidebarItemsGenerator} from '../sidebars/generator';
@@ -57,9 +58,9 @@ describe('normalizeDocsPluginOptions', () => {
       docTagsListComponent: '@theme/DocTagsListPage',
       docCategoryGeneratedIndexComponent:
         '@theme/DocCategoryGeneratedIndexPage',
-      // @ts-expect-error: it seems to work in practice?
       remarkPlugins: [markdownPluginsObjectStub],
       rehypePlugins: [markdownPluginsFunctionStub],
+      recmaPlugins: [markdownPluginsFunctionStub],
       beforeDefaultRehypePlugins: [],
       beforeDefaultRemarkPlugins: [],
       breadcrumbs: true,
@@ -70,6 +71,8 @@ describe('normalizeDocsPluginOptions', () => {
       disableVersioning: true,
       editCurrentVersion: true,
       editLocalizedFiles: true,
+      tags: 'docsTags.yml',
+      onInlineTags: 'throw',
       versions: {
         current: {
           path: 'next',
@@ -96,7 +99,6 @@ describe('normalizeDocsPluginOptions', () => {
       beforeDefaultRehypePlugins: [markdownPluginsFunctionStub],
       remarkPlugins: [[markdownPluginsFunctionStub, {option1: '42'}]],
       rehypePlugins: [
-        // @ts-expect-error: it seems to work in practice
         markdownPluginsObjectStub,
         [markdownPluginsFunctionStub, {option1: '42'}],
       ],
@@ -124,7 +126,7 @@ describe('normalizeDocsPluginOptions', () => {
         admonitions: [],
       }),
     ).toThrowErrorMatchingInlineSnapshot(
-      `""admonitions" does not look like a valid admonitions config"`,
+      `[ValidationError: "admonitions" does not look like a valid admonitions config]`,
     );
   });
 
@@ -162,9 +164,9 @@ describe('normalizeDocsPluginOptions', () => {
         remarkPlugins: [[{option1: '42'}, markdownPluginsFunctionStub]],
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
-      ""remarkPlugins[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
+      [ValidationError: "remarkPlugins[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
       - A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
-      - A simple module, like \`require("remark-math")\`"
+      - A simple module, like \`require("remark-math")\`]
     `);
   });
 
@@ -172,7 +174,6 @@ describe('normalizeDocsPluginOptions', () => {
     expect(() =>
       testValidate({
         rehypePlugins: [
-          // @ts-expect-error: test
           [
             markdownPluginsFunctionStub,
             {option1: '42'},
@@ -181,16 +182,16 @@ describe('normalizeDocsPluginOptions', () => {
         ],
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
-      ""rehypePlugins[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
+      [ValidationError: "rehypePlugins[0]" does not look like a valid MDX plugin config. A plugin config entry should be one of:
       - A tuple, like \`[require("rehype-katex"), { strict: false }]\`, or
-      - A simple module, like \`require("remark-math")\`"
+      - A simple module, like \`require("remark-math")\`]
     `);
   });
 
   it('rejects bad path inputs', () => {
     // @ts-expect-error: test
     expect(() => testValidate({path: 2})).toThrowErrorMatchingInlineSnapshot(
-      `""path" must be a string"`,
+      `[ValidationError: "path" must be a string]`,
     );
   });
 
@@ -198,7 +199,9 @@ describe('normalizeDocsPluginOptions', () => {
     expect(() =>
       // @ts-expect-error: test
       testValidate({include: '**/*.{md,mdx}'}),
-    ).toThrowErrorMatchingInlineSnapshot(`""include" must be an array"`);
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: "include" must be an array]`,
+    );
   });
 
   it('rejects bad showLastUpdateTime inputs', () => {
@@ -206,7 +209,7 @@ describe('normalizeDocsPluginOptions', () => {
       // @ts-expect-error: test
       testValidate({showLastUpdateTime: 'true'}),
     ).toThrowErrorMatchingInlineSnapshot(
-      `""showLastUpdateTime" must be a boolean"`,
+      `[ValidationError: "showLastUpdateTime" must be a boolean]`,
     );
   });
 
@@ -214,14 +217,18 @@ describe('normalizeDocsPluginOptions', () => {
     expect(() =>
       // @ts-expect-error: test
       testValidate({remarkPlugins: 'remark-math'}),
-    ).toThrowErrorMatchingInlineSnapshot(`""remarkPlugins" must be an array"`);
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: "remarkPlugins" must be an array]`,
+    );
   });
 
   it('rejects bad lastVersion', () => {
     expect(() =>
       // @ts-expect-error: test
       testValidate({lastVersion: false}),
-    ).toThrowErrorMatchingInlineSnapshot(`""lastVersion" must be a string"`);
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: "lastVersion" must be a string]`,
+    );
   });
 
   it('rejects bad versions', () => {
@@ -240,7 +247,7 @@ describe('normalizeDocsPluginOptions', () => {
         },
       }),
     ).toThrowErrorMatchingInlineSnapshot(
-      `""versions.current.hey" is not allowed"`,
+      `[ValidationError: "versions.current.hey" is not allowed]`,
     );
   });
 
@@ -265,5 +272,69 @@ describe('normalizeDocsPluginOptions', () => {
         sidebarCollapsed: true,
       }).sidebarCollapsed,
     ).toBe(false);
+  });
+
+  describe('tags', () => {
+    it('accepts tags - undefined', () => {
+      expect(testValidate({tags: undefined}).tags).toBeUndefined();
+    });
+
+    it('accepts tags - null', () => {
+      expect(testValidate({tags: null}).tags).toBeNull();
+    });
+
+    it('accepts tags - false', () => {
+      expect(testValidate({tags: false}).tags).toBeFalsy();
+    });
+
+    it('accepts tags - customTags.yml', () => {
+      expect(testValidate({tags: 'customTags.yml'}).tags).toBe(
+        'customTags.yml',
+      );
+    });
+
+    it('rejects tags - 42', () => {
+      // @ts-expect-error: test
+      expect(() => testValidate({tags: 42})).toThrowErrorMatchingInlineSnapshot(
+        `[ValidationError: "tags" must be a string]`,
+      );
+    });
+  });
+
+  describe('onInlineTags', () => {
+    it('accepts onInlineTags - undefined', () => {
+      expect(testValidate({onInlineTags: undefined}).onInlineTags).toBe('warn');
+    });
+
+    it('accepts onInlineTags - "throw"', () => {
+      expect(testValidate({onInlineTags: 'throw'}).onInlineTags).toBe('throw');
+    });
+
+    it('rejects onInlineTags - "trace"', () => {
+      expect(() =>
+        // @ts-expect-error: test
+        testValidate({onInlineTags: 'trace'}),
+      ).toThrowErrorMatchingInlineSnapshot(
+        `[ValidationError: "onInlineTags" must be one of [ignore, log, warn, throw]]`,
+      );
+    });
+
+    it('rejects onInlineTags - null', () => {
+      expect(() =>
+        // @ts-expect-error: test
+        testValidate({onInlineTags: 42}),
+      ).toThrowErrorMatchingInlineSnapshot(
+        `[ValidationError: "onInlineTags" must be one of [ignore, log, warn, throw]]`,
+      );
+    });
+
+    it('rejects onInlineTags - 42', () => {
+      expect(() =>
+        // @ts-expect-error: test
+        testValidate({onInlineTags: 42}),
+      ).toThrowErrorMatchingInlineSnapshot(
+        `[ValidationError: "onInlineTags" must be one of [ignore, log, warn, throw]]`,
+      );
+    });
   });
 });

@@ -6,8 +6,8 @@
  */
 
 import logger from '@docusaurus/logger';
-import matter from 'gray-matter';
-import {createSlugger, type Slugger, type SluggerOptions} from './slugger';
+import matter from '@11ty/gray-matter';
+
 import type {
   ParseFrontMatter,
   DefaultParseFrontMatter,
@@ -17,46 +17,39 @@ import type {
 // server-side when we infer metadata like `title` and `description` from the
 // content. Most parsing is still done in MDX through the mdx-loader.
 
-/**
- * Parses custom ID from a heading. The ID can contain any characters except
- * `{#` and `}`.
- *
- * @param heading e.g. `## Some heading {#some-heading}` where the last
- * character must be `}` for the ID to be recognized
- */
-export function parseMarkdownHeadingId(heading: string): {
-  /**
-   * The heading content sans the ID part, right-trimmed. e.g. `## Some heading`
-   */
-  text: string;
-  /** The heading ID. e.g. `some-heading` */
-  id: string | undefined;
-} {
-  const customHeadingIdRegex = /\s*\{#(?<id>(?:.(?!\{#|\}))*.)\}$/;
-  const matches = customHeadingIdRegex.exec(heading);
-  if (matches) {
-    return {
-      text: heading.replace(matches[0]!, ''),
-      id: matches.groups!.id!,
-    };
-  }
-  return {text: heading, id: undefined};
-}
+const MDXEscapingUtils = (function () {
+  const MARKUP_CHARS = ['_', ':', '*', '<', '>', '~', '!', '[', ']', '{', '}'];
 
-/**
- * MDX 2 requires escaping { with a \ so our anchor syntax need that now.
- * See https://mdxjs.com/docs/troubleshooting-mdx/#could-not-parse-expression-with-acorn-error
- */
-export function escapeMarkdownHeadingIds(content: string): string {
-  const markdownHeadingRegexp = /(?:^|\n)#{1,6}(?!#).*/g;
-  return content.replaceAll(markdownHeadingRegexp, (substring) =>
-    // TODO probably not the most efficient impl...
-    substring
-      .replace('{#', '\\{#')
-      // prevent duplicate escaping
-      .replace('\\\\{#', '\\{#'),
+  const markerOf = (char: string) => `\u{FFFE}${char.codePointAt(0)}\u{FFFF}`;
+
+  const MARKUP_CHARS_ESCAPE_MAP = new Map(
+    MARKUP_CHARS.map((char) => [char, markerOf(char)]),
   );
-}
+  const MARKUP_CHARS_UNESCAPE_MAP = new Map(
+    MARKUP_CHARS.map((char) => [markerOf(char), char]),
+  );
+
+  const MARKUP_CHARS_REGEX = new RegExp(
+    `[${RegExp.escape(MARKUP_CHARS.join(''))}]`,
+    'g',
+  );
+  const MARKUP_MARKERS_REGEX = /\u{FFFE}\d+\u{FFFF}/gu;
+
+  function escapeMDX(str: string) {
+    return str.replace(MARKUP_CHARS_REGEX, (char) =>
+      MARKUP_CHARS_ESCAPE_MAP.get(char)!,
+    );
+  }
+
+  function unescapeMDX(str: string) {
+    return str.replace(
+      MARKUP_MARKERS_REGEX,
+      (marker) => MARKUP_CHARS_UNESCAPE_MAP.get(marker) ?? marker,
+    );
+  }
+
+  return {escapeMDX, unescapeMDX};
+})();
 
 /**
  * Hacky temporary escape hatch for Crowdin bad MDX support
@@ -70,9 +63,9 @@ export function escapeMarkdownHeadingIds(content: string): string {
 export function unwrapMdxCodeBlocks(content: string): string {
   // We only support 3/4 backticks on purpose, should be good enough
   const regexp3 =
-    /(?<begin>^|\r?\n)```(?<spaces>\x20*)mdx-code-block\r?\n(?<children>.*?)\r?\n```(?<end>\r?\n|$)/gs;
+    /(?<begin>^|\r?\n)(?<indentStart>\x20*)```(?<spaces>\x20*)mdx-code-block\r?\n(?<children>.*?)\r?\n(?<indentEnd>\x20*)```(?<end>\r?\n|$)/gs;
   const regexp4 =
-    /(?<begin>^|\r?\n)````(?<spaces>\x20*)mdx-code-block\r?\n(?<children>.*?)\r?\n````(?<end>\r?\n|$)/gs;
+    /(?<begin>^|\r?\n)(?<indentStart>\x20*)````(?<spaces>\x20*)mdx-code-block\r?\n(?<children>.*?)\r?\n(?<indentEnd>\x20*)````(?<end>\r?\n|$)/gs;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const replacer = (substring: string, ...args: any[]) => {
@@ -134,6 +127,7 @@ export function createExcerpt(fileString: string): string | undefined {
     .split(/\r?\n/);
   let inCode = false;
   let inImport = false;
+  let inHTML = false;
   let lastCodeFence = '';
 
   for (const fileLine of fileLines) {
@@ -169,11 +163,44 @@ export function createExcerpt(fileString: string): string | undefined {
       continue;
     }
 
-    const cleanedLine = fileLine
+    // Skip lines inside a multi-line JSX/HTML element. An opening "<Tag ..."
+    // with no ">" on the same line would otherwise leak into the excerpt
+    // (e.g. "<MyComponent"). Skip until the element's tag closes.
+    if (inHTML) {
+      if (fileLine.includes('>')) {
+        inHTML = false;
+      }
+      continue;
+    }
+    if (/^\s*<[a-z][^>]*$/i.test(fileLine)) {
+      inHTML = true;
+      continue;
+    }
+
+    // Pre/postprocessing to handle MDX special chars within inline code blocks
+    // See https://github.com/facebook/docusaurus/pull/11821
+    function preprocessLine(str: string) {
+      return (
+        str
+          // Ignore internal Unicode markers found in input
+          // This ensures no possible conflict with our MDX escaping logic
+          .replace(/[\u{FFFE}\u{FFFF}]/gu, '')
+          // Unwrap inline code and escape special MDX chars within it
+          .replace(/`(?<text>.+?)`/g, (_, text) => {
+            return MDXEscapingUtils.escapeMDX(text);
+          })
+      );
+    }
+    function postProcessLine(str: string) {
+      // Restore escaped MDX chars that have been previously escaped
+      return MDXEscapingUtils.unescapeMDX(str);
+    }
+
+    const cleanedLine = preprocessLine(fileLine)
       // Remove HTML tags.
       .replace(/<[^>]*>/g, '')
       // Remove Title headers
-      .replace(/^#[^#]+#?/gm, '')
+      .replace(/^#(?!#).*/gm, '')
       // Remove Markdown + ATX-style headers
       .replace(/^#{1,6}\s*(?<text>[^#]*?)\s*#{0,6}/gm, '$1')
       // Remove emphasis.
@@ -186,8 +213,6 @@ export function createExcerpt(fileString: string): string | undefined {
       .replace(/\[\^.+?\](?:: .*$)?/g, '')
       // Remove inline links.
       .replace(/\[(?<alt>.*?)\][[(].*?[\])]/g, '$1')
-      // Remove inline code.
-      .replace(/`(?<text>.+?)`/g, '$1')
       // Remove blockquotes.
       .replace(/^\s{0,3}>\s?/g, '')
       // Remove admonition definition.
@@ -196,10 +221,12 @@ export function createExcerpt(fileString: string): string | undefined {
       .replace(/\s?:(?:::|[^:\n])+:/g, '')
       // Remove custom Markdown heading id.
       .replace(/\{#*[\w-]+\}/, '')
+      // Collapse whitespace left behind by the removals above.
+      .replace(/\s+/g, ' ')
       .trim();
 
     if (cleanedLine) {
-      return cleanedLine;
+      return postProcessLine(cleanedLine);
     }
   }
 
@@ -233,14 +260,7 @@ export function parseFileContentFrontMatter(fileContent: string): {
   // Unfortunately, this becomes a problem when we mutate returned front matter
   // We want to make it possible as part of the parseFrontMatter API
   // So we make it safe to mutate by always providing a deep copy
-  const frontMatter =
-    // And of course structuredClone() doesn't work well with Date in Jest...
-    // See https://github.com/jestjs/jest/issues/2549
-    // So we parse again for tests with a {} option object
-    // This undocumented empty option object disables gray-matter caching..
-    process.env.JEST_WORKER_ID
-      ? matter(fileContent, {}).data
-      : structuredClone(data);
+  const frontMatter = structuredClone(data);
 
   return {
     frontMatter,
@@ -289,18 +309,18 @@ export function parseMarkdownContentTitle(
   const removeContentTitleOption = options?.removeContentTitle ?? false;
 
   const content = contentUntrimmed.trim();
-  // We only need to detect import statements that will be parsed by MDX as
-  // `import` nodes, as broken syntax can't render anyways. That means any block
-  // that has `import` at the very beginning and surrounded by empty lines.
-  const contentWithoutImport = content
-    .replace(/^(?:import\s(?:.|\r?\n(?!\r?\n))*(?:\r?\n){2,})*/, '')
+  // We only need to detect import/export statements that will be parsed by MDX as
+  // `import` or `export` nodes, as broken syntax can't render anyways. That means any block
+  // that has `import` or `export` at the very beginning and surrounded by empty lines.
+  const contentWithoutImportExport = content
+    .replace(/^(?:(?:import|export)\s(?:.|\r?\n(?!\r?\n))*(?:\r?\n){2,})*/, '')
     .trim();
 
   const regularTitleMatch = /^#[ \t]+(?<title>[^ \t].*)(?:\r?\n|$)/.exec(
-    contentWithoutImport,
+    contentWithoutImportExport,
   );
   const alternateTitleMatch = /^(?<title>.*)\r?\n=+(?:\r?\n|$)/.exec(
-    contentWithoutImport,
+    contentWithoutImportExport,
   );
 
   const titleMatch = regularTitleMatch ?? alternateTitleMatch;
@@ -382,81 +402,4 @@ export async function parseMarkdownFile({
 This can happen if you use special characters in front matter values (try using double quotes around that value).`);
     throw err;
   }
-}
-
-function unwrapMarkdownLinks(line: string): string {
-  return line.replace(
-    /\[(?<alt>[^\]]+)\]\([^)]+\)/g,
-    (match, p1: string) => p1,
-  );
-}
-
-function addHeadingId(
-  line: string,
-  slugger: Slugger,
-  maintainCase: boolean,
-): string {
-  let headingLevel = 0;
-  while (line.charAt(headingLevel) === '#') {
-    headingLevel += 1;
-  }
-
-  const headingText = line.slice(headingLevel).trimEnd();
-  const headingHashes = line.slice(0, headingLevel);
-  const slug = slugger.slug(unwrapMarkdownLinks(headingText).trim(), {
-    maintainCase,
-  });
-
-  return `${headingHashes}${headingText} {#${slug}}`;
-}
-
-export type WriteHeadingIDOptions = SluggerOptions & {
-  /** Overwrite existing heading IDs. */
-  overwrite?: boolean;
-};
-
-/**
- * Takes Markdown content, returns new content with heading IDs written.
- * Respects existing IDs (unless `overwrite=true`) and never generates colliding
- * IDs (through the slugger).
- */
-export function writeMarkdownHeadingId(
-  content: string,
-  options: WriteHeadingIDOptions = {maintainCase: false, overwrite: false},
-): string {
-  const {maintainCase = false, overwrite = false} = options;
-  const lines = content.split('\n');
-  const slugger = createSlugger();
-
-  // If we can't overwrite existing slugs, make sure other headings don't
-  // generate colliding slugs by first marking these slugs as occupied
-  if (!overwrite) {
-    lines.forEach((line) => {
-      const parsedHeading = parseMarkdownHeadingId(line);
-      if (parsedHeading.id) {
-        slugger.slug(parsedHeading.id);
-      }
-    });
-  }
-
-  let inCode = false;
-  return lines
-    .map((line) => {
-      if (line.startsWith('```')) {
-        inCode = !inCode;
-        return line;
-      }
-      // Ignore h1 headings, as we don't create anchor links for those
-      if (inCode || !line.startsWith('##')) {
-        return line;
-      }
-      const parsedHeading = parseMarkdownHeadingId(line);
-
-      // Do not process if id is already there
-      if (parsedHeading.id && !overwrite) {
-        return line;
-      }
-      return addHeadingId(parsedHeading.text, slugger, maintainCase);
-    })
-    .join('\n');
 }

@@ -5,11 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-import {
-  PageMetadata,
-  useCurrentSidebarCategory,
-} from '@docusaurus/theme-common';
+import type {ReactNode} from 'react';
+import {PageMetadata} from '@docusaurus/theme-common';
+import {useCurrentSidebarCategory} from '@docusaurus/plugin-content-docs/client';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import DocCardList from '@theme/DocCardList';
 import DocPaginator from '@theme/DocPaginator';
@@ -23,7 +21,7 @@ import styles from './styles.module.css';
 
 function DocCategoryGeneratedIndexPageMetadata({
   categoryGeneratedIndex,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   return (
     <PageMetadata
       title={categoryGeneratedIndex.title}
@@ -37,7 +35,7 @@ function DocCategoryGeneratedIndexPageMetadata({
 
 function DocCategoryGeneratedIndexPageContent({
   categoryGeneratedIndex,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const category = useCurrentSidebarCategory();
   return (
     <div className={styles.generatedIndexPage}>
@@ -55,7 +53,7 @@ function DocCategoryGeneratedIndexPageContent({
       <article className="margin-top--lg">
         <DocCardList items={category.items} className={styles.list} />
       </article>
-      <footer className="margin-top--lg">
+      <footer className="margin-top--md">
         <DocPaginator
           previous={categoryGeneratedIndex.navigation.previous}
           next={categoryGeneratedIndex.navigation.next}
@@ -65,9 +63,7 @@ function DocCategoryGeneratedIndexPageContent({
   );
 }
 
-export default function DocCategoryGeneratedIndexPage(
-  props: Props,
-): JSX.Element {
+export default function DocCategoryGeneratedIndexPage(props: Props): ReactNode {
   return (
     <>
       <DocCategoryGeneratedIndexPageMetadata {...props} />

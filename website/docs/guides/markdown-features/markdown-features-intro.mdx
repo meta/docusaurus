@@ -30,7 +30,7 @@ It is a very helpful debugging tool that shows how the MDX compiler transforms M
 
 :::
 
-## MDX vs. CommonMark {#mdx-vs-commonmark}
+## MDX vs. CommonMark {/* #mdx-vs-commonmark */}
 
 Docusaurus compiles both `.md` and `.mdx` files to React components using the MDX compiler, but **the syntax can be interpreted differently** depending on your settings.
 
@@ -39,9 +39,9 @@ The MDX compiler supports [2 formats](https://mdxjs.com/packages/mdx/#optionsfor
 - The [MDX format](https://mdxjs.com/docs/what-is-mdx/): a powerful parser allowing the usage of JSX
 - The [CommonMark format](https://commonmark.org/): a standard-compliant Markdown parser that does not allow the usage of JSX
 
-By default, **Docusaurus v3 uses the MDX format for all files** (including `.md` files) for historical reasons.
+By default, **Docusaurus uses the MDX format for all files** (including `.md` files) for historical reasons.
 
-It is possible to **opt-in for CommonMark** using the [`siteConfig.markdown.format`](../../api/docusaurus.config.js.mdx#markdown) setting or the `format: md` front matter.
+It is possible to **opt-in for CommonMark** using the [`siteConfig.markdown.format`](../../api/docusaurus.config.js.mdx#markdown) setting or the `mdx.format: md` front matter.
 
 :::tip how to use CommonMark
 
@@ -58,7 +58,7 @@ The CommonMark support is **experimental** and currently has a few [limitations]
 
 :::
 
-## Standard features {#standard-features}
+## Standard features {/* #standard-features */}
 
 Markdown is a syntax that enables you to write formatted content in a readable syntax.
 
@@ -94,7 +94,7 @@ In general, you should only assume the _semantics_ of the markup (` ``` ` fences
 
 </details>
 
-## Front matter {#front-matter}
+## Front matter {/* #front-matter */}
 
 Front matter is used to add metadata to your Markdown file. All content plugins have their own front matter schema, and use the front matter to enrich the default metadata inferred from the content or other configuration.
 
@@ -159,7 +159,7 @@ export default {
 
 :::
 
-## Quotes {#quotes}
+## Quotes {/* #quotes */}
 
 Markdown quotes are beautifully styled:
 
@@ -177,46 +177,81 @@ Markdown quotes are beautifully styled:
 
 </BrowserWindow>
 
-## Details {#details}
+## Details {/* #details */}
 
 Markdown can embed HTML elements, and [`details`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details) HTML elements are beautifully styled:
 
-```md
+{/* prettier-ignore */}
+````md
 ### Details element example
 
 <details>
   <summary>Toggle me!</summary>
-  <div>
-    <div>This is the detailed content</div>
-    <br/>
-    <details>
-      <summary>
-        Nested toggle! Some surprise inside...
-      </summary>
-      <div>😲😲😲😲😲</div>
-    </details>
-  </div>
-</details>
-```
 
-```mdx-code-block
+  This is the detailed content
+
+  ```js
+  console.log("Markdown features including the code block are available");
+  ```
+
+  You can use Markdown here including **bold** and _italic_ text, and [inline link](https://docusaurus.io)
+  <details>
+    <summary>Nested toggle! Some surprise inside...</summary>
+
+    😲😲😲😲😲
+  </details>
+</details>
+````
+
+````mdx-code-block
 <BrowserWindow>
 
 <h3>Details element example</h3>
 
 <details>
   <summary>Toggle me!</summary>
-  <div>
-    <div>This is the detailed content</div>
-    <br/>
-    <details>
-      <summary>
-        Nested toggle! Some surprise inside...
-      </summary>
-      <div>😲😲😲😲😲</div>
-    </details>
-  </div>
+
+  This is the detailed content
+
+  ```js
+  console.log("Markdown features including the code block are available");
+  ```
+
+  You can use Markdown here including **bold** and _italic_ text, and [inline link](https://docusaurus.io)
+  <details>
+    <summary>Nested toggle! Some surprise inside...</summary>
+
+    😲😲😲😲😲
+  </details>
 </details>
+
+</BrowserWindow>
+````
+
+:::info
+
+You may want to keep your `<summary>` on a single line. Keep in mind that [MDX creates extra HTML `<p>` paragraphs for line breaks.](https://mdxjs.com/migrating/v2/#jsx). When in doubt, use the [MDX playground](https://mdxjs.com/playground/) to troubleshoot `<details>` rendering problems.
+
+:::
+
+## Tables {/* #tables */}
+
+Markdown tables are supported via **[GitHub Flavored Markdown (GFM)](https://github.github.com/gfm/#tables-extension-)**. They are an excellent way to display structured data in your documentation.
+
+```md
+| Feature    | Support | Description                       |
+| :--------- | :------ | :-------------------------------- |
+| GFM Tables | ✅ Yes  | Standard Markdown table syntax    |
+| Alignment  | ✅ Yes  | Left, center, and right alignment |
+```
+
+```mdx-code-block
+<BrowserWindow>
+
+| Feature    | Support | Description                       |
+| :--------- | :------ | :-------------------------------- |
+| GFM Tables | ✅ Yes  | Standard Markdown table syntax    |
+| Alignment  | ✅ Yes  | Left, center, and right alignment |
 
 </BrowserWindow>
 ```

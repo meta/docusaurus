@@ -37,22 +37,3 @@ declare module 'webpack/lib/HotModuleReplacementPlugin' {
 
   export default HotModuleReplacementPlugin;
 }
-
-// TODO incompatible declaration file: https://github.com/unjs/webpackbar/pull/108
-declare module 'webpackbar' {
-  import webpack from 'webpack';
-
-  export default class WebpackBarPlugin extends webpack.ProgressPlugin {
-    constructor(options: {name: string; color?: string});
-  }
-}
-
-// TODO incompatible declaration file
-declare module 'eta' {
-  export const defaultConfig: object;
-
-  export function compile(
-    template: string,
-    options?: object,
-  ): (data: object, config: object) => string;
-}

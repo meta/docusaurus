@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
+import {describe, expect, it} from 'vitest';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import {
   loadThemeAliases,
   loadDocusaurusAliases,
@@ -160,7 +161,7 @@ describe('createAliasesForTheme', () => {
   it('creates themePath with no components', async () => {
     const fixtures = path.join(__dirname, '__fixtures__');
     const themePath = path.join(fixtures, 'empty-theme');
-    await fs.ensureDir(themePath);
+    await fs.mkdir(themePath, {recursive: true});
     const alias = await createAliasesForTheme(themePath, true);
     expect(alias).toEqual({});
   });
@@ -168,7 +169,7 @@ describe('createAliasesForTheme', () => {
   it('creates themePath with no components without original', async () => {
     const fixtures = path.join(__dirname, '__fixtures__');
     const themePath = path.join(fixtures, 'empty-theme');
-    await fs.ensureDir(themePath);
+    await fs.mkdir(themePath, {recursive: true});
     const alias = await createAliasesForTheme(themePath, false);
     expect(alias).toEqual({});
   });

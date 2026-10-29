@@ -6,24 +6,24 @@ description: Docusaurus is written in TypeScript and provides first-class TypeSc
 
 Docusaurus is written in TypeScript and provides first-class TypeScript support.
 
-The minimum required version is **TypeScript 5.0**.
+The minimum required version is **TypeScript 6.0**.
 
-## Initialization {#initialization}
+## Initialization {/* #initialization */}
 
-Docusaurus supports writing and using TypeScript theme components. If the init template provides a TypeScript variant, you can directly initialize a site with full TypeScript support by using the `--typescript` flag.
+Docusaurus supports writing and using TypeScript theme components. If the init template provides a TypeScript variant, you can directly [initialize a site](./installation.mdx#scaffold-project-website) with full TypeScript support by using the `--typescript` flag.
 
-```bash
+```bash npm2yarn
 npx create-docusaurus@latest my-website classic --typescript
 ```
 
 Below are some guides on how to migrate an existing project to TypeScript.
 
-## Setup {#setup}
+## Setup {/* #setup */}
 
 Add the following packages to your project:
 
 ```bash npm2yarn
-npm install --save-dev typescript @docusaurus/module-type-aliases @docusaurus/tsconfig @docusaurus/types
+npm install --save-dev typescript @docusaurus/module-type-aliases @docusaurus/tsconfig @docusaurus/types @types/node
 ```
 
 Then add `tsconfig.json` to your project root with the following content:
@@ -32,7 +32,7 @@ Then add `tsconfig.json` to your project root with the following content:
 {
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
-    "baseUrl": "."
+    "types": ["node"]
   }
 }
 ```
@@ -41,7 +41,33 @@ Docusaurus doesn't use this `tsconfig.json` to compile your project. It is added
 
 Now you can start writing TypeScript theme components.
 
-## Typing the config file {#typing-config}
+## Ambient types for optional plugins {/* #ambient-types-for-optional-plugins */}
+
+Some plugins and themes ship their own ambient `.d.ts` files that TypeScript does not load automatically.
+
+For example, importing from `@theme/Playground` (provided by `@docusaurus/theme-live-codeblock`) fails with `TS2307: Cannot find module '@theme/Playground'` until you opt the plugin's types in.
+
+Add a triple-slash reference in a project `.d.ts` file (recommended):
+
+```ts title="src/types.d.ts"
+/// <reference types="@docusaurus/theme-live-codeblock" />
+```
+
+Alternatively, add the package to the `types` compiler option of your `tsconfig.json`:
+
+```json title="tsconfig.json"
+{
+  "extends": "@docusaurus/tsconfig",
+  "compilerOptions": {
+    // highlight-next-line
+    "types": ["node", "@docusaurus/theme-live-codeblock"]
+  }
+}
+```
+
+The same applies to any other optional plugin or theme that ships ambient types.
+
+## Typing the config file {/* #typing-config */}
 
 It is possible to use a TypeScript config file in Docusaurus.
 
@@ -99,21 +125,13 @@ const config = {
       '@docusaurus/preset-classic',
       // highlight-next-line
       /** @type {import('@docusaurus/preset-classic').Options} */
-      (
-        {
-          /* Your preset config here */
-        }
-      ),
+      ({/* Your preset config here */}),
     ],
   ],
   themeConfig:
     // highlight-next-line
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    (
-      {
-        /* Your theme config here */
-      }
-    ),
+    ({/* Your theme config here */}),
 };
 
 export default config;
@@ -129,7 +147,7 @@ The best IDEs (VS Code, WebStorm, IntelliJ...) will provide a nice auto-completi
 
 :::
 
-## Swizzling TypeScript theme components {#swizzling-typescript-theme-components}
+## Swizzling TypeScript theme components {/* #swizzling-typescript-theme-components */}
 
 For themes that support TypeScript theme components, you can add the `--typescript` flag to the end of the `swizzle` command to get TypeScript source code. For example, the following command will generate `index.tsx` and `styles.module.css` into `src/theme/Footer`.
 

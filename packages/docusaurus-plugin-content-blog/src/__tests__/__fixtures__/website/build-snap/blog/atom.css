@@ -1,0 +1,81 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+main {
+  flex: 1 0 auto;
+  width: 100%;
+  margin: 2rem auto;
+  max-width: 800px;
+  /* stylelint-disable-next-line font-family-name-quotes */
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Ubuntu,
+    Cantarell;
+}
+
+.info {
+  display: block;
+  margin: 2rem 0;
+  padding: 1.6rem 2.4rem;
+  border: 1px solid dodgerblue;
+  border-left-width: 0.5rem;
+  border-radius: 0.4rem;
+  background-color: #edf5ff;
+}
+
+a {
+  color: #005aff;
+  text-decoration: none;
+}
+
+h1 {
+  text-wrap: balance;
+  font-size: 3.4rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+h1 .rss-icon {
+  height: 3.2rem;
+  width: 3.2rem;
+  margin-right: 1rem;
+}
+
+h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.1rem;
+}
+
+.blog-description {
+  font-size: 1.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.blog-post-date {
+  font-size: 1rem;
+  line-height: 1.4rem;
+  font-style: italic;
+  color: #797b7e;
+}
+
+.blog-post-description {
+  font-size: 1rem;
+  line-height: 1.4rem;
+  color: #434349;
+}

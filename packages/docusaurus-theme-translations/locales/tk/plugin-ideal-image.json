@@ -1,0 +1,7 @@
+{
+  "theme.IdealImageMessage.404error": "404. Surat tapylmady",
+  "theme.IdealImageMessage.error": "Ýalňyşlyk çykdy. Gaýtadan açmak üçin basyň",
+  "theme.IdealImageMessage.load": "Ýüklemek üçin basyň {sizeMessage}",
+  "theme.IdealImageMessage.loading": "Yüklenýär...",
+  "theme.IdealImageMessage.offline": "Brauzeriňiz awtonom ýagdaýynda. Surat ýüklenmedi"
+}

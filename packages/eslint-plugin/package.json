@@ -1,6 +1,6 @@
 {
   "name": "@docusaurus/eslint-plugin",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "ESLint plugin to enforce best Docusaurus practices.",
   "main": "lib/index.js",
   "keywords": [
@@ -18,19 +18,21 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "tsc --watch"
   },
   "dependencies": {
-    "@typescript-eslint/utils": "^5.62.0",
-    "tslib": "^2.6.0"
+    "@typescript-eslint/types": "catalog:",
+    "@typescript-eslint/utils": "catalog:",
+    "tslib": "catalog:"
   },
   "devDependencies": {
-    "eslint-plugin-eslint-plugin": "^5.1.0"
+    "@typescript-eslint/rule-tester": "catalog:dev"
   },
   "peerDependencies": {
-    "eslint": ">=6"
+    "eslint": ">=8.57.0"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   }
 }

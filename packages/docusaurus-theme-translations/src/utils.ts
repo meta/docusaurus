@@ -11,19 +11,16 @@
 // the untested update.mjs file (c) we can ergonomically import the util
 // functions in the Jest test without using `await import`
 
-import path from 'path';
-import fs from 'fs-extra';
-// Unsafe import, should we create a package for the translationsExtractor ?;
-import {
-  globSourceCodeFilePaths,
-  extractAllSourceCodeFileTranslations,
-} from '@docusaurus/core/lib/server/translations/translationsExtractor';
+import path from 'node:path';
+import {globTranslatableSourceFiles} from '@docusaurus/glob';
+import {extractAllSourceCodeFileTranslations} from '@docusaurus/babel';
+import {readJSON} from '@docusaurus/fs';
 import type {TranslationFileContent} from '@docusaurus/types';
 
 async function getPackageCodePath(packageName: string) {
   const packagePath = path.join(__dirname, '../..', packageName);
   const packageJsonPath = path.join(packagePath, 'package.json');
-  const {main} = (await fs.readJSON(packageJsonPath)) as {main: string};
+  const {main} = (await readJSON(packageJsonPath)) as {main: string};
   const packageSrcPath = path.join(packagePath, path.dirname(main));
   return packageSrcPath;
 }
@@ -35,6 +32,14 @@ export async function getThemes(): Promise<{name: string; src: string[]}[]> {
       src: [
         await getPackageCodePath('docusaurus-theme-classic'),
         await getPackageCodePath('docusaurus-theme-common'),
+        path.join(
+          await getPackageCodePath('docusaurus-plugin-content-docs'),
+          'client',
+        ),
+        path.join(
+          await getPackageCodePath('docusaurus-plugin-content-blog'),
+          'client',
+        ),
       ],
     },
     {
@@ -62,21 +67,20 @@ export async function extractThemeCodeMessages(
   // eslint-disable-next-line no-param-reassign
   targetDirs ??= (await getThemes()).flatMap((theme) => theme.src);
 
-  const filePaths = (await globSourceCodeFilePaths(targetDirs)).filter(
+  const filePaths = (await globTranslatableSourceFiles(targetDirs)).filter(
     (filePath) => ['.js', '.jsx'].includes(path.extname(filePath)),
   );
 
   const filesExtractedTranslations = await extractAllSourceCodeFileTranslations(
     filePaths,
     {
-      presets: [require.resolve('@docusaurus/core/lib/babel/preset')],
+      presets: [require.resolve('@docusaurus/babel/preset')],
     },
   );
 
   filesExtractedTranslations.forEach((fileExtractedTranslations) => {
     if (fileExtractedTranslations.warnings.length > 0) {
-      throw new Error(`
-Please make sure all theme translations are static!
+      throw new Error(`Please make sure all theme translations are static!
 Some warnings were found!
 
 ${fileExtractedTranslations.warnings.join('\n\n')}

@@ -1,0 +1,7 @@
+<svg width="160" height="80" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="url(#yellow-red-gradient)" />
+  <linearGradient id="yellow-red-gradient" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%" stop-color="yellow" />
+    <stop offset="100%" stop-color="red" />
+  </linearGradient>
+</svg>

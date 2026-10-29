@@ -1,6 +1,6 @@
 {
   "name": "@docusaurus/plugin-vercel-analytics",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Global vercel analytics plugin for Docusaurus.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -18,19 +18,20 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@docusaurus/core": "3.2.1",
-    "@docusaurus/logger": "3.2.1",
-    "@docusaurus/types": "3.2.1",
-    "@docusaurus/utils": "3.2.1",
-    "@docusaurus/utils-validation": "3.2.1",
-    "@vercel/analytics": "^1.1.1",
-    "tslib": "^2.6.0"
+    "@docusaurus/core": "workspace:*",
+    "@docusaurus/logger": "workspace:*",
+    "@docusaurus/module-type-aliases": "workspace:*",
+    "@docusaurus/types": "workspace:*",
+    "@docusaurus/utils": "workspace:*",
+    "@docusaurus/utils-validation": "workspace:*",
+    "@vercel/analytics": "catalog:",
+    "tslib": "catalog:"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   }
 }

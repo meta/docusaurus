@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-import React from 'react';
-import {renderHook} from '@testing-library/react-hooks';
+// @vitest-environment jsdom
+import {describe, expect, it} from 'vitest';
+import {renderHook} from '@testing-library/react';
 import {StaticRouter} from 'react-router-dom';
 import {Context} from '@docusaurus/core/src/client/docusaurusContext';
 import {useLocalPathname} from '../useLocalPathname';
@@ -17,9 +17,9 @@ describe('useLocalPathname', () => {
     (context: DocusaurusContext) => (location: string) =>
       renderHook(() => useLocalPathname(), {
         wrapper: ({children}) => (
-          <Context.Provider value={context}>
+          <Context value={context}>
             <StaticRouter location={location}>{children}</StaticRouter>
-          </Context.Provider>
+          </Context>
         ),
       }).result.current;
   it('works for baseUrl: /', () => {

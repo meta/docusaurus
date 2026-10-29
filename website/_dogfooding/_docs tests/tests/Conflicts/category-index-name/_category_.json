@@ -1,0 +1,8 @@
+{
+  "label": "Category Index name conflict",
+  "link": {
+    "type": "generated-index",
+    "title": "Category Index name conflict",
+    "description": "Testing what happens when 2 category index have the same name"
+  }
+}

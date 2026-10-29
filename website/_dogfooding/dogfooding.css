@@ -5,26 +5,80 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-html.plugin-docs.plugin-id-docs-tests .red > a {
-  color: red;
-}
+html {
+  @media screen and (width >= 1px) {
+    &.plugin-docs.plugin-id-docs-tests {
+      .red > a {
+        color: red;
 
-html.plugin-docs.plugin-id-docs-tests .navbar {
-  border-bottom: solid thin cyan;
-}
+        &::after {
+          background-image: url('./red.svg');
+          background-size: contain;
+          margin-left: 0.5rem;
+          width: 1rem;
+          height: 1rem;
+          content: ' ';
+        }
+      }
 
-html.plugin-blog.plugin-id-blog-tests .navbar {
-  border-bottom: solid thin lime;
-}
+      .navbar {
+        border-bottom: solid thin cyan;
+      }
 
-html.plugin-pages.plugin-id-pages-tests .navbar {
-  border-bottom: solid thin yellow;
+      .shadow {
+        --shadow-color: red;
+        box-shadow: 10px 10px 10px var(--shadow-color);
+
+        &.blue {
+          --shadow-color: blue;
+        }
+      }
+
+      #info-1 {
+        border: solid 2px blue;
+      }
+
+      #info-2 {
+        border: solid 2px green;
+      }
+
+      #info-3 {
+        border: solid 2px red;
+      }
+
+      .dogfood_sidebar_class_name_test {
+        &.theme-doc-sidebar-item-link > a {
+          color: cyan;
+        }
+
+        &.theme-doc-sidebar-item-category > div > a {
+          color: cyan;
+        }
+
+        &.card {
+          border: solid thin cyan;
+        }
+      }
+    }
+
+    &.plugin-blog.plugin-id-blog-tests {
+      .navbar {
+        border-bottom: solid thin lime;
+      }
+    }
+
+    &.plugin-pages.plugin-id-pages-tests {
+      .navbar {
+        border-bottom: solid thin yellow;
+      }
+    }
+
+    &:has(#navbar-dropdown-tests) .navbar__item.dropdown ~ a {
+      display: none;
+    }
+  }
 }
 
 #z-index-test {
   z-index: 100;
-}
-
-html:has(#navbar-dropdown-tests) .navbar__item.dropdown ~ a {
-  display: none;
 }

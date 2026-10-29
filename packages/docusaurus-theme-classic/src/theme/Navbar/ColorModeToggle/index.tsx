@@ -5,20 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {useColorMode, useThemeConfig} from '@docusaurus/theme-common';
 import ColorModeToggle from '@theme/ColorModeToggle';
 import type {Props} from '@theme/Navbar/ColorModeToggle';
 import styles from './styles.module.css';
 
-export default function NavbarColorModeToggle({
-  className,
-}: Props): JSX.Element | null {
+export default function NavbarColorModeToggle({className}: Props): ReactNode {
   const navbarStyle = useThemeConfig().navbar.style;
-  const disabled = useThemeConfig().colorMode.disableSwitch;
-  const {colorMode, setColorMode} = useColorMode();
+  const {disableSwitch, respectPrefersColorScheme} = useThemeConfig().colorMode;
+  const {colorModeChoice, setColorMode} = useColorMode();
 
-  if (disabled) {
+  if (disableSwitch) {
     return null;
   }
 
@@ -28,7 +26,8 @@ export default function NavbarColorModeToggle({
       buttonClassName={
         navbarStyle === 'dark' ? styles.darkNavbarColorModeToggle : undefined
       }
-      value={colorMode}
+      respectPrefersColorScheme={respectPrefersColorScheme}
+      value={colorModeChoice}
       onChange={setColorMode}
     />
   );

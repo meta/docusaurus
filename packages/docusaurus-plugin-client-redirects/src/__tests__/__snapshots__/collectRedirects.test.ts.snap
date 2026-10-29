@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`collectRedirects throw if plugin option redirects contain invalid to paths 1`] = `
-"You are trying to create client-side redirections to invalid paths.
+exports[`collectRedirects > throw if plugin option redirects contain invalid to paths 1`] = `
+[Error: You are trying to create client-side redirections to invalid paths.
 
 These paths are redirected to but do not exist:
 - /this/path/does/not/exist2
@@ -12,35 +12,35 @@ Valid paths you can redirect to:
 - /
 - /someExistingPath
 - /anotherExistingPath
-"
+]
 `;
 
-exports[`collectRedirects throw if plugin option redirects contain to paths with mismatching trailing slash 1`] = `
-"You are trying to create client-side redirections to invalid paths.
+exports[`collectRedirects > throw if plugin option redirects contain to paths with mismatching trailing slash 1`] = `
+[Error: You are trying to create client-side redirections to invalid paths.
 
 These paths do exist, but because you have explicitly set trailingSlash=false, you need to write the path without trailing slash:
 - /someExistingPath/
-"
+]
 `;
 
-exports[`collectRedirects throw if plugin option redirects contain to paths with mismatching trailing slash 2`] = `
-"You are trying to create client-side redirections to invalid paths.
+exports[`collectRedirects > throw if plugin option redirects contain to paths with mismatching trailing slash 2`] = `
+[Error: You are trying to create client-side redirections to invalid paths.
 
 These paths do exist, but because you have explicitly set trailingSlash=true, you need to write the path with trailing slash:
 - /someExistingPath
-"
+]
 `;
 
-exports[`collectRedirects throws if redirect creator creates array of array redirect 1`] = `
-"Some created redirects are invalid:
+exports[`collectRedirects > throws if redirect creator creates array of array redirect 1`] = `
+[Error: Some created redirects are invalid:
 - {"from":["/fromPath"],"to":"/"} => Validation error: "from" must be a string
-"
+]
 `;
 
-exports[`collectRedirects throws if redirect creator creates invalid redirects 1`] = `
-"Some created redirects are invalid:
+exports[`collectRedirects > throws if redirect creator creates invalid redirects 1`] = `
+[Error: Some created redirects are invalid:
 - {"from":"https://google.com/","to":"/"} => Validation error: "from" (https://google.com/) is not a valid pathname. Pathname should start with slash and not contain any domain or query string.
 - {"from":"//abc","to":"/"} => Validation error: "from" (//abc) is not a valid pathname. Pathname should start with slash and not contain any domain or query string.
 - {"from":"/def?queryString=toto","to":"/"} => Validation error: "from" (/def?queryString=toto) is not a valid pathname. Pathname should start with slash and not contain any domain or query string.
-"
+]
 `;

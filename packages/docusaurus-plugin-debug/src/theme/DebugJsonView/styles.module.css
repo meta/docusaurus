@@ -99,3 +99,12 @@
 .collapseContentParaiso::after {
   content: '...';
 }
+
+/*
+Overrides default ul style from Infima
+See https://github.com/AnyRoad/react-json-view-lite/issues/38
+*/
+.childFieldsContainerParaiso {
+  margin: 0;
+  padding: 0;
+}

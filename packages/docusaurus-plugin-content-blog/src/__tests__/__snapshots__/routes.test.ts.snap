@@ -1,0 +1,637 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buildAllRoutes > works for realistic blog post 2`] = `
+[
+  {
+    "component": "@theme/BlogPostPage",
+    "context": {
+      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+    },
+    "exact": true,
+    "metadata": {
+      "lastUpdatedAt": undefined,
+      "sourceFilePath": "blog/post1.md",
+    },
+    "modules": {
+      "content": "@site/blog/post1.md",
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog/post1",
+  },
+  {
+    "component": "@theme/BlogPostPage",
+    "context": {
+      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+    },
+    "exact": true,
+    "metadata": {
+      "lastUpdatedAt": undefined,
+      "sourceFilePath": "blog/post2.md",
+    },
+    "modules": {
+      "content": "@site/blog/post2.md",
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog/post2",
+  },
+  {
+    "component": "@theme/BlogPostPage",
+    "context": {
+      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+    },
+    "exact": true,
+    "metadata": {
+      "lastUpdatedAt": undefined,
+      "sourceFilePath": "blog/post3.md",
+    },
+    "modules": {
+      "content": "@site/blog/post3.md",
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog/post3",
+  },
+  {
+    "component": "@theme/BlogPostPage",
+    "context": {
+      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+    },
+    "exact": true,
+    "metadata": {
+      "lastUpdatedAt": undefined,
+      "sourceFilePath": "blog/post4.md",
+    },
+    "modules": {
+      "content": "@site/blog/post4.md",
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog/post4",
+  },
+  {
+    "component": "@theme/BlogPostPage",
+    "context": {
+      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+    },
+    "exact": true,
+    "metadata": {
+      "lastUpdatedAt": undefined,
+      "sourceFilePath": "blog/post5.md",
+    },
+    "modules": {
+      "content": "@site/blog/post5.md",
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog/post5",
+  },
+  {
+    "component": "@theme/BlogPostPage",
+    "context": {
+      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+    },
+    "exact": true,
+    "metadata": {
+      "lastUpdatedAt": undefined,
+      "sourceFilePath": "blog/post6.md",
+    },
+    "modules": {
+      "content": "@site/blog/post6.md",
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog/post6",
+  },
+  {
+    "component": "@theme/BlogListPage",
+    "exact": true,
+    "modules": {
+      "items": [
+        {
+          "content": {
+            "__import": true,
+            "path": "@site/blog/post1.md",
+            "query": {
+              "truncated": true,
+            },
+          },
+        },
+        {
+          "content": {
+            "__import": true,
+            "path": "@site/blog/post2.md",
+            "query": {
+              "truncated": true,
+            },
+          },
+        },
+      ],
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog",
+    "props": {
+      "metadata": {
+        "blogDescription": "Custom blog description",
+        "blogTitle": "Custom blog title",
+        "nextPage": "/blog/page/2",
+        "page": 1,
+        "permalink": "/blog",
+        "postsPerPage": 2,
+        "previousPage": undefined,
+        "totalCount": 5,
+        "totalPages": 3,
+      },
+    },
+  },
+  {
+    "component": "@theme/BlogListPage",
+    "exact": true,
+    "modules": {
+      "items": [
+        {
+          "content": {
+            "__import": true,
+            "path": "@site/blog/post4.md",
+            "query": {
+              "truncated": true,
+            },
+          },
+        },
+        {
+          "content": {
+            "__import": true,
+            "path": "@site/blog/post5.md",
+            "query": {
+              "truncated": true,
+            },
+          },
+        },
+      ],
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog/page/2",
+    "props": {
+      "metadata": {
+        "blogDescription": "Custom blog description",
+        "blogTitle": "Custom blog title",
+        "nextPage": "/blog/page/3",
+        "page": 2,
+        "permalink": "/blog/page/2",
+        "postsPerPage": 2,
+        "previousPage": "/blog",
+        "totalCount": 5,
+        "totalPages": 3,
+      },
+    },
+  },
+  {
+    "component": "@theme/BlogListPage",
+    "exact": true,
+    "modules": {
+      "items": [
+        {
+          "content": {
+            "__import": true,
+            "path": "@site/blog/post6.md",
+            "query": {
+              "truncated": true,
+            },
+          },
+        },
+      ],
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog/page/3",
+    "props": {
+      "metadata": {
+        "blogDescription": "Custom blog description",
+        "blogTitle": "Custom blog title",
+        "nextPage": undefined,
+        "page": 3,
+        "permalink": "/blog/page/3",
+        "postsPerPage": 2,
+        "previousPage": "/blog/page/2",
+        "totalCount": 5,
+        "totalPages": 3,
+      },
+    },
+  },
+  {
+    "component": "@theme/BlogArchivePage",
+    "exact": true,
+    "path": "/blog/archive",
+    "props": {
+      "archive": {
+        "blogPosts": [
+          {
+            "content": "Content for post1",
+            "id": "post1",
+            "metadata": {
+              "authors": [
+                {
+                  "key": "author1",
+                },
+              ],
+              "date": 2020-01-01T00:00:00.000Z,
+              "description": "Description for post1",
+              "frontMatter": {},
+              "permalink": "/blog/post1",
+              "readingTime": 2,
+              "source": "@site/blog/post1.md",
+              "tags": [],
+              "title": "Title for post1",
+            },
+          },
+          {
+            "content": "Content for post2",
+            "id": "post2",
+            "metadata": {
+              "authors": [
+                {
+                  "key": "author1",
+                },
+              ],
+              "date": 2020-01-01T00:00:00.000Z,
+              "description": "Description for post2",
+              "frontMatter": {},
+              "permalink": "/blog/post2",
+              "readingTime": 2,
+              "source": "@site/blog/post2.md",
+              "tags": [],
+              "title": "Title for post2",
+            },
+          },
+          {
+            "content": "Content for post4",
+            "id": "post4",
+            "metadata": {
+              "authors": [
+                {
+                  "key": "author1",
+                },
+                {
+                  "key": "author2",
+                },
+              ],
+              "date": 2020-01-01T00:00:00.000Z,
+              "description": "Description for post4",
+              "frontMatter": {},
+              "permalink": "/blog/post4",
+              "readingTime": 2,
+              "source": "@site/blog/post4.md",
+              "tags": [],
+              "title": "Title for post4",
+            },
+          },
+          {
+            "content": "Content for post5",
+            "id": "post5",
+            "metadata": {
+              "authors": [
+                {
+                  "key": "author2",
+                },
+                {
+                  "key": "author3",
+                },
+              ],
+              "date": 2020-01-01T00:00:00.000Z,
+              "description": "Description for post5",
+              "frontMatter": {},
+              "permalink": "/blog/post5",
+              "readingTime": 2,
+              "source": "@site/blog/post5.md",
+              "tags": [],
+              "title": "Title for post5",
+            },
+          },
+          {
+            "content": "Content for post6",
+            "id": "post6",
+            "metadata": {
+              "authors": [],
+              "date": 2020-01-01T00:00:00.000Z,
+              "description": "Description for post6",
+              "frontMatter": {},
+              "permalink": "/blog/post6",
+              "readingTime": 2,
+              "source": "@site/blog/post6.md",
+              "tags": [],
+              "title": "Title for post6",
+            },
+          },
+        ],
+      },
+    },
+  },
+  {
+    "component": "@theme/Blog/Pages/BlogAuthorsListPage",
+    "context": {
+      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+    },
+    "exact": true,
+    "modules": {
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog/authors",
+    "props": {
+      "authors": [
+        {
+          "count": 3,
+          "key": "author1",
+          "name": "Author 1",
+          "page": {
+            "permalink": "/blog/authors/author1",
+          },
+        },
+        {
+          "count": 2,
+          "key": "author2",
+          "name": "Author 2",
+          "page": null,
+        },
+        {
+          "count": 1,
+          "key": "author3",
+          "name": "Author 3",
+          "page": {
+            "permalink": "/blog/authors/author3",
+          },
+        },
+      ],
+    },
+  },
+  {
+    "component": "@theme/Blog/Pages/BlogAuthorsPostsPage",
+    "context": {
+      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+    },
+    "exact": true,
+    "modules": {
+      "items": [
+        {
+          "content": {
+            "__import": true,
+            "path": "@site/blog/post1.md",
+            "query": {
+              "truncated": true,
+            },
+          },
+        },
+        {
+          "content": {
+            "__import": true,
+            "path": "@site/blog/post2.md",
+            "query": {
+              "truncated": true,
+            },
+          },
+        },
+      ],
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog/authors/author1",
+    "props": {
+      "author": {
+        "count": 3,
+        "key": "author1",
+        "name": "Author 1",
+        "page": {
+          "permalink": "/blog/authors/author1",
+        },
+      },
+      "listMetadata": {
+        "blogDescription": "Custom blog description",
+        "blogTitle": "Custom blog title",
+        "nextPage": "/blog/authors/author1/page/2",
+        "page": 1,
+        "permalink": "/blog/authors/author1",
+        "postsPerPage": 2,
+        "previousPage": undefined,
+        "totalCount": 3,
+        "totalPages": 2,
+      },
+    },
+  },
+  {
+    "component": "@theme/Blog/Pages/BlogAuthorsPostsPage",
+    "context": {
+      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+    },
+    "exact": true,
+    "modules": {
+      "items": [
+        {
+          "content": {
+            "__import": true,
+            "path": "@site/blog/post4.md",
+            "query": {
+              "truncated": true,
+            },
+          },
+        },
+      ],
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog/authors/author1/page/2",
+    "props": {
+      "author": {
+        "count": 3,
+        "key": "author1",
+        "name": "Author 1",
+        "page": {
+          "permalink": "/blog/authors/author1",
+        },
+      },
+      "listMetadata": {
+        "blogDescription": "Custom blog description",
+        "blogTitle": "Custom blog title",
+        "nextPage": undefined,
+        "page": 2,
+        "permalink": "/blog/authors/author1/page/2",
+        "postsPerPage": 2,
+        "previousPage": "/blog/authors/author1",
+        "totalCount": 3,
+        "totalPages": 2,
+      },
+    },
+  },
+  {
+    "component": "@theme/Blog/Pages/BlogAuthorsPostsPage",
+    "context": {
+      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+    },
+    "exact": true,
+    "modules": {
+      "items": [
+        {
+          "content": {
+            "__import": true,
+            "path": "@site/blog/post5.md",
+            "query": {
+              "truncated": true,
+            },
+          },
+        },
+      ],
+      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+    },
+    "path": "/blog/authors/author3",
+    "props": {
+      "author": {
+        "count": 1,
+        "key": "author3",
+        "name": "Author 3",
+        "page": {
+          "permalink": "/blog/authors/author3",
+        },
+      },
+      "listMetadata": {
+        "blogDescription": "Custom blog description",
+        "blogTitle": "Custom blog title",
+        "nextPage": undefined,
+        "page": 1,
+        "permalink": "/blog/authors/author3",
+        "postsPerPage": 2,
+        "previousPage": undefined,
+        "totalCount": 1,
+        "totalPages": 1,
+      },
+    },
+  },
+]
+`;
+
+exports[`buildAllRoutes > works for realistic blog post 3`] = `
+{
+  "blog-post-list-prop-default.json": {
+    "items": [
+      {
+        "date": 2020-01-01T00:00:00.000Z,
+        "permalink": "/blog/post1",
+        "title": "Title for post1",
+        "unlisted": undefined,
+      },
+      {
+        "date": 2020-01-01T00:00:00.000Z,
+        "permalink": "/blog/post2",
+        "title": "Title for post2",
+        "unlisted": undefined,
+      },
+      {
+        "date": 2020-01-01T00:00:00.000Z,
+        "permalink": "/blog/post3",
+        "title": "Title for post3",
+        "unlisted": true,
+      },
+      {
+        "date": 2020-01-01T00:00:00.000Z,
+        "permalink": "/blog/post4",
+        "title": "Title for post4",
+        "unlisted": undefined,
+      },
+      {
+        "date": 2020-01-01T00:00:00.000Z,
+        "permalink": "/blog/post5",
+        "title": "Title for post5",
+        "unlisted": undefined,
+      },
+    ],
+    "title": "Custom blog sidebar title",
+  },
+  "blogMetadata-default.json": {
+    "authorsListPath": "/blog/authors",
+    "blogBasePath": "/blog",
+    "blogTitle": "Custom blog title",
+  },
+  "site-blog-post-1-md-235.json": {
+    "authors": [
+      {
+        "key": "author1",
+      },
+    ],
+    "date": 2020-01-01T00:00:00.000Z,
+    "description": "Description for post1",
+    "frontMatter": {},
+    "permalink": "/blog/post1",
+    "readingTime": 2,
+    "source": "@site/blog/post1.md",
+    "tags": [],
+    "title": "Title for post1",
+  },
+  "site-blog-post-2-md-b42.json": {
+    "authors": [
+      {
+        "key": "author1",
+      },
+    ],
+    "date": 2020-01-01T00:00:00.000Z,
+    "description": "Description for post2",
+    "frontMatter": {},
+    "permalink": "/blog/post2",
+    "readingTime": 2,
+    "source": "@site/blog/post2.md",
+    "tags": [],
+    "title": "Title for post2",
+  },
+  "site-blog-post-3-md-3b7.json": {
+    "authors": [
+      {
+        "key": "author3",
+      },
+    ],
+    "date": 2020-01-01T00:00:00.000Z,
+    "description": "Description for post3",
+    "frontMatter": {},
+    "permalink": "/blog/post3",
+    "readingTime": 2,
+    "source": "@site/blog/post3.md",
+    "tags": [],
+    "title": "Title for post3",
+    "unlisted": true,
+  },
+  "site-blog-post-4-md-15a.json": {
+    "authors": [
+      {
+        "key": "author1",
+      },
+      {
+        "key": "author2",
+      },
+    ],
+    "date": 2020-01-01T00:00:00.000Z,
+    "description": "Description for post4",
+    "frontMatter": {},
+    "permalink": "/blog/post4",
+    "readingTime": 2,
+    "source": "@site/blog/post4.md",
+    "tags": [],
+    "title": "Title for post4",
+  },
+  "site-blog-post-5-md-274.json": {
+    "authors": [
+      {
+        "key": "author2",
+      },
+      {
+        "key": "author3",
+      },
+    ],
+    "date": 2020-01-01T00:00:00.000Z,
+    "description": "Description for post5",
+    "frontMatter": {},
+    "permalink": "/blog/post5",
+    "readingTime": 2,
+    "source": "@site/blog/post5.md",
+    "tags": [],
+    "title": "Title for post5",
+  },
+  "site-blog-post-6-md-3ca.json": {
+    "authors": [],
+    "date": 2020-01-01T00:00:00.000Z,
+    "description": "Description for post6",
+    "frontMatter": {},
+    "permalink": "/blog/post6",
+    "readingTime": 2,
+    "source": "@site/blog/post6.md",
+    "tags": [],
+    "title": "Title for post6",
+  },
+}
+`;

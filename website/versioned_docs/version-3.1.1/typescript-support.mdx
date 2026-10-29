@@ -6,9 +6,9 @@ description: Docusaurus is written in TypeScript and provides first-class TypeSc
 
 Docusaurus is written in TypeScript and provides first-class TypeScript support.
 
-The minimum required version is **TypeScript 5.0**.
+The minimum required version is **TypeScript 5.1**.
 
-## Initialization {#initialization}
+## Initialization {/* #initialization */}
 
 Docusaurus supports writing and using TypeScript theme components. If the init template provides a TypeScript variant, you can directly initialize a site with full TypeScript support by using the `--typescript` flag.
 
@@ -18,7 +18,7 @@ npx create-docusaurus@latest my-website classic --typescript
 
 Below are some guides on how to migrate an existing project to TypeScript.
 
-## Setup {#setup}
+## Setup {/* #setup */}
 
 Add the following packages to your project:
 
@@ -41,7 +41,7 @@ Docusaurus doesn't use this `tsconfig.json` to compile your project. It is added
 
 Now you can start writing TypeScript theme components.
 
-## Typing the config file {#typing-config}
+## Typing the config file {/* #typing-config */}
 
 It is possible to use a TypeScript config file in Docusaurus.
 
@@ -129,7 +129,7 @@ The best IDEs (VS Code, WebStorm, IntelliJ...) will provide a nice auto-completi
 
 :::
 
-## Swizzling TypeScript theme components {#swizzling-typescript-theme-components}
+## Swizzling TypeScript theme components {/* #swizzling-typescript-theme-components */}
 
 For themes that support TypeScript theme components, you can add the `--typescript` flag to the end of the `swizzle` command to get TypeScript source code. For example, the following command will generate `index.tsx` and `styles.module.css` into `src/theme/Footer`.
 

@@ -8,6 +8,7 @@ import type {DocusaurusConfig} from './config';
 import type {CodeTranslations, I18n} from './i18n';
 import type {LoadedPlugin, PluginVersionInformation} from './plugin';
 import type {PluginRouteConfig} from './routing';
+import type {CurrentBundler} from './bundler';
 
 export type DocusaurusContext = {
   siteConfig: DocusaurusConfig;
@@ -25,6 +26,26 @@ export type SiteMetadata = {
   readonly docusaurusVersion: string;
   readonly siteVersion?: string;
   readonly pluginVersions: {[pluginName: string]: PluginVersionInformation};
+};
+
+export type SiteStorage = {
+  /**
+   * Which browser storage do you want to use?
+   * Between "localStorage" and "sessionStorage".
+   * The default is "localStorage".
+   */
+  type: 'localStorage' | 'sessionStorage';
+
+  /**
+   * Applies a namespace to the theme storage key
+   * For readability, the namespace is applied at the end of the key
+   * The final storage key will be = `${key}${namespace}`
+   *
+   * The namespace starts with a "-" separator ("-myNamespace")
+   * By default, it is a hash of the site url + baseUrl ("-a1b")
+   * It is "" when namespacing is disabled (`storage.namespace: false`)
+   */
+  namespace: string;
 };
 
 export type GlobalData = {[pluginName: string]: {[pluginId: string]: unknown}};
@@ -50,6 +71,16 @@ export type LoadContext = {
   baseUrl: string;
   i18n: I18n;
   codeTranslations: CodeTranslations;
+
+  /**
+   * Defines the default browser storage behavior for a site
+   */
+  siteStorage: SiteStorage;
+
+  /**
+   * The bundler used to build the site (Webpack or Rspack)
+   */
+  currentBundler: CurrentBundler;
 };
 
 export type Props = LoadContext & {

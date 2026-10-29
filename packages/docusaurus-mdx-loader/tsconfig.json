@@ -1,15 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "noEmit": false,
-    "incremental": true,
-    "tsBuildInfoFile": "./lib/.tsbuildinfo",
     "sourceMap": true,
-    "declarationMap": true,
-    "rootDir": "src",
-    "outDir": "lib",
-    "types": []
+    "declarationMap": true
   },
-  "include": ["src"],
+  "include": ["package.json", "src"],
   "exclude": ["**/__tests__/**"]
 }

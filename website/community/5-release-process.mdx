@@ -8,7 +8,7 @@ This topic is particularly important for highly customized sites that may have d
 
 :::
 
-## Semantic versioning {#semantic-versioning}
+## Semantic versioning {/* #semantic-versioning */}
 
 Docusaurus versioning is based on the `major.minor.patch` scheme and respects [Semantic Versioning](https://semver.org/).
 
@@ -19,15 +19,7 @@ Respecting Semantic Versioning is important for multiple reasons:
 - A new major version is an opportunity to thoroughly document breaking changes
 - A new major/minor version is an opportunity to communicate new features through a blog post
 
-:::note
-
-Releasing Docusaurus 2.0 took a very long time. From now on, Docusaurus will **release new major versions more regularly**. In practice, you can expect a new major version every 2–4 months.
-
-[Major version numbers are not sacred](https://tom.preston-werner.com/2022/05/23/major-version-numbers-are-not-sacred.html), but we still group breaking changes together and avoid releasing major versions too often.
-
-:::
-
-### Major versions {#major-versions}
+### Major versions {/* #major-versions */}
 
 The `major` version number is incremented on **every breaking change**.
 
@@ -42,7 +34,7 @@ Read our [public API surface](#public-api-surface) section to clearly understand
 
 :::
 
-### Minor versions {#minor-versions}
+### Minor versions {/* #minor-versions */}
 
 The `minor` version number is incremented on every significant retro-compatible change.
 
@@ -57,7 +49,13 @@ If you only use our [public API surface](#public-api-surface), you should be abl
 
 :::
 
-### Patch versions {#patch-versions}
+:::warning About End-of-Life Node.js versions
+
+We may drop support for End-of-Life Node.js versions in minor Docusaurus versions. Check the [Node.js support policy](#nodejs-support) section for more details.
+
+:::
+
+### Patch versions {/* #patch-versions */}
 
 The `patch` version number is incremented on bugfixes releases.
 
@@ -65,71 +63,51 @@ Whenever a new patch version is released, we publish:
 
 - an exhaustive changelog entry
 
-## Versions {#versions}
+## Node.js support policy {/* #nodejs-support */}
 
-```mdx-code-block
-import {
-  StableMajorVersion,
-  NextMajorVersion,
-  StableMajorBranchLink,
-  NextMajorBranchLink,
-} from "@site/src/components/Versions";
-```
+Each major version of Docusaurus supports a minimum Node.js version. This retro-compatibility will be preserved all along that release line. This runtime backward compatibility will be preserved throughout all the minor versions of the release line, except for End-of-Life Node.js versions.
 
-The Docusaurus team is usually working on 2 major versions at the same time:
+:::warning Support for End-of-Life versions
 
-- **Docusaurus <StableMajorVersion/>**: the **stable** version, on the <StableMajorBranchLink/> branch
-- **Docusaurus <NextMajorVersion/>**: the **next** version, on the <NextMajorBranchLink/> branch
-
-:::note
-
-The <StableMajorBranchLink/> branch is created just before releasing the first v<StableMajorVersion/> release candidate.
+On minor releases, we reserve the right to drop support for Node.js versions that reached End-of-Life ([Node.js release process and schedule](https://nodejs.org/en/about/previous-releases). **We do not consider it a Docusaurus breaking change**. We highly recommend using a maintained Node.js version. Beware that [End-of-Life Node.js versions do not receive security updates anymore](https://nodejs.org/en/blog/announcements/node-18-eol-support).
 
 :::
 
-### Stable version {#stable-version}
+## Versions {/* #versions */}
 
-The stable version (v<StableMajorVersion/>, on <StableMajorBranchLink/>) is recommended for most Docusaurus users.
+```mdx-code-block
+import {
+  CurrentMajorVersionNumber,
+  StableMajorBranchLink,
+  MainBranchLink,
+} from "@site/src/components/Versions";
+```
 
-We regularly backport retro-compatible features, bug and security fixes from <NextMajorBranchLink/> to <StableMajorBranchLink/> with `git cherry-pick` to make them available to those not ready for the next version.
+The Docusaurus team uses a simple development process and only works on a single major version and a single Git branch at a same time:
 
-:::info
+- **Docusaurus {CurrentMajorVersionNumber}**: the **stable** version, on the <MainBranchLink/> branch.
 
-After a new stable version has been released, the former stable version will continue to receive support only for **major security issues** for **3 months**. Otherwise, all features will be frozen and non-critical bugs will not be fixed.
+:::note How we will ship the next version
+
+Once we are ready ship **Docusaurus {CurrentMajorVersionNumber + 1}**, we will:
+
+- create a <StableMajorBranchLink/> branch
+- merge breaking changes on the <MainBranchLink/> branch
+- release that new version directly from the <MainBranchLink/> branch
+
+:::
+
+:::warning Security fixes policy
+
+After a new stable version has been released, the former stable version will continue to receive support for **major security issues** for **3 months**.
+
+In practice, we will backport security fixes to the <StableMajorBranchLink/> branch. Otherwise, all features will be frozen and non-critical bugs will not be fixed.
 
 It is recommended to upgrade within that time frame to the new stable version.
 
 :::
 
-### Next version {#next-version}
-
-The next version (v<NextMajorVersion/>, on <NextMajorBranchLink/>) is the version the Docusaurus team is currently working on.
-
-The <NextMajorBranchLink/> branch is the **default target branch** for all pull requests, including core team and external contributions.
-
-This version is recommended for **early adopters** that want to use the latest Docusaurus features as soon as possible. It is also a good way to help us by reporting bugs and giving some feedback.
-
-There are 3 ways to use the next version:
-
-- with an `alpha`, `beta` or `rc` pre-release
-- with the `@next` npm dist tag for the latest pre-release
-- with a [canary release](./4-canary.mdx) for the very latest features
-
-:::tip
-
-The next version passes all our automated tests and is used by the Docusaurus site itself. It is relatively safe: don't be afraid to give it a try.
-
-:::
-
-:::warning
-
-Breaking changes can happen on the next version: detailed upgrade instructions are available in the changelog and pull requests.
-
-At the `beta` and `rc` (release candidate) phases, we avoid introducing major breaking changes.
-
-:::
-
-## Public API surface {#public-api-surface}
+## Public API surface {/* #public-api-surface */}
 
 Docusaurus commits to respecting Semantic Versioning. This means that whenever changes occur in Docusaurus public APIs and break backward compatibility, we will increment the `major` version number.
 
@@ -141,7 +119,7 @@ Docusaurus guarantees public API retro-compatibility across `minor` versions. Un
 
 We will outline what accounts as the public API surface.
 
-### Core public API {#core-public-api}
+### Core public API {/* #core-public-api */}
 
 ✅ Our public API includes:
 
@@ -156,6 +134,12 @@ We will outline what accounts as the public API surface.
 - `@docusaurus/types` TypeScript types
   - We still retain the freedom to make types stricter (which may break type-checking).
 
+❌ Our public API **excludes**:
+
+- Docusaurus config `future`
+- All features prefixed by `experimental_` or `unstable_`
+- All features prefixed by `v<MajorVersion>_` (`v6_` `v7_`, etc.)
+
 :::tip
 
 For non-theme APIs, any documented API is considered public (and will be stable); any undocumented API is considered internal.
@@ -164,7 +148,7 @@ For non-theme APIs, any documented API is considered public (and will be stable)
 
 An API being "stable" means if you increment the patch or minor version of your Docusaurus installation without any other change, running `docusaurus start` or `docusaurus build` should not throw an error.
 
-### Theming public API {#theming-public-api}
+### Theming public API {/* #theming-public-api */}
 
 Docusaurus has a very flexible theming system:
 

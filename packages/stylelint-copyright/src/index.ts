@@ -14,7 +14,7 @@ const messages = stylelint.utils.ruleMessages(ruleName, {
 
 type SecondaryOption = {header?: string};
 
-const rule: Rule<boolean, string> =
+const ruleFunction: Rule<boolean, SecondaryOption> =
   (primaryOption, secondaryOption, context) => (root, result) => {
     stylelint.utils.validateOptions(
       result,
@@ -53,9 +53,12 @@ const rule: Rule<boolean, string> =
     });
   };
 
-rule.ruleName = ruleName;
-rule.messages = messages;
+ruleFunction.ruleName = ruleName;
+ruleFunction.messages = messages;
+ruleFunction.meta = {
+  url: 'https://github.com/facebook/docusaurus/tree/main/packages/stylelint-copyright',
+  fixable: true,
+  deprecated: false,
+};
 
-const plugin = stylelint.createPlugin(ruleName, rule);
-
-export = plugin;
+export default stylelint.createPlugin(ruleName, ruleFunction);

@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Interpolate from '@docusaurus/Interpolate';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import ErrorBoundaryTestButton from '@site/src/components/ErrorBoundaryTestButton';
 
-export default function ErrorBoundaryTests(): JSX.Element {
+export default function ErrorBoundaryTests(): ReactNode {
   return (
     <>
       <ErrorBoundaryTestButton>Crash outside layout</ErrorBoundaryTestButton>

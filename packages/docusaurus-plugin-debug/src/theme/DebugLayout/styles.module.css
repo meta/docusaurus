@@ -44,11 +44,7 @@
   background-color: #292a2b;
 }
 
-.active {
-  background-color: #363739;
-}
-
-@media screen and (min-width: 800px) {
+@media screen and (width >= 800px) {
   .nav {
     flex-direction: column;
     justify-content: flex-start;

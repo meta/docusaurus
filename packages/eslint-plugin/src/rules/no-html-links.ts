@@ -6,7 +6,7 @@
  */
 
 import {createRule} from '../util';
-import type {TSESTree} from '@typescript-eslint/types/dist/ts-estree';
+import type {TSESTree} from '@typescript-eslint/types';
 
 const docsUrl = 'https://docusaurus.io/docs/docusaurus-core#link';
 
@@ -19,14 +19,8 @@ type Options = [
 type MessageIds = 'link';
 
 function isFullyResolvedUrl(urlString: string): boolean {
-  try {
-    // href gets coerced to a string when it gets rendered anyway
-    const url = new URL(String(urlString));
-    if (url.protocol) {
-      return true;
-    }
-  } catch (e) {}
-  return false;
+  const url = URL.parse(String(urlString));
+  return !!(url && url.protocol);
 }
 
 export default createRule<Options, MessageIds>({
@@ -42,12 +36,15 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           ignoreFullyResolved: {
+            description:
+              'Set to true will not report any <a> tags with absolute URLs including a protocol.',
             type: 'boolean',
           },
         },
         additionalProperties: false,
       },
     ],
+    defaultOptions: [{ignoreFullyResolved: false}],
     messages: {
       link: `Do not use an \`<a>\` element to navigate. Use the \`<Link />\` component from \`@docusaurus/Link\` instead. See: ${docsUrl}`,
     },

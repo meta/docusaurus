@@ -3,3 +3,8 @@ slorber:
   title: Docusaurus maintainer
   email: lorber.sebastien@gmail.com
   url: https://sebastienlorber.com
+  socials:
+    twitter: sebastienlorber
+    x: https://x.com/sebastienlorber
+    github: slorber
+  page: true

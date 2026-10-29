@@ -13,6 +13,7 @@ import Image from '@theme/IdealImage';
 import {Tags, TagList, type TagType, type User} from '@site/src/data/users';
 import {sortBy} from '@site/src/utils/jsUtils';
 import Heading from '@theme/Heading';
+import type {Props as IdealImageProps} from '@theme/IdealImage';
 import FavoriteIcon from '../FavoriteIcon';
 import styles from './styles.module.css';
 
@@ -50,7 +51,7 @@ function ShowcaseCardTag({tags}: {tags: TagType[]}) {
   );
 }
 
-function getCardImage(user: User): string {
+function getCardImage(user: User): IdealImageProps['img'] {
   return (
     user.preview ??
     // TODO make it configurable
@@ -65,7 +66,7 @@ function ShowcaseCard({user}: {user: User}) {
   return (
     <li key={user.title} className="card shadow--md">
       <div className={clsx('card__image', styles.showcaseCardImage)}>
-        <Image img={image} alt={user.title} />
+        <Image img={image} alt={user.title} loading="lazy" />
       </div>
       <div className="card__body">
         <div className={clsx(styles.showcaseCardHeader)}>

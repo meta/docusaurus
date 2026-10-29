@@ -7,8 +7,9 @@
 
 // @ts-check
 
-import fs from 'fs-extra';
-import shell from 'shelljs';
+import fs from 'node:fs/promises';
+import {execa} from 'execa';
+import {readJSON} from '@docusaurus/fs';
 
 /**
  * Generate one example per init template
@@ -23,22 +24,33 @@ async function generateTemplateExample(template) {
     );
 
     // Run the docusaurus script to create the template in the examples folder
-    const command = template.endsWith('-typescript')
-      ? template.replace('-typescript', ' -- --typescript')
-      : `${template} -- --javascript`;
+    const isTypeScript = template.endsWith('-typescript');
+    const templateName = isTypeScript
+      ? template.replace('-typescript', '')
+      : template;
+    const templateFlag = isTypeScript ? '--typescript' : '--javascript';
 
-    shell.exec(
+    await execa(
+      'yarn',
       // We use the published init script on purpose, because the local init is
       // too new and could generate upcoming/unavailable config options.
       // Remember CodeSandbox templates will use the published version,
       // not the repo version.
       // Using "yarn create" because "npm init" still try to use local pkg
-      `yarn create docusaurus examples/${template} ${command}`,
+      [
+        'create',
+        'docusaurus',
+        `examples/${template}`,
+        templateName,
+        '--',
+        templateFlag,
+      ],
+      {stdio: 'inherit'},
     );
 
     const templatePackageJson =
       await /** @type {Promise<import("../../packages/create-docusaurus/templates/classic/package.json") & { scripts: { [name: string]: string }; description: string }>} */ (
-        fs.readJSON(`examples/${template}/package.json`)
+        readJSON(`examples/${template}/package.json`)
       );
 
     // Attach the dev script which would be used in code sandbox by default
@@ -69,9 +81,9 @@ async function generateTemplateExample(template) {
       hardReloadOnChange: true,
       view: 'browser',
       template: 'docusaurus',
-      node: '18',
+      node: '24',
       container: {
-        node: '18',
+        node: '24',
       },
     };
     await fs.writeFile(
@@ -103,24 +115,35 @@ async function generateTemplateExample(template) {
  * See https://github.com/jamstack/jamstack.org/pull/609
  * Button visible here: https://jamstack.org/generators/
  */
-function updateStarters() {
+async function updateStarters() {
   /**
    * @param {Object} param0
    * @param {string} param0.subfolder
    * @param {string} param0.remote
    * @param {string} param0.remoteBranch
    */
-  function forcePushGitSubtree({subfolder, remote, remoteBranch}) {
+  async function forcePushGitSubtree({subfolder, remote, remoteBranch}) {
     console.log('');
     // See https://stackoverflow.com/questions/33172857/how-do-i-force-a-subtree-push-to-overwrite-remote-changes
-    const command = `git push ${remote} \`git subtree split --prefix ${subfolder}\`:${remoteBranch} --force`;
     try {
-      console.log(`forcePushGitSubtree command: ${command}`);
-      shell.exec(command);
+      console.log(`forcePushGitSubtree: splitting subtree ${subfolder}`);
+      const {stdout: splitCommit} = await execa(
+        'git',
+        ['subtree', 'split', '--prefix', subfolder],
+        {stderr: 'inherit'},
+      );
+      console.log(
+        `forcePushGitSubtree: pushing ${splitCommit} to ${remote} ${remoteBranch}`,
+      );
+      await execa(
+        'git',
+        ['push', remote, `${splitCommit}:${remoteBranch}`, '--force'],
+        {stdio: 'inherit'},
+      );
       console.log('forcePushGitSubtree success!');
     } catch (err) {
       console.error(
-        `Can't force push to git subtree with command '${command}'`,
+        `Can't force push to git subtree ${subfolder} on ${remote} ${remoteBranch}`,
       );
       console.error(`If it's a permission problem, ask @slorber`);
       console.error(err);
@@ -131,7 +154,7 @@ function updateStarters() {
   console.log('');
 
   console.log('Updating https://github.com/facebook/docusaurus/tree/starter');
-  forcePushGitSubtree({
+  await forcePushGitSubtree({
     subfolder: 'examples/classic',
     remote: 'origin',
     remoteBranch: 'starter',
@@ -142,7 +165,7 @@ function updateStarters() {
 
   // TODO replace by starter repo in Docusaurus-community org (if we get it)
   console.log('Updating https://github.com/slorber/docusaurus-starter');
-  forcePushGitSubtree({
+  await forcePushGitSubtree({
     subfolder: 'examples/classic',
     remote: 'git@github.com:slorber/docusaurus-starter.git',
     remoteBranch: 'main',
@@ -151,13 +174,21 @@ function updateStarters() {
   console.log('');
 }
 
-const branch = shell.exec('git rev-parse --abbrev-ref HEAD').stdout;
+const {stdout: branch} = await execa('git', [
+  'rev-parse',
+  '--abbrev-ref',
+  'HEAD',
+]);
 if (branch === 'main') {
   throw new Error(
     "Please don't generate Docusaurus examples from the main branch!\nWe are going to commit during this process!",
   );
 }
-if (shell.exec('git diff --exit-code').code !== 0) {
+const gitDiffResult = await execa('git', ['diff', '--exit-code'], {
+  stdio: 'inherit',
+  reject: false,
+});
+if (gitDiffResult.exitCode !== 0) {
   throw new Error(
     'Please run the generate examples command with a clean Git state and no uncommitted local changes. git diff should display nothing!',
   );
@@ -188,8 +219,10 @@ for (const template of templates) {
   await generateTemplateExample(template);
 }
 console.log('Committing changes');
-shell.exec('git add examples');
-shell.exec("git commit -am 'update examples' --allow-empty");
+await execa('git', ['add', 'examples'], {stdio: 'inherit'});
+await execa('git', ['commit', '-am', 'update examples', '--allow-empty'], {
+  stdio: 'inherit',
+});
 
 // Update starters
 console.log(`
@@ -197,7 +230,7 @@ console.log(`
 # Updating starter repos and branches ...
 It can take some time... please wait until done...
 `);
-updateStarters();
+await updateStarters();
 
 console.log(`
 -------

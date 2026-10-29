@@ -34,7 +34,8 @@
   right: 0;
   width: 100px;
   height: 100%;
-  box-shadow: 0 0 10px var(--docusaurus-progress-bar-color),
+  box-shadow:
+    0 0 10px var(--docusaurus-progress-bar-color),
     0 0 5px var(--docusaurus-progress-bar-color);
   opacity: 1;
   transform: rotate(3deg) translate(0, -4px);

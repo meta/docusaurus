@@ -20,20 +20,47 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Set up Node
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
         with:
-          node-version: '18'
-          cache: yarn
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          check-latest: true
+          cache: pnpm
       - name: Installation
-        run: yarn
-        # run: yarn install --immutable # Fails if yarn.lock is modified (unfortunately only works for Yarn 2, and --frozen-lockfile is not the same!)
-      - name: Check immutable yarn.lock
+        run: pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || pnpm install --frozen-lockfile
+      - name: Check immutable pnpm-lock.yaml
         run: git diff --exit-code
-      - name: Lint
-        run: |
-          echo "::add-matcher::.github/workflows/cspell-problem-matcher.json"
-          yarn lint:ci
-      - name: Prettier Code
-        run: yarn format:diff
+
+      - name: Add CSpell problem matcher
+        run: echo "::add-matcher::.github/workflows/cspell-problem-matcher.json"
+
+      # Independent read-only checks: run them concurrently
+      # A failing check doesn't hide the results of the other ones
+      # Keep in sync with the "lint" script of package.json
+      # See https://github.blog/changelog/2026-06-25-actions-steps-can-now-be-run-in-parallel/
+      - parallel:
+          - name: ESLint
+            run: pnpm lint:js --quiet
+          - name: Stylelint
+            run: pnpm lint:style
+          - name: Spelling
+            run: pnpm lint:spelling
+          - name: Syncpack
+            run: pnpm lint:syncpack
+          - name: Catalogs
+            run: pnpm lint:catalogs
+          - name: Check deduped pnpm-lock.yaml
+            run: pnpm lint:deps
+          - name: Knip
+            run: pnpm lint:knip
+          - name: Knip production
+            run: pnpm lint:knip:production
+          - name: Check Formatting
+            run: pnpm format:diff

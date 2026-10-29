@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {jest} from '@jest/globals';
-import path from 'path';
-import fs from 'fs-extra';
+import {describe, expect, it, vi} from 'vitest';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 import {readOutputHTMLFile, generate} from '../emitUtils';
 
 describe('readOutputHTMLFile', () => {
@@ -114,45 +114,55 @@ describe('readOutputHTMLFile', () => {
         undefined,
       ).then(String),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `"Expected output HTML file to be found at <PROJECT_ROOT>/packages/docusaurus-utils/src/__tests__/__fixtures__/build-snap/nonExistent/index.html for permalink /nonExistent."`,
+      `[Error: Expected output HTML file to be found at <PROJECT_ROOT>/packages/docusaurus-utils/src/__tests__/__fixtures__/build-snap/nonExistent/index.html for permalink /nonExistent.]`,
     );
   });
 });
 
 describe('generate', () => {
-  const writeMock = jest.spyOn(fs, 'outputFile').mockImplementation(() => {});
-  const existsMock = jest.spyOn(fs, 'pathExists');
-  const readMock = jest.spyOn(fs, 'readFile');
+  const writeMock = vi.spyOn(fs, 'writeFile').mockResolvedValue(undefined);
+  // Used by pathExists()
+  const accessMock = vi.spyOn(fs, 'access');
+  const readMock = vi.spyOn(fs, 'readFile');
 
   it('works with no file and no cache', async () => {
-    existsMock.mockImplementationOnce(() => false);
+    accessMock.mockRejectedValueOnce(new Error('ENOENT'));
     await generate(__dirname, 'foo', 'bar');
     expect(writeMock).toHaveBeenNthCalledWith(
       1,
       path.join(__dirname, 'foo'),
       'bar',
+      undefined,
     );
   });
 
   it('works with existing cache', async () => {
-    await generate(__dirname, 'foo', 'bar');
-    expect(writeMock).toHaveBeenCalledTimes(1);
+    accessMock.mockRejectedValueOnce(new Error('ENOENT'));
+    await generate(__dirname, 'cached', 'bar');
+    writeMock.mockClear();
+
+    await generate(__dirname, 'cached', 'bar');
+    expect(writeMock).not.toHaveBeenCalled();
   });
 
   it('works with existing file but no cache', async () => {
-    existsMock.mockImplementationOnce(() => true);
-    // @ts-expect-error: seems the typedef doesn't understand overload
+    accessMock.mockResolvedValueOnce(undefined);
     readMock.mockImplementationOnce(() => Promise.resolve('bar'));
     await generate(__dirname, 'baz', 'bar');
-    expect(writeMock).toHaveBeenCalledTimes(1);
+    expect(writeMock).not.toHaveBeenCalled();
   });
 
   it('works when force skipping cache', async () => {
-    await generate(__dirname, 'foo', 'bar', true);
+    accessMock.mockRejectedValueOnce(new Error('ENOENT'));
+    await generate(__dirname, 'skip-cache', 'bar');
+    writeMock.mockClear();
+
+    await generate(__dirname, 'skip-cache', 'bar', true);
     expect(writeMock).toHaveBeenNthCalledWith(
-      2,
-      path.join(__dirname, 'foo'),
+      1,
+      path.join(__dirname, 'skip-cache'),
       'bar',
+      undefined,
     );
   });
 });

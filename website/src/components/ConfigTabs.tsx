@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import {useActiveVersion} from '@docusaurus/plugin-content-docs/client';
 import Translate, {translate} from '@docusaurus/Translate';
@@ -25,7 +25,7 @@ export default function ConfigTabs({
   code,
   pluginName,
   presetOptionName,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const versionPath = useActiveVersion(docsPluginId)!.path;
 
   return (

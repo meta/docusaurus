@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {useEffect, useState} from 'react';
+import type React from 'react';
+import {type ReactNode, useEffect, useState} from 'react';
 import clsx from 'clsx';
 import Color from 'color';
 import Link from '@docusaurus/Link';
@@ -33,7 +34,7 @@ function wcagContrast(foreground: string, background: string) {
   return contrast > 7 ? 'AAA 🏅' : contrast > 4.5 ? 'AA 👍' : 'Fail 🔴';
 }
 
-export default function ColorGenerator(): JSX.Element {
+export default function ColorGenerator(): ReactNode {
   const {colorMode, setColorMode} = useColorMode();
 
   const isDarkTheme = colorMode === 'dark';

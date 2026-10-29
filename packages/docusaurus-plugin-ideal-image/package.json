@@ -1,14 +1,14 @@
 {
   "name": "@docusaurus/plugin-ideal-image",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Docusaurus Plugin to generate an almost ideal image (responsive, lazy-loading, and low quality placeholder).",
   "main": "lib/index.js",
   "types": "src/plugin-ideal-image.d.ts",
   "scripts": {
-    "build": "tsc --build && node ../../admin/scripts/copyUntypedFiles.js && prettier --config ../../.prettierrc --write \"lib/theme/**/*.js\"",
+    "build": "tsc --build && copy-untyped-files && format-gitignored-files \"lib/theme/**/*.js\"",
     "watch": "run-p -c copy:watch build:watch",
     "build:watch": "tsc --build --watch",
-    "copy:watch": "node ../../admin/scripts/copyUntypedFiles.js --watch"
+    "copy:watch": "copy-untyped-files --watch"
   },
   "publishConfig": {
     "access": "public"
@@ -20,26 +20,24 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@docusaurus/core": "3.2.1",
-    "@docusaurus/lqip-loader": "3.2.1",
-    "@docusaurus/responsive-loader": "^1.7.0",
-    "@docusaurus/theme-translations": "3.2.1",
-    "@docusaurus/types": "3.2.1",
-    "@docusaurus/utils-validation": "3.2.1",
-    "@slorber/react-ideal-image": "^0.0.12",
-    "react-waypoint": "^10.3.0",
-    "sharp": "^0.32.3",
-    "tslib": "^2.6.0",
-    "webpack": "^5.88.1"
+    "@docusaurus/core": "workspace:*",
+    "@docusaurus/lqip-loader": "workspace:*",
+    "@docusaurus/responsive-loader": "catalog:",
+    "@docusaurus/theme-translations": "workspace:*",
+    "@docusaurus/types": "workspace:*",
+    "@docusaurus/utils": "workspace:*",
+    "@docusaurus/utils-validation": "workspace:*",
+    "sharp": "catalog:",
+    "tslib": "catalog:",
+    "webpack": "catalog:"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.2.1",
-    "fs-extra": "^11.1.0"
+    "@docusaurus/module-type-aliases": "workspace:*"
   },
   "peerDependencies": {
-    "jimp": "*",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "jimp": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "peerDependenciesMeta": {
     "jimp": {
@@ -47,6 +45,6 @@
     }
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   }
 }

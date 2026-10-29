@@ -5,7 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
+import clsx from 'clsx';
+import {ThemeClassNames} from '@docusaurus/theme-common';
 import LinkItem from '@theme/Footer/LinkItem';
 import type {Props} from '@theme/Footer/Links/MultiColumn';
 
@@ -15,9 +17,8 @@ type ColumnItemType = ColumnType['items'][number];
 function ColumnLinkItem({item}: {item: ColumnItemType}) {
   return item.html ? (
     <li
-      className="footer__item"
+      className={clsx('footer__item', item.className)}
       // Developer provided the HTML, so assume it's safe.
-      // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{__html: item.html}}
     />
   ) : (
@@ -29,7 +30,12 @@ function ColumnLinkItem({item}: {item: ColumnItemType}) {
 
 function Column({column}: {column: ColumnType}) {
   return (
-    <div className="col footer__col">
+    <div
+      className={clsx(
+        ThemeClassNames.layout.footer.column,
+        'col footer__col',
+        column.className,
+      )}>
       <div className="footer__title">{column.title}</div>
       <ul className="footer__items clean-list">
         {column.items.map((item, i) => (
@@ -40,7 +46,7 @@ function Column({column}: {column: ColumnType}) {
   );
 }
 
-export default function FooterLinksMultiColumn({columns}: Props): JSX.Element {
+export default function FooterLinksMultiColumn({columns}: Props): ReactNode {
   return (
     <div className="row footer__links">
       {columns.map((column, i) => (

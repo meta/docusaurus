@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {ThemedComponent} from '@docusaurus/theme-common';
 import type {Props} from '@theme/ThemedImage';
 
-export default function ThemedImage(props: Props): JSX.Element {
+export default function ThemedImage(props: Props): ReactNode {
   const {sources, className: parentClassName, alt, ...propsRest} = props;
   return (
     <ThemedComponent className={parentClassName}>

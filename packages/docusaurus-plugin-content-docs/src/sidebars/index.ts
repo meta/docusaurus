@@ -5,13 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import _ from 'lodash';
 import logger from '@docusaurus/logger';
-import {loadFreshModule, Globby} from '@docusaurus/utils';
-import Yaml from 'js-yaml';
+import {loadFreshModule} from '@docusaurus/utils';
+import {glob} from '@docusaurus/glob';
+import * as Yaml from 'js-yaml';
 import combinePromises from 'combine-promises';
+import {fs, pathExists} from '@docusaurus/fs';
 import {validateSidebars, validateCategoryMetadataFile} from './validation';
 import {normalizeSidebars} from './normalization';
 import {processSidebars} from './processor';
@@ -41,7 +42,7 @@ export function resolveSidebarPathOption(
 }
 
 async function readCategoriesMetadata(contentPath: string) {
-  const categoryFiles = await Globby('**/_category_.{json,yml,yaml}', {
+  const categoryFiles = await glob('**/_category_.{json,yml,yaml}', {
     cwd: contentPath,
   });
   const categoryToFile = _.groupBy(categoryFiles, path.dirname);
@@ -83,12 +84,12 @@ async function loadSidebarsFileUnsafe(
   // Non-existent sidebars file: no sidebars
   // Note: this edge case can happen on versioned docs, not current version
   // We avoid creating empty versioned sidebars file with the CLI
-  if (!(await fs.pathExists(sidebarFilePath))) {
+  if (!(await pathExists(sidebarFilePath))) {
     return DisabledSidebars;
   }
 
   // We don't want sidebars to be cached because of hot reloading.
-  const module = await loadFreshModule(sidebarFilePath);
+  const module = await loadFreshModule(sidebarFilePath, {default: true});
 
   // TODO unsafe, need to refactor and improve validation
   return module as SidebarsConfig;

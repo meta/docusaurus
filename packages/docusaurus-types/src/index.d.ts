@@ -6,20 +6,38 @@
  */
 
 export {
-  ReportingSeverity,
+  RouterType,
   ThemeConfig,
-  MarkdownConfig,
-  DefaultParseFrontMatter,
-  ParseFrontMatter,
   DocusaurusConfig,
+  FutureConfig,
+  WebpackConfig,
+  StorageConfig,
+  VcsConfig,
+  VcsPreset,
+  VcsChangeInfo,
+  VscInitializeParams,
   Config,
 } from './config';
+
+export {
+  MDX1CompatOptions,
+  MarkdownConfig,
+  MarkdownHooks,
+  DefaultParseFrontMatter,
+  ParseFrontMatter,
+  OnBrokenMarkdownLinksFunction,
+  OnBrokenMarkdownImagesFunction,
+  OnUnusedMarkdownDirectivesFunction,
+} from './markdown';
+
+export {ReportingSeverity} from './reporting';
 
 export {
   SiteMetadata,
   DocusaurusContext,
   GlobalData,
   LoadContext,
+  SiteStorage,
   Props,
 } from './context';
 
@@ -62,11 +80,14 @@ export {
   Validate,
   ValidationSchema,
   AllContent,
+  RouteBuildMetadata,
   ConfigureWebpackUtils,
   PostCssOptions,
   HtmlTagObject,
   HtmlTags,
 } from './plugin';
+
+export {CurrentBundler} from './bundler';
 
 export {
   RouteConfig,

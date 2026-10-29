@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 
 import BrowserWindow from './index';
 
 // Quick and dirty component, to improve later if needed
-export default function IframeWindow({url}: {url: string}): JSX.Element {
+export default function IframeWindow({url}: {url: string}): ReactNode {
   return (
     <div style={{padding: 10}}>
       <BrowserWindow

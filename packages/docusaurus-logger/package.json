@@ -1,6 +1,6 @@
 {
   "name": "@docusaurus/logger",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "An encapsulated logger for semantically formatting console messages.",
   "main": "./lib/index.js",
   "repository": {
@@ -20,13 +20,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "chalk": "^4.1.2",
-    "tslib": "^2.6.0"
+    "@docusaurus/types": "workspace:*",
+    "tslib": "catalog:"
   },
   "engines": {
-    "node": ">=18.0"
-  },
-  "devDependencies": {
-    "@types/supports-color": "^8.1.1"
+    "node": ">=24.21"
   }
 }

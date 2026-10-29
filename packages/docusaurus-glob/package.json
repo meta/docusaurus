@@ -1,0 +1,32 @@
+{
+  "name": "@docusaurus/glob",
+  "version": "4.0.0",
+  "description": "File globbing, glob matching and file watching utilities for Docusaurus packages.",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/facebook/docusaurus.git",
+    "directory": "packages/docusaurus-glob"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "chokidar": "catalog:",
+    "micromatch": "catalog:",
+    "tinyglobby": "catalog:",
+    "tslib": "catalog:"
+  },
+  "engines": {
+    "node": ">=24.21"
+  },
+  "devDependencies": {
+    "@types/micromatch": "catalog:dev"
+  }
+}

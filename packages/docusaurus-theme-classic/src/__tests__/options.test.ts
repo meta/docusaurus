@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import _ from 'lodash';
+import {describe, expect, it} from 'vitest';
+import * as _ from 'lodash';
 
 import {
   normalizeThemeConfig,
@@ -32,6 +33,10 @@ function testValidateOptions(options: Options) {
 }
 
 describe('themeConfig', () => {
+  it('accepts empty theme config', () => {
+    expect(testValidateThemeConfig({})).toEqual(DEFAULT_CONFIG);
+  });
+
   it('accepts valid theme config', () => {
     const userConfig = {
       prism: {
@@ -52,6 +57,11 @@ describe('themeConfig', () => {
         sidebar: {
           hideable: true,
           autoCollapseCategories: false,
+        },
+      },
+      blog: {
+        sidebar: {
+          groupByYear: false,
         },
       },
       announcementBar: {
@@ -132,19 +142,6 @@ describe('themeConfig', () => {
         additionalLanguages: ['kotlin', 'java'],
       },
     });
-  });
-
-  it('rejects outdated sidebar options', () => {
-    expect(() =>
-      testValidateThemeConfig({hideableSidebar: true}),
-    ).toThrowErrorMatchingInlineSnapshot(
-      `"themeConfig.hideableSidebar has been moved to themeConfig.docs.sidebar.hideable."`,
-    );
-    expect(() =>
-      testValidateThemeConfig({autoCollapseSidebarCategories: true}),
-    ).toThrowErrorMatchingInlineSnapshot(
-      `"themeConfig.autoCollapseSidebarCategories has been moved to themeConfig.docs.sidebar.autoCollapseCategories."`,
-    );
   });
 
   it('allows possible types of navbar items', () => {
@@ -331,7 +328,9 @@ describe('themeConfig', () => {
     };
     expect(() =>
       testValidateThemeConfig(config),
-    ).toThrowErrorMatchingInlineSnapshot(`"Bad navbar item type joke"`);
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: Bad navbar item type joke]`,
+    );
   });
 
   it('rejects nested dropdowns', () => {
@@ -358,7 +357,9 @@ describe('themeConfig', () => {
     };
     expect(() =>
       testValidateThemeConfig(config),
-    ).toThrowErrorMatchingInlineSnapshot(`"Nested dropdowns are not allowed"`);
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: Nested dropdowns are not allowed]`,
+    );
   });
 
   it('rejects nested dropdowns 2', () => {
@@ -375,7 +376,9 @@ describe('themeConfig', () => {
     };
     expect(() =>
       testValidateThemeConfig(config),
-    ).toThrowErrorMatchingInlineSnapshot(`"Nested dropdowns are not allowed"`);
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[ValidationError: Nested dropdowns are not allowed]`,
+    );
   });
 
   it('rejects position attribute within dropdown', () => {
@@ -399,7 +402,7 @@ describe('themeConfig', () => {
     expect(() =>
       testValidateThemeConfig(config),
     ).toThrowErrorMatchingInlineSnapshot(
-      `""navbar.items[0].items[0].position" is not allowed"`,
+      `[ValidationError: "navbar.items[0].items[0].position" is not allowed]`,
     );
   });
 
@@ -419,7 +422,7 @@ describe('themeConfig', () => {
     expect(() =>
       testValidateThemeConfig(config),
     ).toThrowErrorMatchingInlineSnapshot(
-      `"One and only one between "to" and "href" should be provided"`,
+      `[ValidationError: One and only one between "to" and "href" should be provided]`,
     );
   });
 
@@ -548,7 +551,7 @@ describe('themeConfig', () => {
     expect(() =>
       testValidateThemeConfig(partialConfig),
     ).toThrowErrorMatchingInlineSnapshot(
-      `"The footer must be either simple or multi-column, and not a mix of the two. See: https://docusaurus.io/docs/api/themes/configuration#footer-links"`,
+      `[ValidationError: The footer must be either simple or multi-column, and not a mix of the two. See: https://docusaurus.io/docs/api/themes/configuration#footer-links]`,
     );
   });
 
@@ -628,7 +631,7 @@ describe('themeConfig', () => {
           },
         }),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""prism.magicComments[0]" must contain at least one of [line, block]"`,
+        `[ValidationError: "prism.magicComments[0]" must contain at least one of [line, block]]`,
       );
       expect(() =>
         testValidateThemeConfig({
@@ -637,7 +640,7 @@ describe('themeConfig', () => {
           },
         }),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""prism.magicComments[0].block.end" is required"`,
+        `[ValidationError: "prism.magicComments[0].block.end" is required]`,
       );
     });
   });
@@ -645,19 +648,6 @@ describe('themeConfig', () => {
   describe('color mode config', () => {
     const withDefaultValues = (colorMode?: ThemeConfig['colorMode']) =>
       _.merge({}, DEFAULT_CONFIG.colorMode, colorMode);
-
-    it('switch config', () => {
-      const colorMode = {
-        switchConfig: {
-          darkIcon: '🌙',
-        },
-      };
-      expect(() =>
-        testValidateThemeConfig({colorMode}),
-      ).toThrowErrorMatchingInlineSnapshot(
-        `"colorMode.switchConfig is deprecated. If you want to customize the icons for light and dark mode, swizzle IconLightMode, IconDarkMode, or ColorModeToggle instead."`,
-      );
-    });
 
     it('max config', () => {
       const colorMode: ThemeConfig['colorMode'] = {
@@ -747,7 +737,7 @@ describe('themeConfig', () => {
       expect(() =>
         testValidateThemeConfig({tableOfContents}),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""tableOfContents.minHeadingLevel" must be an integer"`,
+        `[ValidationError: "tableOfContents.minHeadingLevel" must be an integer]`,
       );
     });
 
@@ -758,7 +748,7 @@ describe('themeConfig', () => {
       expect(() =>
         testValidateThemeConfig({tableOfContents}),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""tableOfContents.maxHeadingLevel" must be an integer"`,
+        `[ValidationError: "tableOfContents.maxHeadingLevel" must be an integer]`,
       );
     });
 
@@ -769,7 +759,7 @@ describe('themeConfig', () => {
       expect(() =>
         testValidateThemeConfig({tableOfContents}),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""tableOfContents.minHeadingLevel" must be greater than or equal to 2"`,
+        `[ValidationError: "tableOfContents.minHeadingLevel" must be greater than or equal to 2]`,
       );
     });
 
@@ -780,7 +770,7 @@ describe('themeConfig', () => {
       expect(() =>
         testValidateThemeConfig({tableOfContents}),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""tableOfContents.minHeadingLevel" must be less than or equal to ref:maxHeadingLevel"`,
+        `[ValidationError: "tableOfContents.minHeadingLevel" must be less than or equal to ref:maxHeadingLevel]`,
       );
     });
 
@@ -791,7 +781,7 @@ describe('themeConfig', () => {
       expect(() =>
         testValidateThemeConfig({tableOfContents}),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""tableOfContents.maxHeadingLevel" must be greater than or equal to 2"`,
+        `[ValidationError: "tableOfContents.maxHeadingLevel" must be greater than or equal to 2]`,
       );
     });
 
@@ -802,7 +792,7 @@ describe('themeConfig', () => {
       expect(() =>
         testValidateThemeConfig({tableOfContents}),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""tableOfContents.maxHeadingLevel" must be less than or equal to 6"`,
+        `[ValidationError: "tableOfContents.maxHeadingLevel" must be less than or equal to 6]`,
       );
     });
 
@@ -814,8 +804,112 @@ describe('themeConfig', () => {
       expect(() =>
         testValidateThemeConfig({tableOfContents}),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""tableOfContents.minHeadingLevel" must be less than or equal to ref:maxHeadingLevel"`,
+        `[ValidationError: "tableOfContents.minHeadingLevel" must be less than or equal to ref:maxHeadingLevel]`,
       );
+    });
+  });
+
+  describe('docsVersionDropdown', () => {
+    describe('versions', () => {
+      it('accepts array of strings', () => {
+        const config = {
+          navbar: {
+            items: [
+              {
+                type: 'docsVersionDropdown',
+                versions: ['current', '1.0'],
+              },
+            ],
+          },
+        };
+        testValidateThemeConfig(config);
+      });
+
+      it('rejects empty array of strings', () => {
+        const config = {
+          navbar: {
+            items: [
+              {
+                type: 'docsVersionDropdown',
+                versions: [],
+              },
+            ],
+          },
+        };
+        expect(() =>
+          testValidateThemeConfig(config),
+        ).toThrowErrorMatchingInlineSnapshot(
+          `[ValidationError: "navbar.items[0].versions" must contain at least 1 items]`,
+        );
+      });
+
+      it('rejects array of non-strings', () => {
+        const config = {
+          navbar: {
+            items: [
+              {
+                type: 'docsVersionDropdown',
+                versions: [1, 2],
+              },
+            ],
+          },
+        };
+        expect(() =>
+          testValidateThemeConfig(config),
+        ).toThrowErrorMatchingInlineSnapshot(
+          `[ValidationError: "navbar.items[0].versions[0]" must be a string]`,
+        );
+      });
+
+      it('accepts dictionary of version objects', () => {
+        const config = {
+          navbar: {
+            items: [
+              {
+                type: 'docsVersionDropdown',
+                versions: {current: {}, '1.0': {label: '1.x'}},
+              },
+            ],
+          },
+        };
+        testValidateThemeConfig(config);
+      });
+
+      it('rejects empty dictionary of objects', () => {
+        const config = {
+          navbar: {
+            items: [
+              {
+                type: 'docsVersionDropdown',
+                versions: {},
+              },
+            ],
+          },
+        };
+        expect(() =>
+          testValidateThemeConfig(config),
+        ).toThrowErrorMatchingInlineSnapshot(
+          `[ValidationError: "navbar.items[0].versions" must have at least 1 key]`,
+        );
+      });
+
+      it('rejects dictionary of invalid objects', () => {
+        const config = {
+          navbar: {
+            items: [
+              {
+                type: 'docsVersionDropdown',
+                versions: {current: {}, '1.0': {invalid: '1.x'}},
+              },
+            ],
+          },
+        };
+        expect(() =>
+          testValidateThemeConfig(config),
+        ).toThrowErrorMatchingInlineSnapshot(
+          `[ValidationError: "navbar.items[0].versions.1.0.invalid" is not allowed]`,
+        );
+      });
     });
   });
 });
@@ -862,7 +956,7 @@ describe('validateOptions', () => {
           customCss: 42,
         }),
       ).toThrowErrorMatchingInlineSnapshot(
-        `""customCss" must be a string or an array of strings"`,
+        `[ValidationError: "customCss" must be a string or an array of strings]`,
       );
     });
   });

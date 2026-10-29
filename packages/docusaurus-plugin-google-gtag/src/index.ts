@@ -8,32 +8,26 @@
 import type {LoadContext, Plugin} from '@docusaurus/types';
 import type {PluginOptions, Options} from './options';
 
-function createConfigSnippet({
-  trackingID,
-  anonymizeIP,
-}: {
-  trackingID: string;
-  anonymizeIP: boolean;
-}): string {
-  return `gtag('config', '${trackingID}', { ${
-    anonymizeIP ? "'anonymize_ip': true" : ''
-  } });`;
+// Not sure why it's needed to expose vendored types 🤷‍️
+export {} from './vendor-gtag';
+
+function createConfigSnippet(trackingID: string): string {
+  return `gtag('config', '${trackingID}');`;
 }
 
 function createConfigSnippets({
   trackingID: trackingIDArray,
-  anonymizeIP,
 }: PluginOptions): string {
-  return trackingIDArray
-    .map((trackingID) => createConfigSnippet({trackingID, anonymizeIP}))
-    .join('\n');
+  return trackingIDArray.map(createConfigSnippet).join('\n');
 }
 
 export default function pluginGoogleGtag(
   context: LoadContext,
   options: PluginOptions,
-): Plugin {
-  const isProd = process.env.NODE_ENV === 'production';
+): Plugin | null {
+  if (process.env.NODE_ENV !== 'production') {
+    return null;
+  }
 
   const firstTrackingId = options.trackingID[0];
 
@@ -45,13 +39,10 @@ export default function pluginGoogleGtag(
     },
 
     getClientModules() {
-      return isProd ? ['./gtag'] : [];
+      return ['./gtag'];
     },
 
     injectHtmlTags() {
-      if (!isProd) {
-        return {};
-      }
       return {
         // Gtag includes GA by default, so we also preconnect to
         // google-analytics.
@@ -70,7 +61,6 @@ export default function pluginGoogleGtag(
               href: 'https://www.googletagmanager.com',
             },
           },
-          // https://developers.google.com/analytics/devguides/collection/gtagjs/#install_the_global_site_tag
           {
             tagName: 'script',
             attributes: {

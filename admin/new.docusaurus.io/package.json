@@ -1,11 +1,8 @@
 {
   "name": "new.docusaurus.io",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "private": true,
   "scripts": {
     "start": "npx --package netlify-cli netlify dev"
-  },
-  "dependencies": {
-    "@netlify/functions": "^1.6.0"
   }
 }

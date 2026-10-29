@@ -4,25 +4,20 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import path from 'path';
-import process from 'process';
+import path from 'node:path';
+import process from 'node:process';
+import {visit} from 'unist-util-visit';
 import logger from '@docusaurus/logger';
-import {posixPath} from '@docusaurus/utils';
-import {transformNode} from '../utils';
-
-// @ts-expect-error: TODO see https://github.com/microsoft/TypeScript/issues/49721
-import type {Transformer, Processor, Parent} from 'unified';
+import {toMessageRelativeFilePath, posixPath} from '@docusaurus/utils';
+import {formatNodePositionExtraMessage, transformNode} from '../utils';
+import type {Root} from 'mdast';
+import type {Parent} from 'unist';
+import type {Transformer, Processor, Plugin} from 'unified';
+import type {Directives, TextDirective} from 'mdast-util-directive';
 import type {
-  Directives,
-  TextDirective,
-  // @ts-expect-error: TODO see https://github.com/microsoft/TypeScript/issues/49721
-} from 'mdast-util-directive';
-
-// TODO as of April 2023, no way to import/re-export this ESM type easily :/
-// This might change soon, likely after TS 5.2
-// See https://github.com/microsoft/TypeScript/issues/49721#issuecomment-1517839391
-// import type {Plugin} from 'unified';
-type Plugin = any; // TODO fix this asap
+  MarkdownConfig,
+  OnUnusedMarkdownDirectivesFunction,
+} from '@docusaurus/types';
 
 type DirectiveType = Directives['type'];
 
@@ -49,17 +44,32 @@ function formatDirectiveName(directive: Directives) {
   return `${prefix}${directive.name}`;
 }
 
-function formatDirectivePosition(directive: Directives): string | undefined {
-  return directive.position?.start
-    ? logger.interpolate`number=${directive.position.start.line}:number=${directive.position.start.column}`
-    : undefined;
+// Helpful hints for directives that used to be supported by Docusaurus
+const removedContainerDirectiveHints: {[name: string]: string} = {
+  // TODO Docusaurus v5: remove this migration hint
+  caution:
+    'the :::caution admonition has been removed in Docusaurus v4, use :::warning instead',
+  secondary:
+    'the :::secondary admonition has been removed in Docusaurus v4, use :::note instead',
+  success:
+    'the :::success admonition has been removed in Docusaurus v4, use :::tip instead',
+  important:
+    'the :::important admonition has been removed in Docusaurus v4, use :::info instead',
+};
+
+function formatDirectiveHint(directive: Directives): string {
+  const hint =
+    directive.type === 'containerDirective'
+      ? removedContainerDirectiveHints[directive.name]
+      : undefined;
+  return hint ? ` - ${hint}` : '';
 }
 
 function formatUnusedDirectiveMessage(directive: Directives) {
   const name = formatDirectiveName(directive);
-  const position = formatDirectivePosition(directive);
-
-  return `- ${name} ${position ? `(${position})` : ''}`;
+  return `- ${name}${formatNodePositionExtraMessage(
+    directive,
+  )}${formatDirectiveHint(directive)}`;
 }
 
 function formatUnusedDirectivesMessage({
@@ -82,19 +92,33 @@ ${warningMessages}
 Your content might render in an unexpected way. Visit ${customSupportUrl} to find out why and how to fix it.`;
 }
 
-function logUnusedDirectivesWarning({
-  directives,
-  filePath,
-}: {
-  directives: Directives[];
-  filePath: string;
-}) {
-  if (directives.length > 0) {
-    const message = formatUnusedDirectivesMessage({
-      directives,
-      filePath,
-    });
-    logger.warn(message);
+export type PluginOptions = {
+  onUnusedMarkdownDirectives: MarkdownConfig['hooks']['onUnusedMarkdownDirectives'];
+};
+
+function asFunction(
+  onUnusedMarkdownDirectives: PluginOptions['onUnusedMarkdownDirectives'],
+): OnUnusedMarkdownDirectivesFunction {
+  if (typeof onUnusedMarkdownDirectives === 'string') {
+    const extraHelp =
+      onUnusedMarkdownDirectives === 'throw'
+        ? logger.interpolate`\nTo ignore this error, use the code=${'siteConfig.markdown.hooks.onUnusedMarkdownDirectives'} option.`
+        : '';
+    return ({sourceFilePath, directives}) => {
+      const relativePath = toMessageRelativeFilePath(sourceFilePath);
+      logger.report(onUnusedMarkdownDirectives)`${formatUnusedDirectivesMessage(
+        {
+          directives,
+          filePath: relativePath,
+        },
+      )}${extraHelp}`;
+    };
+  } else {
+    return (params) =>
+      onUnusedMarkdownDirectives({
+        ...params,
+        sourceFilePath: toMessageRelativeFilePath(params.sourceFilePath),
+      });
   }
 }
 
@@ -130,35 +154,38 @@ function isUnusedDirective(directive: Directives) {
   return !directive.data;
 }
 
-const plugin: Plugin = function plugin(this: Processor): Transformer {
-  return async (tree, file) => {
-    const {visit} = await import('unist-util-visit');
+const plugin: Plugin<PluginOptions[], Root> = function plugin(
+  this: Processor,
+  options,
+): Transformer<Root> {
+  const onUnusedMarkdownDirectives = asFunction(
+    options.onUnusedMarkdownDirectives,
+  );
 
+  return (tree, file) => {
     const unusedDirectives: Directives[] = [];
 
-    visit<Parent, DirectiveType[]>(
-      tree,
-      directiveTypes,
-      (directive: Directives) => {
-        // If directive data is set (hName/hProperties set by admonitions)
-        // this usually means the directive has been handled by another plugin
-        if (isUnusedDirective(directive)) {
-          if (isSimpleTextDirective(directive)) {
-            transformSimpleTextDirectiveToString(directive);
-          } else {
-            unusedDirectives.push(directive);
-          }
+    // @ts-expect-error: TODO fix type
+    visit<Parent, Directives>(tree, directiveTypes, (directive: Directives) => {
+      // If directive data is set (hName/hProperties set by admonitions)
+      // this usually means the directive has been handled by another plugin
+      if (isUnusedDirective(directive)) {
+        if (isSimpleTextDirective(directive)) {
+          transformSimpleTextDirectiveToString(directive);
+        } else {
+          unusedDirectives.push(directive);
         }
-      },
-    );
+      }
+    });
 
-    // We only enable these warnings for the client compiler
-    // This avoids emitting duplicate warnings in prod mode
+    // We only process unused directives for the client compiler
+    // This avoids emitting duplicate errors/warnings in prod mode
     // Note: the client compiler is used in both dev/prod modes
-    if (file.data.compilerName === 'client') {
-      logUnusedDirectivesWarning({
+    // Also: the client compiler is what gets used when using crossCompilerCache
+    if (file.data.compilerName === 'client' && unusedDirectives.length > 0) {
+      onUnusedMarkdownDirectives({
+        sourceFilePath: file.path!,
         directives: unusedDirectives,
-        filePath: file.path,
       });
     }
   };

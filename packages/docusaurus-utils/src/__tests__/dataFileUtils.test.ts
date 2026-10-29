@@ -5,12 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from 'path';
+import {describe, expect, it} from 'vitest';
+import path from 'node:path';
 import {
   findFolderContainingFile,
   getFolderContainingFile,
   getDataFilePath,
-  getDataFileData,
+  readDataFile,
 } from '../dataFileUtils';
 
 describe('getDataFilePath', () => {
@@ -125,46 +126,60 @@ describe('getDataFilePath', () => {
 });
 
 describe('getDataFileData', () => {
-  const fixturesDir = path.join(__dirname, '__fixtures__/dataFiles/actualData');
-  function readDataFile(filePath: string) {
-    return getDataFileData(
-      {
-        filePath,
-        contentPaths: {contentPath: fixturesDir, contentPathLocalized: ''},
-        fileType: 'test',
-      },
-      (content) => {
-        // @ts-expect-error: good enough
-        if (content.a !== 1) {
-          throw new Error('Nope');
-        }
-        return content;
-      },
+  function testFile(filePath: string) {
+    const contentPath = path.join(
+      __dirname,
+      '__fixtures__/dataFiles/dataFiles',
     );
+    const contentPathLocalized = path.join(contentPath, 'localized');
+    return readDataFile({
+      filePath,
+      contentPaths: {contentPath, contentPathLocalized},
+    });
   }
 
   it('returns undefined for nonexistent file', async () => {
-    await expect(readDataFile('nonexistent.yml')).resolves.toBeUndefined();
-  });
-
-  it('read valid yml author file', async () => {
-    await expect(readDataFile('valid.yml')).resolves.toEqual({a: 1});
+    await expect(testFile('nonexistent.yml')).resolves.toBeUndefined();
   });
 
   it('read valid json author file', async () => {
-    await expect(readDataFile('valid.json')).resolves.toEqual({a: 1});
+    await expect(testFile('dataFile.json')).resolves.toEqual({
+      content: 'json',
+    });
   });
 
-  it('fail to read invalid yml', async () => {
-    await expect(
-      readDataFile('bad.yml'),
-    ).rejects.toThrowErrorMatchingInlineSnapshot(`"Nope"`);
+  it('read valid yml author file using localized source in priority', async () => {
+    await expect(testFile('dataFile.yml')).resolves.toEqual({
+      content: 'localized yaml',
+    });
   });
 
-  it('fail to read invalid json', async () => {
+  it('throw for invalid file', async () => {
     await expect(
-      readDataFile('bad.json'),
-    ).rejects.toThrowErrorMatchingInlineSnapshot(`"Nope"`);
+      testFile('invalid.yml'),
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `
+      [Error: The file at "packages/docusaurus-utils/src/__tests__/__fixtures__/dataFiles/dataFiles/invalid.yml" looks invalid (not Yaml nor JSON).]
+      Cause: [YAMLException: expected the node content, but found ',' (1:13)
+
+       1 | value: [one,,two]
+      -----------------^]
+    `,
+    );
+  });
+
+  it('uses YAML 1.2 core types for data files', async () => {
+    await expect(testFile('schema.yml')).resolves.toEqual({
+      date: '2000-07-23',
+      defaults: {title: 'Default title'},
+      page: {'<<': {title: 'Default title'}},
+    });
+  });
+
+  it('rejects data files without a YAML document', async () => {
+    await expect(testFile('comments.yml')).rejects.toThrow(
+      'looks invalid (not Yaml nor JSON)',
+    );
   });
 });
 
@@ -202,10 +217,10 @@ describe('getFolderContainingFile', () => {
         'dataFileUtils.test.ts',
       ),
     ).rejects.toThrowErrorMatchingInlineSnapshot(`
-            "File "dataFileUtils.test.ts" does not exist in any of these folders:
-            - /foo
-            - /bar
-            - /baz"
-          `);
+      [Error: File "dataFileUtils.test.ts" does not exist in any of these folders:
+      - /foo
+      - /bar
+      - /baz]
+    `);
   });
 });

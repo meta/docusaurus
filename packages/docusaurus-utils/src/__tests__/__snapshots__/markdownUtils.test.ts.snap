@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`parseMarkdownFile deletes only first heading 1`] = `
+exports[`parseMarkdownFile > deletes only first heading 1`] = `
 {
   "content": "# Markdown Title
 
@@ -15,7 +15,7 @@ test test test # test bar
 }
 `;
 
-exports[`parseMarkdownFile deletes only first heading 2 1`] = `
+exports[`parseMarkdownFile > deletes only first heading 2 1`] = `
 {
   "content": "# test
 
@@ -30,7 +30,7 @@ test3",
 }
 `;
 
-exports[`parseMarkdownFile does not warn for duplicate title if markdown title is not at the top 1`] = `
+exports[`parseMarkdownFile > does not warn for duplicate title if markdown title is not at the top 1`] = `
 {
   "content": "foo
 
@@ -43,7 +43,7 @@ exports[`parseMarkdownFile does not warn for duplicate title if markdown title i
 }
 `;
 
-exports[`parseMarkdownFile handles code blocks 1`] = `
+exports[`parseMarkdownFile > handles code blocks 1`] = `
 {
   "content": "\`\`\`js
 code
@@ -56,7 +56,7 @@ Content",
 }
 `;
 
-exports[`parseMarkdownFile handles code blocks 2`] = `
+exports[`parseMarkdownFile > handles code blocks 2`] = `
 {
   "content": "\`\`\`\`js
 Foo
@@ -73,7 +73,7 @@ Content",
 }
 `;
 
-exports[`parseMarkdownFile handles code blocks 3`] = `
+exports[`parseMarkdownFile > handles code blocks 3`] = `
 {
   "content": "\`\`\`\`js
 Foo
@@ -88,7 +88,7 @@ Content",
 }
 `;
 
-exports[`parseMarkdownFile ignores markdown title if its not a first text 1`] = `
+exports[`parseMarkdownFile > ignores markdown title if its not a first text 1`] = `
 {
   "content": "foo
 # test",
@@ -98,7 +98,7 @@ exports[`parseMarkdownFile ignores markdown title if its not a first text 1`] = 
 }
 `;
 
-exports[`parseMarkdownFile parse markdown with custom front matter parser 1`] = `
+exports[`parseMarkdownFile > parse markdown with custom front matter parser 1`] = `
 {
   "content": "Some text",
   "contentTitle": undefined,
@@ -112,7 +112,7 @@ exports[`parseMarkdownFile parse markdown with custom front matter parser 1`] = 
 }
 `;
 
-exports[`parseMarkdownFile parse markdown with front matter 1`] = `
+exports[`parseMarkdownFile > parse markdown with front matter 1`] = `
 {
   "content": "Some text",
   "contentTitle": undefined,
@@ -123,7 +123,7 @@ exports[`parseMarkdownFile parse markdown with front matter 1`] = `
 }
 `;
 
-exports[`parseMarkdownFile parses first heading as contentTitle 1`] = `
+exports[`parseMarkdownFile > parses first heading as contentTitle 1`] = `
 {
   "content": "# Markdown Title
 
@@ -134,7 +134,7 @@ Some text",
 }
 `;
 
-exports[`parseMarkdownFile parses front-matter and ignore h2 1`] = `
+exports[`parseMarkdownFile > parses front-matter and ignore h2 1`] = `
 {
   "content": "## test",
   "contentTitle": undefined,
@@ -145,7 +145,7 @@ exports[`parseMarkdownFile parses front-matter and ignore h2 1`] = `
 }
 `;
 
-exports[`parseMarkdownFile parses title only 1`] = `
+exports[`parseMarkdownFile > parses title only 1`] = `
 {
   "content": "# test",
   "contentTitle": "test",
@@ -154,7 +154,7 @@ exports[`parseMarkdownFile parses title only 1`] = `
 }
 `;
 
-exports[`parseMarkdownFile parses title only alternate 1`] = `
+exports[`parseMarkdownFile > parses title only alternate 1`] = `
 {
   "content": "test
 ===",
@@ -164,7 +164,7 @@ exports[`parseMarkdownFile parses title only alternate 1`] = `
 }
 `;
 
-exports[`parseMarkdownFile reads front matter only 1`] = `
+exports[`parseMarkdownFile > reads front matter only 1`] = `
 {
   "content": "",
   "contentTitle": undefined,
@@ -175,7 +175,7 @@ exports[`parseMarkdownFile reads front matter only 1`] = `
 }
 `;
 
-exports[`parseMarkdownFile warns about duplicate titles (front matter + markdown alternate) 1`] = `
+exports[`parseMarkdownFile > warns about duplicate titles (front matter + markdown alternate) 1`] = `
 {
   "content": "Markdown Title alternate
 ================
@@ -189,7 +189,7 @@ Some text",
 }
 `;
 
-exports[`parseMarkdownFile warns about duplicate titles (front matter + markdown) 1`] = `
+exports[`parseMarkdownFile > warns about duplicate titles (front matter + markdown) 1`] = `
 {
   "content": "# Markdown Title
 
@@ -202,7 +202,7 @@ Some text",
 }
 `;
 
-exports[`parseMarkdownFile warns about duplicate titles 1`] = `
+exports[`parseMarkdownFile > warns about duplicate titles 1`] = `
 {
   "content": "# test",
   "contentTitle": "test",

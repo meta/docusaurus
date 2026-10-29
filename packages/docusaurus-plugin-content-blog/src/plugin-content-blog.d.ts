@@ -4,31 +4,28 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 /// <reference types="@docusaurus/module-type-aliases" />
 
 declare module '@docusaurus/plugin-content-blog' {
-  import type {LoadedMDXContent} from '@docusaurus/mdx-loader';
-  import type {MDXOptions} from '@docusaurus/mdx-loader';
+  import type {LoadedMDXContent, MDXOptions} from '@docusaurus/mdx-loader';
   import type {
-    FrontMatterTag,
-    Tag,
+    TagMetadata,
     LastUpdateData,
     FrontMatterLastUpdate,
+    TagsPluginOptions,
   } from '@docusaurus/utils';
-  import type {DocusaurusConfig, Plugin, LoadContext} from '@docusaurus/types';
+  import type {
+    DocusaurusConfig,
+    Plugin,
+    LoadContext,
+    OptionValidationContext,
+  } from '@docusaurus/types';
   import type {Item as FeedItem} from 'feed';
   import type {Overwrite} from 'utility-types';
 
   export type Assets = {
     /**
-     * If `metadata.yarn workspace website typecheck
-4
-yarn workspace v1.22.19yarn workspace website typecheck
-4
-yarn workspace v1.22.19yarn workspace website typecheck
-4
-yarn workspace v1.22.19image` is a collocated image path, this entry will be the
+     * If `metadata.image` is a collocated image path, this entry will be the
      * bundler-generated image path. Otherwise, it's empty, and the image URL
      * should be accessed through `frontMatter.image`.
      */
@@ -43,7 +40,36 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
     authorsImageUrls: (string | undefined)[];
   };
 
-  export type Author = {
+  /**
+   * Note we don't pre-define all possible platforms
+   * Users can add their own custom platforms if needed
+   */
+  export type SocialPlatformKey =
+    | 'twitter'
+    | 'github'
+    | 'linkedin'
+    | 'stackoverflow'
+    | 'x'
+    | 'bluesky'
+    | 'instagram'
+    | 'threads'
+    | 'mastodon'
+    | 'youtube'
+    | 'twitch';
+
+  /**
+   * Social platforms of the author.
+   * The record value is usually the fully qualified link of the social profile.
+   * For pre-defined platforms, it's possible to pass a handle instead
+   */
+  export type AuthorSocials = Partial<Record<SocialPlatformKey, string>> & {
+    /**
+     * Unknown keys are allowed: users can pass additional social platforms
+     */
+    [customAuthorSocialPlatform: string]: string;
+  };
+
+  export type AuthorAttributes = {
     /**
      * If `name` doesn't exist, an `imageURL` is expected.
      */
@@ -68,10 +94,48 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
      */
     email?: string;
     /**
-     * Unknown keys are allowed, so that we can pass custom fields to authors,
-     * e.g., `twitter`.
+     * Social platforms of the author
+     * Usually displayed as a list of social icon links.
      */
-    [key: string]: unknown;
+    socials?: AuthorSocials;
+    /**
+     * Description of the author.
+     */
+    description?: string;
+    /**
+     * Unknown keys are allowed, so that we can pass custom fields to authors.
+     */
+    [customAuthorAttribute: string]: unknown;
+  };
+
+  /**
+   * Metadata of the author's page, if it exists.
+   */
+  export type AuthorPage = {permalink: string};
+
+  /**
+   * Normalized author metadata.
+   */
+  export type Author = AuthorAttributes & {
+    /**
+     * Author key, if the author was loaded from the authors map.
+     * `null` means the author was declared inline.
+     */
+    key: string | null;
+    /**
+     * Metadata of the author's page.
+     * `null` means the author doesn't have a dedicated author page.
+     */
+    page: AuthorPage | null;
+  };
+
+  /** Authors coming from the AuthorsMap always have a key */
+  export type AuthorWithKey = Author & {key: string};
+
+  /** What the authors list page should know about each author. */
+  export type AuthorItemProp = AuthorWithKey & {
+    /** Number of blog posts with this author. */
+    count: number;
   };
 
   /**
@@ -80,24 +144,28 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
    */
   export type BlogPostFrontMatter = {
     /**
-     * @deprecated Use `slug` instead.
-     */
-    id?: string;
-    /**
      * Will override the default title collected from h1 heading.
      * @see {@link BlogPostMetadata.title}
      */
     title?: string;
+    /**
+     * Will be used for SEO page metadata and override BlogPostMetadata.title.
+     */
+    title_meta?: string;
     /**
      * Will override the default excerpt.
      * @see {@link BlogPostMetadata.description}
      */
     description?: string;
     /**
+     * Will override the default excerpt.
+     */
+    sidebar_label?: string;
+    /**
      * Front matter tags, unnormalized.
      * @see {@link BlogPostMetadata.tags}
      */
-    tags?: FrontMatterTag[];
+    tags?: string[];
     /** Custom slug appended after `/<baseUrl>/<routeBasePath>/` */
     slug?: string;
     /**
@@ -120,34 +188,6 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
      * @see {@link BlogPostMetadata.authors}
      */
     authors?: BlogPostFrontMatterAuthors;
-    /**
-     * To be deprecated
-     * @see {@link BlogPostFrontMatterAuthor.name}
-     */
-    author?: string;
-    /**
-     * To be deprecated
-     * @see {@link BlogPostFrontMatterAuthor.title}
-     */
-    author_title?: string;
-    /**
-     * To be deprecated
-     * @see {@link BlogPostFrontMatterAuthor.url}
-     */
-    author_url?: string;
-    /**
-     * To be deprecated
-     * @see {@link BlogPostFrontMatterAuthor.imageURL}
-     */
-    author_image_url?: string;
-
-    /** @deprecated v1 legacy */
-    authorTitle?: string;
-    /** @deprecated v1 legacy */
-    authorURL?: string;
-    /** @deprecated v1 legacy */
-    authorImageURL?: string;
-
     /** Used in the head meta. Should use `assets.image` in priority. */
     image?: string;
     /** Used in the head meta. */
@@ -165,7 +205,7 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
     last_update?: FrontMatterLastUpdate;
   };
 
-  export type BlogPostFrontMatterAuthor = Author & {
+  export type BlogPostFrontMatterAuthor = AuthorAttributes & {
     /**
      * Will be normalized into the `imageURL` prop.
      */
@@ -236,7 +276,7 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
     /** Front matter, as-is. */
     readonly frontMatter: BlogPostFrontMatter & {[key: string]: unknown};
     /** Tags, normalized. */
-    readonly tags: Tag[];
+    readonly tags: TagMetadata[];
     /**
      * Marks the post as unlisted and visibly hides it unless directly accessed.
      */
@@ -260,10 +300,26 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
   }) => string | undefined;
 
   export type FeedType = 'rss' | 'atom' | 'json';
+
+  export type FeedXSLTOptions = {
+    /**
+     * RSS XSLT file path, relative to the blog content folder.
+     * If null, no XSLT file is used and the feed will be displayed as raw XML.
+     */
+    rss: string | null;
+    /**
+     * Atom XSLT file path, relative to the blog content folder.
+     * If null, no XSLT file is used and the feed will be displayed as raw XML.
+     */
+    atom: string | null;
+  };
+
   /**
    * Normalized feed options used within code.
    */
   export type FeedOptions = {
+    /** Enable feeds xslt stylesheets */
+    xslt: FeedXSLTOptions;
     /** If `null`, no feed is generated. */
     type?: FeedType[] | null;
     /** Title of generated feed. */
@@ -297,15 +353,10 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
   };
 
   /**
-   * Duplicate from ngryman/reading-time to keep stability of API.
+   * Options for reading time calculation using Intl.Segmenter.
    */
   type ReadingTimeOptions = {
     wordsPerMinute?: number;
-    /**
-     * @param char The character to be matched.
-     * @returns `true` if this character is a word bound.
-     */
-    wordBound?: (char: string) => boolean;
   };
 
   /**
@@ -315,24 +366,22 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
   export type ReadingTimeFunction = (params: {
     /** Markdown content. */
     content: string;
+    /** Locale for word segmentation. */
+    locale: string;
     /** Front matter. */
     frontMatter?: BlogPostFrontMatter & {[key: string]: unknown};
-    /** Options accepted by ngryman/reading-time. */
+    /** Options for reading time calculation. */
     options?: ReadingTimeOptions;
   }) => number;
 
   /**
-   * @returns The reading time directly plugged into metadata. `undefined` to
-   * hide reading time for a specific post.
+   * @returns The reading time directly plugged into metadata.
+   * `undefined` to hide reading time for a specific post.
    */
   export type ReadingTimeFunctionOption = (
-    /**
-     * The `options` is not provided by the caller; the user can inject their
-     * own option values into `defaultReadingTime`
-     */
     params: Required<Omit<Parameters<ReadingTimeFunction>[0], 'options'>> & {
       /**
-       * The default reading time implementation from ngryman/reading-time.
+       * The default reading time implementation.
        */
       defaultReadingTime: ReadingTimeFunction;
     },
@@ -345,103 +394,122 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
   /**
    * Plugin options after normalization.
    */
-  export type PluginOptions = MDXOptions & {
-    /** Plugin ID. */
-    id?: string;
-    /**
-     * Path to the blog content directory on the file system, relative to site
-     * directory.
-     */
-    path: string;
-    /**
-     * URL route for the blog section of your site. **DO NOT** include a
-     * trailing slash. Use `/` to put the blog at root path.
-     */
-    routeBasePath: string;
-    /**
-     * URL route for the tags section of your blog. Will be appended to
-     * `routeBasePath`.
-     */
-    tagsBasePath: string;
-    /**
-     * URL route for the pages section of your blog. Will be appended to
-     * `routeBasePath`.
-     */
-    pageBasePath: string;
-    /**
-     * URL route for the archive section of your blog. Will be appended to
-     * `routeBasePath`. **DO NOT** include a trailing slash. Use `null` to
-     * disable generation of archive.
-     */
-    archiveBasePath: string | null;
-    /**
-     * Array of glob patterns matching Markdown files to be built, relative to
-     * the content path.
-     */
-    include: string[];
-    /**
-     * Array of glob patterns matching Markdown files to be excluded. Serves as
-     * refinement based on the `include` option.
-     */
-    exclude: string[];
-    /**
-     *  Number of posts to show per page in the listing page. Use `'ALL'` to
-     * display all posts on one listing page.
-     */
-    postsPerPage: number | 'ALL';
-    /** Root component of the blog listing page. */
-    blogListComponent: string;
-    /** Root component of each blog post page. */
-    blogPostComponent: string;
-    /** Root component of the tags list page. */
-    blogTagsListComponent: string;
-    /** Root component of the "posts containing tag" page. */
-    blogTagsPostsComponent: string;
-    /** Root component of the blog archive page. */
-    blogArchiveComponent: string;
-    /** Blog page title for better SEO. */
-    blogTitle: string;
-    /** Blog page meta description for better SEO. */
-    blogDescription: string;
-    /**
-     * Number of blog post elements to show in the blog sidebar. `'ALL'` to show
-     * all blog posts; `0` to disable.
-     */
-    blogSidebarCount: number | 'ALL';
-    /** Title of the blog sidebar. */
-    blogSidebarTitle: string;
-    /** Truncate marker marking where the summary ends. */
-    truncateMarker: RegExp;
-    /** Show estimated reading time for the blog post. */
-    showReadingTime: boolean;
-    /** Blog feed. */
-    feedOptions: FeedOptions;
-    /**
-     * Base URL to edit your site. The final URL is computed by `editUrl +
-     * relativePostPath`. Using a function allows more nuanced control for each
-     * file. Omitting this variable entirely will disable edit links.
-     */
-    editUrl?: string | EditUrlFunction;
-    /**
-     * The edit URL will target the localized file, instead of the original
-     * unlocalized file. Ignored when `editUrl` is a function.
-     */
-    editLocalizedFiles?: boolean;
-    /** Path to the authors map file, relative to the blog content directory. */
-    authorsMapPath: string;
-    /** A callback to customize the reading time number displayed. */
-    readingTime: ReadingTimeFunctionOption;
-    /** Governs the direction of blog post sorting. */
-    sortPosts: 'ascending' | 'descending';
-    /**	Whether to display the last date the doc was updated. */
-    showLastUpdateTime: boolean;
-    /** Whether to display the author who last updated the doc. */
-    showLastUpdateAuthor: boolean;
-    /** An optional function which can be used to transform blog posts
-     *  (filter, modify, delete, etc...).
-     */
-    processBlogPosts: ProcessBlogPostsFn;
-  };
+  export type PluginOptions = MDXOptions &
+    TagsPluginOptions & {
+      /** Plugin ID. */
+      id: string;
+      /**
+       * Path to the blog content directory on the file system, relative to site
+       * directory.
+       */
+      path: string;
+      /**
+       * URL route for the blog section of your site. **DO NOT** include a
+       * trailing slash. Use `/` to put the blog at root path.
+       */
+      routeBasePath: string;
+      /**
+       * URL route for the tags section of your blog. Will be appended to
+       * `routeBasePath`.
+       */
+      tagsBasePath: string;
+      /**
+       * URL route for the pages section of your blog. Will be appended to
+       * `routeBasePath`.
+       */
+      pageBasePath: string;
+      /**
+       * URL route for the archive section of your blog. Will be appended to
+       * `routeBasePath`. **DO NOT** include a trailing slash. Use `null` to
+       * disable generation of archive.
+       */
+      archiveBasePath: string | null;
+      /**
+       * Array of glob patterns matching Markdown files to be built, relative to
+       * the content path.
+       */
+      include: string[];
+      /**
+       * Array of glob patterns matching Markdown files to be excluded. Serves as
+       * refinement based on the `include` option.
+       */
+      exclude: string[];
+      /**
+       *  Number of posts to show per page in the listing page. Use `'ALL'` to
+       * display all posts on one listing page.
+       */
+      postsPerPage: number | 'ALL';
+      /** Root component of the blog listing page. */
+      blogListComponent: string;
+      /** Root component of each blog post page. */
+      blogPostComponent: string;
+      /** Root component of the tags list page. */
+      blogTagsListComponent: string;
+      /** Root component of the "posts containing tag" page. */
+      blogTagsPostsComponent: string;
+      /** Root component of the authors list page. */
+      blogAuthorsListComponent: string;
+      /** Root component of the "posts containing author" page. */
+      blogAuthorsPostsComponent: string;
+      /** Root component of the blog archive page. */
+      blogArchiveComponent: string;
+      /** Blog page title for better SEO. */
+      blogTitle: string;
+      /** Blog page meta description for better SEO. */
+      blogDescription: string;
+      /**
+       * Number of blog post elements to show in the blog sidebar. `'ALL'` to show
+       * all blog posts; `0` to disable.
+       */
+      blogSidebarCount: number | 'ALL';
+      /** Title of the blog sidebar. */
+      blogSidebarTitle: string;
+      /** Truncate marker marking where the summary ends. */
+      truncateMarker: RegExp;
+      /** Show estimated reading time for the blog post. */
+      showReadingTime: boolean;
+      /** Blog feed. */
+      feedOptions: FeedOptions;
+      /**
+       * Base URL to edit your site. The final URL is computed by `editUrl +
+       * relativePostPath`. Using a function allows more nuanced control for each
+       * file. Omitting this variable entirely will disable edit links.
+       */
+      editUrl?: string | EditUrlFunction;
+      /**
+       * The edit URL will target the localized file, instead of the original
+       * unlocalized file. Ignored when `editUrl` is a function.
+       */
+      editLocalizedFiles?: boolean;
+      /** Path to the authors map file, relative to the blog content directory. */
+      authorsMapPath: string;
+      /** A callback to customize the reading time number displayed. */
+      readingTime: ReadingTimeFunctionOption;
+      /** Governs the direction of blog post sorting. */
+      sortPosts: 'ascending' | 'descending';
+      /**	Whether to display the last date the blog post was updated. */
+      showLastUpdateTime: boolean;
+      /** Whether to display the author who last updated the blog post. */
+      showLastUpdateAuthor: boolean;
+      /** An optional function which can be used to transform blog posts
+       *  (filter, modify, delete, etc...).
+       */
+      processBlogPosts: ProcessBlogPostsFn;
+      /* Base path for the authors page */
+      authorsBasePath: string;
+      /** The behavior of Docusaurus when it finds inline authors. */
+      onInlineAuthors: 'ignore' | 'log' | 'warn' | 'throw';
+      /** The behavior of Docusaurus when it finds untruncated blog posts. */
+      onUntruncatedBlogPosts: 'ignore' | 'log' | 'warn' | 'throw';
+    };
+
+  export type UserFeedXSLTOptions =
+    | boolean
+    | null
+    | {
+        rss?: string | boolean | null;
+        atom?: string | boolean | null;
+      };
 
   /**
    * Feed options, as provided by user config. `type` accepts `all` as shortcut
@@ -451,6 +519,8 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
     {
       /** Type of feed to be generated. Use `null` to disable generation. */
       type?: FeedOptions['type'] | 'all' | FeedType;
+      /** User-provided XSLT config for feeds, un-normalized */
+      xslt?: UserFeedXSLTOptions;
     }
   >;
   /**
@@ -468,6 +538,7 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
     title: string;
     permalink: string;
     unlisted: boolean;
+    date: Date | string;
   };
 
   export type BlogSidebar = {
@@ -475,17 +546,23 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
     items: BlogSidebarItem[];
   };
 
+  export type AuthorsMap = {[authorKey: string]: AuthorWithKey};
+
   export type BlogContent = {
-    blogSidebarTitle: string;
+    blogTitle: string; // for translation purposes
+    blogDescription: string; // for translation purposes
+    blogSidebarTitle: string; // for translation purposes
     blogPosts: BlogPost[];
-    blogListPaginated: BlogPaginated[];
     blogTags: BlogTags;
     blogTagsListPath: string;
+    authorsMap?: AuthorsMap;
   };
 
   export type BlogMetadata = {
     /** the path to the base of the blog */
     blogBasePath: string;
+    /** the path to the authors list page */
+    authorsListPath: string;
     /** title of the overall blog */
     blogTitle: string;
   };
@@ -494,7 +571,7 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
     [permalink: string]: BlogTag;
   };
 
-  export type BlogTag = Tag & {
+  export type BlogTag = TagMetadata & {
     /** Blog post permalinks. */
     items: string[];
     pages: BlogPaginated[];
@@ -554,9 +631,14 @@ yarn workspace v1.22.19image` is a collocated image path, this entry will be the
     context: LoadContext,
     options: PluginOptions,
   ): Promise<Plugin<BlogContent>>;
+
+  export function validateOptions(
+    args: OptionValidationContext<Options | undefined, PluginOptions>,
+  ): PluginOptions;
 }
 
 declare module '@theme/BlogPostPage' {
+  import type {ReactNode} from 'react';
   import type {
     BlogPostFrontMatter,
     BlogSidebar,
@@ -577,18 +659,23 @@ declare module '@theme/BlogPostPage' {
     readonly blogMetadata: BlogMetadata;
   }
 
-  export default function BlogPostPage(props: Props): JSX.Element;
+  export default function BlogPostPage(props: Props): ReactNode;
 }
 
 declare module '@theme/BlogPostPage/Metadata' {
-  export default function BlogPostPageMetadata(): JSX.Element;
+  import type {ReactNode} from 'react';
+
+  export default function BlogPostPageMetadata(): ReactNode;
 }
 
 declare module '@theme/BlogPostPage/StructuredData' {
-  export default function BlogPostStructuredData(): JSX.Element;
+  import type {ReactNode} from 'react';
+
+  export default function BlogPostStructuredData(): ReactNode;
 }
 
 declare module '@theme/BlogListPage' {
+  import type {ReactNode} from 'react';
   import type {Content} from '@theme/BlogPostPage';
   import type {
     BlogSidebar,
@@ -607,10 +694,11 @@ declare module '@theme/BlogListPage' {
     readonly items: readonly {readonly content: Content}[];
   }
 
-  export default function BlogListPage(props: Props): JSX.Element;
+  export default function BlogListPage(props: Props): ReactNode;
 }
 
 declare module '@theme/BlogListPage/StructuredData' {
+  import type {ReactNode} from 'react';
   import type {Content} from '@theme/BlogPostPage';
   import type {
     BlogSidebar,
@@ -629,10 +717,11 @@ declare module '@theme/BlogListPage/StructuredData' {
     readonly items: readonly {readonly content: Content}[];
   }
 
-  export default function BlogListPageStructuredData(props: Props): JSX.Element;
+  export default function BlogListPageStructuredData(props: Props): ReactNode;
 }
 
 declare module '@theme/BlogTagsListPage' {
+  import type {ReactNode} from 'react';
   import type {BlogSidebar} from '@docusaurus/plugin-content-blog';
   import type {TagsListItem} from '@docusaurus/utils';
 
@@ -643,10 +732,54 @@ declare module '@theme/BlogTagsListPage' {
     readonly tags: TagsListItem[];
   }
 
-  export default function BlogTagsListPage(props: Props): JSX.Element;
+  export default function BlogTagsListPage(props: Props): ReactNode;
+}
+
+declare module '@theme/Blog/Pages/BlogAuthorsListPage' {
+  import type {ReactNode} from 'react';
+  import type {
+    AuthorItemProp,
+    BlogSidebar,
+  } from '@docusaurus/plugin-content-blog';
+
+  export interface Props {
+    /** Blog sidebar. */
+    readonly sidebar: BlogSidebar;
+    /** All authors declared in this blog. */
+    readonly authors: AuthorItemProp[];
+  }
+
+  export default function BlogAuthorsListPage(props: Props): ReactNode;
+}
+
+declare module '@theme/Blog/Pages/BlogAuthorsPostsPage' {
+  import type {ReactNode} from 'react';
+  import type {Content} from '@theme/BlogPostPage';
+  import type {
+    AuthorItemProp,
+    BlogSidebar,
+    BlogPaginatedMetadata,
+  } from '@docusaurus/plugin-content-blog';
+
+  export interface Props {
+    /** Blog sidebar. */
+    readonly sidebar: BlogSidebar;
+    /** Metadata of this author. */
+    readonly author: AuthorItemProp;
+    /** Looks exactly the same as the posts list page */
+    readonly listMetadata: BlogPaginatedMetadata;
+    /**
+     * Array of blog posts included on this page. Every post's metadata is also
+     * available.
+     */
+    readonly items: readonly {readonly content: Content}[];
+  }
+
+  export default function BlogAuthorsPostsPage(props: Props): ReactNode;
 }
 
 declare module '@theme/BlogTagsPostsPage' {
+  import type {ReactNode} from 'react';
   import type {Content} from '@theme/BlogPostPage';
   import type {
     BlogSidebar,
@@ -668,10 +801,11 @@ declare module '@theme/BlogTagsPostsPage' {
     readonly items: readonly {readonly content: Content}[];
   }
 
-  export default function BlogTagsPostsPage(props: Props): JSX.Element;
+  export default function BlogTagsPostsPage(props: Props): ReactNode;
 }
 
 declare module '@theme/BlogArchivePage' {
+  import type {ReactNode} from 'react';
   import type {Content} from '@theme/BlogPostPage';
 
   /** We may add extra metadata or prune some metadata from here */
@@ -685,5 +819,5 @@ declare module '@theme/BlogArchivePage' {
     };
   }
 
-  export default function BlogArchivePage(props: Props): JSX.Element;
+  export default function BlogArchivePage(props: Props): ReactNode;
 }

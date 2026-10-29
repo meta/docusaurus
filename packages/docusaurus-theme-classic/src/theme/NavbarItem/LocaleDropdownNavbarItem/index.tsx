@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {useAlternatePageUtils} from '@docusaurus/theme-common/internal';
 import {translate} from '@docusaurus/Translate';
-import {useLocation} from '@docusaurus/router';
+import {mergeSearchStrings, useHistorySelector} from '@docusaurus/theme-common';
 import DropdownNavbarItem from '@theme/NavbarItem/DropdownNavbarItem';
 import IconLanguage from '@theme/Icon/Language';
 import type {LinkLikeNavbarItemProps} from '@theme/NavbarItem';
@@ -17,30 +17,80 @@ import type {Props} from '@theme/NavbarItem/LocaleDropdownNavbarItem';
 
 import styles from './styles.module.css';
 
+function useLocaleDropdownUtils() {
+  const {
+    siteConfig,
+    i18n: {localeConfigs},
+  } = useDocusaurusContext();
+  const alternatePageUtils = useAlternatePageUtils();
+  const search = useHistorySelector((history) => history.location.search);
+  const hash = useHistorySelector((history) => history.location.hash);
+
+  const getLocaleConfig = (locale: string) => {
+    const localeConfig = localeConfigs[locale];
+    if (!localeConfig) {
+      throw new Error(
+        `Docusaurus bug, no locale config found for locale=${locale}`,
+      );
+    }
+    return localeConfig;
+  };
+
+  const getBaseURLForLocale = (locale: string) => {
+    const localeConfig = getLocaleConfig(locale);
+    const isSameDomain = localeConfig.url === siteConfig.url;
+    if (isSameDomain) {
+      // Shorter paths if localized sites are hosted on the same domain
+      // This reduces HTML size a bit
+      return `pathname://${alternatePageUtils.createUrl({
+        locale,
+        fullyQualified: false,
+      })}`;
+    }
+    return alternatePageUtils.createUrl({
+      locale,
+      fullyQualified: true,
+    });
+  };
+
+  return {
+    getURL: (locale: string, options: {queryString: string | undefined}) => {
+      // We have 2 query strings because
+      // - there's the current one
+      // - there's one user can provide through navbar config
+      // see https://github.com/facebook/docusaurus/pull/8915
+      const finalSearch = mergeSearchStrings(
+        [search, options.queryString],
+        'append',
+      );
+      return `${getBaseURLForLocale(locale)}${finalSearch}${hash}`;
+    },
+    getLabel: (locale: string) => {
+      return getLocaleConfig(locale).label;
+    },
+    getLang: (locale: string) => {
+      return getLocaleConfig(locale).htmlLang;
+    },
+  };
+}
+
 export default function LocaleDropdownNavbarItem({
   mobile,
   dropdownItemsBefore,
   dropdownItemsAfter,
-  queryString = '',
+  queryString,
   ...props
-}: Props): JSX.Element {
-  const {
-    i18n: {currentLocale, locales, localeConfigs},
-  } = useDocusaurusContext();
-  const alternatePageUtils = useAlternatePageUtils();
-  const {search, hash} = useLocation();
+}: Props): ReactNode {
+  const utils = useLocaleDropdownUtils();
 
+  const {
+    i18n: {currentLocale, locales},
+  } = useDocusaurusContext();
   const localeItems = locales.map((locale): LinkLikeNavbarItemProps => {
-    const baseTo = `pathname://${alternatePageUtils.createUrl({
-      locale,
-      fullyQualified: false,
-    })}`;
-    // preserve ?search#hash suffix on locale switches
-    const to = `${baseTo}${search}${hash}${queryString}`;
     return {
-      label: localeConfigs[locale]!.label,
-      lang: localeConfigs[locale]!.htmlLang,
-      to,
+      label: utils.getLabel(locale),
+      lang: utils.getLang(locale),
+      to: utils.getURL(locale, {queryString}),
       target: '_self',
       autoAddBaseUrl: false,
       className:
@@ -65,7 +115,7 @@ export default function LocaleDropdownNavbarItem({
         id: 'theme.navbar.mobileLanguageDropdown.label',
         description: 'The label for the mobile language switcher dropdown',
       })
-    : localeConfigs[currentLocale]!.label;
+    : utils.getLabel(currentLocale);
 
   return (
     <DropdownNavbarItem

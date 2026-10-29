@@ -6,7 +6,7 @@
  */
 
 import * as lqip from './lqip';
-import type {LoaderContext, LoaderModule} from 'webpack';
+import type {LoaderContext} from 'webpack';
 
 type Options = {
   base64: boolean;
@@ -20,14 +20,14 @@ export default async function lqipLoader(
   this.cacheable();
   const callback = this.async();
   const imgPath = this.resourcePath;
-  let content = contentBuffer.toString('utf8');
+  const content = contentBuffer.toString('utf8');
   const contentIsUrlExport =
     /^(?:export default|module.exports =) "data:.*base64,.*/.test(content);
   const contentIsFileExport = /^(?:export default|module.exports =) .*/.test(
     content,
   );
 
-  let source = '';
+  let source: string;
 
   if (contentIsUrlExport) {
     source = content.match(
@@ -35,10 +35,12 @@ export default async function lqipLoader(
     )!.groups!.source!;
   } else {
     if (!contentIsFileExport) {
-      // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
-      const fileLoader = require('file-loader') as LoaderModule['default'];
-      // @ts-expect-error: type is a bit unwieldy...
-      content = fileLoader!.call(this, contentBuffer) as string;
+      callback(
+        new Error(
+          `The LQIP loader must be chained after a loader exporting the image URL, such as @docusaurus/responsive-loader. Image path: ${imgPath}`,
+        ),
+      );
+      return;
     }
     source = content.match(
       /^(?:export default|module.exports =) (?<source>.*);/,

@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-import React from 'react';
-import {renderHook} from '@testing-library/react-hooks';
+// @vitest-environment jsdom
+import {describe, expect, it} from 'vitest';
+import {renderHook} from '@testing-library/react';
 import useGlobalData, {
   useAllPluginInstancesData,
   usePluginData,
@@ -19,10 +19,10 @@ describe('useGlobalData', () => {
     expect(
       renderHook(() => useGlobalData(), {
         wrapper: ({children}) => (
-          <Context.Provider
+          <Context
             value={{globalData: {foo: 'bar'}} as unknown as DocusaurusContext}>
             {children}
-          </Context.Provider>
+          </Context>
         ),
       }).result.current,
     ).toEqual({foo: 'bar'});
@@ -34,14 +34,14 @@ describe('useAllPluginInstancesData', () => {
     expect(
       renderHook(() => useAllPluginInstancesData('foo'), {
         wrapper: ({children}) => (
-          <Context.Provider
+          <Context
             value={
               {
                 globalData: {foo: {default: 'default', bar: 'bar'}},
               } as unknown as DocusaurusContext
             }>
             {children}
-          </Context.Provider>
+          </Context>
         ),
       }).result.current,
     ).toEqual({default: 'default', bar: 'bar'});
@@ -52,18 +52,18 @@ describe('useAllPluginInstancesData', () => {
       () =>
         renderHook(() => useAllPluginInstancesData('bar', {failfast: true}), {
           wrapper: ({children}) => (
-            <Context.Provider
+            <Context
               value={
                 {
                   globalData: {foo: {default: 'default', bar: 'bar'}},
                 } as unknown as DocusaurusContext
               }>
               {children}
-            </Context.Provider>
+            </Context>
           ),
         }).result.current,
     ).toThrowErrorMatchingInlineSnapshot(
-      `"Docusaurus plugin global data not found for "bar" plugin."`,
+      `[Error: Docusaurus plugin global data not found for "bar" plugin.]`,
     );
   });
 });
@@ -73,14 +73,14 @@ describe('usePluginData', () => {
     expect(
       renderHook(() => usePluginData('foo', 'bar'), {
         wrapper: ({children}) => (
-          <Context.Provider
+          <Context
             value={
               {
                 globalData: {foo: {default: 'default', bar: 'bar'}},
               } as unknown as DocusaurusContext
             }>
             {children}
-          </Context.Provider>
+          </Context>
         ),
       }).result.current,
     ).toBe('bar');
@@ -90,14 +90,14 @@ describe('usePluginData', () => {
     expect(
       renderHook(() => usePluginData('foo'), {
         wrapper: ({children}) => (
-          <Context.Provider
+          <Context
             value={
               {
                 globalData: {foo: {default: 'default', bar: 'bar'}},
               } as unknown as DocusaurusContext
             }>
             {children}
-          </Context.Provider>
+          </Context>
         ),
       }).result.current,
     ).toBe('default');
@@ -108,18 +108,18 @@ describe('usePluginData', () => {
       () =>
         renderHook(() => usePluginData('foo', 'baz', {failfast: true}), {
           wrapper: ({children}) => (
-            <Context.Provider
+            <Context
               value={
                 {
                   globalData: {foo: {default: 'default', bar: 'bar'}},
                 } as unknown as DocusaurusContext
               }>
               {children}
-            </Context.Provider>
+            </Context>
           ),
         }).result.current,
     ).toThrowErrorMatchingInlineSnapshot(
-      `"Docusaurus plugin global data not found for "foo" plugin with id "baz"."`,
+      `[Error: Docusaurus plugin global data not found for "foo" plugin with id "baz".]`,
     );
   });
 });

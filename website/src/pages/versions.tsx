@@ -5,12 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type {ReactNode} from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Link from '@docusaurus/Link';
 import Translate from '@docusaurus/Translate';
 import {
   useVersions,
   useLatestVersion,
+  type GlobalVersion,
 } from '@docusaurus/plugin-content-docs/client';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
@@ -34,7 +36,7 @@ function ReleaseNotesLabel() {
   );
 }
 
-export default function Version(): JSX.Element {
+export default function Version(): ReactNode {
   const {
     siteConfig: {organizationName, projectName},
   } = useDocusaurusContext();
@@ -47,6 +49,13 @@ export default function Version(): JSX.Element {
     (version) => version !== latestVersion && version.name !== 'current',
   );
   const repoUrl = `https://github.com/${organizationName!}/${projectName!}`;
+
+  function getReleaseNotesUrl(version: GlobalVersion): string {
+    if (version.name === '2.x') {
+      return 'https://github.com/facebook/docusaurus/blob/main/CHANGELOG-v2.md';
+    }
+    return `${repoUrl}/releases/tag/v${version.name}`;
+  }
 
   return (
     <Layout
@@ -80,7 +89,7 @@ export default function Version(): JSX.Element {
                   </Link>
                 </td>
                 <td>
-                  <Link to={`${repoUrl}/releases/tag/v${latestVersion.name}`}>
+                  <Link to={getReleaseNotesUrl(latestVersion)}>
                     <ReleaseNotesLabel />
                   </Link>
                 </td>
@@ -141,7 +150,7 @@ export default function Version(): JSX.Element {
                       </Link>
                     </td>
                     <td>
-                      <Link href={`${repoUrl}/releases/tag/v${version.name}`}>
+                      <Link href={getReleaseNotesUrl(version)}>
                         <ReleaseNotesLabel />
                       </Link>
                     </td>

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, {type ReactNode} from 'react';
 
 import {useThemeConfig} from '@docusaurus/theme-common';
 import FooterLinks from '@theme/Footer/Links';
@@ -13,7 +13,7 @@ import FooterLogo from '@theme/Footer/Logo';
 import FooterCopyright from '@theme/Footer/Copyright';
 import FooterLayout from '@theme/Footer/Layout';
 
-function Footer(): JSX.Element | null {
+function Footer(): ReactNode {
   const {footer} = useThemeConfig();
   if (!footer) {
     return null;

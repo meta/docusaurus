@@ -29,6 +29,6 @@ export function DocusaurusContextProvider({
   children,
 }: {
   children: ReactNode;
-}): JSX.Element {
-  return <Context.Provider value={contextValue}>{children}</Context.Provider>;
+}): ReactNode {
+  return <Context value={contextValue}>{children}</Context>;
 }

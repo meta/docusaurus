@@ -1,6 +1,6 @@
 {
   "name": "@docusaurus/utils",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "Node utility functions for Docusaurus packages.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -18,44 +18,25 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@docusaurus/logger": "3.2.1",
-    "@docusaurus/utils-common": "3.2.1",
-    "@svgr/webpack": "^6.5.1",
-    "escape-string-regexp": "^4.0.0",
-    "file-loader": "^6.2.0",
-    "fs-extra": "^11.1.1",
-    "github-slugger": "^1.5.0",
-    "globby": "^11.1.0",
-    "gray-matter": "^4.0.3",
-    "jiti": "^1.20.0",
-    "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21",
-    "micromatch": "^4.0.5",
-    "prompts": "^2.4.2",
-    "resolve-pathname": "^3.0.0",
-    "shelljs": "^0.8.5",
-    "tslib": "^2.6.0",
-    "url-loader": "^4.1.1",
-    "webpack": "^5.88.1"
+    "@11ty/gray-matter": "catalog:",
+    "@docusaurus/fs": "workspace:*",
+    "@docusaurus/logger": "workspace:*",
+    "@docusaurus/types": "workspace:*",
+    "execa": "catalog:",
+    "github-slugger": "catalog:",
+    "jiti": "catalog:",
+    "js-yaml": "catalog:",
+    "lodash": "catalog:",
+    "p-queue": "catalog:",
+    "resolve-pathname": "catalog:",
+    "tslib": "catalog:",
+    "webpack": "catalog:"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=24.21"
   },
   "devDependencies": {
-    "@docusaurus/types": "3.2.1",
-    "@types/dedent": "^0.7.0",
-    "@types/github-slugger": "^1.3.0",
-    "@types/micromatch": "^4.0.2",
-    "@types/react-dom": "^18.2.7",
-    "dedent": "^0.7.0",
-    "tmp-promise": "^3.0.3"
-  },
-  "peerDependencies": {
-    "@docusaurus/types": "*"
-  },
-  "peerDependenciesMeta": {
-    "@docusaurus/types": {
-      "optional": true
-    }
+    "@types/react-dom": "catalog:",
+    "dedent": "catalog:dev"
   }
 }

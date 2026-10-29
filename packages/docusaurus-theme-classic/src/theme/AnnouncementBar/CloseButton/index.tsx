@@ -5,16 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import {translate} from '@docusaurus/Translate';
 import IconClose from '@theme/Icon/Close';
 import type {Props} from '@theme/AnnouncementBar/CloseButton';
 import styles from './styles.module.css';
 
-export default function AnnouncementBarCloseButton(
-  props: Props,
-): JSX.Element | null {
+export default function AnnouncementBarCloseButton(props: Props): ReactNode {
   return (
     <button
       type="button"

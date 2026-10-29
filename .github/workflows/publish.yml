@@ -1,0 +1,100 @@
+name: Publish
+
+on:
+  # Publish canary on push
+  push:
+    branches:
+      - main
+      - docusaurus-v**
+    paths:
+      - .github/workflows/publish.yml
+      - package.json
+      - packages/**
+
+  # Publish release on manual dispatch
+  workflow_dispatch:
+    inputs:
+      npm_version:
+        description: 'NPM Version - Including prerelease suffix (optional)'
+        required: true
+        default: 3.0.0-alpha.0
+      npm_tag:
+        type: choice
+        description: 'NPM Dist Tag - Use `latest` for official stable releases'
+        # default: canary
+        required: true
+        options:
+          - canary
+          - alpha
+          - beta
+          - rc
+          - latest
+          - v3-stable
+
+permissions:
+  id-token: write # For OIDC, see https://docs.npmjs.com/trusted-publishers
+  contents: write # For GitHub tags
+
+# ⚠️ No GitHub Actions cache on purpose, enforced by GitHub for every step
+# A poisoned cache increases the chance of a compromised release being published
+# See https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax#cache-mode
+cache-mode: none
+
+jobs:
+  publish:
+    name: Publish NPM release
+    if: github.repository == 'facebook/docusaurus'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0 # Needed to get the commit number with "git rev-list --count HEAD"
+      - name: Install pnpm
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+        with:
+          # Only install pnpm: Node.js and dependencies are installed by later steps
+          install: false
+          node-version-file: false
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          check-latest: true
+          #  ⚠️ Do not use any cache on purpose
+          # It increases the chance of a compromised release being publish
+          # See https://github.com/actions/setup-node/issues/1445#issuecomment-4040130833
+          # cache: pnpm
+          package-manager-cache: false
+      - name: Prepare git
+        run: |
+          git config --global user.name "Docusaurus"
+          git config --global user.email "github@docusaurus.io"
+      - name: Installation
+        run: pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || pnpm install --frozen-lockfile
+
+      - name: Publish Canary release
+        if: |
+          github.event_name == 'push' ||
+          (github.event_name == 'workflow_dispatch' && github.event.inputs.npm_tag == 'canary')
+        run: |
+          pnpm canary:bumpVersion
+          pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || pnpm install --frozen-lockfile
+          pnpm canary:publish
+
+      - name: Publish NPM release
+        if: |
+          github.event_name == 'workflow_dispatch' && github.event.inputs.npm_tag != 'canary'
+        run: |
+          pnpm lerna version "${{ github.event.inputs.npm_version }}" \
+            --force-publish \
+            --exact \
+            --loglevel verbose \
+            --yes \
+            --no-push
+          pnpm --recursive publish --tag "${{ github.event.inputs.npm_tag }}" --no-git-checks
+          git push origin v"${{ github.event.inputs.npm_version }}"
+
+        # TODO should we push the package version local updates to Git?
+        #  "main" is currently protected, even GitHub Actions can't push to it
+        #  However it remains useful to push the git tag

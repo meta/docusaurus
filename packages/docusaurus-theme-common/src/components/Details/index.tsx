@@ -10,6 +10,7 @@ import React, {
   useState,
   type ComponentProps,
   type ReactElement,
+  type ReactNode,
 } from 'react';
 import clsx from 'clsx';
 import useBrokenLinks from '@docusaurus/useBrokenLinks';
@@ -47,7 +48,7 @@ export function Details({
   summary,
   children,
   ...props
-}: DetailsProps): JSX.Element {
+}: DetailsProps): ReactNode {
   useBrokenLinks().collectAnchor(props.id);
 
   const isBrowser = useIsBrowser();
@@ -102,13 +103,22 @@ export function Details({
           // Don't do this, it breaks close animation!
           // setOpen(false);
         }
+      }}
+      onToggle={(e) => {
+        // The toggle event also fires when React syncs the open attribute
+        // See https://github.com/facebook/docusaurus/pull/12277
+        const isOpen = e.currentTarget.open;
+        if (isOpen === !collapsed) {
+          return;
+        }
+        setCollapsed(!isOpen);
+        setOpen(isOpen);
       }}>
       {summaryElement}
 
       <Collapsible
         lazy={false} // Content might matter for SEO in this case
         collapsed={collapsed}
-        disableSSRStyle // Allows component to work fine even with JS disabled!
         onCollapseTransitionEnd={(newCollapsed) => {
           setCollapsed(newCollapsed);
           setOpen(!newCollapsed);

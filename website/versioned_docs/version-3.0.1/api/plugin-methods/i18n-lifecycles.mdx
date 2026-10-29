@@ -6,7 +6,7 @@ sidebar_position: 3
 
 Plugins use these lifecycles to load i18n-related data.
 
-## `getTranslationFiles({content})` {#getTranslationFiles}
+## `getTranslationFiles({content})` {/* #getTranslationFiles */}
 
 Plugins declare the JSON translation files they want to use.
 
@@ -43,7 +43,7 @@ export default function (context, options) {
 }
 ```
 
-## `translateContent({content,translationFiles})` {#translateContent}
+## `translateContent({content,translationFiles})` {/* #translateContent */}
 
 Translate the plugin content, using the localized translation files.
 
@@ -72,7 +72,7 @@ export default function (context, options) {
 }
 ```
 
-## `translateThemeConfig({themeConfig,translationFiles})` {#translateThemeConfig}
+## `translateThemeConfig({themeConfig,translationFiles})` {/* #translateThemeConfig */}
 
 Translate the site `themeConfig` labels, using the localized translation files.
 
@@ -99,7 +99,7 @@ export default function (context, options) {
 }
 ```
 
-## `async getDefaultCodeTranslationMessages()` {#getDefaultCodeTranslationMessages}
+## `async getDefaultCodeTranslationMessages()` {/* #getDefaultCodeTranslationMessages */}
 
 Themes using the `<Translate>` API can provide default code translation messages.
 

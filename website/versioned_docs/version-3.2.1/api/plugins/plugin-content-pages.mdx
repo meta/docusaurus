@@ -9,7 +9,7 @@ import APITable from '@site/src/components/APITable';
 
 The default pages plugin for Docusaurus. The classic template ships with this plugin with default configurations. This plugin provides [creating pages](guides/creating-pages.mdx) functionality.
 
-## Installation {#installation}
+## Installation {/* #installation */}
 
 ```bash npm2yarn
 npm install --save @docusaurus/plugin-content-pages
@@ -23,7 +23,7 @@ You can configure this plugin through the [preset options](../../using-plugins.m
 
 :::
 
-## Configuration {#configuration}
+## Configuration {/* #configuration */}
 
 Accepted fields:
 
@@ -47,7 +47,7 @@ Accepted fields:
 </APITable>
 ```
 
-### Example configuration {#ex-config}
+### Example configuration {/* #ex-config */}
 
 You can configure this plugin through preset options or plugin options.
 
@@ -79,7 +79,7 @@ const config = {
 };
 ```
 
-## Markdown front matter {#markdown-front-matter}
+## Markdown front matter {/* #markdown-front-matter */}
 
 Markdown pages can use the following Markdown [front matter](../../guides/markdown-features/markdown-features-intro.mdx#front-matter) metadata fields, enclosed by a line `---` on either side.
 
@@ -118,18 +118,18 @@ draft: true
 Markdown page content
 ```
 
-## i18n {#i18n}
+## i18n {/* #i18n */}
 
 Read the [i18n introduction](../../i18n/i18n-introduction.mdx) first.
 
-### Translation files location {#translation-files-location}
+### Translation files location {/* #translation-files-location */}
 
 - **Base path**: `website/i18n/[locale]/docusaurus-plugin-content-pages`
 - **Multi-instance path**: `website/i18n/[locale]/docusaurus-plugin-content-pages-[pluginId]`
 - **JSON files**: extracted with [`docusaurus write-translations`](../../cli.mdx#docusaurus-write-translations-sitedir)
 - **Markdown files**: `website/i18n/[locale]/docusaurus-plugin-content-pages`
 
-### Example file-system structure {#example-file-system-structure}
+### Example file-system structure {/* #example-file-system-structure */}
 
 ```bash
 website/i18n/[locale]/docusaurus-plugin-content-pages

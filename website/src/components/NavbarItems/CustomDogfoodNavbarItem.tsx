@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import type {ReactNode} from 'react';
 import {useLocation} from '@docusaurus/router';
 
 // used to dogfood custom navbar elements are possible
@@ -13,7 +13,7 @@ import {useLocation} from '@docusaurus/router';
 export default function CustomDogfoodNavbarItem(props: {
   content: string;
   mobile?: boolean;
-}): JSX.Element | null {
+}): ReactNode {
   const {pathname} = useLocation();
   const shouldRender = pathname === '/tests' || pathname.startsWith('/tests/');
   if (!shouldRender) {
@@ -22,7 +22,6 @@ export default function CustomDogfoodNavbarItem(props: {
   return (
     <button
       onClick={() => {
-        // eslint-disable-next-line no-alert
         alert("I'm a custom navbar item type example");
       }}
       type="button">

@@ -1,7 +1,8 @@
 ---
 title: Author
 slug: author
-author: ozaki
+authors:
+  - name: ozaki
 last_update:
   author: seb
 ---

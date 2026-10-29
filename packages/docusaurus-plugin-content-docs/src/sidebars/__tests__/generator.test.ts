@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {jest} from '@jest/globals';
+import {describe, expect, it, vi} from 'vitest';
 import {DefaultSidebarItemsGenerator} from '../generator';
 import {DefaultNumberPrefixParser} from '../../numberPrefix';
 import {isCategoryIndex} from '../../docs';
@@ -33,12 +33,12 @@ describe('DefaultSidebarItemsGenerator', () => {
   }
 
   it('generates empty sidebar slice when no docs and emit a warning', async () => {
-    const consoleWarn = jest.spyOn(console, 'warn');
+    using warn = vi.spyOn(console, 'warn');
     const sidebarSlice = await testDefaultSidebarItemsGenerator({
       docs: [],
     });
     expect(sidebarSlice).toEqual([]);
-    expect(consoleWarn).toHaveBeenCalledWith(
+    expect(warn).toHaveBeenCalledWith(
       expect.stringMatching(
         /.*\[WARNING\].* No docs found in [^.]*\..*: can't auto-generate a sidebar\..*/,
       ),
@@ -63,6 +63,7 @@ describe('DefaultSidebarItemsGenerator', () => {
           sourceDirName: '.',
           sidebarPosition: 2,
           frontMatter: {
+            sidebar_key: 'doc1-sidebar-key',
             sidebar_label: 'doc1 sidebar label',
             sidebar_custom_props: {custom: 'prop'},
           },
@@ -129,6 +130,7 @@ describe('DefaultSidebarItemsGenerator', () => {
         },
         '02-Guides/01-SubGuides': {
           label: 'SubGuides (metadata file label)',
+          key: 'SubGuides-category-unique-key',
           link: {
             type: 'generated-index',
             slug: 'subGuides-generated-index-slug',
@@ -253,7 +255,9 @@ describe('DefaultSidebarItemsGenerator', () => {
           sourceDirName: 'subfolder/subsubfolder',
           title: 'Subsubsubfolder category label',
           sidebarPosition: undefined,
-          frontMatter: {},
+          frontMatter: {
+            sidebar_key: 'doc1-sidebar-key',
+          },
         },
         {
           id: 'doc2',
@@ -331,6 +335,7 @@ describe('DefaultSidebarItemsGenerator', () => {
       categoriesMetadata: {
         Category: {
           label: 'Category label',
+          description: 'Category description',
           link: {
             type: 'doc',
             id: 'doc3', // Using a "local doc id" ("doc1" instead of "parent/doc1") on purpose
@@ -510,9 +515,9 @@ describe('DefaultSidebarItemsGenerator', () => {
       });
 
     expect(() => generateSidebar()).toThrowErrorMatchingInlineSnapshot(`
-            "Can't find any doc with ID foo.
-            Available doc IDs:
-            - intro"
-          `);
+      [Error: Can't find any doc with ID foo.
+      Available doc IDs:
+      - intro]
+    `);
   });
 });

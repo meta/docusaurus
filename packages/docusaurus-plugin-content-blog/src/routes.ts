@@ -11,9 +11,15 @@ import {
   docuHash,
   aliasedSitePathToRelativePath,
 } from '@docusaurus/utils';
-import {shouldBeListed} from './blogUtils';
+import {paginateBlogPosts, shouldBeListed} from './blogUtils';
 
-import {toTagProp, toTagsProp} from './props';
+import {
+  toAuthorItemProp,
+  toBlogSidebarProp,
+  toTagProp,
+  toTagsProp,
+} from './props';
+import {groupBlogPostsByAuthorKey} from './authors';
 import type {
   PluginContentLoadedActions,
   RouteConfig,
@@ -26,7 +32,7 @@ import type {
   BlogContent,
   PluginOptions,
   BlogPost,
-  BlogSidebar,
+  AuthorWithKey,
 } from '@docusaurus/plugin-content-blog';
 
 type CreateAllRoutesParam = {
@@ -55,21 +61,30 @@ export async function buildAllRoutes({
     blogListComponent,
     blogPostComponent,
     blogTagsListComponent,
+    blogAuthorsListComponent,
+    blogAuthorsPostsComponent,
     blogTagsPostsComponent,
     blogArchiveComponent,
     routeBasePath,
     archiveBasePath,
-    blogTitle,
+    authorsBasePath,
+    postsPerPage,
+    pageBasePath,
   } = options;
-  const pluginId = options.id!;
+  const pluginId = options.id;
   const {createData} = actions;
   const {
+    blogTitle,
+    blogDescription,
     blogSidebarTitle,
     blogPosts,
-    blogListPaginated,
     blogTags,
     blogTagsListPath,
+    authorsMap,
   } = content;
+
+  const blogBasePath = normalizeUrl([baseUrl, routeBasePath]);
+  const authorsListPath = normalizeUrl([blogBasePath, authorsBasePath]);
 
   const listedBlogPosts = blogPosts.filter(shouldBeListed);
 
@@ -88,25 +103,22 @@ export async function buildAllRoutes({
       : blogPosts.slice(0, options.blogSidebarCount);
 
   async function createSidebarModule() {
-    const sidebar: BlogSidebar = {
-      title: blogSidebarTitle,
-      items: sidebarBlogPosts.map((blogPost) => ({
-        title: blogPost.metadata.title,
-        permalink: blogPost.metadata.permalink,
-        unlisted: blogPost.metadata.unlisted,
-      })),
-    };
+    const sidebarProp = toBlogSidebarProp({
+      blogSidebarTitle,
+      blogPosts: sidebarBlogPosts,
+    });
     const modulePath = await createData(
       `blog-post-list-prop-${pluginId}.json`,
-      sidebar,
+      sidebarProp,
     );
     return aliasedSource(modulePath);
   }
 
   async function createBlogMetadataModule() {
     const blogMetadata: BlogMetadata = {
-      blogBasePath: normalizeUrl([baseUrl, routeBasePath]),
+      blogBasePath,
       blogTitle,
+      authorsListPath,
     };
     const modulePath = await createData(
       `blogMetadata-${pluginId}.json`,
@@ -141,7 +153,7 @@ export async function buildAllRoutes({
     if (archiveBasePath && listedBlogPosts.length) {
       return [
         {
-          path: normalizeUrl([baseUrl, routeBasePath, archiveBasePath]),
+          path: normalizeUrl([blogBasePath, archiveBasePath]),
           component: blogArchiveComponent,
           exact: true,
           props: {
@@ -195,6 +207,15 @@ export async function buildAllRoutes({
   }
 
   function createBlogPostsPaginatedRoutes(): RouteConfig[] {
+    const blogListPaginated = paginateBlogPosts({
+      blogPosts: listedBlogPosts,
+      blogTitle,
+      blogDescription,
+      postsPerPageOption: postsPerPage,
+      basePageUrl: blogBasePath,
+      pageBasePath,
+    });
+
     return blogListPaginated.map((paginated) => {
       return {
         path: paginated.metadata.permalink,
@@ -254,10 +275,91 @@ export async function buildAllRoutes({
     return [tagsListRoute, ...tagsPaginatedRoutes];
   }
 
+  function createAuthorsRoutes(): RouteConfig[] {
+    if (authorsMap === undefined || Object.keys(authorsMap).length === 0) {
+      return [];
+    }
+
+    const blogPostsByAuthorKey = groupBlogPostsByAuthorKey({
+      authorsMap,
+      blogPosts,
+    });
+    const authors = Object.values(authorsMap);
+
+    return [
+      createAuthorListRoute(),
+      ...authors.flatMap(createAuthorPaginatedRoute),
+    ];
+
+    function createAuthorListRoute(): RouteConfig {
+      return {
+        path: authorsListPath,
+        component: blogAuthorsListComponent,
+        exact: true,
+        modules: {
+          sidebar: sidebarModulePath,
+        },
+        props: {
+          authors: authors.map((author) => {
+            const authorPosts = blogPostsByAuthorKey[author.key] ?? [];
+            const listedAuthorPosts = authorPosts.filter(shouldBeListed);
+            return toAuthorItemProp({
+              author,
+              count: listedAuthorPosts.length,
+            });
+          }),
+        },
+        context: {
+          blogMetadata: blogMetadataModulePath,
+        },
+      };
+    }
+
+    function createAuthorPaginatedRoute(author: AuthorWithKey): RouteConfig[] {
+      const authorBlogPosts = blogPostsByAuthorKey[author.key] ?? [];
+      const listedAuthorBlogPosts = authorBlogPosts.filter(shouldBeListed);
+      if (!author.page) {
+        return [];
+      }
+
+      const pages = paginateBlogPosts({
+        blogPosts: listedAuthorBlogPosts,
+        basePageUrl: author.page.permalink,
+        blogDescription,
+        blogTitle,
+        pageBasePath,
+        postsPerPageOption: postsPerPage,
+      });
+
+      return pages.map(({metadata, items}) => {
+        return {
+          path: metadata.permalink,
+          component: blogAuthorsPostsComponent,
+          exact: true,
+          modules: {
+            items: blogPostItemsModule(items),
+            sidebar: sidebarModulePath,
+          },
+          props: {
+            author: toAuthorItemProp({
+              author,
+              count: listedAuthorBlogPosts.length,
+            }),
+            listMetadata: metadata,
+          },
+          context: {
+            blogMetadata: blogMetadataModulePath,
+          },
+        };
+      });
+    }
+  }
+
   return [
     ...createBlogPostRoutes(),
     ...createBlogPostsPaginatedRoutes(),
     ...createTagsRoutes(),
     ...createArchiveRoute(),
+    ...createAuthorsRoutes(),
   ];
 }

@@ -1,0 +1,24 @@
+# `new URL()` assets tests
+
+Assets can be referenced inline with the standard `new URL('./path', import.meta.url)` syntax.
+
+It should return the asset URL, including on the server (SSR): the [IdealImage](/tests/pages/ideal-image) and [SVGR](/tests/pages/svg) plugins must not transform those assets.
+
+## JSX
+
+import JsxTests from './_JsxTests';
+
+<JsxTests />
+
+## MDX
+
+- Small image: <img id="mdx-small-image" alt="Open source logo" src={new URL('../img/oss_logo.png', import.meta.url).href} />
+- Large image: <img id="mdx-large-image" alt="Docusaurus social card" width={300} src={new URL('../../../static/img/docusaurus-social-card.png', import.meta.url).href} />
+- Large image with the `@site` alias: <img id="mdx-site-alias-image" alt="Docusaurus social card" width={300} src={new URL('@site/static/img/docusaurus-social-card.png', import.meta.url).href} />
+- SVG image: <img id="mdx-svg-image" alt="Docusaurus mascot" width={100} src={new URL('../svg/mascot.svg', import.meta.url).href} />
+- <a
+    id="mdx-pdf-link"
+    target="_blank"
+    href={new URL('../../_asset-tests/someFile.pdf', import.meta.url).href}>
+    PDF file link
+  </a>

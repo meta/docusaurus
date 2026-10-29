@@ -7,17 +7,17 @@
 
 // @ts-check
 
-import fs from 'fs-extra';
-import path from 'path';
-import {createRequire} from 'module';
-import shell from 'shelljs';
-import logger from '@docusaurus/logger';
+import path from 'node:path';
+import {createRequire} from 'node:module';
+import {execa} from 'execa';
+import {logger} from '@docusaurus/logger';
 import semver from 'semver';
 import updateNotifier from 'update-notifier';
 import boxen from 'boxen';
 import {DOCUSAURUS_VERSION} from '@docusaurus/utils';
+import {pathExists} from '@docusaurus/fs';
 
-const packageJson = /** @type {import("../package.json")} */ (
+const packageJson = /** @type {typeof import("../package.json")} */ (
   createRequire(import.meta.url)('../package.json')
 );
 /** @type {Record<string, any>} */
@@ -60,11 +60,12 @@ export default async function beforeCli() {
   // Note: the notification will only happen in the 2nd run
   // See https://github.com/yeoman/update-notifier/issues/209
   try {
+    // Note: notifier.config is undefined when the notifier is disabled
+    const lastUpdateCheck = notifier.config?.get('lastUpdateCheck');
     if (
       notifier.config &&
-      // @ts-expect-error: this is an internal API
-      !notifier.disabled &&
-      Date.now() - notifier.config.get('lastUpdateCheck') < 50
+      typeof lastUpdateCheck === 'number' &&
+      Date.now() - lastUpdateCheck < 50
     ) {
       notifier.config.set('lastUpdateCheck', 0);
       notifier.check();
@@ -107,19 +108,17 @@ export default async function beforeCli() {
       .join(' ');
 
     const getYarnVersion = async () => {
-      if (!(await fs.pathExists(path.resolve('yarn.lock')))) {
+      if (!(await pathExists(path.resolve('yarn.lock')))) {
         return undefined;
       }
 
-      const yarnVersionResult = shell.exec('yarn --version', {silent: true});
-      if (yarnVersionResult?.code === 0) {
-        const majorVersion = parseInt(
-          yarnVersionResult.stdout?.trim().split('.')[0] ?? '',
-          10,
-        );
-        if (!Number.isNaN(majorVersion)) {
-          return majorVersion;
-        }
+      const yarnVersionResult = await execa`yarn --version`;
+      const majorVersion = parseInt(
+        yarnVersionResult.stdout?.trim().split('.')[0] ?? '',
+        10,
+      );
+      if (!Number.isNaN(majorVersion)) {
+        return majorVersion;
       }
 
       return undefined;

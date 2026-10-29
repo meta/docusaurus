@@ -5,22 +5,45 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-.carousel {
+.cssCarousel {
+  position: relative;
+}
+
+.cssCarouselSlider {
+  display: flex;
+  overflow: scroll hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.cssCarouselItem {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+.cssCarouselContent {
+  width: 100%;
+  height: 100%;
   position: relative;
 }
 
 .navButton {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  width: 2.6rem;
+  height: 2.6rem;
   border: 0;
   border-radius: 50%;
+  font-weight: bold;
   color: #fff;
-  font-size: 20px;
-  height: 40px;
-  width: 40px;
-
   background-color: rgb(0 0 0 / 30%);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
   transition: all var(--ifm-transition-fast)
     var(--ifm-transition-timing-default);
 }
@@ -29,32 +52,12 @@
   background-color: rgb(0 0 0 / 45%);
 }
 
-.dotGroup {
-  position: absolute;
-  bottom: 5px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
+.navButton.navButtonNext {
+  right: 0.1rem;
 }
 
-.dotGroup > :global(.carousel__dot) {
-  pointer-events: auto;
-  display: inline-block;
-  border: none;
-  height: 1rem;
-  width: 1rem;
-  border-radius: 50%;
-  margin: 2px;
-  background: rgb(0 0 0 / 20%);
-}
-
-.dotGroup > :global(.carousel__dot--selected) {
-  background: rgb(0 0 0 / 45%);
-}
-
-.siteSlide {
-  position: relative;
+.navButton.navButtonPrev {
+  left: 0.1rem;
 }
 
 .siteLink {
@@ -77,7 +80,7 @@
   --ifm-link-hover-decoration: none;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (width <= 768px) {
   .siteLink {
     font-size: 12px;
     padding: 0 8px;

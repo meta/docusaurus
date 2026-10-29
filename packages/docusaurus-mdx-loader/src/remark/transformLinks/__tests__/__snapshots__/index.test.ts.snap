@@ -1,28 +1,19 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`transformAsset plugin fail if asset url is absent 1`] = `"Markdown link URL is mandatory in "packages/docusaurus-mdx-loader/src/remark/transformLinks/__tests__/__fixtures__/noUrl.md" file (title: asset, line: 1)."`;
-
-exports[`transformAsset plugin fail if asset with site alias does not exist 1`] = `"Asset packages/docusaurus-mdx-loader/src/remark/transformLinks/__tests__/__fixtures__/foo.pdf used in packages/docusaurus-mdx-loader/src/remark/transformLinks/__tests__/__fixtures__/nonexistentSiteAlias.md not found."`;
-
-exports[`transformAsset plugin pathname protocol 1`] = `
-"[asset](pathname:///asset/unchecked.pdf)
-"
-`;
-
-exports[`transformAsset plugin transform md links to <a /> 1`] = `
+exports[`transformLinks plugin > transform md links to <a /> 1`] = `
 "[asset](https://example.com/asset.pdf)
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./asset.pdf").default} />
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./asset.pdf?docusaurus-asset=file")} />
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./asset.pdf").default}>asset</a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./asset.pdf?docusaurus-asset=file")}>asset</a>
 
-in paragraph <a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./asset.pdf").default}>asset</a>
+in paragraph <a target="_blank" data-noBrokenLinkCheck={true} href={require("!./asset.pdf?docusaurus-asset=file")}>asset</a>
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./asset (2).pdf").default}>asset with URL encoded chars</a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./asset (2).pdf?docusaurus-asset=file")}>asset with URL encoded chars</a>
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./asset.pdf").default + '#page=2'}>asset with hash</a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./asset.pdf?docusaurus-asset=file") + '#page=2'}>asset with hash</a>
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./asset.pdf").default} title="Title">asset</a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./asset.pdf?docusaurus-asset=file")} title="Title">asset</a>
 
 [page](noUrl.md)
 
@@ -36,24 +27,23 @@ in paragraph <a target="_blank" data-noBrokenLinkCheck={true} href={require("!<P
 
 [assets](/github/!file-loader!/assets.pdf)
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./asset.pdf").default}>asset</a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./asset.pdf?docusaurus-asset=file")}>asset</a>
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./static2/asset2.pdf").default}>asset2</a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./static2/asset2.pdf?docusaurus-asset=file")}>asset2</a>
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./static/staticAsset.pdf").default}>staticAsset.pdf</a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./static/staticAsset.pdf?docusaurus-asset=file")}>staticAsset.pdf</a>
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./static/staticAsset.pdf").default}>@site/static/staticAsset.pdf</a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./static/staticAsset.pdf?docusaurus-asset=file")}>@site/static/staticAsset.pdf</a>
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./static/staticAsset.pdf").default + '#page=2'} title="Title">@site/static/staticAsset.pdf</a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./static/staticAsset.pdf?docusaurus-asset=file") + '#page=2'} title="Title">@site/static/staticAsset.pdf</a>
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./static/staticAsset.pdf").default}>Just staticAsset.pdf</a>, and <a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./static/staticAsset.pdf").default}>**awesome** staticAsset 2.pdf 'It is really "AWESOME"'</a>, but also <a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./static/staticAsset.pdf").default}>coded \`staticAsset 3.pdf\`</a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./static/staticAsset.pdf?docusaurus-asset=file")}>Just staticAsset.pdf</a>, and <a target="_blank" data-noBrokenLinkCheck={true} href={require("!./static/staticAsset.pdf?docusaurus-asset=file")}>**awesome** staticAsset 2.pdf 'It is really "AWESOME"'</a>, but also <a target="_blank" data-noBrokenLinkCheck={true} href={require("!./static/staticAsset.pdf?docusaurus-asset=file")}>coded \`staticAsset 3.pdf\`</a>
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./static/staticAssetImage.png").default}><img alt="Clickable Docusaurus logo" src={require("!<PROJECT_ROOT>/node_modules/url-loader/dist/cjs.js?limit=10000&name=assets/images/[name]-[contenthash].[ext]&fallback=<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js!./static/staticAssetImage.png").default} width="200" height="200" /></a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./static/staticAssetImage.png?docusaurus-asset=file")}><img alt="Clickable Docusaurus logo" src={require("!./static/staticAssetImage.png?docusaurus-asset=image")} width="200" height="200" /></a>
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./asset.pdf").default}><span style={{color: "red"}}>Stylized link to asset file</span></a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./asset.pdf?docusaurus-asset=file")}><span style={{color: "red"}}>Stylized link to asset file</span></a>
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("./data.raw!=!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./data.json").default}>JSON</a>
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./data.json?docusaurus-asset=file")}>JSON</a>
 
-<a target="_blank" data-noBrokenLinkCheck={true} href={require("./static/static-json.raw!=!<PROJECT_ROOT>/node_modules/file-loader/dist/cjs.js?name=assets/files/[name]-[contenthash].[ext]!./static/static-json.json").default}>static JSON</a>
-"
+<a target="_blank" data-noBrokenLinkCheck={true} href={require("!./static/static-json.json?docusaurus-asset=file")}>static JSON</a>"
 `;

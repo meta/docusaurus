@@ -5,20 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/* eslint-disable global-require */
+import {type ComponentProps, type ReactNode, useRef} from 'react';
+import clsx from 'clsx';
 
-import React, {type ComponentProps} from 'react';
-import {
-  CarouselProvider,
-  Slider,
-  Slide,
-  ButtonBack,
-  ButtonNext,
-  DotGroup,
-} from 'pure-react-carousel';
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
-import 'pure-react-carousel/dist/react-carousel.es.css';
 import styles from './ShowcaseCarousel.module.css';
 
 type Site = {
@@ -29,7 +20,7 @@ type Site = {
 
 function SiteSlide({index, site}: {index: number; site: Site}) {
   return (
-    <Slide index={index} className={styles.siteSlide}>
+    <div key={index} className={styles.cssCarouselContent}>
       <Image
         img={site.image}
         alt={site.name}
@@ -38,41 +29,61 @@ function SiteSlide({index, site}: {index: number; site: Site}) {
       <Link to={site.url} className={styles.siteLink} target="_blank">
         🔗 {site.name}
       </Link>
-    </Slide>
+    </div>
   );
 }
 
-export default function ShowcaseCarousel({
+// Inspired by: https://community.appsmith.com/content/blog/ditch-bloat-building-swipeable-carousel-only-css
+function ShowcaseCarousel({
   sites,
   aspectRatio,
 }: {
   sites: Site[];
   aspectRatio: number;
-}): JSX.Element {
+}): ReactNode {
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (next: boolean) => {
+    const sliderDiv = sliderRef.current!;
+    const width = sliderDiv.offsetWidth;
+    const scrollBy = next ? width : -width;
+    sliderDiv.scrollBy({left: scrollBy, behavior: 'smooth'});
+  };
+
+  const scrollNext = () => scroll(true);
+  const scrollPrev = () => scroll(false);
+
   return (
-    <CarouselProvider
-      naturalSlideWidth={1}
-      naturalSlideHeight={1 / aspectRatio}
-      totalSlides={sites.length}
-      infinite
-      className={styles.carousel}>
-      <Slider>
-        {sites.map((site, index) => (
-          <SiteSlide key={index} index={index} site={site} />
-        ))}
-      </Slider>
-      <ButtonNext className={styles.navButton} style={{right: -20}}>
-        {'>'}
-      </ButtonNext>
-      <ButtonBack className={styles.navButton} style={{left: -20}}>
-        {'<'}
-      </ButtonBack>
-      <DotGroup className={styles.dotGroup} />
-    </CarouselProvider>
+    <div className={styles.cssCarousel} style={{aspectRatio}}>
+      <div
+        ref={sliderRef}
+        className={styles.cssCarouselSlider}
+        style={{aspectRatio}}>
+        {sites.map((site, index) => {
+          return (
+            <div key={index} className={styles.cssCarouselItem}>
+              <SiteSlide index={index} site={site} />
+            </div>
+          );
+        })}
+        <button
+          className={clsx(styles.navButton, styles.navButtonPrev)}
+          type="button"
+          onClick={scrollPrev}>
+          {'<'}
+        </button>
+        <button
+          className={clsx(styles.navButton, styles.navButtonNext)}
+          type="button"
+          onClick={scrollNext}>
+          {'>'}
+        </button>
+      </div>
+    </div>
   );
 }
 
-export function ShowcaseCarouselV1(): JSX.Element {
+export function ShowcaseCarouselV1(): ReactNode {
   return (
     <ShowcaseCarousel
       aspectRatio={1072 / 584}
@@ -107,7 +118,7 @@ export function ShowcaseCarouselV1(): JSX.Element {
   );
 }
 
-export function ShowcaseCarouselV2(): JSX.Element {
+export function ShowcaseCarouselV2(): ReactNode {
   return (
     <ShowcaseCarousel
       aspectRatio={2148 / 1194}
@@ -172,7 +183,7 @@ export function ShowcaseCarouselV2(): JSX.Element {
   );
 }
 
-export function ShowcaseCarouselV2Theming(): JSX.Element {
+export function ShowcaseCarouselV2Theming(): ReactNode {
   return (
     <ShowcaseCarousel
       aspectRatio={2148 / 1194}

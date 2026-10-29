@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import Head from '@docusaurus/Head';
 import useRouteContext from '@docusaurus/useRouteContext';
 import {useBaseUrlUtils} from '@docusaurus/useBaseUrl';
-import {useTitleFormatter} from './generalUtils';
+import {useTitleFormatter} from './titleFormatterUtils';
 
 type PageMetadataProps = {
   readonly title?: string;
@@ -19,6 +19,55 @@ type PageMetadataProps = {
   readonly image?: string;
   readonly children?: ReactNode;
 };
+
+function TitleMetadata({title}: {title: string}) {
+  const titleFormatter = useTitleFormatter();
+  const formattedTitle = titleFormatter.format(title);
+  return (
+    <Head>
+      <title>{formattedTitle}</title>
+      <meta property="og:title" content={formattedTitle} />
+    </Head>
+  );
+}
+
+function DescriptionMetadata({description}: {description: string}) {
+  return (
+    <Head>
+      <meta name="description" content={description} />
+      <meta property="og:description" content={description} />
+    </Head>
+  );
+}
+
+function ImageMetadata({image}: {image: string}) {
+  const {withBaseUrl} = useBaseUrlUtils();
+  const pageImage = withBaseUrl(image, {absolute: true});
+  return (
+    <Head>
+      <meta property="og:image" content={pageImage} />
+      <meta name="twitter:image" content={pageImage} />
+    </Head>
+  );
+}
+
+function KeywordsMetadata({
+  keywords,
+}: {
+  keywords: PageMetadataProps['keywords'];
+}) {
+  return (
+    <Head>
+      <meta
+        name="keywords"
+        content={
+          // https://github.com/microsoft/TypeScript/issues/17002
+          (Array.isArray(keywords) ? keywords.join(',') : keywords) as string
+        }
+      />
+    </Head>
+  );
+}
 
 /**
  * Helper component to manipulate page metadata and override site defaults.
@@ -30,34 +79,15 @@ export function PageMetadata({
   keywords,
   image,
   children,
-}: PageMetadataProps): JSX.Element {
-  const pageTitle = useTitleFormatter(title);
-  const {withBaseUrl} = useBaseUrlUtils();
-  const pageImage = image ? withBaseUrl(image, {absolute: true}) : undefined;
-
+}: PageMetadataProps): ReactNode {
   return (
-    <Head>
-      {title && <title>{pageTitle}</title>}
-      {title && <meta property="og:title" content={pageTitle} />}
-
-      {description && <meta name="description" content={description} />}
-      {description && <meta property="og:description" content={description} />}
-
-      {keywords && (
-        <meta
-          name="keywords"
-          content={
-            // https://github.com/microsoft/TypeScript/issues/17002
-            (Array.isArray(keywords) ? keywords.join(',') : keywords) as string
-          }
-        />
-      )}
-
-      {pageImage && <meta property="og:image" content={pageImage} />}
-      {pageImage && <meta name="twitter:image" content={pageImage} />}
-
-      {children}
-    </Head>
+    <>
+      {title && <TitleMetadata title={title} />}
+      {description && <DescriptionMetadata description={description} />}
+      {keywords && <KeywordsMetadata keywords={keywords} />}
+      {image && <ImageMetadata image={image} />}
+      {children && <Head>{children}</Head>}
+    </>
   );
 }
 
@@ -75,16 +105,16 @@ export function HtmlClassNameProvider({
 }: {
   className: string;
   children: ReactNode;
-}): JSX.Element {
+}): ReactNode {
   const classNameContext = React.useContext(HtmlClassNameContext);
   const className = clsx(classNameContext, classNameProp);
   return (
-    <HtmlClassNameContext.Provider value={className}>
+    <HtmlClassNameContext value={className}>
       <Head>
         <html className={className} />
       </Head>
       {children}
-    </HtmlClassNameContext.Provider>
+    </HtmlClassNameContext>
   );
 }
 
@@ -103,7 +133,7 @@ export function PluginHtmlClassNameProvider({
   children,
 }: {
   children: ReactNode;
-}): JSX.Element {
+}): ReactNode {
   const routeContext = useRouteContext();
   const nameClass = pluginNameToClassName(routeContext.plugin.name);
   const idClass = `plugin-id-${routeContext.plugin.id}`;

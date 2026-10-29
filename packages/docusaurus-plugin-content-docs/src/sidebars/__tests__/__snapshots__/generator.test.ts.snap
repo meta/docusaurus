@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`DefaultSidebarItemsGenerator generates complex nested sidebar 1`] = `
+exports[`DefaultSidebarItemsGenerator > generates complex nested sidebar 1`] = `
 [
   {
     "id": "intro",
@@ -47,6 +47,7 @@ exports[`DefaultSidebarItemsGenerator generates complex nested sidebar 1`] = `
             "type": "doc",
           },
         ],
+        "key": "SubGuides-category-unique-key",
         "label": "SubGuides (metadata file label)",
         "link": {
           "description": "subGuides-description",
@@ -75,7 +76,7 @@ exports[`DefaultSidebarItemsGenerator generates complex nested sidebar 1`] = `
 ]
 `;
 
-exports[`DefaultSidebarItemsGenerator generates simple flat sidebar 1`] = `
+exports[`DefaultSidebarItemsGenerator > generates simple flat sidebar 1`] = `
 [
   {
     "id": "doc3",
@@ -90,6 +91,7 @@ exports[`DefaultSidebarItemsGenerator generates simple flat sidebar 1`] = `
       "custom": "prop",
     },
     "id": "doc1",
+    "key": "doc1-sidebar-key",
     "label": "doc1 sidebar label",
     "type": "doc",
   },
@@ -104,7 +106,7 @@ exports[`DefaultSidebarItemsGenerator generates simple flat sidebar 1`] = `
 ]
 `;
 
-exports[`DefaultSidebarItemsGenerator generates subfolder sidebar 1`] = `
+exports[`DefaultSidebarItemsGenerator > generates subfolder sidebar 1`] = `
 [
   {
     "collapsed": undefined,
@@ -119,6 +121,7 @@ exports[`DefaultSidebarItemsGenerator generates subfolder sidebar 1`] = `
         "type": "doc",
       },
     ],
+    "key": "doc1-sidebar-key",
     "label": "Subsubsubfolder category label",
     "link": {
       "id": "doc1",
@@ -141,6 +144,7 @@ exports[`DefaultSidebarItemsGenerator generates subfolder sidebar 1`] = `
   },
   {
     "id": "doc1",
+    "key": "doc1-sidebar-key",
     "type": "doc",
   },
   {
@@ -162,7 +166,7 @@ exports[`DefaultSidebarItemsGenerator generates subfolder sidebar 1`] = `
 ]
 `;
 
-exports[`DefaultSidebarItemsGenerator respects custom isCategoryIndex 1`] = `
+exports[`DefaultSidebarItemsGenerator > respects custom isCategoryIndex 1`] = `
 [
   {
     "id": "intro",
@@ -212,11 +216,12 @@ exports[`DefaultSidebarItemsGenerator respects custom isCategoryIndex 1`] = `
 ]
 `;
 
-exports[`DefaultSidebarItemsGenerator uses explicit link over the index/readme.{md,mdx} naming convention 1`] = `
+exports[`DefaultSidebarItemsGenerator > uses explicit link over the index/readme.{md,mdx} naming convention 1`] = `
 [
   {
     "collapsed": undefined,
     "collapsible": undefined,
+    "description": "Category description",
     "items": [
       {
         "id": "parent/doc2",

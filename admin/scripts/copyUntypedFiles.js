@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -5,32 +6,29 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs-extra';
-import path from 'path';
-import chokidar from 'chokidar';
+import fs from 'node:fs';
+import path from 'node:path';
+import _ from 'lodash';
 
 const srcDir = path.join(process.cwd(), 'src');
 const libDir = path.join(process.cwd(), 'lib');
 
-const ignoredPattern = /(?:__tests__|\.tsx?$)/;
+const ignoredPattern = /__tests__|\.tsx?$/;
 
 async function copy() {
-  await fs.copy(srcDir, libDir, {
+  await fs.promises.cp(srcDir, libDir, {
+    recursive: true,
     filter(testedPath) {
       return !ignoredPattern.test(testedPath);
     },
   });
 }
 
+// Coalesce bursts of events (e.g. one file save) into a single copy
+const copyDebounced = _.debounce(copy, 100);
+
 if (process.argv.includes('--watch')) {
-  const watcher = chokidar.watch(srcDir, {
-    ignored: ignoredPattern,
-    ignoreInitial: true,
-    persistent: true,
-  });
-  ['add', 'change', 'unlink', 'addDir', 'unlinkDir'].forEach((event) =>
-    watcher.on(event, copy),
-  );
+  fs.watch(srcDir, {recursive: true}, copyDebounced);
 } else {
   await copy();
 }

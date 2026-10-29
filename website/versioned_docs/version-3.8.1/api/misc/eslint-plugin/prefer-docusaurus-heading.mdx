@@ -1,0 +1,31 @@
+---
+slug: /api/misc/@docusaurus/eslint-plugin/prefer-docusaurus-heading
+---
+
+# prefer-docusaurus-heading
+
+Ensures that the `@theme/Heading` theme component provided by Docusaurus [`theme-classic`](../../themes/theme-classic.mdx) is used instead of `<hn>` tags for headings.
+
+## Rule Details {/* #details */}
+
+Examples of **incorrect** code for this rule:
+
+```html
+<h1>This is heading 1</h1>
+
+<h2>This is heading 2</h2>
+
+<h3>This is heading 3</h3>
+```
+
+Examples of **correct** code for this rule:
+
+```javascript
+import Heading from '@theme/Heading'
+
+<Heading as='h1'>This is heading 1</Heading>
+
+<Heading as='h2'>This is heading 2</Heading>
+
+<Heading as='h3'>This is heading 3</Heading>
+```

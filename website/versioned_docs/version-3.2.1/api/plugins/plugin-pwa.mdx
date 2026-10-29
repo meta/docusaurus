@@ -7,13 +7,13 @@ slug: /api/plugins/@docusaurus/plugin-pwa
 
 Docusaurus Plugin to add PWA support using [Workbox](https://developers.google.com/web/tools/workbox). This plugin generates a [Service Worker](https://developers.google.com/web/fundamentals/primers/service-workers) in production build only, and allows you to create fully PWA-compliant documentation site with offline and installation support.
 
-## Installation {#installation}
+## Installation {/* #installation */}
 
 ```bash npm2yarn
 npm install --save @docusaurus/plugin-pwa
 ```
 
-## Configuration {#configuration}
+## Configuration {/* #configuration */}
 
 Create a [PWA manifest](https://web.dev/add-manifest/) at `./static/manifest.json`.
 
@@ -54,7 +54,7 @@ export default {
 };
 ```
 
-## Progressive Web App {#progressive-web-app}
+## Progressive Web App {/* #progressive-web-app */}
 
 Having a service worker installed is not enough to make your application a PWA. You'll need to at least include a [Web App Manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest) and have the correct tags in `<head>` ([Options > pwaHead](#pwahead)).
 
@@ -62,7 +62,7 @@ After deployment, you can use [Lighthouse](https://developers.google.com/web/too
 
 For a more exhaustive list of what it takes for your site to be a PWA, refer to the [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist)
 
-## App installation support {#app-installation-support}
+## App installation support {/* #app-installation-support */}
 
 If your browser supports it, you should be able to install a Docusaurus site as an app.
 
@@ -74,7 +74,7 @@ App installation requires the HTTPS protocol and a valid manifest.
 
 :::
 
-## Offline mode (precaching) {#offline-mode-precaching}
+## Offline mode (precaching) {/* #offline-mode-precaching */}
 
 We enable users to browse a Docusaurus site offline, by using service-worker precaching.
 
@@ -96,9 +96,9 @@ Offline mode / precaching requires downloading all the static assets of the site
 
 :::
 
-## Options {#options}
+## Options {/* #options */}
 
-### `debug` {#debug}
+### `debug` {/* #debug */}
 
 - Type: `boolean`
 - Default: `false`
@@ -110,7 +110,7 @@ Turn debug mode on:
 - Unoptimized SW file output
 - Source maps
 
-### `offlineModeActivationStrategies` {#offlinemodeactivationstrategies}
+### `offlineModeActivationStrategies` {/* #offlinemodeactivationstrategies */}
 
 - Type: `('appInstalled' | 'mobile' | 'saveData'| 'queryString' | 'always')[]`
 - Default: `['appInstalled', 'queryString', 'standalone']`
@@ -140,7 +140,7 @@ The [`standalone` strategy](https://petelepage.com/blog/2019/07/is-my-pwa-instal
 
 :::
 
-### `injectManifestConfig` {#injectmanifestconfig}
+### `injectManifestConfig` {/* #injectmanifestconfig */}
 
 [Workbox options](https://developer.chrome.com/docs/workbox/reference/workbox-build/#type-InjectManifestOptions) to pass to `workbox.injectManifest()`. This gives you control over which assets will be precached, and be available offline.
 
@@ -171,7 +171,7 @@ export default {
 };
 ```
 
-### `pwaHead` {#pwahead}
+### `pwaHead` {/* #pwahead */}
 
 - Type: `({ tagName: string; [attributeName: string]: string })[]`
 - Default: `[]`
@@ -238,7 +238,7 @@ export default {
 };
 ```
 
-### `swCustom` {#swcustom}
+### `swCustom` {/* #swcustom */}
 
 - Type: `string | undefined`
 - Default: `undefined`
@@ -271,7 +271,7 @@ export default function swCustom(params) {
 
 The module should have a `default` function export, and receives some params.
 
-### `swRegister` {#swregister}
+### `swRegister` {/* #swregister */}
 
 - Type: `string | false`
 - Default: `'docusaurus-plugin-pwa/src/registerSW.js'`
@@ -280,7 +280,7 @@ Adds an entry before the Docusaurus app so that registration can happen before t
 
 Passing `false` will disable registration entirely.
 
-## Manifest example {#manifest-example}
+## Manifest example {/* #manifest-example */}
 
 The Docusaurus site manifest can serve as an inspiration:
 
@@ -292,7 +292,7 @@ import CodeBlock from '@theme/CodeBlock';
 </CodeBlock>
 ```
 
-## Customizing reload popup {#customizing-reload-popup}
+## Customizing reload popup {/* #customizing-reload-popup */}
 
 The `@theme/PwaReloadPopup` component is rendered when a new service worker is waiting to be installed, and we suggest a reload to the user. You can [swizzle](../../swizzling.mdx) this component and implement your own UI. It will receive an `onReload` callback as props, which should be called when the `reload` button is clicked. This will tell the service worker to install the waiting service worker and reload the page.
 

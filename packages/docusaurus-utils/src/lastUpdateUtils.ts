@@ -6,77 +6,24 @@
  */
 
 import _ from 'lodash';
-import logger from '@docusaurus/logger';
-import {
-  FileNotTrackedError,
-  GitNotFoundError,
-  getFileCommitDate,
-} from './gitUtils';
-import type {PluginOptions} from '@docusaurus/types';
+import {getVcsPreset} from './vcs/vcs';
+
+import type {PluginOptions, VcsConfig} from '@docusaurus/types';
 
 export type LastUpdateData = {
-  /** A timestamp in **milliseconds**, usually read from `git log` */
-  lastUpdatedAt?: number;
-  /** The author's name, usually coming from `git log` */
-  lastUpdatedBy?: string;
+  /**
+   * A timestamp in **milliseconds**, usually read from `git log`
+   * `undefined`: not read
+   * `null`: no value to read (usual for untracked files)
+   */
+  lastUpdatedAt: number | undefined | null;
+  /**
+   * The author's name, usually coming from `git log`
+   * `undefined`: not read
+   * `null`: no value to read (usual for untracked files)
+   */
+  lastUpdatedBy: string | undefined | null;
 };
-
-let showedGitRequirementError = false;
-let showedFileNotTrackedError = false;
-
-export async function getGitLastUpdate(
-  filePath: string,
-): Promise<LastUpdateData | null> {
-  if (!filePath) {
-    return null;
-  }
-
-  // Wrap in try/catch in case the shell commands fail
-  // (e.g. project doesn't use Git, etc).
-  try {
-    const result = await getFileCommitDate(filePath, {
-      age: 'newest',
-      includeAuthor: true,
-    });
-
-    return {lastUpdatedAt: result.timestamp, lastUpdatedBy: result.author};
-  } catch (err) {
-    if (err instanceof GitNotFoundError) {
-      if (!showedGitRequirementError) {
-        logger.warn('Sorry, the last update options require Git.');
-        showedGitRequirementError = true;
-      }
-    } else if (err instanceof FileNotTrackedError) {
-      if (!showedFileNotTrackedError) {
-        logger.warn(
-          'Cannot infer the update date for some files, as they are not tracked by git.',
-        );
-        showedFileNotTrackedError = true;
-      }
-    } else {
-      throw new Error(
-        `An error occurred when trying to get the last update date`,
-        {cause: err},
-      );
-    }
-    return null;
-  }
-}
-
-export const LAST_UPDATE_FALLBACK: LastUpdateData = {
-  lastUpdatedAt: 1539502055000,
-  lastUpdatedBy: 'Author',
-};
-
-export async function getLastUpdate(
-  filePath: string,
-): Promise<LastUpdateData | null> {
-  if (process.env.NODE_ENV !== 'production') {
-    // Use fake data in dev/test for faster development.
-    return LAST_UPDATE_FALLBACK;
-  }
-  return getGitLastUpdate(filePath);
-}
 
 type LastUpdateOptions = Pick<
   PluginOptions,
@@ -92,15 +39,25 @@ export type FrontMatterLastUpdate = {
   date?: Date | string;
 };
 
+// TODO Docusaurus v4: refactor/rename, make it clear this fn is only
+//  for Markdown files with front matter shared by content plugin
 export async function readLastUpdateData(
   filePath: string,
   options: LastUpdateOptions,
   lastUpdateFrontMatter: FrontMatterLastUpdate | undefined,
+  vcsParam: Pick<VcsConfig, 'getFileLastUpdateInfo'>,
 ): Promise<LastUpdateData> {
+  // We fallback to the default VSC config at runtime on purpose
+  // It preserves retro-compatibility if a third-party plugin imports it
+  // This also ensures unit tests keep working without extra setup
+  // We still want to ensure type safety by requiring the VCS param
+  // TODO Docusaurus v4: refactor all these Git read APIs
+  const vcs = vcsParam ?? getVcsPreset('default-v3');
+
   const {showLastUpdateAuthor, showLastUpdateTime} = options;
 
   if (!showLastUpdateAuthor && !showLastUpdateTime) {
-    return {};
+    return {lastUpdatedBy: undefined, lastUpdatedAt: undefined};
   }
 
   const frontMatterAuthor = lastUpdateFrontMatter?.author;
@@ -111,18 +68,32 @@ export async function readLastUpdateData(
   // We try to minimize git last update calls
   // We call it at most once
   // If all the data is provided as front matter, we do not call it
-  const getLastUpdateMemoized = _.memoize(() => getLastUpdate(filePath));
+  const getLastUpdateMemoized = _.memoize(() =>
+    vcs.getFileLastUpdateInfo(filePath),
+  );
   const getLastUpdateBy = () =>
-    getLastUpdateMemoized().then((update) => update?.lastUpdatedBy);
+    getLastUpdateMemoized().then((update) => {
+      // Important, see https://github.com/facebook/docusaurus/pull/11211
+      if (update === null) {
+        return null;
+      }
+      return update?.author;
+    });
   const getLastUpdateAt = () =>
-    getLastUpdateMemoized().then((update) => update?.lastUpdatedAt);
+    getLastUpdateMemoized().then((update) => {
+      // Important, see https://github.com/facebook/docusaurus/pull/11211
+      if (update === null) {
+        return null;
+      }
+      return update?.timestamp;
+    });
 
   const lastUpdatedBy = showLastUpdateAuthor
-    ? frontMatterAuthor ?? (await getLastUpdateBy())
+    ? (frontMatterAuthor ?? (await getLastUpdateBy()))
     : undefined;
 
   const lastUpdatedAt = showLastUpdateTime
-    ? frontMatterTimestamp ?? (await getLastUpdateAt())
+    ? (frontMatterTimestamp ?? (await getLastUpdateAt()))
     : undefined;
 
   return {
