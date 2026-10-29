@@ -10,20 +10,11 @@ import type {Props as CodeBlockProps} from '@theme/CodeBlock';
 import OriginalCodeBlock from '@theme-init/CodeBlock';
 import LiveCodeBlock from '@theme/LiveCodeBlock';
 
-// TODO Docusaurus v4: remove special case
-//  see packages/docusaurus-mdx-loader/src/remark/mdx1Compat/codeCompatPlugin.ts
-//  we can just use the metastring instead
-declare module '@theme/CodeBlock' {
-  interface Props {
-    live?: boolean;
-  }
-}
-
 function isLiveCodeBlock(
   props: CodeBlockProps,
-): props is {live: true; children: string | undefined} {
+): props is CodeBlockProps & {children: string | undefined} {
   return (
-    !!props.live &&
+    !!props.metastring?.split(/\s+/).includes('live') &&
     (typeof props.children === 'undefined' ||
       typeof props.children === 'string')
   );

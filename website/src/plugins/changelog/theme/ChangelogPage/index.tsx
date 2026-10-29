@@ -6,7 +6,6 @@
  */
 
 import type {ReactNode} from 'react';
-import clsx from 'clsx';
 import Translate from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
 import {HtmlClassNameProvider, ThemeClassNames} from '@docusaurus/theme-common';
@@ -77,11 +76,7 @@ export default function ChangelogPage(props: Props): ReactNode {
   const ChangelogContent = props.content;
   return (
     <BlogPostProvider content={props.content} isBlogPostPage>
-      <HtmlClassNameProvider
-        className={clsx(
-          ThemeClassNames.wrapper.blogPages,
-          ThemeClassNames.page.blogPostPage,
-        )}>
+      <HtmlClassNameProvider className={ThemeClassNames.page.blogPostPage}>
         <BlogPostPageMetadata />
         <ChangelogPageContent sidebar={props.sidebar}>
           <ChangelogContent />

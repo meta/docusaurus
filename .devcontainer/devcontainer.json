@@ -4,22 +4,21 @@
     "vscode": {
       "settings": {
         "[typescript]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.defaultFormatter": "oxc.oxc-vscode",
           "editor.formatOnSave": true
         },
         "[json]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.defaultFormatter": "oxc.oxc-vscode",
           "editor.formatOnSave": true
         },
         "[jsonc]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.defaultFormatter": "oxc.oxc-vscode",
           "editor.formatOnSave": true
         }
       },
       "extensions": [
         "dbaeumer.vscode-eslint",
-        "orta.vscode-jest",
-        "esbenp.prettier-vscode",
+        "oxc.oxc-vscode",
         "streetsidesoftware.code-spell-checker"
       ]
     }
@@ -30,7 +29,7 @@
     "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0" // Avoid waiting for a prompt in the postCreateCommand
   },
   "postCreateCommand": "pnpm install",
-  "waitFor": "postCreateCommand", // otherwise automated jest tests fail
+  "waitFor": "postCreateCommand", // The Oxc formatter needs the installed oxfmt
   "features": {
     "node": {
       "version": "24"

@@ -42,31 +42,31 @@
     "@docusaurus/utils": "workspace:*",
     "@docusaurus/utils-common": "workspace:*",
     "@docusaurus/utils-validation": "workspace:*",
-    "cheerio": "^1.2.0",
-    "combine-promises": "^1.2.0",
-    "feed": "^6.0.0",
-    "lodash": "^4.18.1",
-    "schema-dts": "^1.1.5",
-    "srcset": "^5.0.3",
-    "tslib": "^2.8.1",
-    "unist-util-visit": "^5.1.0",
-    "utility-types": "^3.11.0",
-    "webpack": "^5.111.0"
+    "cheerio": "catalog:",
+    "combine-promises": "catalog:",
+    "feed": "catalog:",
+    "lodash": "catalog:",
+    "schema-dts": "catalog:",
+    "srcset": "catalog:",
+    "tslib": "catalog:",
+    "unist-util-visit": "catalog:",
+    "utility-types": "catalog:",
+    "webpack": "catalog:"
   },
   "peerDependencies": {
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
     "node": ">=24.21"
   },
   "devDependencies": {
-    "@mdx-js/mdx": "^3.1.1",
-    "@total-typescript/shoehorn": "^0.1.2",
-    "@types/mdast": "^4.0.4",
-    "remark-gfm": "^4.0.1",
-    "to-vfile": "^8.0.0",
-    "tree-node-cli": "^3.0.0",
-    "unified": "^11.0.5"
+    "@mdx-js/mdx": "catalog:",
+    "@total-typescript/shoehorn": "catalog:dev",
+    "@types/mdast": "catalog:",
+    "remark-gfm": "catalog:",
+    "to-vfile": "catalog:dev",
+    "tree-node-cli": "catalog:dev",
+    "unified": "catalog:"
   }
 }

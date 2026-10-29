@@ -14,6 +14,46 @@
 
 :::
 
+## Rich titles
+
+:::tip[**Rich** title with `code`, a [link](/docs/markdown-features/admonitions), and :smile:]
+
+The title formatting should match the formatting in the body: **bold**, `code`, a [link](/docs/markdown-features/admonitions), and :smile:.
+
+:::
+
+:::info[JSX title: <span style={{color: 'red'}}>red</span> and {1 + 1}]
+
+JSX and expressions also work in the title.
+
+:::
+
+:::note[**Title only**]
+
+:::
+
+:::note[]
+
+An empty label keeps the default title.
+
+:::
+
+::::info[**Outer title**]
+
+:::warning[*Nested title*]
+
+Nested admonitions keep their own titles.
+
+:::
+
+::::
+
+## Rich titles in CommonMark
+
+import AdmonitionsCommonMark from './_admonitions-md.md';
+
+<AdmonitionsCommonMark />
+
 ## Large font icon
 
 import Admonition from '@theme/Admonition';
@@ -186,25 +226,5 @@ warning
 :::danger
 
 danger
-
-:::
-
-## Legacy admonitions
-
-:::secondary
-
-secondary
-
-:::
-
-:::important
-
-important
-
-:::
-
-:::success
-
-success
 
 :::

@@ -48,11 +48,6 @@ export const AdmonitionsSchema = JoiFrontMatter.alternatives()
         // .required(),
       ),
       extendDefaults: JoiFrontMatter.boolean(),
-
-      // TODO Remove before 2024
-      tag: Joi.any().forbidden().messages({
-        'any.unknown': `It is not possible anymore to use a custom admonition tag. The only admonition tag supported is ':::' (Markdown Directive syntax)`,
-      }),
     }).required(),
   )
   .default(true)
@@ -113,6 +108,7 @@ export const RouteBasePathSchema = Joi
     addLeadingSlash(value),
   );
 
+// TODO Docusaurus v5: remove the tag objects migration hint from this message
 const FrontMatterTagSchema = JoiFrontMatter.string().messages({
   'string.base': `{{#label}} does not look like a valid tag: front matter tags must be strings.
 Tag objects with a custom label or permalink are not supported anymore: declare tags in a tags file (usually tags.yml) and reference them by key instead.

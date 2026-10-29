@@ -6,7 +6,6 @@
  */
 
 import type {ReactNode} from 'react';
-import clsx from 'clsx';
 import {
   PageMetadata,
   HtmlClassNameProvider,
@@ -22,11 +21,7 @@ import Heading from '@theme/Heading';
 export default function BlogTagsListPage({tags, sidebar}: Props): ReactNode {
   const title = translateTagsPageTitle();
   return (
-    <HtmlClassNameProvider
-      className={clsx(
-        ThemeClassNames.wrapper.blogPages,
-        ThemeClassNames.page.blogTagsListPage,
-      )}>
+    <HtmlClassNameProvider className={ThemeClassNames.page.blogTagsListPage}>
       <PageMetadata title={title} />
       <SearchMetadata tag="blog_tags_list" />
       <BlogLayout sidebar={sidebar}>

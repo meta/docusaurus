@@ -10,12 +10,6 @@ exports[`validation schemas > admonitionsSchema > for value={"infima":true} 1`] 
 
 exports[`validation schemas > admonitionsSchema > for value={"keywords":["custom-keyword"],"extendDefaults":42} 1`] = `[ValidationError: "extendDefaults" must be a boolean]`;
 
-exports[`validation schemas > admonitionsSchema > for value={"tag":""} 1`] = `[ValidationError: It is not possible anymore to use a custom admonition tag. The only admonition tag supported is ':::' (Markdown Directive syntax)]`;
-
-exports[`validation schemas > admonitionsSchema > for value={"tag":"+++","keywords":["info","tip"]} 1`] = `[ValidationError: It is not possible anymore to use a custom admonition tag. The only admonition tag supported is ':::' (Markdown Directive syntax)]`;
-
-exports[`validation schemas > admonitionsSchema > for value={"tag":"+++"} 1`] = `[ValidationError: It is not possible anymore to use a custom admonition tag. The only admonition tag supported is ':::' (Markdown Directive syntax)]`;
-
 exports[`validation schemas > admonitionsSchema > for value={"unknownAttribute":"val"} 1`] = `[ValidationError: "unknownAttribute" is not allowed]`;
 
 exports[`validation schemas > admonitionsSchema > for value=3 1`] = `[ValidationError: "value" does not look like a valid admonitions config]`;

@@ -26,7 +26,6 @@ function getLocalDocId(docId: string): string {
   return _.last(docId.split('/'))!;
 }
 
-export const CategoryMetadataFilenameBase = '_category_';
 export const CategoryMetadataFilenamePattern = '_category_.{json,yml,yaml}';
 
 type WithPosition<T> = T & {

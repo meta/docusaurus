@@ -22,11 +22,11 @@
     "@docusaurus/types": "workspace:*",
     "@docusaurus/utils": "workspace:*",
     "@docusaurus/utils-validation": "workspace:*",
-    "tslib": "^2.8.1"
+    "tslib": "catalog:"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "workspace:*",
-    "postcss": "^8.5.28"
+    "postcss": "catalog:"
   },
   "engines": {
     "node": ">=24.21"

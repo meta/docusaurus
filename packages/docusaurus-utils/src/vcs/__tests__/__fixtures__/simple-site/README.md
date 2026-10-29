@@ -1,1 +1,0 @@
-A site fixture with files versioned on Git.

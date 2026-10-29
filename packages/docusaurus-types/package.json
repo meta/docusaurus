@@ -13,19 +13,19 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@mdx-js/mdx": "^3.1.1",
-    "@types/history": "^4.7.11",
-    "@types/mdast": "^4.0.4",
+    "@mdx-js/mdx": "catalog:",
+    "@types/history": "catalog:",
+    "@types/mdast": "catalog:",
     "@types/react": "19.3.0",
-    "commander": "^15.0.0",
-    "joi": "^18.2.8",
-    "mdast-util-directive": "3.1.0",
-    "utility-types": "^3.11.0",
-    "webpack": "^5.111.0",
-    "webpack-merge": "^6.0.1"
+    "commander": "catalog:",
+    "joi": "catalog:",
+    "mdast-util-directive": "catalog:",
+    "utility-types": "catalog:",
+    "webpack": "catalog:",
+    "webpack-merge": "catalog:"
   },
   "peerDependencies": {
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   }
 }

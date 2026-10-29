@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import path from 'node:path';
 import webpack from 'webpack';
 import {rspack} from '@rspack/core';
 import {getCurrentBundler} from '@docusaurus/bundler';
@@ -29,6 +30,7 @@ export function createTestConfigureWebpackUtils(
   bundlerName: BundlerName = 'rspack',
 ): ReturnType<typeof createConfigureWebpackUtils> {
   return createConfigureWebpackUtils({
+    siteDir: path.join(__dirname, '__fixtures__', 'base_test_site'),
     siteConfig: getSiteConfigSlice(bundlerName),
   });
 }

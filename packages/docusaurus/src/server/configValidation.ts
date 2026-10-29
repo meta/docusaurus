@@ -277,6 +277,58 @@ const VCS_CONFIG_SCHEMA = Joi.custom((input) => {
   return value;
 }).default(() => DEFAULT_CONFIG.vcs);
 
+// TODO Docusaurus v5: remove this migration error for legacy template variables
+const LegacySSGTemplateVariables: {[name: string]: string} = {
+  appHtml: logger.code('it.body.appHtml'),
+  htmlAttributes: logger.code('it.html.attributes'),
+  bodyAttributes: logger.code('it.body.attributes'),
+  metaAttributes: `${logger.code('it.head.pageTags')} (a string)`,
+  headTags: logger.code('it.head.pluginTags'),
+  preBodyTags: logger.code('it.body.preTags'),
+  postBodyTags: logger.code('it.body.postTags'),
+  stylesheets: `${logger.code('it.assets.stylesheets')} (URLs including the baseUrl)`,
+  scripts: `${logger.code('it.assets.scripts')} (URLs including the baseUrl)`,
+  noIndex: `removed: the ${logger.code('<meta name="robots">')} tag is part of ${logger.code('it.head.pageTags')}`,
+};
+
+function getLegacySSGTemplateVariablesMessage(
+  template: string,
+): string | undefined {
+  const usedLegacyVariables = Object.keys(LegacySSGTemplateVariables).filter(
+    (name) => new RegExp(String.raw`\bit\.${name}\b`).test(template),
+  );
+  if (usedLegacyVariables.length === 0) {
+    return undefined;
+  }
+  return usedLegacyVariables
+    .map(
+      (name) =>
+        `- ${logger.code(`it.${name}`)} => ${LegacySSGTemplateVariables[name]}`,
+    )
+    .join('\n');
+}
+
+const SSG_TEMPLATE_SCHEMA = Joi.string()
+  // TODO Docusaurus v5: remove this migration error
+  .custom((template: string, helpers) => {
+    const legacyVariablesMessage =
+      getLegacySSGTemplateVariablesMessage(template);
+    if (legacyVariablesMessage) {
+      return helpers.error('docusaurus.legacyVariables', {
+        legacyVariablesMessage,
+      });
+    }
+    return template;
+  })
+  .messages({
+    'docusaurus.legacyVariables': `The Docusaurus config ${logger.code(
+      'siteConfig.ssgTemplate',
+    )} uses template variables that have been renamed or removed:
+{#legacyVariablesMessage}
+Please update your template.`,
+  });
+
+// TODO Docusaurus v5: remove these never types for removed/renamed options
 const FUTURE_CONFIG_SCHEMA = Joi.object<
   FutureConfig & {
     experimental_storage: never;
@@ -284,6 +336,7 @@ const FUTURE_CONFIG_SCHEMA = Joi.object<
     faster: never;
   }
 >({
+  // TODO Docusaurus v5: remove this migration error
   faster: Joi.any()
     .forbidden()
     .messages({
@@ -296,6 +349,7 @@ const FUTURE_CONFIG_SCHEMA = Joi.object<
   experimental_router: Joi.string()
     .equal('browser', 'hash')
     .default(DEFAULT_FUTURE_CONFIG.experimental_router),
+  // TODO Docusaurus v5: remove this migration error
   experimental_storage: Joi.any()
     .forbidden()
     .messages({
@@ -305,6 +359,7 @@ const FUTURE_CONFIG_SCHEMA = Joi.object<
         'storage',
       )} config attribute. Please move your storage config to the top level.`,
     }),
+  // TODO Docusaurus v5: remove this migration error
   experimental_faster: Joi.any()
     .forbidden()
     .messages({
@@ -319,8 +374,9 @@ const FUTURE_CONFIG_SCHEMA = Joi.object<
   .default(DEFAULT_FUTURE_CONFIG);
 
 // TODO move to @docusaurus/utils-validation
+// TODO Docusaurus v5: remove these never types for removed/renamed options
 export const ConfigSchema = Joi.object<
-  DocusaurusConfig & {onBrokenMarkdownLinks: never}
+  DocusaurusConfig & {onBrokenMarkdownLinks: never; ssrTemplate: never}
 >({
   url: SiteUrlSchema.required(),
   baseUrl: BaseUrlSchema.required(),
@@ -338,6 +394,7 @@ export const ConfigSchema = Joi.object<
   onBrokenAnchors: Joi.string()
     .equal('ignore', 'log', 'warn', 'throw')
     .default(DEFAULT_CONFIG.onBrokenAnchors),
+  // TODO Docusaurus v5: remove this migration error
   onBrokenMarkdownLinks: Joi.any()
     .forbidden()
     .messages({
@@ -379,7 +436,17 @@ export const ConfigSchema = Joi.object<
         '{#label} is invalid. A script must be a plain string (the src), or an object with at least a "src" property.',
     })
     .default(DEFAULT_CONFIG.scripts),
-  ssrTemplate: Joi.string(),
+  ssgTemplate: SSG_TEMPLATE_SCHEMA,
+  // TODO Docusaurus v5: remove this migration error
+  ssrTemplate: Joi.any()
+    .forbidden()
+    .messages({
+      'any.unknown': `The Docusaurus config ${logger.code(
+        'siteConfig.ssrTemplate',
+      )} has been renamed to ${logger.code(
+        'siteConfig.ssgTemplate',
+      )}. Please rename it in your site config.`,
+    }),
   headTags: Joi.array()
     .items(
       Joi.object({

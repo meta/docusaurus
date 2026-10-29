@@ -79,11 +79,6 @@ If you still want to emit this sitemap tag, use the ${logger.code(
 
 const PluginOptionSchema = Joi.object<PluginOptions>({
   // @ts-expect-error: forbidden
-  cacheTime: Joi.forbidden().messages({
-    'any.unknown':
-      'Option `cacheTime` in sitemap config is deprecated. Please remove it.',
-  }),
-
   changefreq: removedOptionSchema('changefreq'),
   priority: removedOptionSchema('priority'),
 
@@ -96,10 +91,6 @@ const PluginOptionSchema = Joi.object<PluginOptions>({
   ignorePatterns: Joi.array()
     .items(Joi.string())
     .default(DEFAULT_OPTIONS.ignorePatterns),
-  trailingSlash: Joi.forbidden().messages({
-    'any.unknown':
-      'Please use the new Docusaurus global trailingSlash config instead, and the sitemaps plugin will use it.',
-  }),
   filename: Joi.string().default(DEFAULT_OPTIONS.filename),
 });
 

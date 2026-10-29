@@ -32,29 +32,29 @@
     "@docusaurus/utils": "workspace:*",
     "@docusaurus/utils-common": "workspace:*",
     "@docusaurus/utils-validation": "workspace:*",
-    "@mdx-js/react": "^3.1.1",
-    "clsx": "^2.1.1",
-    "copy-text-to-clipboard": "^3.2.2",
-    "infima": "0.2.0-alpha.45",
-    "lodash": "^4.18.1",
-    "nprogress": "^0.2.0",
-    "postcss": "^8.5.28",
-    "prism-react-renderer": "^2.4.1",
-    "prismjs": "^1.30.0",
-    "react-router-dom": "^5.3.4",
-    "rtlcss": "^4.3.0",
-    "tslib": "^2.8.1",
-    "utility-types": "^3.11.0"
+    "@mdx-js/react": "catalog:",
+    "clsx": "catalog:",
+    "copy-text-to-clipboard": "catalog:",
+    "infima": "catalog:",
+    "lodash": "catalog:",
+    "nprogress": "catalog:",
+    "postcss": "catalog:",
+    "prism-react-renderer": "catalog:",
+    "prismjs": "catalog:",
+    "rtlcss": "catalog:",
+    "tslib": "catalog:",
+    "utility-types": "catalog:"
   },
   "devDependencies": {
-    "@types/nprogress": "^0.2.3",
-    "@types/prismjs": "^1.26.6",
-    "@types/react-router-dom": "^5.3.3",
-    "@types/rtlcss": "^3.5.4"
+    "@types/nprogress": "catalog:dev",
+    "@types/prismjs": "catalog:dev",
+    "@types/react-router-dom": "catalog:",
+    "@types/rtlcss": "catalog:dev",
+    "react-router-dom": "catalog:"
   },
   "peerDependencies": {
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
     "node": ">=24.21"

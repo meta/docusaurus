@@ -28,25 +28,25 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "^7.29.7",
-    "@babel/generator": "^7.29.8",
-    "@babel/plugin-transform-runtime": "^7.29.7",
-    "@babel/preset-env": "^7.29.7",
-    "@babel/preset-react": "^7.29.7",
-    "@babel/preset-typescript": "^7.29.7",
-    "@babel/runtime": "^7.29.7",
-    "@babel/traverse": "^7.29.8",
+    "@babel/core": "catalog:",
+    "@babel/generator": "catalog:",
+    "@babel/plugin-transform-runtime": "catalog:",
+    "@babel/preset-env": "catalog:",
+    "@babel/preset-react": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@babel/runtime": "catalog:",
+    "@babel/traverse": "catalog:",
     "@docusaurus/fs": "workspace:*",
     "@docusaurus/logger": "workspace:*",
     "@docusaurus/types": "workspace:*",
     "@docusaurus/utils": "workspace:*",
-    "babel-plugin-dynamic-import-node": "^2.3.3",
-    "tslib": "^2.8.1"
+    "babel-plugin-dynamic-import-node": "catalog:",
+    "tslib": "catalog:"
   },
   "devDependencies": {
-    "@types/babel__core": "^7.20.5",
-    "@types/babel__generator": "^7.27.0",
-    "@types/babel__traverse": "^7.28.0"
+    "@types/babel__core": "catalog:dev",
+    "@types/babel__generator": "catalog:dev",
+    "@types/babel__traverse": "catalog:dev"
   },
   "engines": {
     "node": ">=24.21"

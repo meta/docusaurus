@@ -10,7 +10,7 @@ import {createRequire} from 'node:module';
 import logger from '@docusaurus/logger';
 import {rspack} from './rspack';
 import {
-  getBrowserslistQueries,
+  getClientQueries,
   getLightningCssMinimizerOptions,
 } from './browserslist';
 import type * as MinifyFunctions from './minifyFunctions';
@@ -137,7 +137,7 @@ function getRspackMinimizers(): RspackPluginInstance[] {
         // While LightningCSS targets are normally not Browserslist queries
         // See https://rspack.dev/plugins/rspack/lightning-css-minimizer-rspack-plugin#minimizeroptions
         // See https://lightningcss.dev/transpilation.html
-        targets: getBrowserslistQueries(),
+        targets: getClientQueries(),
       },
     }),
   ];

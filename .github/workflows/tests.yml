@@ -39,7 +39,7 @@ jobs:
           install: false
           node-version-file: false
       - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ matrix.node }}
           cache: pnpm
@@ -67,18 +67,16 @@ jobs:
         # see https://github.com/facebook/docusaurus/pull/10486
         run: pnpm --filter website typecheck
 
+      # The TypeScript compiler of the tested version runs with pnpm dlx,
+      # without modifying the workspace dependencies (package.json, catalogs)
       - name: TypeCheck website - min version - v6.0
-        # We call the "typescript" package compiler explicitly, because the
-        # root "tsc" bin comes from "@typescript/native" (pinned TS 7)
         run: |
-          pnpm add typescript@6.0 --save-exact -D -w --ignore-scripts
-          node node_modules/typescript/bin/tsc --version
-          node node_modules/typescript/bin/tsc --project website/tsconfig.json
+          pnpm dlx --package=typescript@6.0 tsc --version
+          pnpm dlx --package=typescript@6.0 tsc --project website/tsconfig.json
 
       - name: TypeCheck website - max version - Latest
         # For latest TS there are often lib check errors, so we disable it
         # Details: https://github.com/facebook/docusaurus/pull/10486
         run: |
-          pnpm add typescript@latest --save-exact -D -w --ignore-scripts
-          node node_modules/typescript/bin/tsc --version
-          node node_modules/typescript/bin/tsc --project website/tsconfig.skipLibCheck.json
+          pnpm dlx --package=typescript@latest tsc --version
+          pnpm dlx --package=typescript@latest tsc --project website/tsconfig.skipLibCheck.json

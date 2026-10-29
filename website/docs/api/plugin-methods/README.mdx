@@ -13,7 +13,7 @@ Plugin APIs are shared by themes and plugins—themes are loaded just like plugi
 Every plugin is imported as a module. The module is expected to have the following members:
 
 - A **default export**: the constructor function for the plugin.
-- **Named exports**: the [static methods](./static-methods.mdx) called before plugins are initialized.
+- **Named exports**: the [static methods](./static-methods.mdx) called before plugins are initialized, and the [`getSwizzleConfig()`](./extend-infrastructure.mdx#getSwizzleConfig) static method for themes.
 
 ## Plugin constructor {/* #plugin-constructor */}
 

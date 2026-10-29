@@ -1,4 +1,4 @@
-# Project Words - DO NOT TOUCH - This is updated through CI
+# Project Words - Run pnpm lint:spelling:sort after adding words
 abernathyca
 Adriaan
 aldridged
@@ -81,6 +81,7 @@ Endilie
 endilie
 endiliey
 ERRNAMETOOLONG
+etlua
 externalwaiting
 failfast
 Fienny
@@ -232,16 +233,12 @@ reactjs
 rearchitecture
 Recma
 recma
-recrawl
 redirections
 redwoodjs
 Reloadable
 reloadable
 renderable
-REPONAME
-Retrocompatibility
 retrocompatibility
-Retrocompatible
 retrocompatible
 rmiz
 RSDOCTOR
@@ -314,7 +311,6 @@ Triaging
 triaging
 TSES
 twoslash
-typesafe
 Typesense
 typesense
 Udeadbeefcafe

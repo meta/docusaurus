@@ -15,7 +15,7 @@ describe('inlineScripts', () => {
         colorMode: {
           disableSwitch: false,
           defaultMode: 'light',
-          respectPrefersColorScheme: false,
+          respectPrefersColorScheme: true,
         },
         siteStorage: {
           type: 'localStorage',
@@ -25,13 +25,13 @@ describe('inlineScripts', () => {
     ).toMatchSnapshot();
   });
 
-  it('inline javascript for prefers color scheme and no switch', () => {
+  it('inline javascript for default mode and no switch', () => {
     expect(
       getThemeInlineScript({
         colorMode: {
           disableSwitch: true,
           defaultMode: 'light',
-          respectPrefersColorScheme: true,
+          respectPrefersColorScheme: false,
         },
         siteStorage: {
           type: 'localStorage',

@@ -507,16 +507,16 @@ declare module '@theme/CodeBlock/Content' {
   export default function CodeBlockContent(props: Props): ReactNode;
 }
 
-declare module '@theme/CodeBlock/Content/Element' {
+declare module '@theme/CodeBlock/Element' {
   import type {ReactNode} from 'react';
   import type {Props} from '@theme/CodeBlock';
 
   export type {Props};
 
-  export default function CodeBlockContentElement(props: Props): ReactNode;
+  export default function CodeBlockElement(props: Props): ReactNode;
 }
 
-declare module '@theme/CodeBlock/Content/String' {
+declare module '@theme/CodeBlock/String' {
   import type {ReactNode} from 'react';
   import type {Props as CodeBlockProps} from '@theme/CodeBlock';
 
@@ -524,7 +524,7 @@ declare module '@theme/CodeBlock/Content/String' {
     readonly children: string;
   }
 
-  export default function CodeBlockContentString(props: Props): ReactNode;
+  export default function CodeBlockString(props: Props): ReactNode;
 }
 
 declare module '@theme/CodeBlock/Line' {

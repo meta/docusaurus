@@ -17,6 +17,7 @@ import type {CurrentBundler, DocusaurusConfig} from '@docusaurus/types';
 type SiteConfigSlice = Pick<DocusaurusConfig, 'webpack'>;
 
 // Rspack is the default, Webpack is opt-in (deprecated)
+// TODO Docusaurus v5: remove Webpack support
 function isRspack(siteConfig: SiteConfigSlice): boolean {
   return !siteConfig.webpack;
 }

@@ -50,8 +50,7 @@
     "*.xslt",
     "*.gitignore",
     "versioned_docs",
-    "*.min.*",
-    "jest/vendor"
+    "*.min.*"
   ],
   "ignoreRegExpList": ["Email", "Urls", "#[\\w-]*", "\\u\\{[0-9A-F]{4}\\}"]
 }

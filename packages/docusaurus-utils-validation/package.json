@@ -22,10 +22,10 @@
     "@docusaurus/logger": "workspace:*",
     "@docusaurus/utils": "workspace:*",
     "@docusaurus/utils-common": "workspace:*",
-    "joi": "^18.2.8",
-    "js-yaml": "^5.4.1",
-    "lodash": "^4.18.1",
-    "tslib": "^2.8.1"
+    "joi": "catalog:",
+    "js-yaml": "catalog:",
+    "lodash": "catalog:",
+    "tslib": "catalog:"
   },
   "engines": {
     "node": ">=24.21"

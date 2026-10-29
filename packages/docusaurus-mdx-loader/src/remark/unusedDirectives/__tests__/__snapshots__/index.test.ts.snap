@@ -11,7 +11,7 @@ Your content might render in an unexpected way. Visit https://github.com/faceboo
 `;
 
 exports[`directives remark plugin - client compiler > default behavior for container directives > result 1`] = `
-"<admonition type="danger"><p>Take care of snowstorms...</p></admonition>
+"<div><p>Take care of snowstorms...</p></div>
 <div><p>unused directive content</p></div>
 <p>:::NotAContainerDirective with a phrase after</p>
 <p>:::</p>
@@ -59,7 +59,7 @@ exports[`directives remark plugin - client compiler > default behavior for text 
 `;
 
 exports[`directives remark plugin - client compiler > onUnusedMarkdownDirectives > function form > if file contains unused container directive > result 1`] = `
-"<admonition type="danger"><p>Take care of snowstorms...</p></admonition>
+"<div><p>Take care of snowstorms...</p></div>
 <div></div>
 <p>:::NotAContainerDirective with a phrase after</p>
 <p>:::</p>
@@ -86,7 +86,7 @@ exports[`directives remark plugin - client compiler > onUnusedMarkdownDirectives
 `;
 
 exports[`directives remark plugin - client compiler > onUnusedMarkdownDirectives > ignore > if file contains unused container directive > result 1`] = `
-"<admonition type="danger"><p>Take care of snowstorms...</p></admonition>
+"<div><p>Take care of snowstorms...</p></div>
 <div><p>unused directive content</p></div>
 <p>:::NotAContainerDirective with a phrase after</p>
 <p>:::</p>
@@ -113,7 +113,7 @@ exports[`directives remark plugin - client compiler > onUnusedMarkdownDirectives
 `;
 
 exports[`directives remark plugin - server compiler > default behavior for container directives > result 1`] = `
-"<admonition type="danger"><p>Take care of snowstorms...</p></admonition>
+"<div><p>Take care of snowstorms...</p></div>
 <div><p>unused directive content</p></div>
 <p>:::NotAContainerDirective with a phrase after</p>
 <p>:::</p>

@@ -6,7 +6,6 @@
  */
 
 import type {ComponentType, ReactNode} from 'react';
-import {processAdmonitionProps} from '@docusaurus/theme-common';
 import type {Props} from '@theme/Admonition';
 import AdmonitionTypes from '@theme/Admonition/Types';
 
@@ -21,8 +20,7 @@ function getAdmonitionTypeComponent(type: string): ComponentType<Props> {
   return AdmonitionTypes.info!;
 }
 
-export default function Admonition(unprocessedProps: Props): ReactNode {
-  const props = processAdmonitionProps(unprocessedProps);
+export default function Admonition(props: Props): ReactNode {
   const AdmonitionTypeComponent = getAdmonitionTypeComponent(props.type);
   // eslint-disable-next-line react-hooks/static-components
   return <AdmonitionTypeComponent {...props} />;

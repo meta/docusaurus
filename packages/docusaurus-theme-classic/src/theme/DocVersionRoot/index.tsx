@@ -9,15 +9,15 @@ import type {ReactNode} from 'react';
 import {HtmlClassNameProvider, PageMetadata} from '@docusaurus/theme-common';
 import {
   getDocsVersionSearchTag,
-  DocsVersionProvider,
+  useDocsVersion,
 } from '@docusaurus/plugin-content-docs/client';
 import renderRoutes from '@docusaurus/renderRoutes';
 import SearchMetadata from '@theme/SearchMetadata';
 
 import type {Props} from '@theme/DocVersionRoot';
 
-function DocVersionRootMetadata(props: Props): ReactNode {
-  const {version} = props;
+function DocVersionRootMetadata(): ReactNode {
+  const version = useDocsVersion();
   return (
     <>
       <SearchMetadata
@@ -32,19 +32,17 @@ function DocVersionRootMetadata(props: Props): ReactNode {
 }
 
 function DocVersionRootContent(props: Props): ReactNode {
-  const {version, route} = props;
+  const version = useDocsVersion();
   return (
     <HtmlClassNameProvider className={version.className}>
-      <DocsVersionProvider version={version}>
-        {renderRoutes(route.routes!)}
-      </DocsVersionProvider>
+      {renderRoutes(props.route.routes!)}
     </HtmlClassNameProvider>
   );
 }
 export default function DocVersionRoot(props: Props): ReactNode {
   return (
     <>
-      <DocVersionRootMetadata {...props} />
+      <DocVersionRootMetadata />
       <DocVersionRootContent {...props} />
     </>
   );

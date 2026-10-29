@@ -16,5 +16,3 @@ packages/create-docusaurus/lib/*
 packages/create-docusaurus/templates/
 website/static/katex/katex.min.css
 website/_dogfooding/_asset-tests/badSyntax.css
-
-jest/vendor

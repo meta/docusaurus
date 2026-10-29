@@ -77,11 +77,9 @@ export {isMultiColumnFooterLinks} from './utils/footerUtils';
 
 export {isRegexpStringMatch} from './utils/regexpUtils';
 
-export {duplicates, uniq, groupBy} from './utils/jsUtils';
+export {duplicates, uniq} from './utils/jsUtils';
 
 export {usePrismTheme} from './hooks/usePrismTheme';
-
-export {processAdmonitionProps} from './utils/admonitionUtils';
 
 export {
   useHistorySelector,

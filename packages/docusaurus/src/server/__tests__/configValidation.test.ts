@@ -166,6 +166,56 @@ describe('config warning and error', () => {
   });
 });
 
+describe('ssgTemplate', () => {
+  it('accepts ssgTemplate', () => {
+    expect(normalizeConfig({ssgTemplate: '<html></html>'})).toEqual({
+      ...DEFAULT_CONFIG,
+      ...baseConfig,
+      ssgTemplate: '<html></html>',
+    });
+  });
+
+  it('accepts ssgTemplate using the template variables', () => {
+    const ssgTemplate =
+      '<html <%~ it.html.attributes %>><body><%~ it.body.appHtml %><% it.assets.scripts.forEach((script) => { %><script src="<%= script %>"></script><% }); %></body></html>';
+    expect(normalizeConfig({ssgTemplate})).toEqual({
+      ...DEFAULT_CONFIG,
+      ...baseConfig,
+      ssgTemplate,
+    });
+  });
+
+  it('rejects ssgTemplate using legacy template variables', () => {
+    expect(() =>
+      normalizeConfig({
+        ssgTemplate:
+          '<html <%~ it.htmlAttributes %>><head><%~ it.headTags %><% if (it.noIndex) { %>noindex<% } %></head><body><%~ it.appHtml %><% it.scripts.forEach((script) => { %><script src="<%= it.baseUrl %><%= script %>"></script><% }); %></body></html>',
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(`
+      [Error: The Docusaurus config \`siteConfig.ssgTemplate\` uses template variables that have been renamed or removed:
+      - \`it.appHtml\` => \`it.body.appHtml\`
+      - \`it.htmlAttributes\` => \`it.html.attributes\`
+      - \`it.headTags\` => \`it.head.pluginTags\`
+      - \`it.scripts\` => \`it.assets.scripts\` (URLs including the baseUrl)
+      - \`it.noIndex\` => removed: the \`<meta name="robots">\` tag is part of \`it.head.pageTags\`
+      Please update your template.
+      ]
+    `);
+  });
+
+  it('rejects legacy siteConfig.ssrTemplate', () => {
+    expect(() =>
+      normalizeConfig({
+        // @ts-expect-error: renamed option
+        ssrTemplate: '<html></html>',
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(`
+      [Error: The Docusaurus config \`siteConfig.ssrTemplate\` has been renamed to \`siteConfig.ssgTemplate\`. Please rename it in your site config.
+      ]
+    `);
+  });
+});
+
 describe('url', () => {
   it('throws for non-string URLs', () => {
     expect(() =>

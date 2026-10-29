@@ -6,7 +6,7 @@
  */
 
 import {logger} from '@docusaurus/logger';
-import {Command} from 'commander';
+import {Command, Option} from 'commander';
 import {DOCUSAURUS_VERSION} from '@docusaurus/utils';
 
 import {build} from './build/build';
@@ -16,7 +16,7 @@ import {externalCommand} from './external';
 import {serve} from './serve';
 import {start} from './start/start';
 import {swizzle} from './swizzle';
-import {writeHeadingIds} from './writeHeadingIds';
+import {writeHeadingIds, HeadingIdSyntaxes} from './writeHeadingIds';
 import {writeTranslations} from './writeTranslations';
 
 function concatLocaleOptions(locale: string, locales: string[] = []): string[] {
@@ -204,15 +204,15 @@ export async function createCLIProgram({
     )
     .option(
       '--https',
-      'serve the dev site over HTTPS using a self-signed cert (default: false). Preferred over the HTTPS=true env var. Implied when both --ssl-cert and --ssl-key are provided.',
+      'serve the dev site over HTTPS using a self-signed cert (default: false). Implied when both --ssl-cert and --ssl-key are provided. Takes precedence over the DOCUSAURUS_HTTPS env var.',
     )
     .option(
       '--ssl-cert <path>',
-      'path to a TLS certificate file (implies HTTPS). Preferred over the SSL_CRT_FILE env var; CLI takes precedence if both are set.',
+      'path to a TLS certificate file (implies HTTPS). Takes precedence over the DOCUSAURUS_SSL_CRT_FILE env var.',
     )
     .option(
       '--ssl-key <path>',
-      'path to a TLS private key file (implies HTTPS). Preferred over the SSL_KEY_FILE env var; CLI takes precedence if both are set.',
+      'path to a TLS private key file (implies HTTPS). Takes precedence over the DOCUSAURUS_SSL_KEY_FILE env var.',
     )
     .action(start);
 
@@ -265,9 +265,11 @@ export async function createCLIProgram({
   cli
     .command('write-heading-ids [siteDir] [files...]')
     .description('Generate heading ids in Markdown content.')
-    .option(
-      '--syntax <syntax>',
-      'heading ID syntax: "classic" ({#id}) or "mdx-comment" ({/* #id */}) (default: "classic")',
+    .addOption(
+      new Option(
+        '--syntax <syntax>',
+        'heading ID syntax: "classic" ({#id}) or "mdx-comment" ({/* #id */}) (default: "classic" for files compiled as CommonMark, "mdx-comment" for files compiled as MDX)',
+      ).choices(HeadingIdSyntaxes),
     )
     .option(
       '--migrate',

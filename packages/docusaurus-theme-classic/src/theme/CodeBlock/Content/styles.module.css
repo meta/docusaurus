@@ -11,10 +11,6 @@
   padding: 0;
 }
 
-.codeBlockStandalone {
-  padding: 0;
-}
-
 .codeBlockLines {
   font: inherit;
   /* rtl:ignore */

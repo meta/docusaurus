@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import path from 'node:path';
 import logger from '@docusaurus/logger';
 import {
   writeMarkdownHeadingId,
@@ -15,29 +16,41 @@ import {safeGlob} from '@docusaurus/glob';
 import {fs, realpath} from '@docusaurus/fs';
 import {loadContext} from '../server/site';
 import {initPlugins} from '../server/plugins/init';
+import type {LoadContext, MarkdownConfig} from '@docusaurus/types';
 
-function inferFallbackSyntax(_filepath: string): HeadingIdSyntax {
-  // TODO Docusaurus v4 - infer the syntax based on the file extensions?
-  // This is not ideal because we have many ways to define the syntax
-  // (front matter "format", siteConfig.markdown.format etc...)
-  // but probably good enough for now
+export const HeadingIdSyntaxes = [
+  'classic',
+  'mdx-comment',
+] as const satisfies HeadingIdSyntax[];
 
-  // Until then, we default to the classic syntax
-  // The mdx-comment syntax is opt-in
-  return 'classic';
-}
-
-function getHeadingIdSyntax(filepath: string, options?: WriteHeadingIDOptions) {
-  return options?.syntax ?? inferFallbackSyntax(filepath);
+/**
+ * Infer the heading ID syntax that compiles for a given file:
+ * - `classic` ({#id}) for files compiled as CommonMark
+ * - `mdx-comment` ({/* #id * /}) for files compiled as MDX
+ *
+ * The front matter `format` is not taken into account, but users can still
+ * use the `--syntax` option to target a specific syntax.
+ */
+function inferFallbackSyntax(
+  filepath: string,
+  markdownConfig: MarkdownConfig,
+): HeadingIdSyntax {
+  const isCommonMark =
+    markdownConfig.format === 'detect'
+      ? path.extname(filepath) === '.md'
+      : markdownConfig.format === 'md';
+  return isCommonMark ? 'classic' : 'mdx-comment';
 }
 
 async function transformMarkdownFile(
   filepath: string,
-  options?: WriteHeadingIDOptions,
+  markdownConfig: MarkdownConfig,
+  options: WriteHeadingIDOptions,
 ): Promise<string | undefined> {
   const content = await fs.readFile(filepath, 'utf8');
 
-  const syntax = getHeadingIdSyntax(filepath, options);
+  const syntax =
+    options.syntax ?? inferFallbackSyntax(filepath, markdownConfig);
   const updatedContent = writeMarkdownHeadingId(content, {
     ...options,
     syntax,
@@ -60,20 +73,18 @@ async function globMarkdownFiles(patterns: string[]): Promise<string[]> {
  * not belong to a content plugin. For example ./README.md should not be
  * transformed
  */
-async function getPathsToWatch(siteDir: string): Promise<string[]> {
-  const context = await loadContext({siteDir});
+async function getPathsToWatch(context: LoadContext): Promise<string[]> {
   const plugins = await initPlugins(context);
   return plugins.flatMap((plugin) => plugin.getPathsToWatch?.() ?? []);
 }
 
-// TODO Docusaurus v4 - Upgrade commander, use choices() API?
+// The CLI already validates --syntax, but not the programmatic API
 function validateOptions(options: WriteHeadingIDOptions) {
-  const validSyntaxValues: HeadingIdSyntax[] = ['classic', 'mdx-comment'];
-  if (options.syntax && !validSyntaxValues.includes(options.syntax)) {
+  if (options.syntax && !HeadingIdSyntaxes.includes(options.syntax)) {
     throw new Error(
       `Invalid --syntax value "${
         options.syntax
-      }". Valid values: ${validSyntaxValues.join(', ')}`,
+      }". Valid values: ${HeadingIdSyntaxes.join(', ')}`,
     );
   }
   if (options.overwrite && options.migrate) {
@@ -92,7 +103,9 @@ export async function writeHeadingIds(
 
   const siteDir = await realpath(siteDirParam);
 
-  const patterns = files.length ? files : await getPathsToWatch(siteDir);
+  const context = await loadContext({siteDir});
+
+  const patterns = files.length ? files : await getPathsToWatch(context);
 
   const markdownFiles = await globMarkdownFiles(patterns);
 
@@ -102,7 +115,9 @@ export async function writeHeadingIds(
   }
 
   const result = await Promise.all(
-    markdownFiles.map((p) => transformMarkdownFile(p, options)),
+    markdownFiles.map((p) =>
+      transformMarkdownFile(p, context.siteConfig.markdown, options),
+    ),
   );
 
   const pathsModified = result.filter(Boolean) as string[];

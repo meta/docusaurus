@@ -38,12 +38,12 @@
     "@docusaurus/theme-common": "workspace:*",
     "@docusaurus/types": "workspace:*",
     "@docusaurus/utils-validation": "workspace:*",
-    "mermaid": "^12.0.0",
-    "tslib": "^2.8.1"
+    "mermaid": "catalog:",
+    "tslib": "catalog:"
   },
   "peerDependencies": {
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
     "node": ">=24.21"

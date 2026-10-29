@@ -263,10 +263,15 @@ declare module '@docusaurus/router' {
   export {useHistory, useLocation, Redirect, matchPath} from 'react-router-dom';
 }
 
+// TODO Docusaurus v5: remove this deprecated hook
 declare module '@docusaurus/useIsomorphicLayoutEffect' {
-  import {useLayoutEffect} from 'react';
+  import type {useLayoutEffect} from 'react';
 
-  export = useLayoutEffect;
+  /**
+   * @deprecated Use React's `useLayoutEffect` instead.
+   */
+  const useIsomorphicLayoutEffect: typeof useLayoutEffect;
+  export default useIsomorphicLayoutEffect;
 }
 
 declare module '@docusaurus/useDocusaurusContext' {

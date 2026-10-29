@@ -12,16 +12,17 @@ import {
   getLoadedContentTranslationFiles,
   translateLoadedContent,
 } from '../translations';
+import {toFullVersion} from '../versions/version';
 import type {
-  DocMetadata,
+  DocMetadataBase,
   LoadedContent,
   LoadedVersion,
 } from '@docusaurus/plugin-content-docs';
 import type {Sidebar} from '../sidebars/types';
 
 function createSampleDoc(
-  doc: Pick<DocMetadata, 'id'> & Partial<DocMetadata>,
-): DocMetadata {
+  doc: Pick<DocMetadataBase, 'id'> & Partial<DocMetadataBase>,
+): DocMetadataBase {
   return {
     sourceDirName: '',
     draft: false,
@@ -30,8 +31,6 @@ function createSampleDoc(
     editUrl: 'any',
     lastUpdatedAt: 0,
     lastUpdatedBy: 'any',
-    next: undefined,
-    previous: undefined,
     permalink: 'any',
     slug: 'any',
     source: 'any',
@@ -337,79 +336,77 @@ describe('translateLoadedContent', () => {
     ).toMatchSnapshot();
   });
 
-  it('translates pagination navigation titles for generated-index categories', () => {
+  it('derives the docs navigation from the translated sidebars', () => {
     const content: LoadedContent = {
       loadedVersions: [
         createSampleVersion({
           versionName: CURRENT_VERSION_NAME,
-          docs: [
-            createSampleDoc({
-              id: 'doc1',
-              next: {
-                title: 'Getting started',
-                permalink: '/docs/category/getting-started-index-slug',
-              },
-            }),
-            createSampleDoc({
-              id: 'doc2',
-              previous: {
-                title: 'Getting started',
-                permalink: '/docs/category/getting-started-index-slug',
-              },
-              next: {
-                title: 'doc3 title',
-                permalink: '/docs/doc3',
-              },
-            }),
-            createSampleDoc({
-              id: 'doc3',
-              previous: {
-                title: 'doc2 title',
-                permalink: '/docs/doc2',
-              },
-            }),
-          ],
+          docs: ['doc1', 'doc2', 'doc3', 'doc4', 'doc5'].map((id) =>
+            createSampleDoc({id, permalink: `/docs/${id}`, frontMatter: {}}),
+          ),
         }),
       ],
     };
-
-    const translationFiles = getLoadedContentTranslationFiles(content);
-    const translatedFiles = translationFiles.map((translationFile) =>
-      updateTranslationFileMessages(
-        translationFile,
-        (message) => `${message} (translated)`,
-      ),
+    const translationFiles = getLoadedContentTranslationFiles(content).map(
+      (translationFile) =>
+        updateTranslationFileMessages(
+          translationFile,
+          (message) => `${message} (translated)`,
+        ),
     );
 
-    const translated = translateLoadedContent(content, translatedFiles);
-    const [doc1, doc2, doc3] = translated.loadedVersions[0]!.docs;
+    const translatedContent = translateLoadedContent(content, translationFiles);
+    const version = toFullVersion(translatedContent.loadedVersions[0]!);
 
-    // doc1.next points to a generated-index category
-    // => title should be translated
-    expect(doc1!.next).toEqual({
-      title: 'Getting started (translated)',
-      permalink: '/docs/category/getting-started-index-slug',
-    });
-
-    // doc2.previous points to a generated-index category
-    // => title should be translated
-    expect(doc2!.previous).toEqual({
-      title: 'Getting started (translated)',
-      permalink: '/docs/category/getting-started-index-slug',
-    });
-
-    // doc2.next points to a regular doc
-    // => title should NOT be changed, it's already translated from the i18n MDX
-    expect(doc2!.next).toEqual({
-      title: 'doc3 title',
-      permalink: '/docs/doc3',
-    });
-
-    // doc3.previous points to a regular doc
-    // => title should NOT be changed, it's already translated from the i18n MDX
-    expect(doc3!.previous).toEqual({
-      title: 'doc2 title',
-      permalink: '/docs/doc2',
-    });
+    // Generated-index category and sidebar doc item labels are translated
+    // Doc titles are not, they come from the already translated MDX files
+    expect(version.docs.map(({id, previous, next}) => ({id, previous, next})))
+      .toMatchInlineSnapshot(`
+      [
+        {
+          "id": "doc1",
+          "next": {
+            "permalink": "/docs/doc2",
+            "title": "Second doc translatable (translated)",
+          },
+          "previous": {
+            "permalink": "/docs/category/getting-started-index-slug",
+            "title": "Getting started (translated)",
+          },
+        },
+        {
+          "id": "doc2",
+          "next": {
+            "permalink": "/docs/doc3",
+            "title": "doc3 title",
+          },
+          "previous": {
+            "permalink": "/docs/doc1",
+            "title": "doc1 title",
+          },
+        },
+        {
+          "id": "doc3",
+          "next": undefined,
+          "previous": {
+            "permalink": "/docs/doc2",
+            "title": "Second doc translatable (translated)",
+          },
+        },
+        {
+          "id": "doc4",
+          "next": {
+            "permalink": "/docs/category/cat-with-key",
+            "title": "Category with key (translated)",
+          },
+          "previous": undefined,
+        },
+        {
+          "id": "doc5",
+          "next": undefined,
+          "previous": undefined,
+        },
+      ]
+    `);
   });
 });

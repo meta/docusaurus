@@ -112,7 +112,7 @@ You can also try using the new [github.dev](https://github.dev/facebook/docusaur
 
 - **Most important: Look around.** Match the style you see used in the rest of the project. This includes formatting, naming files, naming things in code, naming things in documentation, etc.
 - "Attractive"
-- We do have Prettier (a formatter) and ESLint (a syntax linter) to catch most stylistic problems. If you are working locally, they should automatically fix some issues during every git commit.
+- We do have oxfmt (a formatter) and ESLint (a syntax linter) to catch most stylistic problems. If you are working locally, they should automatically fix some issues during every git commit.
 - **For documentation**: Do not wrap lines at 80 characters - configure your editor to soft-wrap when editing documentation.
 
 Don't worry too much about styles in general—the maintainers will help you fix them as they review your code.

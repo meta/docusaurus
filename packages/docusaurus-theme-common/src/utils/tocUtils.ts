@@ -52,14 +52,6 @@ function treeifyTOC(flatTOC: readonly TOCItem[]): TOCTreeNode[] {
   return rootNodes;
 }
 
-/**
- * Takes a flat TOC list (from the MDX loader) and treeifies it into what the
- * TOC components expect. Memoized for performance.
- */
-export function useTreeifiedTOC(toc: TOCItem[]): readonly TOCTreeNode[] {
-  return useMemo(() => treeifyTOC(toc), [toc]);
-}
-
 function filterTOC({
   toc,
   minHeadingLevel,
@@ -96,7 +88,7 @@ function filterTOC({
  * TOC components expect, applying the `minHeadingLevel` and `maxHeadingLevel`.
  * Memoized for performance.
  *
- * **Important**: this is not the same as `useTreeifiedTOC(toc.filter(...))`,
+ * **Important**: this is not the same as `treeifyTOC(toc.filter(...))`,
  * because we have to filter the TOC after it has been treeified. This is mostly
  * to ensure that weird TOC structures preserve their semantics. For example, an
  * h3-h2-h4 sequence should not be treeified as an "h3 > h4" hierarchy with

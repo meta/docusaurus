@@ -143,7 +143,6 @@ const sidebarItemSchema = Joi.object<SidebarItemConfig>().when('.type', {
     },
   ],
 });
-// .id('sidebarItemSchema');
 
 function validateSidebarItem(
   item: unknown,

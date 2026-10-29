@@ -41,8 +41,9 @@ export type SiteStorage = {
    * For readability, the namespace is applied at the end of the key
    * The final storage key will be = `${key}${namespace}`
    *
-   * The default namespace is "" for retro-compatibility reasons
-   * If you want a separator, the namespace should contain it ("-myNamespace")
+   * The namespace starts with a "-" separator ("-myNamespace")
+   * By default, it is a hash of the site url + baseUrl ("-a1b")
+   * It is "" when namespacing is disabled (`storage.namespace: false`)
    */
   namespace: string;
 };

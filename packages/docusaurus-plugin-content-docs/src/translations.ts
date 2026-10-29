@@ -270,63 +270,16 @@ function getVersionTranslationFiles(version: LoadedVersion): TranslationFile[] {
   ];
 }
 
-// TODO Docusaurus v4 or later
-//  this temporarily works, but it is not an ideal solution
-//  The docs navigation can be computed and shouldn't be part of LoadedVersion
-//  We need to derive the navigation from already translated content
-//  See https://github.com/facebook/docusaurus/pull/11794
-function translateDocNavigation(
-  docs: LoadedVersion['docs'],
-  translatedSidebars: Sidebars,
-): LoadedVersion['docs'] {
-  // Build a map of permalink -> translated label for generated-index categories
-  const translatedLabelByPermalink = new Map<string, string>();
-  for (const sidebar of Object.values(translatedSidebars)) {
-    for (const category of collectSidebarCategories(sidebar)) {
-      if (category.link?.type === 'generated-index') {
-        translatedLabelByPermalink.set(category.link.permalink, category.label);
-      }
-    }
-  }
-
-  if (translatedLabelByPermalink.size === 0) {
-    return docs;
-  }
-
-  return docs.map((doc) => {
-    const previous =
-      doc.previous && translatedLabelByPermalink.has(doc.previous.permalink)
-        ? {
-            ...doc.previous,
-            title: translatedLabelByPermalink.get(doc.previous.permalink)!,
-          }
-        : doc.previous;
-    const next =
-      doc.next && translatedLabelByPermalink.has(doc.next.permalink)
-        ? {
-            ...doc.next,
-            title: translatedLabelByPermalink.get(doc.next.permalink)!,
-          }
-        : doc.next;
-    if (previous === doc.previous && next === doc.next) {
-      return doc;
-    }
-    return {...doc, previous, next};
-  });
-}
-
 function translateVersion(
   version: LoadedVersion,
   translationFiles: {[fileName: string]: TranslationFile},
 ): LoadedVersion {
   const versionTranslations =
     translationFiles[getVersionFileName(version.versionName)]!.content;
-  const translatedSidebars = translateSidebars(version, versionTranslations);
   return {
     ...version,
     label: versionTranslations['version.label']?.message ?? version.label,
-    sidebars: translatedSidebars,
-    docs: translateDocNavigation(version.docs, translatedSidebars),
+    sidebars: translateSidebars(version, versionTranslations),
   };
 }
 

@@ -22,12 +22,12 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@typescript-eslint/types": "^8.71.0",
-    "@typescript-eslint/utils": "^8.71.0",
-    "tslib": "^2.8.1"
+    "@typescript-eslint/types": "catalog:",
+    "@typescript-eslint/utils": "catalog:",
+    "tslib": "catalog:"
   },
   "devDependencies": {
-    "@typescript-eslint/rule-tester": "^8.71.0"
+    "@typescript-eslint/rule-tester": "catalog:dev"
   },
   "peerDependencies": {
     "eslint": ">=8.57.0"

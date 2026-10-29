@@ -1,6 +1,6 @@
 # `@docusaurus/plugin-rsdoctor`
 
-[Rsdoctor](https://rsdoctor.dev/) plugin for Docusaurus.
+[Rsdoctor](https://rsdoctor.rs/) plugin for Docusaurus.
 
 ## Usage
 

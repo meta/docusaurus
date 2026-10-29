@@ -42,7 +42,7 @@ import InitialCodeBlock from '@theme-init/CodeBlock';
 import React from 'react';
 
 export default function CodeBlock(props) {
-  return props.live ? (
+  return props.metastring?.split(/\s+/).includes('live') ? (
     <ReactLivePlayground {...props} />
   ) : (
     <InitialCodeBlock {...props} />

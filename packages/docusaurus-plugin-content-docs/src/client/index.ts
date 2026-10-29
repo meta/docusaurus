@@ -44,7 +44,7 @@ export {
   useDocSidebarItemsExpandedState,
 } from './docSidebarItemsExpandedState';
 
-export {DocsVersionProvider, useDocsVersion} from './docsVersion';
+export {useDocsVersion} from './docsVersion';
 
 export {DocsSidebarProvider, useDocsSidebar} from './docsSidebar';
 
@@ -61,6 +61,8 @@ export {
 } from './docsSearch';
 
 export {useBreadcrumbsStructuredData} from './structuredDataUtils';
+
+export {useDocCardDescriptionCategoryItemsPlural} from './docsTranslations';
 
 export type ActivePlugin = {
   pluginId: string;

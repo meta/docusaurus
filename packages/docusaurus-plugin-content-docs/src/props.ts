@@ -7,7 +7,7 @@
 
 import _ from 'lodash';
 import {createDocsByIdIndex} from './docs';
-import type {VersionTag, VersionTags} from './types';
+import type {FullVersion, VersionTag, VersionTags} from './types';
 import type {
   SidebarItemDoc,
   SidebarItem,
@@ -25,6 +25,7 @@ import type {
   PropSidebarItemLink,
   PropVersionDocs,
   DocMetadata,
+  DocMetadataBase,
   LoadedVersion,
 } from '@docusaurus/plugin-content-docs';
 
@@ -57,7 +58,7 @@ export function toSidebarsProp(
 ): PropSidebars {
   const docsById = createDocsByIdIndex(loadedVersion.docs);
 
-  function getDocById(docId: string): DocMetadata {
+  function getDocById(docId: string): DocMetadataBase {
     const docMetadata = docsById[docId];
     if (!docMetadata) {
       throw new Error(
@@ -143,9 +144,9 @@ Available document ids are:
   );
 }
 
-function toVersionDocsProp(loadedVersion: LoadedVersion): PropVersionDocs {
+function toVersionDocsProp(version: FullVersion): PropVersionDocs {
   return Object.fromEntries(
-    loadedVersion.docs.map((doc) => [
+    version.docs.map((doc) => [
       doc.id,
       {
         id: doc.id,
@@ -159,19 +160,19 @@ function toVersionDocsProp(loadedVersion: LoadedVersion): PropVersionDocs {
 
 export function toVersionMetadataProp(
   pluginId: string,
-  loadedVersion: LoadedVersion,
+  version: FullVersion,
 ): PropVersionMetadata {
   return {
     pluginId,
-    version: loadedVersion.versionName,
-    label: loadedVersion.label,
-    banner: loadedVersion.banner,
-    badge: loadedVersion.badge,
-    noIndex: loadedVersion.noIndex,
-    className: loadedVersion.className,
-    isLast: loadedVersion.isLast,
-    docsSidebars: toSidebarsProp(loadedVersion),
-    docs: toVersionDocsProp(loadedVersion),
+    version: version.versionName,
+    label: version.label,
+    banner: version.banner,
+    badge: version.badge,
+    noIndex: version.noIndex,
+    className: version.className,
+    isLast: version.isLast,
+    docsSidebars: toSidebarsProp(version),
+    docs: toVersionDocsProp(version),
   };
 }
 

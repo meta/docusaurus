@@ -80,11 +80,6 @@ const OptionsSchema = Joi.object<PluginOptions>({
   editLocalizedFiles: Joi.boolean().default(DEFAULT_OPTIONS.editLocalizedFiles),
   routeBasePath: RouteBasePathSchema.default(DEFAULT_OPTIONS.routeBasePath),
   tagsBasePath: Joi.string().default(DEFAULT_OPTIONS.tagsBasePath),
-  // @ts-expect-error: deprecated
-  homePageId: Joi.any().forbidden().messages({
-    'any.unknown':
-      'The docs plugin option homePageId is not supported anymore. To make a doc the "home", please add "slug: /" in its front matter. See: https://docusaurus.io/docs/next/docs-introduction#home-page-docs',
-  }),
 
   include: Joi.array().items(Joi.string()).default(DEFAULT_OPTIONS.include),
   exclude: Joi.array().items(Joi.string()).default(DEFAULT_OPTIONS.exclude),

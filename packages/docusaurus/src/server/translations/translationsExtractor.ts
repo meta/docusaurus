@@ -67,7 +67,7 @@ export async function extractSiteSourceCodeTranslations({
 }): Promise<TranslationFileContent> {
   const babelOptions = getBabelOptions({
     isServer: true,
-    babelOptions: await getCustomBabelConfigFilePath(siteDir),
+    configFile: await getCustomBabelConfigFilePath(siteDir),
   });
 
   // Should we warn here if the same translation "key" is found in multiple

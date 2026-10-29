@@ -122,6 +122,7 @@ export default function pluginPWA(
 
       // Rspack: builtin:swc-loader, Webpack (deprecated): babel-loader
       const getJSLoader = await createJsLoaderFactory({
+        siteDir: props.siteDir,
         siteConfig: props.siteConfig,
       });
 

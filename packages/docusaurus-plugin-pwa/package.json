@@ -28,20 +28,20 @@
     "@docusaurus/types": "workspace:*",
     "@docusaurus/utils": "workspace:*",
     "@docusaurus/utils-validation": "workspace:*",
-    "clsx": "^2.1.1",
-    "tslib": "^2.8.1",
-    "webpack": "^5.111.0",
-    "workbox-build": "^7.4.1",
-    "workbox-precaching": "^7.4.1",
-    "workbox-window": "^7.4.1"
+    "clsx": "catalog:",
+    "tslib": "catalog:",
+    "webpack": "catalog:",
+    "workbox-build": "catalog:",
+    "workbox-precaching": "catalog:",
+    "workbox-window": "catalog:"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "workspace:*",
-    "@types/react-dom": "^19.3.0"
+    "@types/react-dom": "catalog:"
   },
   "peerDependencies": {
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
     "node": ">=24.21"

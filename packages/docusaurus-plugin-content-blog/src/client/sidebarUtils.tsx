@@ -8,7 +8,6 @@
 import {type ReactNode, useMemo} from 'react';
 import {useLocation} from '@docusaurus/router';
 import Link from '@docusaurus/Link';
-import {groupBy} from '@docusaurus/theme-common';
 import {isSamePath} from '@docusaurus/theme-common/internal';
 import type {BlogSidebarItem} from '@docusaurus/plugin-content-blog';
 
@@ -36,7 +35,7 @@ export function useVisibleBlogSidebarItems(
 export function groupBlogSidebarItemsByYear(
   items: BlogSidebarItem[],
 ): [string, BlogSidebarItem[]][] {
-  const groupedByYear = groupBy(items, (item) => {
+  const groupedByYear = Object.groupBy(items, (item) => {
     return `${new Date(item.date).getFullYear()}`;
   });
   // "as" is safe here

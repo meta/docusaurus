@@ -20,16 +20,4 @@ const admonitionTypes: typeof AdmonitionTypes = {
   danger: AdmonitionTypeDanger,
 };
 
-// Undocumented legacy admonition type aliases
-// Provide hardcoded/untranslated retrocompatible label
-// See also https://github.com/facebook/docusaurus/issues/7767
-const admonitionAliases: typeof AdmonitionTypes = {
-  secondary: (props) => <AdmonitionTypeNote title="secondary" {...props} />,
-  important: (props) => <AdmonitionTypeInfo title="important" {...props} />,
-  success: (props) => <AdmonitionTypeTip title="success" {...props} />,
-};
-
-export default {
-  ...admonitionTypes,
-  ...admonitionAliases,
-};
+export default admonitionTypes;

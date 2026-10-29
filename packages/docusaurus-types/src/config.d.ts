@@ -30,9 +30,7 @@ export type WebpackConfig = {
    * Babel loader and preset; otherwise, you can provide your custom Webpack
    * rule set.
    */
-  // TODO Docusaurus v4
-  //  Use an object type ({isServer}) so that it conforms to jsLoaderFactory
-  jsLoader?: 'babel' | ((isServer: boolean) => RuleSetRule);
+  jsLoader?: 'babel' | ((options: {isServer: boolean}) => RuleSetRule);
 };
 
 // VCS (Version Control System) info about a given change, e.g., a git commit.
@@ -353,10 +351,9 @@ export type DocusaurusConfig = {
    * customize it, you will have to make sure that your template is compliant
    * with the requirements from upstream.
    *
-   * @see https://docusaurus.io/docs/api/docusaurus-config#ssrTemplate
+   * @see https://docusaurus.io/docs/api/docusaurus-config#ssgTemplate
    */
-  // TODO Docusaurus v4 - rename to ssgTemplate?
-  ssrTemplate?: string;
+  ssgTemplate?: string;
   /**
    * Will be used as title delimiter in the generated `<title>` tag.
    *
@@ -373,6 +370,7 @@ export type DocusaurusConfig = {
    * @default true
    */
   baseUrlIssueBanner: boolean;
+  // TODO Docusaurus v5: remove Webpack and Babel support
   /**
    * Docusaurus uses Rspack by default.
    * When provided, Docusaurus uses Webpack and Babel instead.
@@ -395,6 +393,7 @@ export type Config = Overwrite<
     url: DocusaurusConfig['url'];
     baseUrl: DocusaurusConfig['baseUrl'];
     vcs?: VcsPreset | VcsConfig | boolean;
+    // TODO Docusaurus v5: remove Webpack and Babel support
     /**
      * Docusaurus uses Rspack by default.
      * Use `true` or an object to use Webpack and Babel instead.

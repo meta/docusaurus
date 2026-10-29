@@ -22,3 +22,11 @@ export {
   groupBlogSidebarItemsByYear,
   useVisibleBlogSidebarItems,
 } from './sidebarUtils';
+
+export {
+  useBlogTagsPostsPageTitle,
+  useBlogAuthorPageTitle,
+  translateBlogAuthorsListPageTitle,
+  BlogAuthorsListViewAllLabel,
+  BlogAuthorNoPostsLabel,
+} from './blogTranslations';

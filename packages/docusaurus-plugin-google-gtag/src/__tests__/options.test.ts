@@ -7,12 +7,7 @@
 
 import {describe, expect, it} from 'vitest';
 import {normalizePluginOptions} from '@docusaurus/utils-validation';
-import {
-  validateOptions,
-  type PluginOptions,
-  type Options,
-  DEFAULT_OPTIONS,
-} from '../options';
+import {validateOptions, type PluginOptions, type Options} from '../options';
 import type {Validate} from '@docusaurus/types';
 
 function testValidateOptions(options: Options) {
@@ -25,7 +20,6 @@ function testValidateOptions(options: Options) {
 function validationResult(options: Options) {
   return {
     id: 'default',
-    ...DEFAULT_OPTIONS,
     ...options,
     trackingID:
       typeof options.trackingID === 'string'
@@ -103,14 +97,6 @@ describe('validateOptions', () => {
     expect(testValidateOptions(MinimalConfig)).toEqual(
       validationResult(MinimalConfig),
     );
-  });
-
-  it('accepts anonymizeIP', () => {
-    const config: Options = {
-      ...MinimalConfig,
-      anonymizeIP: true,
-    };
-    expect(testValidateOptions(config)).toEqual(validationResult(config));
   });
 
   it('accepts single trackingID', () => {

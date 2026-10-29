@@ -6,7 +6,6 @@
  */
 
 import type {ReactNode} from 'react';
-import clsx from 'clsx';
 import {HtmlClassNameProvider, ThemeClassNames} from '@docusaurus/theme-common';
 import {
   BlogPostProvider,
@@ -63,11 +62,7 @@ export default function BlogPostPage(props: Props): ReactNode {
   const BlogPostContent = props.content;
   return (
     <BlogPostProvider content={props.content} isBlogPostPage>
-      <HtmlClassNameProvider
-        className={clsx(
-          ThemeClassNames.wrapper.blogPages,
-          ThemeClassNames.page.blogPostPage,
-        )}>
+      <HtmlClassNameProvider className={ThemeClassNames.page.blogPostPage}>
         <BlogPostPageMetadata />
         <BlogPostPageStructuredData />
         <BlogPostPageContent sidebar={props.sidebar}>

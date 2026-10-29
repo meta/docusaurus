@@ -59,12 +59,7 @@ export type ConfigureWebpackUtils = {
     isServer: boolean,
     cssOptions: {[key: string]: unknown},
   ) => RuleSetRule[];
-  getJSLoader: (options: {
-    isServer: boolean;
-    // TODO Docusaurus v4 remove?
-    //  not ideal because JS Loader might not use Babel...
-    babelOptions?: string | {[key: string]: unknown};
-  }) => RuleSetRule;
+  getJSLoader: (options: {isServer: boolean}) => RuleSetRule;
 };
 
 export type AllContent = {
@@ -211,7 +206,11 @@ export type PluginModule<Content = unknown> = {
   validateOptions?: <T, U>(data: OptionValidationContext<T, U>) => U;
   validateThemeConfig?: <T>(data: ThemeConfigValidationContext<T>) => T;
 
-  getSwizzleComponentList?: () => string[] | undefined; // TODO deprecate this one later
+  // TODO Docusaurus v5: remove the deprecated getSwizzleComponentList() API
+  /**
+   * @deprecated Use `getSwizzleConfig` instead.
+   */
+  getSwizzleComponentList?: () => string[] | undefined;
   getSwizzleConfig?: () => SwizzleConfig | undefined;
 };
 

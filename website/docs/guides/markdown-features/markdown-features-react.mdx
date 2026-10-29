@@ -10,7 +10,6 @@ slug: /markdown-features/react
 import BrowserWindow from '@site/src/components/BrowserWindow';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import styles from './markdown-features-react.module.css';
 ```
 
 Docusaurus has built-in support for [MDX](https://mdxjs.com/), which allows you to write JSX within your Markdown files and render them as React components.
@@ -200,7 +199,7 @@ I can conveniently use <Highlight color="#25c2a0">Docusaurus green</Highlight> e
 
 We use **upper-case** tag names like `Highlight` on purpose.
 
-From MDX v3+ onward (Docusaurus v3+), lower-case tag names are always rendered as native html elements, and will not use any component mapping you provide.
+MDX always renders lower-case tag names as native HTML elements, and will not use any component mapping you provide.
 
 :::
 
@@ -233,7 +232,7 @@ If you don't wrap your imported MDX with `MDXContent`, the global scope will not
 
 ### Markdown and JSX interoperability {/* #markdown-and-jsx-interoperability */}
 
-Docusaurus v3 is using [MDX v3](https://mdxjs.com/blog/v3/).
+Docusaurus uses [MDX v3](https://mdxjs.com/blog/v3/).
 
 The [MDX syntax](https://mdxjs.com/docs/what-is-mdx/#mdx-syntax) is mostly compatible with [CommonMark](https://commonmark.org/), but is much stricter because your `.mdx` files can use JSX and are compiled into real React components (check the [playground](https://mdxjs.com/playground/)).
 
@@ -246,7 +245,7 @@ Some valid CommonMark features won't work with MDX ([more info](https://mdxjs.co
 
 :::danger Experimental CommonMark support
 
-Docusaurus v3 makes it possible to opt-in for a less strict, standard [CommonMark](https://commonmark.org/) support with the following options:
+Docusaurus makes it possible to opt-in for a less strict, standard [CommonMark](https://commonmark.org/) support with the following options:
 
 - The `mdx.format: md` front matter
 - The `.md` file extension combined with the `siteConfig.markdown.format: "detect"` configuration

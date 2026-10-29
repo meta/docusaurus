@@ -35,7 +35,6 @@ import type {
   DocMetadata,
   PropNavigationLink,
   VersionMetadata,
-  LoadedVersion,
 } from '@docusaurus/plugin-content-docs';
 import type {LoadContext} from '@docusaurus/types';
 import type {SidebarsUtils} from './sidebars/utils';
@@ -273,7 +272,7 @@ export function addDocNavigation({
 }: {
   docs: DocMetadataBase[];
   sidebarsUtils: SidebarsUtils;
-}): LoadedVersion['docs'] {
+}): DocMetadata[] {
   const docsById = createDocsByIdIndex(docs);
   const unlistedIds = getUnlistedIds(docs);
 

@@ -128,7 +128,7 @@ You can find your sitemap at `/sitemap.xml`.
 
 ### Emitting `changefreq` and `priority` {/* #changefreq-priority */}
 
-The plugin doesn't emit `<changefreq>` and `<priority>` tags. [Google ignores them](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap), and emitting the same value for all URLs is useless. If you still want these tags, use `createSitemapItems` to emit distinct values per URL:
+The plugin doesn't emit `<changefreq>` and `<priority>` tags, which [Google ignores](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap). If you need them, use `createSitemapItems` to emit distinct values per URL:
 
 ```js config-tabs
 // Preset Options: sitemap

@@ -13,10 +13,6 @@
   background-color: var(--ifm-color-emphasis-100);
 }
 
-.sectionInner {
-  margin: 0 auto;
-}
-
 .featureImage {
   width: auto;
   max-height: 128px;
@@ -26,27 +22,6 @@
 .featureHeading {
   font-size: var(--ifm-h3-font-size);
   padding-top: 1rem;
-}
-
-.announcement {
-  font-weight: bold;
-  font-size: 24px;
-  padding: 48px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.announcementDark {
-  background-color: #20232a;
-  color: #fff;
-  /* Reapply the primary color, because it has been locally overridden as
-   * the dark theme color */
-  --ifm-link-color: var(--ifm-color-primary);
-}
-
-.announcementInner {
-  margin: 0 auto;
-  max-width: 768px;
 }
 
 .topBanner {
@@ -200,10 +175,6 @@ html[data-theme='dark'] .topBannerTitleText {
 
 .indexCtasGitHubButton {
   overflow: hidden;
-}
-
-.indexCtaTryNowButton:hover {
-  color: var(--ifm-color-primary);
 }
 
 @media only screen and (width <= 768px) {

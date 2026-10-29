@@ -6,7 +6,6 @@
  */
 
 import type {ReactNode} from 'react';
-import clsx from 'clsx';
 import {
   PageMetadata,
   HtmlClassNameProvider,
@@ -45,11 +44,7 @@ function ChangelogListContent(props: Props): ReactNode {
 
 export default function ChangelogList(props: Props): ReactNode {
   return (
-    <HtmlClassNameProvider
-      className={clsx(
-        ThemeClassNames.wrapper.blogPages,
-        ThemeClassNames.page.blogListPage,
-      )}>
+    <HtmlClassNameProvider className={ThemeClassNames.page.blogListPage}>
       <ChangelogListMetadata {...props} />
       <ChangelogListContent {...props} />
     </HtmlClassNameProvider>

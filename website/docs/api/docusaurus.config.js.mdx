@@ -224,7 +224,7 @@ export default {
 ```
 
 - `type`: The browser storage theme authors should use. Possible values are `localStorage` and `sessionStorage`. Defaults to `localStorage`.
-- `namespace`: Whether to namespace the browser storage keys to avoid storage key conflicts when Docusaurus sites are hosted under the same domain, or on localhost. Possible values are `string | boolean`. The namespace is appended at the end of the storage keys `key-namespace`. Use `true` to automatically generate a random namespace from your site `url + baseUrl`. Defaults to `true`. Use `false` to restore the historical behavior (no namespace).
+- `namespace`: Whether to namespace the browser storage keys to avoid storage key conflicts when Docusaurus sites are hosted under the same domain, or on localhost. Possible values are `string | boolean`. The namespace is appended at the end of the storage keys `key-namespace`. Use `true` to automatically generate a random namespace from your site `url + baseUrl`. Defaults to `true`. Use `false` to disable namespacing.
 
 ### `vcs` {/* #vcs */}
 
@@ -256,8 +256,8 @@ export default {
 The available preset names are:
 
 - `default`: the default (`git-eager` in prod, `hardcoded` in dev)
-- `default-v3`: the historical Docusaurus v3 default (`git-ad-hoc` in prod, `hardcoded` in dev)
-- `git-ad-hoc`: the historical `git log <filename>` based strategy.
+- `default-v3`: the Docusaurus v3 default (`git-ad-hoc` in prod, `hardcoded` in dev)
+- `git-ad-hoc`: the Git strategy that runs `git log <filename>` for each file, which can be slow on large repositories.
 - `git-eager`: the Git strategy that reads your whole repository upfront.
 - `hardcoded`: returns hardcoded value, useful in dev/tests to speed up developer experience.
 - `disabled`: returns `null` for all files, considering them untracked.
@@ -346,14 +346,14 @@ export default {
 
 ### `webpack` {/* #webpack */}
 
-- Type: `boolean | { jsLoader?: 'babel' | ((isServer: boolean) => RuleSetRule) }`
+- Type: `boolean | { jsLoader?: 'babel' | (({isServer}: {isServer: boolean}) => RuleSetRule) }`
 
 Docusaurus uses [Rspack](https://rspack.dev/) to bundle your site by default. Rspack transpiles your code with its [built-in SWC loader](https://rspack.dev/guide/features/builtin-swc-loader), and uses its [persistent cache](https://rspack.dev/config/cache) to re-build your site faster on subsequent builds, which requires persisting `./node_modules/.cache` across rebuilds.
 
 Use this option to opt out of Rspack and bundle your site with [webpack](https://webpack.js.org/) and [Babel](https://babeljs.io/) instead:
 
 - `true` or `{}`: use webpack, and transpile your code with the built-in Babel loader.
-- `jsLoader`: the JS loader to use with webpack. `'babel'` (default) uses the built-in Babel loader and preset; otherwise, you can provide a function returning your own webpack rule.
+- `jsLoader`: the JS loader to use with webpack. `'babel'` (default) uses the built-in Babel loader, configured by your site's `babel.config.js` file if it exists, or the Docusaurus Babel preset otherwise. You can also provide a function that receives `{isServer}` and returns your own webpack rule.
 
 With webpack, production builds minify JavaScript with [SWC](https://swc.rs/), which requires adding the `@swc/core` package to your site dependencies:
 
@@ -866,41 +866,50 @@ export default {
 };
 ```
 
-### `ssrTemplate` {/* #ssrTemplate */}
+### `ssgTemplate` {/* #ssgTemplate */}
 
 An HTML template written in [Eta's syntax](https://eta.js.org/docs/syntax#syntax-overview) that will be used to render your application. This can be used to set custom attributes on the `body` tags, additional `meta` tags, customize the `viewport`, etc. Please note that Docusaurus will rely on the template to be correctly structured in order to function properly, once you do customize it, you will have to make sure that your template is compliant with the requirements from upstream.
 
 - Type: `string`
 
-Example:
+The template receives these variables through the `it` object. Attributes and tags are pre-rendered HTML strings, and must be output unescaped with `<%~ %>`.
+
+| Variable | Type | Description |
+| --- | --- | --- |
+| `it.version` | `string` | The Docusaurus version. |
+| `it.baseUrl` | `string` | The site [`baseUrl`](#baseUrl). |
+| `it.html.attributes` | `string` | The `<html>` attributes, set by the page with [`<Head>`](../docusaurus-core.mdx#head). |
+| `it.head.pageTags` | `string` | The `<head>` tags set by the page with [`<Head>`](../docusaurus-core.mdx#head): `<title>`, `<meta>`, `<link>` and `<script>`. |
+| `it.head.pluginTags` | `string` | The `headTags` returned by the plugins' [`injectHtmlTags()`](./plugin-methods/lifecycle-apis.mdx#injectHtmlTags) lifecycle, including the [`headTags`](#headTags), [`stylesheets`](#stylesheets) and [`scripts`](#scripts) of the site config. |
+| `it.body.attributes` | `string` | The `<body>` attributes, set by the page with [`<Head>`](../docusaurus-core.mdx#head). |
+| `it.body.preTags` | `string` | The `preBodyTags` returned by the plugins' [`injectHtmlTags()`](./plugin-methods/lifecycle-apis.mdx#injectHtmlTags) lifecycle. |
+| `it.body.appHtml` | `string` | The server-side rendered React app. |
+| `it.body.postTags` | `string` | The `postBodyTags` returned by the plugins' [`injectHtmlTags()`](./plugin-methods/lifecycle-apis.mdx#injectHtmlTags) lifecycle. |
+| `it.assets.stylesheets` | `string[]` | The URLs of the CSS files the page needs, including the `baseUrl`. |
+| `it.assets.scripts` | `string[]` | The URLs of the JS files the page needs, including the `baseUrl`. |
+
+Example, using the default template:
 
 ```js title="docusaurus.config.js"
 export default {
-  ssrTemplate: `<!DOCTYPE html>
-<html <%~ it.htmlAttributes %>>
+  ssgTemplate: `<!DOCTYPE html>
+<html <%~ it.html.attributes %>>
   <head>
     <meta charset="UTF-8">
     <meta name="generator" content="Docusaurus v<%= it.version %>">
-    <% it.metaAttributes.forEach((metaAttribute) => { %>
-      <%~ metaAttribute %>
+    <%~ it.head.pageTags %>
+    <%~ it.head.pluginTags %>
+    <% it.assets.stylesheets.forEach((stylesheet) => { %>
+      <link rel="stylesheet" href="<%= stylesheet %>" />
     <% }); %>
-    <%~ it.headTags %>
-    <% it.stylesheets.forEach((stylesheet) => { %>
-      <link rel="stylesheet" href="<%= it.baseUrl %><%= stylesheet %>" />
-    <% }); %>
-    <% it.scripts.forEach((script) => { %>
-      <link rel="preload" href="<%= it.baseUrl %><%= script %>" as="script">
+    <% it.assets.scripts.forEach((script) => { %>
+      <script src="<%= script %>" defer></script>
     <% }); %>
   </head>
-  <body <%~ it.bodyAttributes %>>
-    <%~ it.preBodyTags %>
-    <div id="__docusaurus">
-      <%~ it.appHtml %>
-    </div>
-    <% it.scripts.forEach((script) => { %>
-      <script src="<%= it.baseUrl %><%= script %>"></script>
-    <% }); %>
-    <%~ it.postBodyTags %>
+  <body <%~ it.body.attributes %>>
+    <%~ it.body.preTags %>
+    <div id="__docusaurus"><%~ it.body.appHtml %></div>
+    <%~ it.body.postTags %>
   </body>
 </html>`,
 };

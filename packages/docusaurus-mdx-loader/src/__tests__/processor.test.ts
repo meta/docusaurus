@@ -6,11 +6,17 @@
  */
 
 import {describe, expect, it} from 'vitest';
+import React, {type ReactNode} from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
 import _ from 'lodash';
+import * as runtime from 'react/jsx-runtime';
+import {run} from '@mdx-js/mdx';
+import {visit} from 'unist-util-visit';
 import {DEFAULT_PARSE_FRONT_MATTER} from '@docusaurus/utils';
 import {compileToJSX} from '../utils';
 import type {Options} from '../options';
 import type {Root} from 'mdast';
+import type {Root as HastRoot} from 'hast';
 import type {Plugin} from 'unified';
 import type {DeepPartial} from 'utility-types';
 
@@ -45,6 +51,39 @@ function processContent(content: string, options: Options) {
     compilerName: 'client',
     options,
   });
+}
+
+const TestMDXComponents = {
+  admonition: ({
+    type,
+    title,
+    className,
+    id,
+    children,
+  }: {
+    type: string;
+    title?: ReactNode;
+    className?: string;
+    id?: string;
+    children?: ReactNode;
+  }) =>
+    React.createElement(
+      'aside',
+      {'data-type': type, className, id},
+      React.createElement('header', null, title ?? 'Default title'),
+      children,
+    ),
+};
+
+async function renderContent(content: string, options: Options) {
+  // Options are passed through to MDX: compile a function body for run()
+  const mdxOptions = {...options, outputFormat: 'function-body' as const};
+  const result = await processContent(content, mdxOptions);
+  const {default: Content} = await run(result.content, {
+    ...runtime,
+    useMDXComponents: () => TestMDXComponents,
+  });
+  return renderToStaticMarkup(React.createElement(Content));
 }
 
 describe('MDX processor', () => {
@@ -94,6 +133,135 @@ describe('MDX processor', () => {
         'First document',
         'Second document',
       ]);
+    });
+  });
+
+  describe('admonitions', () => {
+    describe.each(['md', 'mdx'] as const)('%s format', (format) => {
+      it('renders text titles and attributes', async () => {
+        const html = await renderContent(
+          ':::note[Title]{#custom-id .one .two}\nBody\n:::',
+          createOptions({markdownConfig: {format}}),
+        );
+        expect(html).toBe(
+          '<aside data-type="note" class="one two" id="custom-id"><header>Title</header><p>Body</p></aside>',
+        );
+      });
+
+      it('passes rich titles through the title prop', async () => {
+        const html = await renderContent(
+          `::::note[**Outer** \`title\` :smile:]
+
+:::tip[*Inner* [link](./document.md)]
+Body
+:::
+
+::::`,
+          createOptions({
+            markdownConfig: {format},
+            resolveMarkdownLink: () => '/resolved-link',
+          }),
+        );
+        expect(html).toBe(
+          '<aside data-type="note"><header><strong>Outer</strong> <code>title</code> 😄</header><aside data-type="tip"><header><em>Inner</em> <a href="/resolved-link">link</a></header><p>Body</p></aside></aside>',
+        );
+      });
+
+      it('gives the title attribute precedence over the label', async () => {
+        const html = await renderContent(
+          ':::note[**Ignored**]{title="Explicit title"}\nBody\n:::',
+          createOptions({markdownConfig: {format}}),
+        );
+        expect(html).toBe(
+          '<aside data-type="note"><header>Explicit title</header><p>Body</p></aside>',
+        );
+      });
+
+      it('renders title-only admonitions without children', async () => {
+        const html = await renderContent(
+          ':::note Title only\n:::\n\n:::tip[**Rich title only**]\n:::',
+          createOptions({markdownConfig: {format}}),
+        );
+        expect(html).toBe(
+          '<aside data-type="note"><header>Title only</header></aside>\n<aside data-type="tip"><header><strong>Rich title only</strong></header></aside>',
+        );
+      });
+
+      it('keeps the default title for an empty label', async () => {
+        const html = await renderContent(
+          ':::note[]\nBody\n:::',
+          createOptions({markdownConfig: {format}}),
+        );
+        expect(html).toBe(
+          '<aside data-type="note"><header>Default title</header><p>Body</p></aside>',
+        );
+      });
+
+      it('lets user plugins process rich titles', async () => {
+        const remarkPlugin: Plugin<[], Root> = () => (tree) => {
+          visit(tree, 'text', (node) => {
+            node.value = node.value.replace('Title', 'Remark title');
+          });
+        };
+        const rehypePlugin: Plugin<[], HastRoot> = () => (tree) => {
+          visit(tree, 'element', (node) => {
+            if (node.tagName === 'strong') {
+              node.properties.title = 'Rehype title';
+            }
+          });
+        };
+        const html = await renderContent(
+          ':::note[**Title**]\nBody\n:::',
+          createOptions({
+            markdownConfig: {format},
+            remarkPlugins: [remarkPlugin],
+            rehypePlugins: [rehypePlugin],
+          }),
+        );
+        expect(html).toBe(
+          '<aside data-type="note"><header><strong title="Rehype title">Remark title</strong></header><p>Body</p></aside>',
+        );
+      });
+
+      it('transforms local images in rich titles', async () => {
+        const result = await processContent(
+          ':::note[![Title](../remark/transformImage/__tests__/__fixtures__/static/img.png)]\nBody\n:::',
+          createOptions({markdownConfig: {format}}),
+        );
+        expect(result.content).toMatch(
+          /title: _jsx\(_Fragment, \{\s+children: _jsx\(_components\.img, \{\s+alt: "Title",\s+src: require\(/,
+        );
+      });
+    });
+
+    it('renders raw HTML in titles with the md format', async () => {
+      const html = await renderContent(
+        ':::note[Hello <b>world</b>]\nBody\n:::',
+        createOptions({markdownConfig: {format: 'md'}}),
+      );
+      expect(html).toBe(
+        '<aside data-type="note"><header>Hello <b>world</b></header><p>Body</p></aside>',
+      );
+    });
+
+    it('renders JSX and expressions in titles with the mdx format', async () => {
+      const html = await renderContent(
+        ':::tip[**Title** <span style={{color: "red"}}>{1 + 1}</span>]\nBody\n:::',
+        createOptions({markdownConfig: {format: 'mdx'}}),
+      );
+      expect(html).toBe(
+        '<aside data-type="tip"><header><strong>Title</strong> <span style="color:red">2</span></header><p>Body</p></aside>',
+      );
+    });
+
+    it('can not be shadowed by a local Admonition component', async () => {
+      const html = await renderContent(
+        'export const Admonition = () => "Shadowed";\n\n:::note[Title]\nBody\n:::',
+        createOptions({markdownConfig: {format: 'mdx'}}),
+      );
+      expect(html).toBe(
+        '<aside data-type="note"><header>Title</header><p>Body</p></aside>',
+      );
     });
   });
 

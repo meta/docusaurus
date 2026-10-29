@@ -37,7 +37,7 @@ jobs:
           node-version-file: false
 
       - name: Set up Node
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: lts/*
           check-latest: true
@@ -59,4 +59,5 @@ jobs:
           node ./packages/create-docusaurus/bin/index.js template/docusaurus-classic-ts classic --typescript -p npm
 
       - name: Release
-        run: pnpm pkg-pr-new publish './packages/*' --template './template/*' --compact --comment=off
+        # --pnpm: use pnpm pack, which replaces the catalog: protocol with versions
+        run: pnpm pkg-pr-new publish './packages/*' --template './template/*' --compact --comment=off --pnpm

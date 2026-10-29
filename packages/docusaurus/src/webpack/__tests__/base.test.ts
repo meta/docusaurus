@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {describe, expect, it} from 'vitest';
+import {afterEach, describe, expect, it, vi} from 'vitest';
 import path from 'node:path';
 import _ from 'lodash';
 import {posixPath} from '@docusaurus/utils';
@@ -13,7 +13,7 @@ import {getCurrentBundler} from '@docusaurus/bundler';
 import {excludeJS, clientDir, createBaseConfig} from '../base';
 import {BundlerNames, createTestConfigureWebpackUtils} from './testUtils';
 import {DEFAULT_FUTURE_CONFIG} from '../../server/configValidation';
-import type {CurrentBundler, Props} from '@docusaurus/types';
+import type {CurrentBundler, Props, SiteMetadata} from '@docusaurus/types';
 
 describe('babel transpilation exclude logic', () => {
   it('always transpiles client dir files', () => {
@@ -77,6 +77,7 @@ describe('base webpack config', () => {
     },
     siteMetadata: {
       docusaurusVersion: '2.0.0-alpha.70',
+      pluginVersions: {},
     },
     plugins: [
       {
@@ -153,5 +154,102 @@ describe('base webpack config', () => {
       posixPath(path.relative(props.siteDir, a)),
     );
     expect(relativeAliases).toMatchSnapshot();
+  });
+
+  describe('persistent cache', () => {
+    afterEach(() => {
+      vi.unstubAllEnvs();
+    });
+
+    async function getCacheVersion({
+      isServer = false,
+      siteMetadata = props.siteMetadata,
+    }: {
+      isServer?: boolean;
+      siteMetadata?: SiteMetadata;
+    } = {}) {
+      const config = await createBaseConfig({
+        props: {...(await createProps()), siteMetadata},
+        isServer,
+        minify: true,
+        configureWebpackUtils: await createTestConfigureWebpackUtils(),
+      });
+      return (config.cache as {version: string}).version;
+    }
+
+    // Browserslist reads this env variable before any config file
+    function stubBrowserslistQuery(query: string) {
+      vi.stubEnv('BROWSERSLIST', query);
+    }
+
+    function stubServerNodeTarget(nodeVersion: string) {
+      vi.stubEnv('DOCUSAURUS_SERVER_NODE_TARGET', nodeVersion);
+    }
+
+    function createSiteMetadata({
+      siteVersion,
+      pluginVersion = '1.0.0',
+    }: {
+      siteVersion?: string;
+      pluginVersion?: string;
+    }): SiteMetadata {
+      return {
+        ...props.siteMetadata,
+        siteVersion,
+        pluginVersions: {
+          'third-party-plugin': {
+            type: 'package',
+            name: 'third-party-plugin',
+            version: pluginVersion,
+          },
+        },
+      };
+    }
+
+    it('is evicted when the Browserslist queries match other browsers', async () => {
+      stubBrowserslistQuery('chrome 90');
+      const oldBrowsersVersion = await getCacheVersion();
+      stubBrowserslistQuery('baseline widely available');
+      const baselineVersion = await getCacheVersion();
+      expect(oldBrowsersVersion).not.toBe(baselineVersion);
+    });
+
+    it('is not evicted when other Browserslist queries match the same browsers', async () => {
+      stubBrowserslistQuery('chrome 90');
+      const versionQueryVersion = await getCacheVersion();
+      stubBrowserslistQuery('chrome >= 90 and chrome <= 90');
+      const rangeQueryVersion = await getCacheVersion();
+      expect(versionQueryVersion).toBe(rangeQueryVersion);
+    });
+
+    // Server targets aren't Browserslist queries: Browserslist doesn't know
+    // these Node.js patch releases
+    it('is evicted when the server Node.js target changes', async () => {
+      stubServerNodeTarget('24.11.1');
+      const oldNodeVersion = await getCacheVersion({isServer: true});
+      stubServerNodeTarget('24.11.2');
+      const newNodeVersion = await getCacheVersion({isServer: true});
+      expect(oldNodeVersion).not.toBe(newNodeVersion);
+    });
+
+    it('is evicted when a plugin package version changes', async () => {
+      const oldPluginVersion = await getCacheVersion({
+        siteMetadata: createSiteMetadata({pluginVersion: '1.0.0'}),
+      });
+      const newPluginVersion = await getCacheVersion({
+        siteMetadata: createSiteMetadata({pluginVersion: '1.1.0'}),
+      });
+      expect(oldPluginVersion).not.toBe(newPluginVersion);
+    });
+
+    it('is not evicted when the site version changes', async () => {
+      const oldSiteVersion = await getCacheVersion({
+        siteMetadata: createSiteMetadata({siteVersion: '1.0.0'}),
+      });
+      const newSiteVersion = await getCacheVersion({
+        siteMetadata: createSiteMetadata({siteVersion: '2.0.0'}),
+      });
+      expect(oldSiteVersion).toBe(newSiteVersion);
+    });
   });
 });

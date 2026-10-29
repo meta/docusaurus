@@ -7,8 +7,8 @@
 
 import React, {isValidElement, type ReactNode} from 'react';
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import ElementContent from '@theme/CodeBlock/Content/Element';
-import StringContent from '@theme/CodeBlock/Content/String';
+import CodeBlockElement from '@theme/CodeBlock/Element';
+import CodeBlockString from '@theme/CodeBlock/String';
 import type {Props} from '@theme/CodeBlock';
 
 /**
@@ -36,7 +36,7 @@ export default function CodeBlock({
   const isBrowser = useIsBrowser();
   const children = maybeStringifyChildren(rawChildren);
   const CodeBlockComp =
-    typeof children === 'string' ? StringContent : ElementContent;
+    typeof children === 'string' ? CodeBlockString : CodeBlockElement;
   return (
     <CodeBlockComp key={String(isBrowser)} {...props}>
       {children as string}

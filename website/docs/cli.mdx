@@ -199,7 +199,7 @@ Add [explicit heading IDs](./guides/markdown-features/markdown-features-toc.mdx#
 | Name | Default | Description |
 | --- | --- | --- |
 | `files` | All MD files used by plugins | The files that you want heading IDs to be written to. |
-| `--syntax` | `classic` | Heading ID syntax to use: `classic` (`{#id}`) or `mdx-comment` (`{/* #id */}`). |
+| `--syntax` | Inferred | Heading ID syntax to use: `classic` (`{#id}`) or `mdx-comment` (`{/* #id */}`). By default, it uses `classic` for files compiled as CommonMark, and `mdx-comment` for files compiled as MDX, according to the [`markdown.format`](./api/docusaurus.config.js.mdx#markdown) config option. |
 | `--migrate` | `false` | Migrate existing heading IDs to the target `--syntax`, if they are using a different syntax. |
 | `--overwrite` | `false` | Overwrite existing heading IDs, re-generate them from the heading text. |
 | `--maintain-case` | `false` | Keep the headings' casing, otherwise make all lowercase. |

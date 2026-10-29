@@ -14,6 +14,7 @@ import type {SwizzlePlugin} from './common';
 
 function getModuleSwizzleConfig(
   swizzlePlugin: SwizzlePlugin,
+  themeName: string,
 ): SwizzleConfig | undefined {
   const getSwizzleConfig =
     swizzlePlugin.plugin.plugin.getSwizzleConfig ??
@@ -23,12 +24,13 @@ function getModuleSwizzleConfig(
     return getSwizzleConfig();
   }
 
-  // TODO deprecate getSwizzleComponentList later
+  // TODO Docusaurus v5: remove the deprecated getSwizzleComponentList() API
   const getSwizzleComponentList =
     swizzlePlugin.plugin.plugin.getSwizzleComponentList ??
     swizzlePlugin.plugin.pluginModule?.module.getSwizzleComponentList;
 
   if (getSwizzleComponentList) {
+    logger.warn`Theme name=${themeName} uses the deprecated code=${'getSwizzleComponentList()'} API, which will be removed in Docusaurus v5. The theme should implement code=${'getSwizzleConfig()'} instead: url=${'https://docusaurus.io/docs/api/plugin-methods/extend-infrastructure#getSwizzleConfig'}`;
     const safeComponents = getSwizzleComponentList() ?? [];
     const safeComponentConfig: SwizzleComponentConfig = {
       actions: {
@@ -98,7 +100,7 @@ export function getThemeSwizzleConfig(
   plugins: SwizzlePlugin[],
 ): SwizzleConfig {
   const plugin = getPluginByThemeName(plugins, themeName);
-  const config = getModuleSwizzleConfig(plugin);
+  const config = getModuleSwizzleConfig(plugin, themeName);
   if (config) {
     try {
       return normalizeSwizzleConfig(config);

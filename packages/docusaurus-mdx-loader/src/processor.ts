@@ -25,6 +25,7 @@ import details from './remark/details';
 import head from './remark/head';
 import mermaid from './remark/mermaid';
 import transformAdmonitions from './remark/admonitions';
+import admonitionTitle from './rehype/admonitionTitle';
 import unusedDirectives from './remark/unusedDirectives';
 import codeCompatPlugin from './remark/mdx1Compat/codeCompatPlugin';
 import {getFormat} from './format';
@@ -186,6 +187,8 @@ function createProcessorUncached({
   const rehypePlugins: MDXPlugin[] = [
     ...(options.beforeDefaultRehypePlugins ?? []),
     ...(options.rehypePlugins ?? []),
+    // Runs after user plugins, so that they can process admonition titles
+    ...(options.admonitions ? [admonitionTitle] : []),
   ];
 
   // Maybe we'll want to introduce default recma plugins later?

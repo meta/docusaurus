@@ -11,7 +11,6 @@ import {aliasedSitePathToRelativePath, createSlugger} from '@docusaurus/utils';
 import {getTagsFile} from '@docusaurus/utils-validation';
 import logger from '@docusaurus/logger';
 import {
-  addDocNavigation,
   createDocsByIdIndex,
   type DocEnv,
   processDocMetadata,
@@ -151,22 +150,14 @@ async function doLoadVersion({
   const docsById = createDocsByIdIndex(docs);
   const allDocIds = Object.keys(docsById);
 
-  sidebarsUtils.checkLegacyVersionedSidebarNames({
-    sidebarFilePath: versionMetadata.sidebarFilePath as string,
-    versionMetadata,
-  });
   sidebarsUtils.checkSidebarsDocIds({
     allDocIds,
     sidebarFilePath: versionMetadata.sidebarFilePath as string,
-    versionMetadata,
   });
 
   return {
     ...versionMetadata,
-    docs: addDocNavigation({
-      docs,
-      sidebarsUtils,
-    }),
+    docs,
     drafts,
     sidebars,
   };

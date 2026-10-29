@@ -144,19 +144,6 @@ describe('themeConfig', () => {
     });
   });
 
-  it('rejects outdated sidebar options', () => {
-    expect(() =>
-      testValidateThemeConfig({hideableSidebar: true}),
-    ).toThrowErrorMatchingInlineSnapshot(
-      `[ValidationError: themeConfig.hideableSidebar has been moved to themeConfig.docs.sidebar.hideable.]`,
-    );
-    expect(() =>
-      testValidateThemeConfig({autoCollapseSidebarCategories: true}),
-    ).toThrowErrorMatchingInlineSnapshot(
-      `[ValidationError: themeConfig.autoCollapseSidebarCategories has been moved to themeConfig.docs.sidebar.autoCollapseCategories.]`,
-    );
-  });
-
   it('allows possible types of navbar items', () => {
     const config = {
       navbar: {
@@ -661,19 +648,6 @@ describe('themeConfig', () => {
   describe('color mode config', () => {
     const withDefaultValues = (colorMode?: ThemeConfig['colorMode']) =>
       _.merge({}, DEFAULT_CONFIG.colorMode, colorMode);
-
-    it('switch config', () => {
-      const colorMode = {
-        switchConfig: {
-          darkIcon: '🌙',
-        },
-      };
-      expect(() =>
-        testValidateThemeConfig({colorMode}),
-      ).toThrowErrorMatchingInlineSnapshot(
-        `[ValidationError: colorMode.switchConfig is deprecated. If you want to customize the icons for light and dark mode, swizzle IconLightMode, IconDarkMode, or ColorModeToggle instead.]`,
-      );
-    });
 
     it('max config', () => {
       const colorMode: ThemeConfig['colorMode'] = {

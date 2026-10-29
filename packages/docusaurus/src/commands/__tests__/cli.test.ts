@@ -12,6 +12,7 @@ import {createCLIProgram} from '../cli';
 import * as buildCommand from '../build/build';
 import * as startCommand from '../start/start';
 import * as serveCommand from '../serve';
+import * as writeHeadingIdsCommand from '../writeHeadingIds';
 
 const ExitOverrideError = new Error('exitOverride');
 
@@ -307,6 +308,9 @@ describe('CLI', () => {
       vi.spyOn(buildCommand, 'build').mockResolvedValue(undefined);
       vi.spyOn(startCommand, 'start').mockResolvedValue(undefined);
       vi.spyOn(serveCommand, 'serve').mockResolvedValue(undefined);
+      vi.spyOn(writeHeadingIdsCommand, 'writeHeadingIds').mockResolvedValue(
+        undefined,
+      );
     });
 
     afterEach(() => {
@@ -364,6 +368,42 @@ describe('CLI', () => {
         expect.objectContaining({open: true}),
         expect.any(Command),
       );
+    });
+
+    it('parses write-heading-ids --syntax', async () => {
+      await testCommand([
+        'write-heading-ids',
+        'website',
+        'docs/doc.md',
+        '--syntax',
+        'mdx-comment',
+      ]);
+      expect(writeHeadingIdsCommand.writeHeadingIds).toHaveBeenCalledWith(
+        'website',
+        ['docs/doc.md'],
+        expect.objectContaining({syntax: 'mdx-comment'}),
+        expect.any(Command),
+      );
+    });
+
+    it('rejects invalid write-heading-ids --syntax', async () => {
+      const result = await testCommand([
+        'write-heading-ids',
+        '--syntax',
+        'unknown',
+      ]);
+      expect(writeHeadingIdsCommand.writeHeadingIds).not.toHaveBeenCalled();
+      expect(result).toMatchInlineSnapshot(`
+        {
+          "exit": {
+            "code": "commander.invalidArgument",
+            "exitCode": 1,
+          },
+          "stderr": "error: option '--syntax <syntax>' argument 'unknown' is invalid. Allowed choices are classic, mdx-comment.
+        ",
+          "stdout": "",
+        }
+      `);
     });
   });
 });

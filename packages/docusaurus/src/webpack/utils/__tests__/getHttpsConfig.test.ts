@@ -29,55 +29,55 @@ describe('getHttpsConfig', () => {
 
   describe('env', () => {
     it('returns false - !https', async () => {
-      vi.stubEnv('HTTPS', 'false');
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'false');
       await expect(getHttpsConfig()).resolves.toBe(false);
     });
 
     it('returns true - https, !cert, !key', async () => {
-      vi.stubEnv('HTTPS', 'true');
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'true');
       await expect(getHttpsConfig()).resolves.toBe(true);
     });
 
     it('returns config - !https, cert, key', async () => {
-      vi.stubEnv('HTTPS', 'false');
-      vi.stubEnv('SSL_CRT_FILE', getFixture('host.crt'));
-      vi.stubEnv('SSL_KEY_FILE', getFixture('host.key'));
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'false');
+      vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('host.crt'));
+      vi.stubEnv('DOCUSAURUS_SSL_KEY_FILE', getFixture('host.key'));
       await expect(getHttpsConfig()).resolves.toEqual(false);
     });
 
     it('returns config - -https, cert, key', async () => {
-      vi.stubEnv('SSL_CRT_FILE', getFixture('host.crt'));
-      vi.stubEnv('SSL_KEY_FILE', getFixture('host.key'));
+      vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('host.crt'));
+      vi.stubEnv('DOCUSAURUS_SSL_KEY_FILE', getFixture('host.key'));
       await expect(getHttpsConfig()).resolves.toEqual(configMatcher);
     });
 
     it('returns config - https, cert, key', async () => {
-      vi.stubEnv('HTTPS', 'true');
-      vi.stubEnv('SSL_CRT_FILE', getFixture('host.crt'));
-      vi.stubEnv('SSL_KEY_FILE', getFixture('host.key'));
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'true');
+      vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('host.crt'));
+      vi.stubEnv('DOCUSAURUS_SSL_KEY_FILE', getFixture('host.key'));
       await expect(getHttpsConfig()).resolves.toEqual(configMatcher);
     });
 
     it('returns config - https, ECDSA cert, ECDSA key', async () => {
-      vi.stubEnv('HTTPS', 'true');
-      vi.stubEnv('SSL_CRT_FILE', getFixture('host-ec.crt'));
-      vi.stubEnv('SSL_KEY_FILE', getFixture('host-ec.key'));
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'true');
+      vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('host-ec.crt'));
+      vi.stubEnv('DOCUSAURUS_SSL_KEY_FILE', getFixture('host-ec.key'));
       await expect(getHttpsConfig()).resolves.toEqual(configMatcher);
     });
 
     it('throws for non-existent cert', async () => {
-      vi.stubEnv('HTTPS', 'true');
-      vi.stubEnv('SSL_CRT_FILE', getFixture('nonexistent.crt'));
-      vi.stubEnv('SSL_KEY_FILE', getFixture('host.key'));
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'true');
+      vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('nonexistent.crt'));
+      vi.stubEnv('DOCUSAURUS_SSL_KEY_FILE', getFixture('host.key'));
       await expect(getHttpsConfig()).rejects.toThrowErrorMatchingInlineSnapshot(
-        `[Error: You specified env SSL_CRT_FILE, but file at path "<PROJECT_ROOT>/packages/docusaurus/src/webpack/utils/__tests__/__fixtures__/getHttpsConfig/nonexistent.crt" can't be found.]`,
+        `[Error: You specified env DOCUSAURUS_SSL_CRT_FILE, but file at path "<PROJECT_ROOT>/packages/docusaurus/src/webpack/utils/__tests__/__fixtures__/getHttpsConfig/nonexistent.crt" can't be found.]`,
       );
     });
 
     it('throws for invalid cert', async () => {
-      vi.stubEnv('HTTPS', 'true');
-      vi.stubEnv('SSL_CRT_FILE', getFixture('invalid.crt'));
-      vi.stubEnv('SSL_KEY_FILE', getFixture('host.key'));
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'true');
+      vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('invalid.crt'));
+      vi.stubEnv('DOCUSAURUS_SSL_KEY_FILE', getFixture('host.key'));
       await expect(getHttpsConfig()).rejects
         .toThrowErrorMatchingInlineSnapshot(`
         [Error: The certificate "<PROJECT_ROOT>/packages/docusaurus/src/webpack/utils/__tests__/__fixtures__/getHttpsConfig/invalid.crt" is invalid.]
@@ -86,18 +86,18 @@ describe('getHttpsConfig', () => {
     });
 
     it('throws for non-existent key', async () => {
-      vi.stubEnv('HTTPS', 'true');
-      vi.stubEnv('SSL_CRT_FILE', getFixture('host.crt'));
-      vi.stubEnv('SSL_KEY_FILE', getFixture('nonexistent.key'));
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'true');
+      vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('host.crt'));
+      vi.stubEnv('DOCUSAURUS_SSL_KEY_FILE', getFixture('nonexistent.key'));
       await expect(getHttpsConfig()).rejects.toThrowErrorMatchingInlineSnapshot(
-        `[Error: You specified env SSL_KEY_FILE, but file at path "<PROJECT_ROOT>/packages/docusaurus/src/webpack/utils/__tests__/__fixtures__/getHttpsConfig/nonexistent.key" can't be found.]`,
+        `[Error: You specified env DOCUSAURUS_SSL_KEY_FILE, but file at path "<PROJECT_ROOT>/packages/docusaurus/src/webpack/utils/__tests__/__fixtures__/getHttpsConfig/nonexistent.key" can't be found.]`,
       );
     });
 
     it('throws for invalid key', async () => {
-      vi.stubEnv('HTTPS', 'true');
-      vi.stubEnv('SSL_CRT_FILE', getFixture('host.crt'));
-      vi.stubEnv('SSL_KEY_FILE', getFixture('invalid.key'));
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'true');
+      vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('host.crt'));
+      vi.stubEnv('DOCUSAURUS_SSL_KEY_FILE', getFixture('invalid.key'));
       await expect(getHttpsConfig()).rejects.toThrowErrorMatchingInlineSnapshot(
         `
         [Error: The certificate key "<PROJECT_ROOT>/packages/docusaurus/src/webpack/utils/__tests__/__fixtures__/getHttpsConfig/invalid.key" is invalid.]
@@ -107,29 +107,29 @@ describe('getHttpsConfig', () => {
     });
 
     it('throws for cert without key', async () => {
-      vi.stubEnv('HTTPS', 'true');
-      vi.stubEnv('SSL_CRT_FILE', getFixture('host.crt'));
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'true');
+      vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('host.crt'));
       await expect(getHttpsConfig()).rejects
         .toThrowErrorMatchingInlineSnapshot(`
         [Error: HTTPS support require proving a certificate and key at the same time.
-        You only provided a certificate (with env SSL_CRT_FILE) at path "<PROJECT_ROOT>/packages/docusaurus/src/webpack/utils/__tests__/__fixtures__/getHttpsConfig/host.crt".]
+        You only provided a certificate (with env DOCUSAURUS_SSL_CRT_FILE) at path "<PROJECT_ROOT>/packages/docusaurus/src/webpack/utils/__tests__/__fixtures__/getHttpsConfig/host.crt".]
       `);
     });
 
     it('throws for key without cert', async () => {
-      vi.stubEnv('HTTPS', 'true');
-      vi.stubEnv('SSL_KEY_FILE', getFixture('host.key'));
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'true');
+      vi.stubEnv('DOCUSAURUS_SSL_KEY_FILE', getFixture('host.key'));
       await expect(getHttpsConfig()).rejects
         .toThrowErrorMatchingInlineSnapshot(`
         [Error: HTTPS support require proving a certificate and key at the same time.
-        You only provided a key (with env SSL_KEY_FILE) at path "<PROJECT_ROOT>/packages/docusaurus/src/webpack/utils/__tests__/__fixtures__/getHttpsConfig/host.key".]
+        You only provided a key (with env DOCUSAURUS_SSL_KEY_FILE) at path "<PROJECT_ROOT>/packages/docusaurus/src/webpack/utils/__tests__/__fixtures__/getHttpsConfig/host.key".]
       `);
     });
 
     it('throws when cert and key do not match', async () => {
-      vi.stubEnv('HTTPS', 'true');
-      vi.stubEnv('SSL_CRT_FILE', getFixture('host-ec.crt'));
-      vi.stubEnv('SSL_KEY_FILE', getFixture('other-ec.key'));
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'true');
+      vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('host-ec.crt'));
+      vi.stubEnv('DOCUSAURUS_SSL_KEY_FILE', getFixture('other-ec.key'));
       await expect(getHttpsConfig()).rejects.toMatchInlineSnapshot(
         `[Error: The certificate "<PROJECT_ROOT>/packages/docusaurus/src/webpack/utils/__tests__/__fixtures__/getHttpsConfig/host-ec.crt" and key "<PROJECT_ROOT>/packages/docusaurus/src/webpack/utils/__tests__/__fixtures__/getHttpsConfig/other-ec.key" do not match.]`,
       );
@@ -275,9 +275,9 @@ describe('getHttpsConfig', () => {
 
   describe('mixed', () => {
     it('cLI options take precedence over env vars', async () => {
-      vi.stubEnv('HTTPS', 'false');
-      vi.stubEnv('SSL_CRT_FILE', getFixture('nonexistent.crt'));
-      vi.stubEnv('SSL_KEY_FILE', getFixture('invalid.key'));
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'false');
+      vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('nonexistent.crt'));
+      vi.stubEnv('DOCUSAURUS_SSL_KEY_FILE', getFixture('invalid.key'));
       // CLI override should succeed despite the broken env-var key pair.
       await expect(
         getHttpsConfig({
@@ -288,24 +288,16 @@ describe('getHttpsConfig', () => {
       ).resolves.toEqual(configMatcher);
     });
 
-    it('dOCUSAURUS_ prefixed env variables take precedence over unprefixed env vars', async () => {
-      vi.stubEnv('HTTPS', 'false');
-      vi.stubEnv('DOCUSAURUS_HTTPS', 'true');
-
-      vi.stubEnv('SSL_CRT_FILE', getFixture('nonexistent.crt'));
-      vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('host-ec.crt'));
-
-      vi.stubEnv('SSL_KEY_FILE', getFixture('invalid.key'));
-      vi.stubEnv('DOCUSAURUS_SSL_KEY_FILE', getFixture('host-ec.key'));
-      // CLI override should succeed despite the broken env-var key pair.
-      await expect(getHttpsConfig()).resolves.toEqual(configMatcher);
+    it('ignores unprefixed env vars', async () => {
+      vi.stubEnv('HTTPS', 'true');
+      vi.stubEnv('SSL_CRT_FILE', getFixture('host-ec.crt'));
+      vi.stubEnv('SSL_KEY_FILE', getFixture('host-ec.key'));
+      await expect(getHttpsConfig()).resolves.toBe(false);
     });
 
-    it('supports mixing prefixed/unprefixed env vars and CLI options', async () => {
-      vi.stubEnv('HTTPS', 'true');
-
+    it('supports mixing env vars and CLI options', async () => {
+      vi.stubEnv('DOCUSAURUS_HTTPS', 'true');
       vi.stubEnv('DOCUSAURUS_SSL_CRT_FILE', getFixture('host-ec.crt'));
-      // CLI override should succeed despite the broken env-var key pair.
       await expect(
         getHttpsConfig({
           sslKey: getFixture('host-ec.key'),

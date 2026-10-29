@@ -31,7 +31,14 @@ export type Options = Partial<MDXOptions> & {
 
   // Will usually be created by "createMDXLoaderItem"
   processors?: SimpleProcessors;
-  crossCompilerCache?: Map<string, CrossCompilerCacheEntry>; // MDX => Promise<JSX> cache
+  // We pass a getter function instead of the cache Map itself because some
+  // tools deep-clone the loader options (Rsdoctor v1 for example)
+  // Cloning a Map would break the cache shared by client/server compilers
+  // Functions are not cloned, so the getter keeps returning the shared Map
+  getCrossCompilerCache?: () => CrossCompilerCache;
 };
+
+// MDX => Promise<JSX> cache
+export type CrossCompilerCache = Map<string, CrossCompilerCacheEntry>;
 
 type CrossCompilerCacheEntry = PromiseWithResolvers<string>;

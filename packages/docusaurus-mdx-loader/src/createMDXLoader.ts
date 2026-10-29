@@ -6,7 +6,7 @@
  */
 
 import {createProcessors} from './processor';
-import type {Options} from './options';
+import type {CrossCompilerCache, Options} from './options';
 import type {RuleSetRule, RuleSetUseItem} from 'webpack';
 
 // Escape hatch to disable the MDX cross-compiler cache, just in case
@@ -33,9 +33,10 @@ function normalizeOptions(optionsInput: Options): Options {
   // We only have multiple compilers in production mode (docusaurus build)
   // TODO wrong but good enough for now (example: "docusaurus build --dev")
   if (!DisableCrossCompilerCache && process.env.NODE_ENV === 'production') {
+    const crossCompilerCache: CrossCompilerCache = new Map();
     options = {
       ...options,
-      crossCompilerCache: new Map(),
+      getCrossCompilerCache: () => crossCompilerCache,
     };
   }
 

@@ -18,7 +18,7 @@ export function TestComponent() {
       `'test-bad-package/README.mdx' is rendered with bad React version: ${ReactVersion}`,
     );
   }
-  if (!ReactVersion.startsWith(`${expectedVersion}`)) {
+  if (!ReactDOMVersion.startsWith(`${expectedVersion}`)) {
     throw new Error(
       `'test-bad-package/README.mdx' is rendered with bad React-DOM version: ${ReactDOMVersion}`,
     );

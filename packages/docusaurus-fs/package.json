@@ -19,8 +19,8 @@
   "license": "MIT",
   "dependencies": {
     "@docusaurus/logger": "workspace:*",
-    "p-queue": "^9.3.3",
-    "tslib": "^2.8.1"
+    "p-queue": "catalog:",
+    "tslib": "catalog:"
   },
   "engines": {
     "node": ">=24.21"

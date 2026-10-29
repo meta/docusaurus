@@ -20,27 +20,6 @@ export default {
     'packages/create-docusaurus/templates/*/package.json',
   ],
 
-  // Packages that must use the same version, treated as a single dependency
-  // Keep in sync with the groups of .github/dependabot.yml
-  dependencyGroups: [
-    {aliasName: 'svgr', dependencies: ['@svgr/**']},
-    {aliasName: 'workbox', dependencies: ['workbox-*']},
-    {aliasName: 'rsdoctor', dependencies: ['@rsdoctor/**']},
-    {aliasName: 'react', dependencies: ['react', 'react-dom']},
-    {
-      aliasName: 'react-types',
-      dependencies: ['@types/react', '@types/react-dom'],
-    },
-    {
-      aliasName: 'react-router',
-      dependencies: ['react-router', 'react-router-dom'],
-    },
-    {
-      aliasName: 'typescript-eslint',
-      dependencies: ['typescript-eslint', '@typescript-eslint/**'],
-    },
-  ],
-
   semverGroups: [
     {
       label: 'Use ~ for TypeScript monorepo root and init templates',
@@ -65,19 +44,13 @@ export default {
     },
 
     {
-      label: 'Ignore * deps in type-alias packages',
+      label: 'Ignore the exact @types/react version in type-alias packages',
       packages: [
         '@docusaurus/module-type-aliases',
         '@docusaurus/theme-common',
         '@docusaurus/types',
       ],
-      dependencies: [
-        // Aliases from dependencyGroups
-        'react',
-        'react-types',
-        '@types/react-router-config',
-        '@types/react-router-dom',
-      ],
+      dependencies: ['@types/react'],
       isIgnored: true,
     },
 
@@ -126,6 +99,23 @@ export default {
       pinVersion: 'workspace:*',
     },
 
-    // Default: all remaining dependencies — highest version wins (syncpack default)
+    {
+      label:
+        "Templates can't use catalogs, lintCatalogs.js checks their versions against the catalogs",
+      packages: [
+        'docusaurus-2-classic-template',
+        'docusaurus-2-classic-typescript-template',
+      ],
+      isIgnored: true,
+    },
+
+    {
+      // Runtime dependencies use the default catalog ("catalog:")
+      // Dev-only dependencies use the dev catalog ("catalog:dev")
+      // lintCatalogs.js checks the catalogs content
+      label: 'All the other dependencies must use a pnpm catalog',
+      dependencyTypes: ['prod', 'dev', 'peer'],
+      policy: 'catalog',
+    },
   ],
 } satisfies RcFile;

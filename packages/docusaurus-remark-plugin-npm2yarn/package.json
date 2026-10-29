@@ -17,19 +17,19 @@
   },
   "license": "MIT",
   "dependencies": {
-    "mdast-util-mdx": "^3.0.0",
-    "npm-to-yarn": "^3.2.0",
-    "tslib": "^2.8.1",
-    "unified": "^11.0.5",
-    "unist-util-visit": "^5.1.0"
+    "mdast-util-mdx": "catalog:",
+    "npm-to-yarn": "catalog:",
+    "tslib": "catalog:",
+    "unified": "catalog:",
+    "unist-util-visit": "catalog:"
   },
   "devDependencies": {
-    "@types/mdast": "^4.0.4",
-    "@types/unist": "^3.0.3",
-    "dedent": "^1.7.2",
-    "remark": "^15.0.1",
-    "remark-mdx": "^3.1.1",
-    "to-vfile": "^8.0.0"
+    "@types/mdast": "catalog:",
+    "@types/unist": "catalog:dev",
+    "dedent": "catalog:dev",
+    "remark": "catalog:dev",
+    "remark-mdx": "catalog:",
+    "to-vfile": "catalog:dev"
   },
   "engines": {
     "node": ">=24.21"

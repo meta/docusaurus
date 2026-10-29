@@ -19,19 +19,8 @@
   padding: 0.5rem 1rem;
 }
 
-.row::after {
-  content: '';
-  display: table;
-  clear: both;
-}
-
 .buttons {
   white-space: nowrap;
-}
-
-.right {
-  align-self: center;
-  width: 10%;
 }
 
 [data-theme='light'] {

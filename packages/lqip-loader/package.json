@@ -18,13 +18,13 @@
   "license": "MIT",
   "dependencies": {
     "@docusaurus/logger": "workspace:*",
-    "sharp": "^0.35.1",
-    "tslib": "^2.8.1"
+    "sharp": "catalog:",
+    "tslib": "catalog:"
   },
   "engines": {
     "node": ">=24.21"
   },
   "devDependencies": {
-    "webpack": "^5.111.0"
+    "webpack": "catalog:"
   }
 }

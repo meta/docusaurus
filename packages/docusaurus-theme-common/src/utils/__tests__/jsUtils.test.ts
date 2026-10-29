@@ -6,7 +6,7 @@
  */
 
 import {describe, expect, it} from 'vitest';
-import {uniq, duplicates, groupBy} from '../jsUtils';
+import {uniq, duplicates} from '../jsUtils';
 
 describe('duplicates', () => {
   it('gets duplicate values', () => {
@@ -50,57 +50,5 @@ describe('uniq', () => {
     expect(
       uniq([obj1, obj1, obj2, array1, obj2, array3, array2, array1, obj3]),
     ).toEqual([obj1, obj2, array1, array3, array2, obj3]);
-  });
-});
-
-describe('groupBy', () => {
-  type User = {name: string; age: number; type: 'a' | 'b' | 'c'};
-
-  const user1: User = {name: 'Seb', age: 42, type: 'c'};
-  const user2: User = {name: 'Robert', age: 42, type: 'b'};
-  const user3: User = {name: 'Seb', age: 32, type: 'c'};
-
-  const users = [user1, user2, user3];
-
-  it('group by name', () => {
-    const groups = groupBy(users, (u) => u.name);
-
-    expect(Object.keys(groups)).toEqual(['Seb', 'Robert']);
-    expect(groups).toEqual({
-      Seb: [user1, user3],
-      Robert: [user2],
-    });
-  });
-
-  it('group by age', () => {
-    const groups = groupBy(users, (u) => u.age);
-
-    // Surprising keys order due to JS behavior
-    // see https://x.com/sebastienlorber/status/1806371668614369486
-    expect(Object.keys(groups)).toEqual(['32', '42']);
-    expect(groups).toEqual({
-      '32': [user3],
-      '42': [user1, user2],
-    });
-  });
-
-  it('group by type', () => {
-    const groups = groupBy(users, (u) => u.type);
-
-    expect(Object.keys(groups)).toEqual(['c', 'b']);
-    expect(groups).toEqual({
-      c: [user1, user3],
-      b: [user2],
-    });
-  });
-
-  it('group by name even duplicates', () => {
-    const groups = groupBy([user1, user2, user3, user1, user3], (u) => u.name);
-
-    expect(Object.keys(groups)).toEqual(['Seb', 'Robert']);
-    expect(groups).toEqual({
-      Seb: [user1, user3, user1, user3],
-      Robert: [user2],
-    });
   });
 });

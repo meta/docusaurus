@@ -43,10 +43,7 @@ export default function MDXPage(props: Props): ReactNode {
 
   return (
     <HtmlClassNameProvider
-      className={clsx(
-        wrapperClassName ?? ThemeClassNames.wrapper.mdxPages,
-        ThemeClassNames.page.mdxPage,
-      )}>
+      className={clsx(wrapperClassName, ThemeClassNames.page.mdxPage)}>
       <Layout>
         <PageMetadata
           title={title}

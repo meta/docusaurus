@@ -6,7 +6,6 @@
  */
 
 import type {ReactNode} from 'react';
-import clsx from 'clsx';
 
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {
@@ -49,11 +48,7 @@ function BlogListPageContent(props: Props): ReactNode {
 
 export default function BlogListPage(props: Props): ReactNode {
   return (
-    <HtmlClassNameProvider
-      className={clsx(
-        ThemeClassNames.wrapper.blogPages,
-        ThemeClassNames.page.blogListPage,
-      )}>
+    <HtmlClassNameProvider className={ThemeClassNames.page.blogListPage}>
       <BlogListPageMetadata {...props} />
       <BlogListPageStructuredData {...props} />
       <BlogListPageContent {...props} />

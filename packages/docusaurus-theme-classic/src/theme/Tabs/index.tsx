@@ -113,14 +113,7 @@ function TabsContainer({
   children: ReactNode;
 }): ReactNode {
   return (
-    <div
-      className={clsx(
-        ThemeClassNames.tabs.container,
-        // former name kept for backward compatibility
-        // see https://github.com/facebook/docusaurus/pull/4086
-        'tabs-container',
-        styles.tabList,
-      )}>
+    <div className={clsx(ThemeClassNames.tabs.container, styles.tabList)}>
       <TabList
         // Surprising but historical
         // className is applied on TabList, not on TabsContainer

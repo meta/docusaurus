@@ -121,7 +121,7 @@ async function loadMDXWithCaching({
   options: Options;
   compilerName: WebpackCompilerName;
 }): Promise<string> {
-  const {crossCompilerCache} = options;
+  const crossCompilerCache = options.getCrossCompilerCache?.();
   if (!crossCompilerCache) {
     return loadMDX({
       fileContent,
@@ -144,7 +144,7 @@ async function loadMDXWithCaching({
   // But we could eventually use WeakRef for the values
   const deleteCacheEntry = () => crossCompilerCache.delete(cacheKey);
 
-  const cacheEntry = crossCompilerCache?.get(cacheKey);
+  const cacheEntry = crossCompilerCache.get(cacheKey);
 
   // When deduplicating client/server compilations, we always use the client
   // compilation and not the server compilation

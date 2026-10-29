@@ -1,75 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {
-  // guessMaxImageWidth,
-  bytesToSize,
-  selectSrc,
-  fallbackParams,
-} from '../components/helpers';
-
-/*
-describe('guessMaxImageWidth', () => {
-  it('Should calculate the maximum image width', () => {
-    const dimensions = {
-      width: 400,
-      height: 100,
-    }
-    const mockedWindow = {
-      screen: {
-        width: 100,
-      },
-      innerWidth: 1024,
-      innerHeight: 768,
-    }
-    const expected = dimensions.width
-    const result = guessMaxImageWidth(dimensions, mockedWindow)
-
-    expect(result).toEqual(expected)
-  })
-
-  it('Should calculate the maximum image width with screen changes', () => {
-    const dimensions = {
-      width: 400,
-      height: 100,
-    }
-    const mockedWindow = {
-      screen: {
-        width: 100,
-      },
-      innerWidth: 50,
-      innerHeight: 30,
-    }
-    const expected =
-      (dimensions.width / mockedWindow.innerWidth) * mockedWindow.screen.width
-    const result = guessMaxImageWidth(dimensions, mockedWindow)
-
-    expect(result).toEqual(expected)
-  })
-
-  it('Should calculate the maximum image width with screen changes and scroll', () => {
-    const body = document.getElementsByTagName('body')[0]
-    Object.defineProperty(body, 'clientHeight', {
-      get: () => {
-        return 400
-      },
-    })
-    const dimensions = {
-      width: 400,
-      height: 100,
-    }
-    const mockedWindow = {
-      screen: {
-        width: 100,
-      },
-      innerWidth: 50,
-      innerHeight: 100,
-    }
-    const expected = 450
-    const result = guessMaxImageWidth(dimensions, mockedWindow)
-
-    expect(result).toEqual(expected)
-  })
-})
-*/
+import {bytesToSize, selectSrc} from '../components/helpers';
 
 describe('bytesToSize', () => {
   const bitsInKB = 1024;
@@ -169,18 +99,3 @@ describe('selectSrc', () => {
     expect(result).toEqual(expected);
   });
 });
-
-/*
-describe('fallbackParams', () => {
-  it('Should return an empty object when run in the browser environment', () => {
-    const result = fallbackParams({
-      srcSet: [
-        {
-          format: 'webp',
-        },
-      ],
-    });
-    expect(result).toEqual({});
-  });
-});
- */

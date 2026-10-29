@@ -64,7 +64,7 @@ export function ScrollControllerProvider({
  * This API permits to temporarily disable/ignore scroll events. Motivated by
  * https://github.com/facebook/docusaurus/pull/5618
  */
-export function useScrollController(): ScrollController {
+function useScrollController(): ScrollController {
   const context = useContext(ScrollMonitorContext);
   if (context == null) {
     throw new ReactContextError('ScrollControllerProvider');

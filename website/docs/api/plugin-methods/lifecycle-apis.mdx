@@ -244,7 +244,7 @@ The API of `configureWebpack` will be modified in the future to accept an object
 `configureWebpack` also receives an util object:
 
 - `getStyleLoaders(isServer: boolean, cssOptions: {[key: string]: any}): Loader[]`
-- `getJSLoader(isServer: boolean, cacheOptions?: {}): Loader | null`
+- `getJSLoader({isServer}: {isServer: boolean}): RuleSetRule`: returns the loader your site uses to transpile JS files (the built-in SWC loader with Rspack, or the [`webpack.jsLoader`](../docusaurus.config.js.mdx#webpack) with webpack)
 
 You may use them to return your webpack configuration conditionally.
 
@@ -262,7 +262,7 @@ export default function (context, options) {
           rules: [
             {
               test: /\.foo$/,
-              use: [getJSLoader(isServer), 'my-custom-webpack-loader'],
+              use: [getJSLoader({isServer}), 'my-custom-webpack-loader'],
             },
           ],
         },

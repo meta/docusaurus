@@ -6,6 +6,7 @@
  */
 
 import {describe, expect, it} from 'vitest';
+import path from 'node:path';
 import {createJsLoaderFactory} from '../jsLoader';
 
 import type {RuleSetRule} from 'webpack';
@@ -15,8 +16,12 @@ type SiteConfigSlice = Parameters<
 >[0]['siteConfig'];
 
 describe('createJsLoaderFactory', () => {
-  function testJsLoaderFactory(siteConfig?: SiteConfigSlice) {
+  function testJsLoaderFactory(
+    siteConfig?: SiteConfigSlice,
+    siteDir: string = __dirname,
+  ) {
     return createJsLoaderFactory({
+      siteDir,
       siteConfig: {webpack: siteConfig?.webpack},
     });
   }
@@ -49,10 +54,34 @@ describe('createJsLoaderFactory', () => {
     );
   });
 
+  it('createJsLoaderFactory uses the Docusaurus Babel preset with Webpack', async () => {
+    const createJsLoader = await testJsLoaderFactory({webpack: {}});
+    expect(createJsLoader({isServer: true}).options).toEqual({
+      presets: [require.resolve('@docusaurus/babel/preset')],
+      babelrc: false,
+      configFile: false,
+      caller: {name: 'server'},
+    });
+  });
+
+  it('createJsLoaderFactory uses the site Babel config file with Webpack', async () => {
+    const siteDir = path.join(
+      __dirname,
+      '__fixtures__',
+      'siteWithBabelConfigFile',
+    );
+    const createJsLoader = await testJsLoaderFactory({webpack: {}}, siteDir);
+    expect(createJsLoader({isServer: false}).options).toEqual({
+      babelrc: false,
+      configFile: path.join(siteDir, 'babel.config.js'),
+      caller: {name: 'client'},
+    });
+  });
+
   it('createJsLoaderFactory accepts custom loader', async () => {
     const createJsLoader = await testJsLoaderFactory({
       webpack: {
-        jsLoader: (isServer) => {
+        jsLoader: ({isServer}) => {
           return {loader: `my-loader-${isServer ? 'server' : 'client'}`};
         },
       },
@@ -79,7 +108,7 @@ describe('createJsLoaderFactory', () => {
   });
 
   it('createJsLoaderFactory allows customization', async () => {
-    const customJSLoader = (isServer: boolean): RuleSetRule => ({
+    const customJSLoader = ({isServer}: {isServer: boolean}): RuleSetRule => ({
       loader: 'my-fast-js-loader',
       options: String(isServer),
     });
@@ -92,11 +121,11 @@ describe('createJsLoaderFactory', () => {
       createJsLoader({
         isServer: true,
       }),
-    ).toEqual(customJSLoader(true));
+    ).toEqual(customJSLoader({isServer: true}));
     expect(
       createJsLoader({
         isServer: false,
       }),
-    ).toEqual(customJSLoader(false));
+    ).toEqual(customJSLoader({isServer: false}));
   });
 });

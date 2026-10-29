@@ -132,14 +132,6 @@ describe('validateBlogPostFrontMatter sidebar_label', () => {
   });
 });
 
-describe('validateBlogPostFrontMatter id', () => {
-  testField({
-    prefix: 'id',
-    validFrontMatters: [{id: '123'}, {id: 'id'}],
-    invalidFrontMatters: [[{id: ''}, 'not allowed to be empty']],
-  });
-});
-
 describe('validateBlogPostFrontMatter legacy author front matter', () => {
   it('rejects legacy author front matter', () => {
     expect(() =>

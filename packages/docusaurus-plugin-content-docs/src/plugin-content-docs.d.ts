@@ -557,8 +557,8 @@ declare module '@docusaurus/plugin-content-docs' {
   };
 
   export type LoadedVersion = VersionMetadata & {
-    docs: DocMetadata[];
-    drafts: DocMetadata[];
+    docs: DocMetadataBase[];
+    drafts: DocMetadataBase[];
     sidebars: import('./sidebars/types').Sidebars;
   };
 
@@ -644,13 +644,10 @@ declare module '@theme/DocsRoot' {
 
 declare module '@theme/DocVersionRoot' {
   import type {ReactNode} from 'react';
-  import type {PropVersionMetadata} from '@docusaurus/plugin-content-docs';
   import type {RouteConfigComponentProps} from 'react-router-config';
   import type {Required} from 'utility-types';
 
-  export interface Props extends Required<RouteConfigComponentProps, 'route'> {
-    readonly version: PropVersionMetadata;
-  }
+  export interface Props extends Required<RouteConfigComponentProps, 'route'> {}
 
   export default function DocVersionRoot(props: Props): ReactNode;
 }

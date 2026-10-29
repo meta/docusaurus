@@ -22,6 +22,7 @@ declare module 'vfile' {
 
 declare module 'unist' {
   interface Data {
+    admonitionTitle?: boolean;
     hName?: string;
     hProperties?: Record<string, unknown>;
   }

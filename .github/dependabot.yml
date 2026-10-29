@@ -34,7 +34,7 @@ updates:
       semver-minor-days: 8
       semver-patch-days: 8
     # Packages that must be upgraded atomically in a single PR
-    # Keep in sync with the dependencyGroups of .syncpackrc.ts
+    # pnpm lint:catalogs checks that the catalog versions of each group match
     groups:
       # Released in lockstep, mixing versions breaks typechecking
       # See https://github.com/facebook/docusaurus/pull/12634
@@ -68,7 +68,3 @@ updates:
       svgr:
         patterns:
           - '@svgr/*'
-      # Rsdoctor plugins pin exact @rsdoctor/core and @rsdoctor/sdk versions
-      rsdoctor:
-        patterns:
-          - '@rsdoctor/*'

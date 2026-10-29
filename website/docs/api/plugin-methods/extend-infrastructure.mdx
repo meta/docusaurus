@@ -75,11 +75,11 @@ export default function (context, options) {
 
 ## `getTypeScriptThemePath()` {/* #getTypeScriptThemePath */}
 
-Similar to `getThemePath()`, it should return the path to the directory where the source code of TypeScript theme components can be found. This path is purely for swizzling TypeScript theme components, and theme components under this path will **not** be resolved by Webpack. Therefore, it is not a replacement for `getThemePath()`. Typically, you can make the path returned by `getTypeScriptThemePath()` be your source directory, and make the path returned by `getThemePath()` be the compiled JavaScript output.
+Similar to `getThemePath()`, it should return the path to the directory where the source code of TypeScript theme components can be found. This path is purely for swizzling TypeScript theme components, and theme components under this path will **not** be resolved by the bundler. Therefore, it is not a replacement for `getThemePath()`. Typically, you can make the path returned by `getTypeScriptThemePath()` be your source directory, and make the path returned by `getThemePath()` be the compiled JavaScript output.
 
 :::tip
 
-For TypeScript theme authors: you are strongly advised to make your compiled output as human-readable as possible. Only strip type annotations and don't transpile any syntaxes, because they will be handled by Webpack's Babel loader based on the targeted browser versions.
+For TypeScript theme authors: you are strongly advised to make your compiled output as human-readable as possible. Only strip type annotations and don't transpile any syntaxes, because Docusaurus transpiles them based on the targeted browser versions.
 
 You should also format these files with Prettier. Remember—JS files can and will be directly consumed by your users.
 
@@ -105,22 +105,78 @@ export default function (context, options) {
 }
 ```
 
-## `getSwizzleComponentList()` {/* #getSwizzleComponentList */}
+## `getSwizzleConfig()` {/* #getSwizzleConfig */}
 
-**This is a static method, not attached to any plugin instance.**
+**This is a static method, not attached to any plugin instance.** Export it from the theme module, or attach it to the plugin constructor function.
 
-Returns a list of stable components that are considered safe for swizzling. These components will be swizzlable without `--danger`. All components are considered unstable by default. If an empty array is returned, all components are considered unstable. If `undefined` is returned, all components are considered stable.
+Returns the swizzle config of the theme, declaring [how safe it is to swizzle](../../swizzling.mdx#what-is-safe-to-swizzle) each theme component:
+
+```ts
+type SwizzleConfig = {
+  components: {
+    [componentName: string]: {
+      actions: {
+        eject: 'safe' | 'unsafe' | 'forbidden';
+        wrap: 'safe' | 'unsafe' | 'forbidden';
+      };
+      description?: string;
+    };
+  };
+};
+```
+
+- `componentName`: the name of the theme component, relative to the theme path, such as `Footer` or `Admonition/Icon`.
+- `actions`: the safety status of each swizzle action. Actions not provided are `unsafe`.
+- `description`: a description of the component, displayed by `docusaurus swizzle --list`.
+
+Components not listed are `unsafe` to eject and to wrap.
 
 ```js title="my-theme/src/index.js"
-export function getSwizzleComponentList() {
-  return [
-    'CodeBlock',
-    'DocSidebar',
-    'Footer',
-    'NotFound',
-    'SearchBar',
-    'hooks/useTheme',
-    'prism-include-languages',
-  ];
+export default function (context, options) {
+  return {
+    name: 'my-theme',
+    getThemePath() {
+      return './theme';
+    },
+  };
 }
+
+// highlight-start
+export function getSwizzleConfig() {
+  return {
+    components: {
+      Footer: {
+        actions: {
+          eject: 'safe',
+          wrap: 'safe',
+        },
+        description: "The footer component of your site's layout",
+      },
+      DocSidebar: {
+        actions: {
+          eject: 'unsafe',
+          wrap: 'safe',
+        },
+        description: 'The sidebar component on docs pages',
+      },
+      'prism-include-languages': {
+        actions: {
+          eject: 'safe',
+          wrap: 'forbidden', // Not a component!
+        },
+      },
+    },
+  };
+}
+// highlight-end
 ```
+
+## `getSwizzleComponentList()` {/* #getSwizzleComponentList */}
+
+:::warning Deprecated
+
+Use [`getSwizzleConfig()`](#getSwizzleConfig) instead.
+
+:::
+
+A static method returning the list of components that are safe to eject and to wrap. It is ignored when the theme provides `getSwizzleConfig()`.

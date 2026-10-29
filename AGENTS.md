@@ -45,6 +45,15 @@ Use:
   - `src/` - Website source code, JS/MDX pages, custom React components, and theme overrides
   - `_dogfooding/` - Hidden docs, blog and pages plugin instances for dogfooding, testing features and edge cases, making it easier to review on PR deploy previews
 
+### Writing documentation
+
+`website/docs` describes the behavior of the current version only, concisely. When changing a feature, rewrite its docs to describe the new behavior as if it had always been this way:
+
+- Don't mention how previous Docusaurus versions behaved ("In v3…", "Since v4…", "the historical behavior", "now defaults to…", "no longer…").
+- Don't document how to restore a former behavior or default.
+- Exception: an API whose name references a version (like the `default-v3` VCS preset) can say which version it comes from.
+- Version changes, upgrade steps, and how to restore former behaviors belong in release blog posts, migration guides (`website/docs/migration/`), and PR descriptions.
+
 ## Commands
 
 The main CLI commands available
@@ -55,7 +64,7 @@ The main CLI commands available
 - `pnpm build:packages` - Build all monorepo packages
 - `pnpm watch` - Incremental build of monorepo packages with file watchers
 - `pnpm format` - Format code with oxfmt
-- `pnpm lint` - Run all the lint checks that CI runs (ESLint + Stylelint + spell check + Syncpack + dedupe check + Knip + formatting check)
+- `pnpm lint` - Run all the lint checks that CI runs (ESLint + Stylelint + spell check + Syncpack + catalogs check + dedupe check + Knip + formatting check)
 - `pnpm dedupe` - Deduplicate `pnpm-lock.yaml` dependencies, run it after any lockfile change
 - `pnpm test` - Run all tests using Vitest
 - `pnpm clear` - Clean all build artifacts and caches
@@ -87,15 +96,28 @@ Update Vitest failing snapshots with the `-u` option. Do not blindly update snap
 - `pnpm lint:js` - ESLint for JS/TS files
 - `pnpm lint:style` - Stylelint for CSS files
 - `pnpm lint:spelling` - CSpell for spell checking
-- `pnpm lint:syncpack` - Syncpack to check consistent dependency versions across packages
+- `pnpm lint:spelling:sort` - Sort `project-words.txt`, the words CSpell accepts
+- `pnpm lint:syncpack` - Syncpack to check that dependencies use the pnpm catalogs
+- `pnpm lint:catalogs` - Check the content of the pnpm catalogs
 - `pnpm lint:knip` - Knip to find unused files, exports and dependencies (config in `knip.config.ts`)
+- `pnpm lint:knip:production` - Knip to find the exports and dependencies of published packages that only tests use
+- `pnpm lint:knip:public-api` - Knip to warn about the public API exports that the monorepo doesn't use, not part of `pnpm lint`
 - `pnpm lint:deps` - Check that `pnpm-lock.yaml` is deduplicated (`pnpm dedupe --check`)
 - Add `:fix` suffix to auto-fix issues (e.g., `pnpm lint:js:fix`)
+
+The exports of package entry points (`package.json` `main` and `exports`) are public API, even when undocumented (see the comments in `packages/docusaurus-theme-common/src/index.ts`) or unused by the monorepo: third-party sites, plugins and themes use them. Never remove them as dead code: report them, and only remove one when the maintainer explicitly decides to, as a breaking change. `/internal` entry points (like `@docusaurus/theme-common/internal`) have no stability guarantee, but removing their exports is still a breaking change PR.
+
+To fix CSpell unknown words, don't run `pnpm lint:spelling:fix`: it checks the whole repository and is slow. Instead:
+
+1. Check the files you changed: `pnpm exec cspell --no-progress --show-context <files>`. Ignore files in dot-directories (`.agents/`, `.github/`...): `pnpm lint:spelling` doesn't check them
+2. Fix the typos, and add the other words to `project-words.txt`
+3. Run `pnpm lint:spelling:sort`. Never sort the words another way: CI commits a fix when the order differs
 
 ## Skills
 
 Task-specific instructions live in skills, following the [Agent Skills](https://agentskills.io) format. Read the matching `SKILL.md` before starting one of these tasks:
 
+- [`code-style`](.agents/skills/code-style/SKILL.md) - Write or modify code that humans can easily review
 - [`dependencies`](.agents/skills/dependencies/SKILL.md) - Add, remove or upgrade npm dependencies, keep dependency groups in sync
 - [`pull-requests`](.agents/skills/pull-requests/SKILL.md) - Create, update, check the CI of, or merge a PR (maintainers only)
 
@@ -106,6 +128,7 @@ Docusaurus maintainers work locally with and env variable `DOCUSAURUS_MAINTAINER
 ### General rules
 
 - Always disclose the usage of AI in any communication (commits, PR, comments, issues, etc.) by adding an `(AI-assisted)` text to all messages.
+- Humans review all the code: always write code that is easy to read and review, following the [`code-style` skill](.agents/skills/code-style/SKILL.md).
 
 ### For Docusaurus maintainers
 

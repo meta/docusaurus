@@ -5,9 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {DocMetadata, LoadedContent} from '@docusaurus/plugin-content-docs';
+import type {
+  DocMetadataBase,
+  LoadedContent,
+} from '@docusaurus/plugin-content-docs';
 
-function indexDocsBySource(content: LoadedContent): Map<string, DocMetadata> {
+function indexDocsBySource(
+  content: LoadedContent,
+): Map<string, DocMetadataBase> {
   const allDocs = content.loadedVersions.flatMap((v) => v.docs);
   return new Map(allDocs.map((doc) => [doc.source, doc]));
 }
@@ -17,7 +22,7 @@ function indexDocsBySource(content: LoadedContent): Map<string, DocMetadata> {
 //  See https://github.com/facebook/docusaurus/pull/10457
 //  See https://github.com/facebook/docusaurus/pull/10185
 export function createContentHelpers() {
-  const sourceToDoc = new Map<string, DocMetadata>();
+  const sourceToDoc = new Map<string, DocMetadataBase>();
   const sourceToPermalink = new Map<string, string>();
 
   // Mutable map update :/

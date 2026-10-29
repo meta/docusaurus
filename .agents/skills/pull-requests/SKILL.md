@@ -9,9 +9,20 @@ Only Docusaurus maintainers (`DOCUSAURUS_MAINTAINER=true`) can create pull reque
 
 ## Creating a PR
 
-- Follow the GitHub pull request template in `.github/PULL_REQUEST_TEMPLATE.md`, preserving its sections and checklist. Be concise.
-- If there are breaking changes, add a `## Breaking Changes` section at the very top. Link to the version release notes or blog posts containing the breaking changes, and summarize the most impactful ones in the PR. Inline upgrade instructions if reasonably small to document.
-- After creating the PR, update the deploy preview link in its description with the assigned PR number: `https://deploy-preview-<PR-NUMBER>--docusaurus-2.netlify.app/`. Include links to relevant preview pages in the template's Test links section so that reviewers can easily find them.
+Write the description from the GitHub pull request template in `.github/PULL_REQUEST_TEMPLATE.md`, adapted for maintainers:
+
+- Remove the `## Pre-flight checklist` section. It is only relevant for external contributors: we assume maintainers did their best, so it only adds noise.
+- Remove all the HTML comments of the template.
+- Remove the `## Related issues/PRs` section if there is nothing relevant to link.
+- If a benchmark is useful to review the change (performance, bundle size…), add a `## Benchmark` section right after `## Motivation`.
+- If there are breaking changes, start with a `## Breaking Changes` section explaining:
+  - The breaking change.
+  - How to upgrade. Link to the release notes or blog posts if they exist.
+  - How to restore the behavior of the previous major version, only if there is a straightforward way. Don't write convoluted guides.
+
+Be concise in every section. If something important is verbose (long logs, detailed benchmark results…), hide it in a `<details><summary>…</summary>…</details>` block.
+
+After creating the PR, update the deploy preview link in its description with the assigned PR number: `https://deploy-preview-<PR-NUMBER>--docusaurus-2.netlify.app/`. Include links to relevant preview pages in the template's Test links section so that reviewers can easily find them.
 
 ## Labels
 

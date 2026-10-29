@@ -25,17 +25,20 @@ import type {
 
 /**
  * Creates convenient utils to inject into the configureWebpack() lifecycle
- * @param config the Docusaurus config
+ * @param siteDir the site directory
+ * @param siteConfig the Docusaurus config
  */
 export async function createConfigureWebpackUtils({
+  siteDir,
   siteConfig,
 }: {
+  siteDir: string;
   siteConfig: Parameters<typeof createJsLoaderFactory>[0]['siteConfig'] &
     Parameters<typeof getCurrentBundler>[0]['siteConfig'];
 }): Promise<ConfigureWebpackUtils> {
   const currentBundler = await getCurrentBundler({siteConfig});
   const getStyleLoaders = await createStyleLoadersFactory({currentBundler});
-  const getJSLoader = await createJsLoaderFactory({siteConfig});
+  const getJSLoader = await createJsLoaderFactory({siteDir, siteConfig});
   return {
     currentBundler,
     getStyleLoaders,

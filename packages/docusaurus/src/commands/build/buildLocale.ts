@@ -74,7 +74,10 @@ export async function buildLocale({
 
   const router = siteConfig.future.experimental_router;
 
-  const configureWebpackUtils = await createConfigureWebpackUtils({siteConfig});
+  const configureWebpackUtils = await createConfigureWebpackUtils({
+    siteDir: props.siteDir,
+    siteConfig,
+  });
 
   // We can build the 2 configs in parallel
   const [{clientConfig, clientManifestPath}, {serverConfig, serverBundlePath}] =

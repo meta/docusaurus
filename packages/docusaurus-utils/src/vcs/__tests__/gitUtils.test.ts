@@ -12,7 +12,6 @@ import os from 'node:os';
 import {execa, type Options, type Result} from 'execa';
 
 import {
-  FileNotTrackedError,
   getFileCommitDate,
   getGitLastUpdate,
   getGitCreation,
@@ -267,15 +266,15 @@ describe('commit info APIs', () => {
       });
     });
 
-    it('throws custom error when file is not tracked', async () => {
+    it('returns null when file is not tracked', async () => {
       const repoDir = await repoDirPromise;
 
-      await expect(() =>
+      await expect(
         getFileCommitDate(path.join(repoDir, 'untracked.txt'), {
           age: 'newest',
           includeAuthor: true,
         }),
-      ).rejects.toThrow(FileNotTrackedError);
+      ).resolves.toBeNull();
     });
 
     it('throws when file not found', async () => {

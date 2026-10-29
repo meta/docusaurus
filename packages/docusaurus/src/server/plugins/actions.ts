@@ -21,6 +21,16 @@ type PluginActionUtils = {
   getActions: () => PluginContentLoadedActions;
 };
 
+// The custom route context declared by plugins is namespaced under `data`
+// This applies to nested routes too: the client merges their route context
+function namespaceRouteContextData(route: RouteConfig): RouteConfig {
+  return {
+    ...route,
+    ...(route.context && {context: {data: route.context}}),
+    ...(route.routes && {routes: route.routes.map(namespaceRouteContextData)}),
+  };
+}
+
 // TODO refactor historical action system and make this side-effect-free
 //  If the function were pure, we could more easily compare previous/next values
 //  on site reloads, and bail-out of the reload process earlier
@@ -70,14 +80,16 @@ export async function createPluginActionsUtils({
   const actions: PluginContentLoadedActions = {
     addRoute(initialRouteConfig) {
       // Trailing slash behavior is handled generically for all plugins
-      const finalRouteConfig = applyRouteTrailingSlash(initialRouteConfig, {
-        baseUrl,
-        trailingSlash,
-      });
+      const finalRouteConfig = namespaceRouteContextData(
+        applyRouteTrailingSlash(initialRouteConfig, {
+          baseUrl,
+          trailingSlash,
+        }),
+      );
       routes.push({
         ...finalRouteConfig,
         context: {
-          ...(finalRouteConfig.context && {data: finalRouteConfig.context}),
+          ...finalRouteConfig.context,
           plugin: aliasedSource(pluginRouteContextModulePath),
         },
       });

@@ -9,6 +9,7 @@ import type {TagMetadata} from '@docusaurus/utils';
 import type {
   LoadedVersion,
   CategoryGeneratedIndexMetadata,
+  DocMetadata,
 } from '@docusaurus/plugin-content-docs';
 import type {SidebarsUtils} from './sidebars/utils';
 
@@ -28,7 +29,8 @@ export type VersionTags = {
   [permalink: string]: VersionTag;
 };
 
-export type FullVersion = LoadedVersion & {
+export type FullVersion = Omit<LoadedVersion, 'docs'> & {
+  docs: DocMetadata[];
   sidebarsUtils: SidebarsUtils;
   categoryGeneratedIndices: CategoryGeneratedIndexMetadata[];
 };

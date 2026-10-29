@@ -3,19 +3,6 @@ export const ssr =
 
 export const nativeConnection = !ssr && !!window.navigator.connection;
 
-// export const getScreenWidth = () => {
-//   if (ssr) return 0
-//   const devicePixelRatio = window.devicePixelRatio || 1
-//   const {screen} = window
-//   const {width} = screen
-//   // const angle = (screen.orientation && screen.orientation.angle) || 0
-//   // return Math.max(width, height)
-//   // const rotated = Math.floor(angle / 90) % 2 !== 0
-//   // return (rotated ? height : width) * devicePixelRatio
-//   return width * devicePixelRatio
-// }
-// export const screenWidth = getScreenWidth()
-
 export const guessMaxImageWidth = (dimensions, w) => {
   if (ssr) return 0;
 
@@ -63,25 +50,6 @@ export const bytesToSize = (bytes) => {
   if (i === 0) return `${bytes} ${sizes[i]}`;
   return `${(bytes / 1024 ** i).toFixed(1)} ${sizes[i]}`;
 };
-
-// async function supportsWebp() {
-//   if (typeof createImageBitmap === 'undefined' || typeof fetch === 'undefined')
-//     return false
-//   return fetch(
-//     'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=',
-//   )
-//     .then(response => response.blob())
-//     .then(blob => createImageBitmap(blob).then(() => true, () => false))
-// }
-// let webp = undefined
-// const webpPromise = supportsWebp()
-// webpPromise.then(x => (webp = x))
-// export default () => {
-//   if (webp === undefined) return webpPromise
-//   return {
-//     then: callback => callback(webp),
-//   }
-// }
 
 const detectWebpSupport = () => {
   if (ssr) return false;

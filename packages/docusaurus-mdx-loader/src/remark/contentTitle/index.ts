@@ -45,8 +45,6 @@ const plugin: Plugin<PluginOptions[], Root> = function plugin(
         return undefined;
       }
       if (node.type === 'heading') {
-        // console.log('headingNode:', headingNode);
-
         if (node.depth === 1) {
           vfile.data.contentTitle = toString(node);
           if (removeContentTitle) {

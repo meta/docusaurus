@@ -1,64 +1,154 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`admonitions remark plugin > add custom keyword 1`] = `
-"<p>The blog feature enables you to deploy in no time a full-featured blog.</p>
-<admonition title="Sample Title" type="info"><p>Check the <a href="./api/plugins/plugin-content-blog.md">Blog Plugin API Reference documentation</a> for an exhaustive list of options.</p></admonition>
-<h2>Initial setup {#initial-setup}</h2>
-<p>To set up your site's blog, start by creating a <code>blog</code> directory.</p>
-<admonition type="tip"><p>Use the <strong><a href="introduction.md#fast-track">Fast Track</a></strong> to understand Docusaurus in <strong>5 minutes ⏱</strong>!</p><p>Use <strong><a href="https://docusaurus.new">docusaurus.new</a></strong> to test Docusaurus immediately in your browser!</p></admonition>
-<p>++++tip</p>
-<p>Admonition with different syntax</p>
-<p>++++</p>"
+"The blog feature enables you to deploy in no time a full-featured blog.
+
+<admonition title="Sample Title" type="info">
+  Check the [Blog Plugin API Reference documentation](./api/plugins/plugin-content-blog.md) for an exhaustive list of options.
+</admonition>
+
+## Initial setup /{#initial-setup}
+
+To set up your site's blog, start by creating a \`blog\` directory.
+
+<admonition type="tip">
+  Use the **[Fast Track](introduction.md#fast-track)** to understand Docusaurus in **5 minutes ⏱**!
+
+  Use **[docusaurus.new](https://docusaurus.new)** to test Docusaurus immediately in your browser!
+</admonition>
+
+++++tip
+
+Admonition with different syntax
+
+++++
+"
 `;
 
 exports[`admonitions remark plugin > attributes 1`] = `
-"<p>Admonitions with attributes</p>
-<admonition title="Info Title" class="bold" type="info"><p>An info admonition with a className attribute.</p></admonition>
-<admonition class="bold italic" type="info"><p>An info admonition with multiple className attributes.</p></admonition>
-<admonition id="custom-id" type="info"><p>An info admonition with a custom id attribute.</p></admonition>
-<admonition class="bold" id="custom-id" type="info"><p>An info admonition with both id and className attributes.</p></admonition>
-<admonition class="c1 c2" id="id2" type="info"><p>Arbitrary attributes are ignored.</p></admonition>"
+"Admonitions with attributes
+
+<admonition title="Info Title" className="bold" type="info">
+  An info admonition with a className attribute.
+</admonition>
+
+<admonition className="bold italic" type="info">
+  An info admonition with multiple className attributes.
+</admonition>
+
+<admonition id="custom-id" type="info">
+  An info admonition with a custom id attribute.
+</admonition>
+
+<admonition className="bold" id="custom-id" type="info">
+  An info admonition with both id and className attributes.
+</admonition>
+
+<admonition className="c1 c2" id="id2" type="info">
+  Arbitrary attributes are ignored.
+</admonition>
+"
 `;
 
 exports[`admonitions remark plugin > base 1`] = `
-"<p>The blog feature enables you to deploy in no time a full-featured blog.</p>
-<admonition title="Sample Title" type="info"><p>Check the <a href="./api/plugins/plugin-content-blog.md">Blog Plugin API Reference documentation</a> for an exhaustive list of options.</p></admonition>
-<h2>Initial setup {#initial-setup}</h2>
-<p>To set up your site's blog, start by creating a <code>blog</code> directory.</p>
-<admonition type="tip"><p>Use the <strong><a href="introduction.md#fast-track">Fast Track</a></strong> to understand Docusaurus in <strong>5 minutes ⏱</strong>!</p><p>Use <strong><a href="https://docusaurus.new">docusaurus.new</a></strong> to test Docusaurus immediately in your browser!</p></admonition>
-<p>++++tip</p>
-<p>Admonition with different syntax</p>
-<p>++++</p>"
+"The blog feature enables you to deploy in no time a full-featured blog.
+
+<admonition title="Sample Title" type="info">
+  Check the [Blog Plugin API Reference documentation](./api/plugins/plugin-content-blog.md) for an exhaustive list of options.
+</admonition>
+
+## Initial setup /{#initial-setup}
+
+To set up your site's blog, start by creating a \`blog\` directory.
+
+<admonition type="tip">
+  Use the **[Fast Track](introduction.md#fast-track)** to understand Docusaurus in **5 minutes ⏱**!
+
+  Use **[docusaurus.new](https://docusaurus.new)** to test Docusaurus immediately in your browser!
+</admonition>
+
+++++tip
+
+Admonition with different syntax
+
+++++
+"
 `;
 
 exports[`admonitions remark plugin > default behavior for custom keyword 1`] = `
-"<p>The blog feature enables you to deploy in no time a full-featured blog.</p>
-<div><p>Sample Title</p><p>Check the <a href="./api/plugins/plugin-content-blog.md">Blog Plugin API Reference documentation</a> for an exhaustive list of options.</p></div>
-<h2>Initial setup {#initial-setup}</h2>
-<p>To set up your site's blog, start by creating a <code>blog</code> directory.</p>
-<admonition type="tip"><p>Use the <strong><a href="introduction.md#fast-track">Fast Track</a></strong> to understand Docusaurus in <strong>5 minutes ⏱</strong>!</p><p>Use <strong><a href="https://docusaurus.new">docusaurus.new</a></strong> to test Docusaurus immediately in your browser!</p></admonition>
-<p>++++tip</p>
-<p>Admonition with different syntax</p>
-<p>++++</p>"
+"The blog feature enables you to deploy in no time a full-featured blog.
+
+:::info[Sample Title]
+Check the [Blog Plugin API Reference documentation](./api/plugins/plugin-content-blog.md) for an exhaustive list of options.
+:::
+
+## Initial setup /{#initial-setup}
+
+To set up your site's blog, start by creating a \`blog\` directory.
+
+<admonition type="tip">
+  Use the **[Fast Track](introduction.md#fast-track)** to understand Docusaurus in **5 minutes ⏱**!
+
+  Use **[docusaurus.new](https://docusaurus.new)** to test Docusaurus immediately in your browser!
+</admonition>
+
+++++tip
+
+Admonition with different syntax
+
+++++
+"
 `;
 
 exports[`admonitions remark plugin > interpolation 1`] = `
-"<p>Test admonition with interpolated title/body</p>
-<admonition type="tip"><mdxAdmonitionTitle>My <code>interpolated</code> <strong>title</strong> &#x3C;button style={{color: "red"}} onClick={() => alert("click")}>test</mdxAdmonitionTitle><p><code>body</code> <strong>interpolated</strong> content</p></admonition>"
+"Test admonition with interpolated title/body
+
+<admonition type="tip">
+  <>My \`interpolated\` **title** <button style={{color: "red"}} onClick={() => alert("click")}>test</button></>
+
+  \`body\` **interpolated** <button>content</button>
+</admonition>
+"
 `;
 
 exports[`admonitions remark plugin > nesting 1`] = `
-"<p>Test nested Admonitions</p>
-<admonition type="info"><mdxAdmonitionTitle><strong>Weather</strong></mdxAdmonitionTitle><p>On nice days, you can enjoy skiing in the mountains.</p><admonition type="danger"><mdxAdmonitionTitle><em>Storms</em></mdxAdmonitionTitle><p>Take care of snowstorms...</p></admonition></admonition>"
+"Test nested Admonitions
+
+<admonition type="info">
+  <>**Weather**</>
+
+  On nice days, you can enjoy skiing in the mountains.
+
+  <admonition type="danger">
+    <>*Storms*</>
+
+    Take care of snowstorms...
+  </admonition>
+</admonition>
+"
 `;
 
 exports[`admonitions remark plugin > replace custom keyword 1`] = `
-"<p>The blog feature enables you to deploy in no time a full-featured blog.</p>
-<div><p>Sample Title</p><p>Check the <a href="./api/plugins/plugin-content-blog.md">Blog Plugin API Reference documentation</a> for an exhaustive list of options.</p></div>
-<h2>Initial setup {#initial-setup}</h2>
-<p>To set up your site's blog, start by creating a <code>blog</code> directory.</p>
-<admonition type="tip"><p>Use the <strong><a href="introduction.md#fast-track">Fast Track</a></strong> to understand Docusaurus in <strong>5 minutes ⏱</strong>!</p><p>Use <strong><a href="https://docusaurus.new">docusaurus.new</a></strong> to test Docusaurus immediately in your browser!</p></admonition>
-<p>++++tip</p>
-<p>Admonition with different syntax</p>
-<p>++++</p>"
+"The blog feature enables you to deploy in no time a full-featured blog.
+
+:::info[Sample Title]
+Check the [Blog Plugin API Reference documentation](./api/plugins/plugin-content-blog.md) for an exhaustive list of options.
+:::
+
+## Initial setup /{#initial-setup}
+
+To set up your site's blog, start by creating a \`blog\` directory.
+
+<admonition type="tip">
+  Use the **[Fast Track](introduction.md#fast-track)** to understand Docusaurus in **5 minutes ⏱**!
+
+  Use **[docusaurus.new](https://docusaurus.new)** to test Docusaurus immediately in your browser!
+</admonition>
+
+++++tip
+
+Admonition with different syntax
+
+++++
+"
 `;

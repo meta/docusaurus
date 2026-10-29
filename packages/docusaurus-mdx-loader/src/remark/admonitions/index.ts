@@ -5,9 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import {visit} from 'unist-util-visit';
+import {transformNode} from '../utils';
 import type {Transformer, Plugin} from 'unified';
 import type {ContainerDirective} from 'mdast-util-directive';
-import type {Parent, Root} from 'mdast';
+import type {Paragraph, Root} from 'mdast';
+import type {MdxJsxFlowElement, MdxJsxTextElement} from 'mdast-util-mdx';
 
 export type AdmonitionOptions = {
   keywords: string[];
@@ -15,16 +17,7 @@ export type AdmonitionOptions = {
 };
 
 export const DefaultAdmonitionOptions: AdmonitionOptions = {
-  keywords: [
-    'secondary',
-    'info',
-    'success',
-    'danger',
-    'note',
-    'tip',
-    'warning',
-    'important',
-  ],
+  keywords: ['note', 'tip', 'info', 'warning', 'danger'],
   extendDefaults: true,
 };
 
@@ -49,7 +42,7 @@ export function normalizeAdmonitionOptions(
   return options;
 }
 
-type DirectiveLabel = Parent;
+type DirectiveLabel = Paragraph;
 type DirectiveContent = ContainerDirective['children'];
 
 function parseDirective(directive: ContainerDirective): {
@@ -97,38 +90,43 @@ const plugin: Plugin<Partial<AdmonitionOptions>[], Root> = function plugin(
           node.attributes?.title ??
           (directiveLabel ? getTextOnlyTitle(directiveLabel) : undefined);
 
-        // Transform the mdast directive node to a hast admonition node
-        // See https://github.com/syntax-tree/mdast-util-to-hast#fields-on-nodes
-        // TODO in MDX v2 we should transform the whole directive to
-        // mdxJsxFlowElement instead of using hast
-        node.data = {
-          hName: 'admonition',
-          hProperties: {
-            ...(textOnlyTitle && {title: textOnlyTitle}),
-            ...(node.attributes?.class && {
-              className: node.attributes.class.split(' '),
-            }),
-            ...(node.attributes?.id && {id: node.attributes.id}),
-            type: node.name,
-          },
+        // Transform the mdast directive node to an <admonition> JSX element
+        // Lowercase on purpose: like Markdown elements, it is provided by
+        // MDXComponents, and can't be shadowed by an MDX file import
+        const properties = {
+          ...(textOnlyTitle && {title: textOnlyTitle}),
+          ...(node.attributes?.class && {className: node.attributes.class}),
+          ...(node.attributes?.id && {id: node.attributes.id}),
+          type: node.name,
         };
-        node.children = contentNodes;
+        const admonition: MdxJsxFlowElement = {
+          type: 'mdxJsxFlowElement',
+          name: 'admonition',
+          attributes: Object.entries(properties).map(([name, value]) => ({
+            type: 'mdxJsxAttribute',
+            name,
+            value,
+          })),
+          children: contentNodes,
+          position: node.position,
+        };
 
-        // TODO legacy MDX v1 <mdxAdmonitionTitle> workaround
-        // v1: not possible to inject complex JSX elements as props
-        // v2: now possible: use a mdxJsxFlowElement element
-        if (directiveLabel && !textOnlyTitle) {
-          const complexTitleNode = {
-            type: 'mdxAdmonitionTitle',
-            data: {
-              hName: 'mdxAdmonitionTitle',
-              hProperties: {},
-            },
+        // Rich titles stay in the tree as a JSX fragment, so that other
+        // Remark/Rehype plugins can process them (links, images, emojis...)
+        // The admonitionTitle Rehype plugin moves them to the title prop
+        if (directiveLabel?.children.length && !textOnlyTitle) {
+          const complexTitleNode: MdxJsxTextElement = {
+            type: 'mdxJsxTextElement',
+            name: null,
+            attributes: [],
+            data: {admonitionTitle: true},
             children: directiveLabel.children,
           };
-          // @ts-expect-error: invented node type
-          node.children.unshift(complexTitleNode);
+          // @ts-expect-error: MDX accepts inline JSX here, mdast types don't
+          admonition.children.unshift(complexTitleNode);
         }
+
+        transformNode(node, admonition);
       }
     });
   };

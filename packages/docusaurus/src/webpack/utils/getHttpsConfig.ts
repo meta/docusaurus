@@ -57,9 +57,6 @@ function getExplicitHttps(
     options.https ??
     (typeof process.env.DOCUSAURUS_HTTPS !== 'undefined'
       ? process.env.DOCUSAURUS_HTTPS == 'true'
-      : undefined) ??
-    (typeof process.env.HTTPS !== 'undefined'
-      ? process.env.HTTPS == 'true'
       : undefined)
   );
 }
@@ -109,12 +106,6 @@ function getCert(
       'env DOCUSAURUS_SSL_CRT_FILE',
     );
   }
-  if (process.env.SSL_CRT_FILE) {
-    return readCryptoFile(
-      path.resolve(cwd, process.env.SSL_CRT_FILE),
-      'env SSL_CRT_FILE',
-    );
-  }
   return null;
 }
 
@@ -134,12 +125,6 @@ function getKeyFile(
       'env DOCUSAURUS_SSL_KEY_FILE',
     );
   }
-  if (process.env.SSL_KEY_FILE) {
-    return readCryptoFile(
-      path.resolve(cwd, process.env.SSL_KEY_FILE),
-      'env SSL_KEY_FILE',
-    );
-  }
   return null;
 }
 
@@ -156,12 +141,14 @@ You only provided a ${cert ? 'certificate' : 'key'} (with ${fileProvided.source}
   }
 }
 
+export type HttpsConfig = boolean | {cert: Buffer; key: Buffer};
+
 // Get the https config
 // Return cert files if provided via CLI or env, otherwise just true or false.
 // CLI options take precedence over env vars.
 export default async function getHttpsConfig(
   options: Partial<HttpsConfigOptions> = {},
-): Promise<boolean | {cert: Buffer; key: Buffer}> {
+): Promise<HttpsConfig> {
   const cwd = await realpath(process.cwd());
 
   const [cert, key] = await Promise.all([

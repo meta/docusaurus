@@ -6,19 +6,18 @@
  */
 
 import type {ReactNode} from 'react';
-import clsx from 'clsx';
 import {
   PageMetadata,
   HtmlClassNameProvider,
   ThemeClassNames,
 } from '@docusaurus/theme-common';
+import Link from '@docusaurus/Link';
 import {
+  useBlogMetadata,
   useBlogAuthorPageTitle,
   BlogAuthorsListViewAllLabel,
   BlogAuthorNoPostsLabel,
-} from '@docusaurus/theme-common/internal';
-import Link from '@docusaurus/Link';
-import {useBlogMetadata} from '@docusaurus/plugin-content-blog/client';
+} from '@docusaurus/plugin-content-blog/client';
 import BlogLayout from '@theme/BlogLayout';
 import BlogListPaginator from '@theme/BlogListPaginator';
 import SearchMetadata from '@theme/SearchMetadata';
@@ -71,10 +70,7 @@ function Content({author, items, sidebar, listMetadata}: Props): ReactNode {
 export default function BlogAuthorsPostsPage(props: Props): ReactNode {
   return (
     <HtmlClassNameProvider
-      className={clsx(
-        ThemeClassNames.wrapper.blogPages,
-        ThemeClassNames.page.blogAuthorsPostsPage,
-      )}>
+      className={ThemeClassNames.page.blogAuthorsPostsPage}>
       <Metadata {...props} />
       <Content {...props} />
     </HtmlClassNameProvider>

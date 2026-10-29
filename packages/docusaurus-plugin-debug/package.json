@@ -24,12 +24,12 @@
     "@docusaurus/module-type-aliases": "workspace:*",
     "@docusaurus/types": "workspace:*",
     "@docusaurus/utils": "workspace:*",
-    "react-json-view-lite": "^2.5.0",
-    "tslib": "^2.8.1"
+    "react-json-view-lite": "catalog:",
+    "tslib": "catalog:"
   },
   "peerDependencies": {
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "engines": {
     "node": ">=24.21"

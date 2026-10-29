@@ -7,7 +7,7 @@
 // @vitest-environment jsdom
 import {describe, expect, it} from 'vitest';
 import {renderHook} from '@testing-library/react';
-import {useFilteredAndTreeifiedTOC, useTreeifiedTOC} from '../tocUtils';
+import {useFilteredAndTreeifiedTOC} from '../tocUtils';
 import type {TOCItem} from '@docusaurus/mdx-loader';
 
 const mockTOC: TOCItem[] = [
@@ -37,14 +37,6 @@ const mockTOC: TOCItem[] = [
     value: 'Foxtrot',
   },
 ];
-
-describe('useTreeifiedTOC', () => {
-  it('treeifies TOC without filtering', () => {
-    expect(
-      renderHook(() => useTreeifiedTOC(mockTOC)).result.current,
-    ).toMatchSnapshot();
-  });
-});
 
 describe('useFilteredAndTreeifiedTOC', () => {
   it('filters a toc with all heading levels', () => {

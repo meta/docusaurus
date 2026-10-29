@@ -111,6 +111,18 @@ describe('directives remark plugin - client compiler', () => {
           To ignore this error, use the \`siteConfig.markdown.hooks.onUnusedMarkdownDirectives\` option.]
         `);
       });
+      it('if file contains removed legacy admonition aliases, with hints', async () => {
+        await expect(
+          processFixture('legacyAdmonitionAliases', fileData, options),
+        ).rejects.toThrowErrorMatchingInlineSnapshot(`
+          [Error: Docusaurus found 3 unused Markdown directives in file "packages/docusaurus-mdx-loader/src/remark/unusedDirectives/__tests__/__fixtures__/legacyAdmonitionAliases.md"
+          - :::secondary (7:1) - the :::secondary admonition has been removed in Docusaurus v4, use :::note instead
+          - :::success (13:1) - the :::success admonition has been removed in Docusaurus v4, use :::tip instead
+          - :::important (19:1) - the :::important admonition has been removed in Docusaurus v4, use :::info instead
+          Your content might render in an unexpected way. Visit https://github.com/facebook/docusaurus/pull/9394 to find out why and how to fix it.
+          To ignore this error, use the \`siteConfig.markdown.hooks.onUnusedMarkdownDirectives\` option.]
+        `);
+      });
     });
 
     describe('function form', () => {

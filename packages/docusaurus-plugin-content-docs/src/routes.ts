@@ -183,7 +183,7 @@ type BuildVersionRoutesParam = Omit<BuildAllRoutesParam, 'versions'> & {
 async function buildVersionRoutes(
   param: BuildVersionRoutesParam,
 ): Promise<RouteConfig> {
-  const {version, options} = param;
+  const {version, options, actions, aliasedSource} = param;
 
   async function buildVersionSubRoutes() {
     const [sidebarRoute, tagsRoutes] = await Promise.all([
@@ -194,16 +194,28 @@ async function buildVersionRoutes(
     return [sidebarRoute, ...tagsRoutes];
   }
 
+  // The version metadata is provided to the whole version subtree through the
+  // route context, see useDocsVersion()
+  async function createVersionMetadataModule(): Promise<string> {
+    const modulePath = await actions.createData(
+      `version-${docuHash(version.versionName)}.json`,
+      toVersionMetadataProp(options.id, version),
+    );
+    return aliasedSource(modulePath);
+  }
+
   async function doBuildVersionRoutes(): Promise<RouteConfig> {
+    const [versionMetadataModulePath, subRoutes] = await Promise.all([
+      createVersionMetadataModule(),
+      buildVersionSubRoutes(),
+    ]);
     return {
       path: version.path,
       exact: false,
       component: options.docVersionRootComponent,
-      routes: await buildVersionSubRoutes(),
-      props: {
-        // TODO Docusaurus v4 breaking change?
-        //  expose version metadata as route context instead of props
-        version: toVersionMetadataProp(options.id, version),
+      routes: subRoutes,
+      context: {
+        docsVersion: versionMetadataModulePath,
       },
       priority: version.routePriority,
     };

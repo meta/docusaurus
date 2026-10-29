@@ -9,11 +9,9 @@ import type {ReactNode} from 'react';
 import {
   useDocById,
   findFirstSidebarItemLink,
-} from '@docusaurus/plugin-content-docs/client';
-import {
-  extractLeadingEmoji,
   useDocCardDescriptionCategoryItemsPlural,
-} from '@docusaurus/theme-common/internal';
+} from '@docusaurus/plugin-content-docs/client';
+import {extractLeadingEmoji} from '@docusaurus/theme-common/internal';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import Layout from '@theme/DocCard/Layout';
 

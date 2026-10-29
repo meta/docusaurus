@@ -18,32 +18,32 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "^7.29.7",
+    "@babel/core": "catalog:",
     "@docusaurus/babel": "workspace:*",
     "@docusaurus/logger": "workspace:*",
     "@docusaurus/types": "workspace:*",
-    "@rspack/core": "^2.2.3",
-    "@rspack/dev-server": "^2.2.1",
-    "@swc/html": "^1.16.2",
-    "babel-loader": "^10.1.1",
-    "browserslist": "^4.29.0",
-    "css-loader": "^7.1.5",
-    "lightningcss": "^1.33.0",
-    "mini-css-extract-plugin": "^2.10.2",
-    "minimizer-webpack-plugin": "^5.13.0",
-    "postcss": "^8.5.28",
-    "postcss-loader": "^8.2.1",
-    "postcss-preset-env": "^11.5.2",
-    "semver": "^7.8.5",
-    "tslib": "^2.8.1",
-    "webpack": "^5.111.0",
-    "webpackbar": "^7.0.0"
+    "@rspack/core": "catalog:",
+    "@rspack/dev-server": "catalog:",
+    "@swc/html": "catalog:",
+    "babel-loader": "catalog:",
+    "browserslist": "catalog:",
+    "css-loader": "catalog:",
+    "lightningcss": "catalog:",
+    "mini-css-extract-plugin": "catalog:",
+    "minimizer-webpack-plugin": "catalog:",
+    "postcss": "catalog:",
+    "postcss-loader": "catalog:",
+    "postcss-preset-env": "catalog:",
+    "semver": "catalog:",
+    "tslib": "catalog:",
+    "webpack": "catalog:",
+    "webpackbar": "catalog:"
   },
   "devDependencies": {
-    "@swc/core": "^1.16.2"
+    "@swc/core": "catalog:"
   },
   "peerDependencies": {
-    "@swc/core": "^1.16.2"
+    "@swc/core": "catalog:"
   },
   "peerDependenciesMeta": {
     "@swc/core": {

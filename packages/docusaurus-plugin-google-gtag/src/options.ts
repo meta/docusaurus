@@ -13,20 +13,10 @@ import type {
 
 export type PluginOptions = {
   trackingID: [string, ...string[]];
-  // TODO deprecate anonymizeIP after June 2023
-  // "In Google Analytics 4, IP masking is not necessary
-  // since IP addresses are not logged or stored."
-  // https://support.google.com/analytics/answer/2763052?hl=en
-  anonymizeIP: boolean;
 };
 
 export type Options = {
   trackingID: string | [string, ...string[]];
-  anonymizeIP?: boolean;
-};
-
-export const DEFAULT_OPTIONS: Partial<PluginOptions> = {
-  anonymizeIP: false,
 };
 
 const pluginOptionsSchema = Joi.object<PluginOptions>({
@@ -39,7 +29,6 @@ const pluginOptionsSchema = Joi.object<PluginOptions>({
       Joi.array().items(Joi.string().required()),
     )
     .required(),
-  anonymizeIP: Joi.boolean().default(DEFAULT_OPTIONS.anonymizeIP),
 });
 
 export function validateOptions({

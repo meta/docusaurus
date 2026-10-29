@@ -46,7 +46,6 @@ Accepted fields:
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `trackingID` | <code>string \| string[]</code> | **Required** | The tracking ID of your gtag service. It is possible to provide multiple ids. |
-| `anonymizeIP` | `boolean` | `false` | Whether the IP should be anonymized when sending requests. |
 
 ```mdx-code-block
 </APITable>
@@ -68,6 +67,5 @@ Most Docusaurus users configure this plugin through the preset options.
 
 const config = {
   trackingID: 'G-999X9XX9XX',
-  anonymizeIP: true,
 };
 ```

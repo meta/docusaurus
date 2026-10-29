@@ -46,7 +46,6 @@ export default function Layout(props: Props): ReactNode {
         id={SkipToContentFallbackId}
         className={clsx(
           ThemeClassNames.layout.main.container,
-          ThemeClassNames.wrapper.main,
           styles.mainWrapper,
           wrapperClassName,
         )}>

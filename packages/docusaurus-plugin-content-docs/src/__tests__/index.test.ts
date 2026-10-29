@@ -27,6 +27,7 @@ import {DefaultSidebarItemsGenerator} from '../sidebars/generator';
 import {DisabledSidebars} from '../sidebars';
 import cliDocs from '../cli';
 import {validateOptions} from '../options';
+import {toFullVersion} from '../versions/version';
 
 import type {RouteConfig, Validate, Plugin} from '@docusaurus/types';
 import type {
@@ -40,11 +41,12 @@ import type {
   NormalizedSidebar,
 } from '../sidebars/types';
 
+// Returns the doc with its navigation, only computed in contentLoaded
 function findDocById(version: LoadedVersion | undefined, id: string) {
   if (!version) {
     throw new Error('Version not found');
   }
-  return version.docs.find((item) => item.id === id);
+  return toFullVersion(version).docs.find((item) => item.id === id);
 }
 function getDocById(version: LoadedVersion | undefined, id: string) {
   if (!version) {
@@ -310,7 +312,7 @@ describe('simple website', () => {
   });
 
   it('configureWebpack', async () => {
-    const {plugin} = await loadSite();
+    const {siteDir, plugin} = await loadSite();
 
     const content = await plugin.loadContent?.();
 
@@ -327,6 +329,7 @@ describe('simple website', () => {
       },
       isServer: false,
       configureWebpackUtils: await createConfigureWebpackUtils({
+        siteDir,
         siteConfig: {},
       }),
       content,

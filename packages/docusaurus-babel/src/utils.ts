@@ -22,27 +22,28 @@ export async function getCustomBabelConfigFilePath(
     : undefined;
 }
 
+/**
+ * Returns the options to pass to Babel.
+ * @param configFile the site's custom Babel config file, if any. Without it,
+ * the Docusaurus Babel preset is used.
+ */
 export function getBabelOptions({
   isServer,
-  babelOptions,
+  configFile,
 }: {
   isServer?: boolean;
-  // TODO Docusaurus v4 fix this
-  //  weird to have getBabelOptions take a babelOptions param
-  babelOptions?: TransformOptions | string;
+  configFile?: string;
 } = {}): TransformOptions {
   const caller = {name: isServer ? 'server' : 'client'};
-  if (typeof babelOptions === 'string') {
+  if (configFile) {
     return {
       babelrc: false,
-      configFile: babelOptions,
+      configFile,
       caller,
     };
   }
   return {
-    ...(babelOptions ?? {
-      presets: [require.resolve('@docusaurus/babel/preset')],
-    }),
+    presets: [require.resolve('@docusaurus/babel/preset')],
     babelrc: false,
     configFile: false,
     caller,

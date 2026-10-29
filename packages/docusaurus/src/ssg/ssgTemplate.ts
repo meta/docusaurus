@@ -12,22 +12,42 @@ import type {SSGParams} from './ssgParams';
 import type {AppRenderResult} from '../common';
 import type {Manifest} from 'react-loadable-ssr-addon-v5-slorber';
 
-// TODO Docusaurus v4 breaking change - this is historical server template data
-//  that does not look super clean nor typesafe
-//  Note: changing it is a breaking change because template is configurable
+/**
+ * The data that the `siteConfig.ssgTemplate` receives as the `it` variable.
+ * Changing it is a breaking change because the template is configurable.
+ * Attributes and tags are pre-rendered HTML strings.
+ */
 type SSGTemplateData = {
-  appHtml: string;
-  baseUrl: string;
-  htmlAttributes: string;
-  bodyAttributes: string;
-  headTags: string;
-  preBodyTags: string;
-  postBodyTags: string;
-  metaAttributes: string[];
-  scripts: string[];
-  stylesheets: string[];
-  noIndex: boolean;
+  /** The Docusaurus version */
   version: string;
+  /** The site base URL, or `./` with the hash router */
+  baseUrl: string;
+  html: {
+    /** The `<html>` attributes, set by the page with `<Head>` */
+    attributes: string;
+  };
+  head: {
+    /** The `<head>` tags set by the page with `<Head>` */
+    pageTags: string;
+    /** The `headTags` of the plugins `injectHtmlTags()` lifecycle */
+    pluginTags: string;
+  };
+  body: {
+    /** The `<body>` attributes, set by the page with `<Head>` */
+    attributes: string;
+    /** The `preBodyTags` of the plugins `injectHtmlTags()` lifecycle */
+    preTags: string;
+    /** The server-side rendered React app */
+    appHtml: string;
+    /** The `postBodyTags` of the plugins `injectHtmlTags()` lifecycle */
+    postTags: string;
+  };
+  assets: {
+    /** The URLs of the CSS files the page needs */
+    stylesheets: string[];
+    /** The URLs of the JS files the page needs */
+    scripts: string[];
+  };
 };
 
 export type SSGTemplateCompiled = (data: SSGTemplateData) => string;
@@ -42,24 +62,25 @@ export async function compileSSGTemplate(
 }
 
 /**
- * Given a list of modules that were SSR an d
- * @param modules
- * @param manifest
+ * Returns the URLs of the JS/CSS assets required to render a page, based on
+ * the modules that were server-side rendered and the client manifest.
  */
-function getScriptsAndStylesheets({
+function getAssets({
+  baseUrl,
   modules,
   manifest,
 }: {
+  baseUrl: string;
   modules: string[];
   manifest: Manifest;
-}) {
-  // Get all required assets for this particular page
-  // based on client manifest information.
-  const modulesToBeLoaded = [...manifest.entrypoints, ...Array.from(modules)];
+}): SSGTemplateData['assets'] {
+  const modulesToBeLoaded = [...manifest.entrypoints, ...modules];
   const bundles = getBundles(manifest, modulesToBeLoaded);
-  const stylesheets = (bundles.css ?? []).map((b) => b.file);
-  const scripts = (bundles.js ?? []).map((b) => b.file);
-  return {scripts, stylesheets};
+  const toUrl = (bundle: {file: string}) => `${baseUrl}${bundle.file}`;
+  return {
+    stylesheets: (bundles.css ?? []).map(toUrl),
+    scripts: (bundles.js ?? []).map(toUrl),
+  };
 }
 
 export function renderSSGTemplate({
@@ -77,38 +98,30 @@ export function renderSSGTemplate({
     preBodyTags,
     postBodyTags,
     manifest,
-    noIndex,
     DOCUSAURUS_VERSION,
   } = params;
   const {
     html: appHtml,
     collectedData: {modules, metadata},
   } = result;
-
-  const {scripts, stylesheets} = getScriptsAndStylesheets({manifest, modules});
-
-  const {htmlAttributes, bodyAttributes} = metadata.internal;
-  const metaStrings = [
-    metadata.internal.title,
-    metadata.internal.meta,
-    metadata.internal.link,
-    metadata.internal.script,
-  ];
-  const metaAttributes = metaStrings.filter(Boolean);
+  const {htmlAttributes, bodyAttributes, title, meta, link, script} =
+    metadata.internal;
 
   const data: SSGTemplateData = {
-    appHtml,
-    baseUrl,
-    htmlAttributes,
-    bodyAttributes,
-    headTags,
-    preBodyTags,
-    postBodyTags,
-    metaAttributes,
-    scripts,
-    stylesheets,
-    noIndex,
     version: DOCUSAURUS_VERSION,
+    baseUrl,
+    html: {attributes: htmlAttributes},
+    head: {
+      pageTags: [title, meta, link, script].join(''),
+      pluginTags: headTags,
+    },
+    body: {
+      attributes: bodyAttributes,
+      preTags: preBodyTags,
+      appHtml,
+      postTags: postBodyTags,
+    },
+    assets: getAssets({baseUrl, manifest, modules}),
   };
 
   return ssgTemplate(data);
@@ -120,7 +133,6 @@ export async function renderHashRouterTemplate({
   params: SSGParams;
 }): Promise<string> {
   const {
-    // baseUrl,
     headTags,
     preBodyTags,
     postBodyTags,
@@ -133,24 +145,21 @@ export async function renderHashRouterTemplate({
     compileSSGTemplate(ssgTemplateContent),
   );
 
-  const {scripts, stylesheets} = getScriptsAndStylesheets({
-    manifest,
-    modules: [],
-  });
+  // The hash router site can be opened from the file system: use relative URLs
+  const baseUrl = './';
 
   const data: SSGTemplateData = {
-    appHtml: '',
-    baseUrl: './',
-    htmlAttributes: '',
-    bodyAttributes: '',
-    headTags,
-    preBodyTags,
-    postBodyTags,
-    metaAttributes: [],
-    scripts,
-    stylesheets,
-    noIndex: false,
     version: DOCUSAURUS_VERSION,
+    baseUrl,
+    html: {attributes: ''},
+    head: {pageTags: '', pluginTags: headTags},
+    body: {
+      attributes: '',
+      preTags: preBodyTags,
+      appHtml: '',
+      postTags: postBodyTags,
+    },
+    assets: getAssets({baseUrl, manifest, modules: []}),
   };
 
   return ssgTemplate(data);

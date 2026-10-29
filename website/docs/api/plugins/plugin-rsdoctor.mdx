@@ -7,7 +7,9 @@ slug: /api/plugins/@docusaurus/plugin-rsdoctor
 
 import APITable from '@site/src/components/APITable';
 
-A [Rsdoctor](https://rsdoctor.dev/) plugin can help you troubleshoot the bundling phase of your Docusaurus site, supporting both Webpack and Rspack.
+A [Rsdoctor](https://rsdoctor.rs/) plugin can help you troubleshoot the bundling phase of your Docusaurus site, supporting both Rspack and Webpack.
+
+Rspack sites use Rsdoctor v2. Rsdoctor v2 doesn't support Webpack, so Webpack sites use [Rsdoctor v1](https://v1.rsdoctor.rs/).
 
 :::tip
 
@@ -31,7 +33,7 @@ Accepted fields:
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `rsdoctorOptions` | `object` | `{}` | The [Rsdoctor bundler plugin options](https://rsdoctor.dev/config/options/options), forwarded as is |
+| `rsdoctorOptions` | `object` | `{}` | The Rsdoctor bundler plugin options for [Rspack](https://rsdoctor.rs/config/options/options) or [Webpack](https://v1.rsdoctor.rs/config/options/options), forwarded as is |
 
 ```mdx-code-block
 </APITable>
@@ -48,7 +50,7 @@ export default {
       'rsdoctor',
       {
         rsdoctorOptions: {
-          mode: 'lite',
+          features: ['loader', 'plugins'],
         },
       },
     ],

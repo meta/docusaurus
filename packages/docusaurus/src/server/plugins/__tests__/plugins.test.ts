@@ -278,6 +278,56 @@ describe('loadPlugins', () => {
     `);
   });
 
+  it('plugin with nested route context', async () => {
+    const {routes} = await testPlugin(() => ({
+      name: 'plugin-name',
+      contentLoaded({actions}) {
+        actions.addRoute({
+          path: '/parent',
+          component: 'Comp',
+          context: {parentContext: 'parentContextPath'},
+          routes: [
+            {
+              path: '/parent/child',
+              component: 'Comp',
+              context: {childContext: 'childContextPath'},
+            },
+          ],
+        });
+      },
+    }));
+
+    expect(routes).toMatchInlineSnapshot(`
+      [
+        {
+          "component": "Comp",
+          "context": {
+            "data": {
+              "parentContext": "parentContextPath",
+            },
+            "plugin": "@generated/plugin-name/default/__plugin.json",
+          },
+          "path": "/parent/",
+          "plugin": {
+            "id": "default",
+            "name": "plugin-name",
+          },
+          "routes": [
+            {
+              "component": "Comp",
+              "context": {
+                "data": {
+                  "childContext": "childContextPath",
+                },
+              },
+              "path": "/parent/child/",
+            },
+          ],
+        },
+      ]
+    `);
+  });
+
   it('plugin with This binding', async () => {
     const {plugin, routes, globalData} = await testPlugin(
       () =>

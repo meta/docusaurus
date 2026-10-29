@@ -126,9 +126,7 @@ This behavior can have SEO impacts and create relative link issues.
   }
 
   const organizationName =
-    process.env.ORGANIZATION_NAME ??
-    process.env.CIRCLE_PROJECT_USERNAME ??
-    siteConfig.organizationName;
+    process.env.ORGANIZATION_NAME ?? siteConfig.organizationName;
   if (!organizationName) {
     throw new Error(
       `Missing project organization name. Did you forget to define "organizationName" in ${siteConfigPath}? You may also export it via the ORGANIZATION_NAME environment variable.`,
@@ -136,24 +134,13 @@ This behavior can have SEO impacts and create relative link issues.
   }
   logger.info`organizationName: name=${organizationName}`;
 
-  const projectName =
-    process.env.PROJECT_NAME ??
-    process.env.CIRCLE_PROJECT_REPONAME ??
-    siteConfig.projectName;
+  const projectName = process.env.PROJECT_NAME ?? siteConfig.projectName;
   if (!projectName) {
     throw new Error(
       `Missing project name. Did you forget to define "projectName" in ${siteConfigPath}? You may also export it via the PROJECT_NAME environment variable.`,
     );
   }
   logger.info`projectName: name=${projectName}`;
-
-  // We never deploy on pull request.
-  const isPullRequest =
-    process.env.CI_PULL_REQUEST ?? process.env.CIRCLE_PULL_REQUEST;
-  if (isPullRequest) {
-    logger.info('Skipping deploy on a pull request.');
-    process.exit(0);
-  }
 
   // github.io indicates organization repos that deploy via default branch. All
   // others use gh-pages (either case can be configured actually, but we can

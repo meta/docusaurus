@@ -144,10 +144,6 @@ declare module '@docusaurus/plugin-content-blog' {
    */
   export type BlogPostFrontMatter = {
     /**
-     * @deprecated Use `slug` instead.
-     */
-    id?: string;
-    /**
      * Will override the default title collected from h1 heading.
      * @see {@link BlogPostMetadata.title}
      */

@@ -112,10 +112,7 @@ describe('validation schemas', () => {
     testFail(3);
     testFail([]);
     testFail({unknownAttribute: 'val'});
-    testFail({tag: ''});
     testFail({keywords: ['custom-keyword'], extendDefaults: 42});
-    testFail({tag: '+++'});
-    testFail({tag: '+++', keywords: ['info', 'tip']});
 
     // Legacy types
     testFail({

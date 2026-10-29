@@ -38,6 +38,7 @@ const uselessBabelConfigMessages: SiteMessageCreator = async ({site}) => {
   return [];
 };
 
+// TODO Docusaurus v5: remove this deprecation warning with Webpack support
 const webpackDeprecationMessages: SiteMessageCreator = async ({site}) => {
   if (site.props.siteConfig.webpack) {
     return [

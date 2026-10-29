@@ -38,7 +38,6 @@ const LegacyAuthorFrontMatterSchema = Joi.any().forbidden().messages({
 });
 
 const BlogFrontMatterSchema = Joi.object<BlogPostFrontMatter>({
-  id: Joi.string(),
   title: Joi.string().allow(''),
   title_meta: Joi.string().allow(''),
   sidebar_label: Joi.string().allow(''),
@@ -62,6 +61,7 @@ const BlogFrontMatterSchema = Joi.object<BlogPostFrontMatter>({
       'alternatives.match': FrontMatterAuthorErrorMessage,
     }),
   // Legacy single-author front matter, removed in Docusaurus v4
+  // TODO Docusaurus v5: remove these migration errors
   // @ts-expect-error: forbidden
   author: LegacyAuthorFrontMatterSchema,
   author_title: LegacyAuthorFrontMatterSchema,

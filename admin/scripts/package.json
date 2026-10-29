@@ -12,11 +12,12 @@
   "dependencies": {
     "@docusaurus/fs": "workspace:*",
     "@docusaurus/logger": "workspace:*",
-    "commander": "^15.0.0",
-    "execa": "^10.0.1",
-    "image-size": "^2.0.4",
-    "lodash": "^4.18.1",
-    "oxfmt": "^0.70.0",
-    "sharp": "^0.35.1"
+    "commander": "catalog:",
+    "execa": "catalog:",
+    "image-size": "catalog:",
+    "js-yaml": "catalog:",
+    "lodash": "catalog:",
+    "oxfmt": "catalog:",
+    "sharp": "catalog:"
   }
 }

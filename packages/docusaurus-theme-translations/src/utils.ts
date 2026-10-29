@@ -32,6 +32,14 @@ export async function getThemes(): Promise<{name: string; src: string[]}[]> {
       src: [
         await getPackageCodePath('docusaurus-theme-classic'),
         await getPackageCodePath('docusaurus-theme-common'),
+        path.join(
+          await getPackageCodePath('docusaurus-plugin-content-docs'),
+          'client',
+        ),
+        path.join(
+          await getPackageCodePath('docusaurus-plugin-content-blog'),
+          'client',
+        ),
       ],
     },
     {

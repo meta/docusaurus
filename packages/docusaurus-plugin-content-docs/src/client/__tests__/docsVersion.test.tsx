@@ -6,8 +6,10 @@
  */
 // @vitest-environment jsdom
 import {describe, expect, it} from 'vitest';
+import type {ReactNode} from 'react';
 import {renderHook} from '@testing-library/react';
-import {useDocsVersion, DocsVersionProvider} from '../docsVersion';
+import {RouteContextProvider} from '@docusaurus/core/src/client/routeContext';
+import {useDocsVersion} from '../docsVersion';
 import type {PropVersionMetadata} from '@docusaurus/plugin-content-docs';
 
 function testVersion(data?: Partial<PropVersionMetadata>): PropVersionMetadata {
@@ -26,20 +28,45 @@ function testVersion(data?: Partial<PropVersionMetadata>): PropVersionMetadata {
   };
 }
 
+function TestRouteContextProvider({
+  children,
+  version,
+}: {
+  children: ReactNode;
+  version?: PropVersionMetadata;
+}) {
+  return (
+    <RouteContextProvider
+      value={{
+        plugin: {id: 'default', name: 'docusaurus-plugin-content-docs'},
+        data: {docsVersion: version},
+      }}>
+      {children}
+    </RouteContextProvider>
+  );
+}
+
 describe('useDocsVersion', () => {
-  it('throws if context provider is missing', () => {
+  it('throws if version metadata is missing', () => {
     expect(
-      () => renderHook(() => useDocsVersion()).result.current,
+      () =>
+        renderHook(() => useDocsVersion(), {
+          wrapper: ({children}) => (
+            <TestRouteContextProvider>{children}</TestRouteContextProvider>
+          ),
+        }).result.current,
     ).toThrowErrorMatchingInlineSnapshot(
-      `[ReactContextError: Hook useDocsVersion is called outside the <DocsVersionProvider>. ]`,
+      `[Error: useDocsVersion() can't be called on the current route because the docs version metadata could not be found in route context]`,
     );
   });
 
-  it('reads value from context provider', () => {
+  it('reads value from route context', () => {
     const version = testVersion();
     const {result} = renderHook(() => useDocsVersion(), {
       wrapper: ({children}) => (
-        <DocsVersionProvider version={version}>{children}</DocsVersionProvider>
+        <TestRouteContextProvider version={version}>
+          {children}
+        </TestRouteContextProvider>
       ),
     });
     expect(result.current).toBe(version);

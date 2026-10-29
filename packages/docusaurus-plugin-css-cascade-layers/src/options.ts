@@ -80,7 +80,7 @@ const pluginOptionsSchema = Joi.object<PluginOptions>({
       }),
       Joi.function().arity(1).required(),
     )
-    .default(DEFAULT_LAYERS),
+    .default(DEFAULT_OPTIONS.layers),
 });
 
 export function validateOptions({
