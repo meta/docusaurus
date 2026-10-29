@@ -246,3 +246,20 @@ html[data-navbar='false'] {
 html[data-red-border] div#__docusaurus {
   border: red solid thick;
 }
+
+/* Make each card fill the available column height */
+.playground-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Let the card body expand to fill available space */
+.playground-card .card__body {
+  flex: 1;
+}
+
+/* Keep the footer at the bottom of the card */
+.playground-card .card__footer {
+  margin-top: auto;
+}
