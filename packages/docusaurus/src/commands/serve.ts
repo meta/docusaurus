@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
 import logger from '@docusaurus/logger';
@@ -24,6 +25,40 @@ function redirect(res: http.ServerResponse, location: string) {
     Location: location,
   });
   res.end();
+}
+
+/**
+ * Checks whether a requested URL corresponds to a static asset file rather
+ * than a page route, avoiding spurious trailing slash redirects on assets.
+ */
+export function isAssetUrl(
+  url: string,
+  options?: {outDir?: string; baseUrl?: string},
+): boolean {
+  const [pathname] = url.split(/[#?]/) as [string, ...string[]];
+  if (pathname.endsWith('/')) {
+    return false;
+  }
+  if (options?.outDir && options?.baseUrl) {
+    try {
+      const relativePath = decodeURIComponent(
+        pathname.slice(options.baseUrl.length),
+      );
+      const filePath = path.join(options.outDir, relativePath);
+      const stat = fs.statSync(filePath);
+      if (stat.isFile()) {
+        return true;
+      }
+      if (stat.isDirectory()) {
+        return false;
+      }
+    } catch {
+      // File not found on disk: fall back to pathname extension check
+    }
+  }
+  // Matches any file extension with at least one letter (e.g. .js, .css, .woff2, .webmanifest)
+  // while avoiding purely numeric version dots like /v1.0
+  return /\.[a-z\d]*[a-z][a-z\d]*$/i.test(pathname);
 }
 
 export type ServeCLIOptions = HostPortOptions &
@@ -75,9 +110,7 @@ export async function serve(
     // server-handler is annoying and won't include /baseUrl/ in redirects
     // See https://github.com/facebook/docusaurus/issues/10078#issuecomment-2084932934
     if (baseUrl !== '/') {
-      // Not super robust, but should be good enough for our use case
-      // See https://github.com/facebook/docusaurus/pull/10090
-      const looksLikeAsset = !!req.url.match(/\.[a-z\d]{1,4}$/i);
+      const looksLikeAsset = isAssetUrl(req.url, {outDir, baseUrl});
       if (!looksLikeAsset) {
         const normalizedUrl = applyTrailingSlash(req.url, {
           trailingSlash,
