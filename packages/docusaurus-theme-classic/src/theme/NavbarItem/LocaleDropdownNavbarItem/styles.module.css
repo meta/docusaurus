@@ -9,3 +9,8 @@
   vertical-align: text-bottom;
   margin-right: 5px;
 }
+
+.localeDisabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
