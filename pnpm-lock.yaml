@@ -318,8 +318,8 @@ catalogs:
       specifier: ^4.18.1
       version: 4.18.1
     mdast-util-directive:
-      specifier: 3.1.0
-      version: 3.1.0
+      specifier: 3.1.1
+      version: 3.1.1
     mdast-util-mdx:
       specifier: ^3.0.0
       version: 3.0.0
@@ -1531,7 +1531,7 @@ importers:
         version: 4.18.1
       mdast-util-directive:
         specifier: 'catalog:'
-        version: 3.1.0(supports-color@10.2.2)
+        version: 3.1.1(supports-color@10.2.2)
       rehype-stringify:
         specifier: catalog:dev
         version: 10.0.1
@@ -2640,7 +2640,7 @@ importers:
         version: 18.2.8
       mdast-util-directive:
         specifier: 'catalog:'
-        version: 3.1.0(supports-color@10.2.2)
+        version: 3.1.1(supports-color@10.2.2)
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -10477,8 +10477,8 @@ packages:
   mathml-tag-names@4.0.0:
     resolution: {integrity: sha512-aa6AU2Pcx0VP/XWnh8IGL0SYSgQHDT6Ucror2j2mXeFAlN3ahaNs8EZtG1YiticMkSLj3Gt6VPFfZogt7G5iFQ==}
 
-  mdast-util-directive@3.1.0:
-    resolution: {integrity: sha512-I3fNFt+DHmpWCYAT7quoM6lHf9wuqtI+oCOfvILnoicNIqjh5E3dEJWiXuYME2gNe8vl1iMQwyUHa7bgFmak6Q==}
+  mdast-util-directive@3.1.1:
+    resolution: {integrity: sha512-Gqpa3MHorXYEZ0VfbroyvBlVKUfz371V6mIERqOYMcb0W1D3LwmFq1ZW4O2TDrbn+4ZmGLwMWeFRJgYZ+bc5fQ==}
 
   mdast-util-find-and-replace@3.0.2:
     resolution: {integrity: sha512-Tmd1Vg/m3Xz43afeNxDIhWRtFZgM2VLyaf4vSTYwudTyeuTneoL3qtWMA5jeLyz/O1vDJmmV4QuScFCA2tBPwg==}
@@ -22154,7 +22154,7 @@ snapshots:
 
   mathml-tag-names@4.0.0: {}
 
-  mdast-util-directive@3.1.0(supports-color@10.2.2):
+  mdast-util-directive@3.1.1(supports-color@10.2.2):
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3
@@ -22162,6 +22162,7 @@ snapshots:
       devlop: 1.1.0
       mdast-util-from-markdown: 2.0.3(supports-color@10.2.2)
       mdast-util-to-markdown: 2.1.2
+      micromark-util-character: 2.1.1
       parse-entities: 4.0.2
       stringify-entities: 4.0.4
       unist-util-visit-parents: 6.0.2
@@ -24477,7 +24478,7 @@ snapshots:
   remark-directive@4.0.0(supports-color@10.2.2):
     dependencies:
       '@types/mdast': 4.0.4
-      mdast-util-directive: 3.1.0(supports-color@10.2.2)
+      mdast-util-directive: 3.1.1(supports-color@10.2.2)
       micromark-extension-directive: 4.0.0
       unified: 11.0.5
     transitivePeerDependencies:
