@@ -33,11 +33,11 @@ Exceptions, keeping explicit versions:
 Two checks enforce it:
 
 - `pnpm lint:syncpack`: dependencies must use a catalog.
-- `pnpm lint:catalogs` (`admin/scripts/lintCatalogs.js`): catalog entries are used and in the right catalog, templates and overrides match the catalogs, and dependency group members use the same version.
+- `pnpm lint:catalogs` (`admin/scripts/lintCatalogs.js`): catalog entries are used and in the right catalog, templates and overrides match the catalogs, and dependency group members use matching versions.
 
 ## Dependency groups
 
-Some packages must always use the same version. They are declared as `groups` in `.github/dependabot.yml`:
+Some packages must always be upgraded together. They are declared as `groups` in `.github/dependabot.yml`:
 
 - Dependabot upgrades them atomically in a single PR, instead of opening broken intermediate PRs.
 - `pnpm lint:catalogs` fails if their catalog versions differ (only their major versions for the `babel` group, see `admin/scripts/lintCatalogs.js`).
