@@ -6,7 +6,7 @@
  */
 
 import {describe, expect, it, vi} from 'vitest';
-import normalizeLocation from '../normalizeLocation';
+import normalizeLocation, {normalizePathname} from '../normalizeLocation';
 import type {Location} from 'history';
 
 vi.mock('@generated/routes', () => import('./__mocks__/@generated/routes'));
@@ -109,5 +109,19 @@ describe('normalizeLocation', () => {
     ).toEqual({
       pathname: '/',
     });
+  });
+});
+
+describe('normalizePathname', () => {
+  it('normalizes pathnames like normalizeLocation', () => {
+    expect(normalizePathname('/index.html')).toBe('/');
+    expect(normalizePathname('/docs/introduction/index.html')).toBe(
+      '/docs/introduction',
+    );
+    expect(normalizePathname('/docs/installation.html')).toBe(
+      '/docs/installation',
+    );
+    expect(normalizePathname('/page.html')).toBe('/page.html');
+    expect(normalizePathname('/docs/introduction')).toBe('/docs/introduction');
   });
 });
