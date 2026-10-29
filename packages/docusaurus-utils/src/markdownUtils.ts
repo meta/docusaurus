@@ -251,8 +251,6 @@ export function parseFileContentFrontMatter(fileContent: string): {
   /** The remaining content, trimmed. */
   content: string;
 } {
-  // TODO Docusaurus v4: replace gray-matter by a better lib
-  // gray-matter is unmaintained, not flexible, and the code doesn't look good
   const {data, content} = matter(fileContent);
 
   // gray-matter has an undocumented front matter caching behavior
