@@ -962,13 +962,13 @@ importers:
     dependencies:
       '@mdx-js/react':
         specifier: 1.0.1
-        version: 1.0.1(react@16.14.0)
+        version: 1.0.1(react@19.3.0)
       react:
-        specifier: 16.14.0
-        version: 16.14.0
+        specifier: 19.3.0
+        version: 19.3.0
       react-dom:
-        specifier: 16.14.0
-        version: 16.14.0(react@16.14.0)
+        specifier: 19.3.0
+        version: 19.3.0(react@19.3.0)
 
   argos:
     dependencies:
@@ -11939,11 +11939,6 @@ packages:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
 
-  react-dom@16.14.0:
-    resolution: {integrity: sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==}
-    peerDependencies:
-      react: ^16.14.0
-
   react-dom@19.3.0:
     resolution: {integrity: sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==}
     peerDependencies:
@@ -12004,10 +11999,6 @@ packages:
     resolution: {integrity: sha512-Ys9K+ppnJah3QuaRiLxk+jDWOR1MekYQrlytiXxC1RyfbdsZkS5pvKAzCCr031xHixZwpnsYNT5xysdFHQaYsA==}
     peerDependencies:
       react: '>=15'
-
-  react@16.14.0:
-    resolution: {integrity: sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==}
-    engines: {node: '>=0.10.0'}
 
   react@19.3.0:
     resolution: {integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==}
@@ -12295,9 +12286,6 @@ packages:
   saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
-
-  scheduler@0.19.1:
-    resolution: {integrity: sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==}
 
   scheduler@0.28.0:
     resolution: {integrity: sha512-juorfCmIkIw8tT+p5BXSm6PJjQF/ycEYmKyzURCIt/RaZIhL+PulbQ9Yu2z1HdOJDdqDTlxA1+xKBmHXJsczAw==}
@@ -16349,9 +16337,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mdx-js/react@1.0.1(react@16.14.0)':
+  '@mdx-js/react@1.0.1(react@19.3.0)':
     dependencies:
-      react: 16.14.0
+      react: 19.3.0
 
   '@mdx-js/react@3.1.1(@types/react@19.3.0)(react@19.3.0)':
     dependencies:
@@ -24235,14 +24223,6 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
-  react-dom@16.14.0(react@16.14.0):
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      prop-types: 15.8.1
-      react: 16.14.0
-      scheduler: 0.19.1
-
   react-dom@19.3.0(react@19.3.0):
     dependencies:
       react: 19.3.0
@@ -24311,12 +24291,6 @@ snapshots:
       react-is: 16.13.1
       tiny-invariant: 1.3.3
       tiny-warning: 1.0.3
-
-  react@16.14.0:
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      prop-types: 15.8.1
 
   react@19.3.0: {}
 
@@ -24741,11 +24715,6 @@ snapshots:
   saxes@6.0.0:
     dependencies:
       xmlchars: 2.2.0
-
-  scheduler@0.19.1:
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
 
   scheduler@0.28.0: {}
 
