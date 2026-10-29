@@ -10,6 +10,7 @@ import fs from 'node:fs/promises';
 import {fromPartial} from '@total-typescript/shoehorn';
 import {
   truncate,
+  resolveTruncatedAnchorLinks,
   parseBlogFileName,
   parseFrontMatterDate,
   getBlogPostDate,
@@ -35,6 +36,52 @@ describe('truncate', () => {
       'aaa\nbbb\n ccc',
     );
     expect(truncate('', /<!-- truncate -->/)).toBe('');
+  });
+});
+
+describe('resolveTruncatedAnchorLinks', () => {
+  const permalink = '/blog/2021/01/01/my-post';
+
+  it('rebases a bare in-page anchor link to the post permalink', () => {
+    expect(
+      resolveTruncatedAnchorLinks('See [the section](#section).', permalink),
+    ).toBe('See [the section](/blog/2021/01/01/my-post#section).');
+  });
+
+  it('preserves a link title after the anchor', () => {
+    expect(
+      resolveTruncatedAnchorLinks('[x](#section "Title")', permalink),
+    ).toBe('[x](/blog/2021/01/01/my-post#section "Title")');
+  });
+
+  it('rebases an anchor inside angle brackets', () => {
+    expect(resolveTruncatedAnchorLinks('[x](<#section>)', permalink)).toBe(
+      '[x](</blog/2021/01/01/my-post#section>)',
+    );
+  });
+
+  it('rebases multiple anchor links', () => {
+    expect(
+      resolveTruncatedAnchorLinks('[a](#one) and [b](#two)', permalink),
+    ).toBe(
+      '[a](/blog/2021/01/01/my-post#one) and [b](/blog/2021/01/01/my-post#two)',
+    );
+  });
+
+  it('leaves non-anchor links untouched', () => {
+    // Relative and Markdown links are resolved elsewhere in the MDX pipeline.
+    expect(
+      resolveTruncatedAnchorLinks(
+        '[a](./other.md) [b](../x) [c](#)',
+        permalink,
+      ),
+    ).toBe('[a](./other.md) [b](../x) [c](#)');
+    expect(
+      resolveTruncatedAnchorLinks(
+        '[a](https://example.com#frag) [b](/blog/other#x)',
+        permalink,
+      ),
+    ).toBe('[a](https://example.com#frag) [b](/blog/other#x)');
   });
 });
 

@@ -170,6 +170,8 @@ export default async function pluginContentBlog(
     function createBlogMarkdownLoader(): RuleSetUseItem {
       const markdownLoaderOptions: BlogMarkdownLoaderOptions = {
         truncateMarker,
+        siteDir,
+        sourceToPermalink: contentHelpers.sourceToPermalink,
       };
       return {
         loader: path.resolve(__dirname, './markdownLoader.js'),

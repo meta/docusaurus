@@ -11,4 +11,8 @@ export type BlogContentPaths = ContentPaths;
 
 export type BlogMarkdownLoaderOptions = {
   truncateMarker: RegExp;
+  siteDir: string;
+  // Mutable map (see contentHelpers), keyed by aliased source path.
+  // Used to rebase in-page anchor links in truncated previews, see #9731.
+  sourceToPermalink: Map<string, string>;
 };
