@@ -1,40 +1,54 @@
 # Daily Investigation Report: Docusaurus Issue #12429
 
-**Date:** October 19, 2026  
-**Issue:** facebook/docusaurus #12429 — "Sidebar Navigation Font Style Randomly Changes While Scrolling"  
-**Branch:** `fix/issue-12429-sidebar-font-flicker`  
-**Current HEAD Commit:** `cd732b7c8` ("Modified the css styles")  
-**Investigator:** Kalvium Open Source Contributor
+**Date:** October 19, 2026 **Issue:** facebook/docusaurus #12429 — "Sidebar Navigation Font Style Randomly Changes While Scrolling" **Branch:** `fix/issue-12429-sidebar-font-flicker` **Branch HEAD Commit:** `1721c1dfe` ("Added my daily investigation") **Prior Commit:** `cd732b7c8` ("Modified the css styles") **Working Tree Status:** `styles.module.css` restored to match upstream `main`; `daily_investigation_report.md` updated with investigation history and current state. **Investigator:** Kalvium Open Source Contributor
 
 ---
 
 ## 1. Executive Summary
 
-Today's investigation continued work on Issue #12429. The reported defect describes transient left sidebar font-weight/style changes ("flickering") when scrolling upward on long documentation pages.
+This report documents the ongoing investigation of Docusaurus Issue #12429 in Sprint 3. The issue describes transient left sidebar font-weight/style changes ("flickering") when scrolling upward on long documentation pages.
 
-Key outcomes of today's work:
+Key updates from today's session:
 
-1. **GitHub Issue Status:** The issue remains `OPEN` with labels `bug` and `status: needs triage`. No maintainer has triaged or assigned the issue, and no PR has been linked. Six community comments have been posted, none providing reproducible steps beyond the original report.
-2. **Announcement Bar Behavior:** Investigated whether the announcement bar (`docusaurus.config.ts` and `DocSidebar/Desktop/Content/index.tsx`) triggers the re-render or layout shifts during scroll.
-3. **Reproduction Testing:** Executed extensive browser-based scroll cycles on long documentation pages (`/docs/api/themes/configuration`) under both states:
-   - **Announcement Bar Enabled:** 4 downward and upward scroll cycles.
-   - **Announcement Bar Disabled:** 4 downward and upward scroll cycles.
-   - **Result:** The font flicker bug could **not** be reproduced in either state. Text font-family, font-weight, and rendering remained completely stable throughout all scroll operations.
-4. **Hypothesis Evaluation (`will-change: width;`):** Evaluated commit `cd732b7c8`, which commented out `will-change: width;` in `packages/docusaurus-theme-classic/src/theme/DocRoot/Layout/Sidebar/styles.module.css`. Found that this change is **speculative** and lacks empirical evidence. Furthermore, the original report attached a mobile viewport screenshot (375x828) where desktop sidebar styles (`@media (width >= 997px)`) do not even apply.
-5. **Quality Checks:** Verified stylelint (`pnpm lint:style`) and Vitest test suites (`packages/docusaurus-theme-classic`); all 64 tests passed with 0 errors.
-6. **Contribution Path:** Per repository guidelines (`AGENTS.md` and `CONTRIBUTING.md`), we must not submit unverified or speculative fixes as PRs. The appropriate next step is documenting the investigation and seeking reporter/maintainer clarification regarding their environment (browser, OS, GPU rasterization, display scaling).
+1. **Withdrawal of Experimental CSS Change:** The experimental edit from commit `cd732b7c8` (which commented out `will-change: width;` in `packages/docusaurus-theme-classic/src/theme/DocRoot/Layout/Sidebar/styles.module.css`) has been cleanly restored in the working tree to match upstream `main`. Because the reported bug could not be reproduced and page scrolling does not animate width transitions, commenting out `will-change: width;` was an unverified hypothesis. Restoring it returns the working tree to a clean, non-speculative state without altering commit history.
+2. **Root Cause Status:** The root cause remains **unknown and unverified**. The original issue has not been reproduced under testing, and restoring the CSS does not claim to fix the underlying issue.
+3. **Repository Verification:** Branch `fix/issue-12429-sidebar-font-flicker` is tracking `origin/fix/issue-12429-sidebar-font-flicker`. No commits were amended, reset, rebased, or deleted.
+4. **Upstream Status:** GitHub Issue #12429 remains `OPEN` with labels `bug` and `status: needs triage`. Checked live: total comments remain at 6 with no new maintainer or reporter responses since October 9, 2026.
+5. **Quality & Validation:** Ran `git diff main -- packages/.../styles.module.css` (verified 0 differences against upstream `main`), `git diff --check`, and `pnpm lint:style` (passed with 0 errors).
+6. **Testing Limitations:** Testing was conducted exclusively via Chromium browser automation (desktop 1280x800 and responsive checks). No tests were run on Firefox (Gecko), Safari (WebKit), or physical mobile devices.
+7. **Next Steps:** Seek necessary environmental details from the reporter (browser, OS, device, display scaling, screen recording/reproduction site) via a structured, factual inquiry before taking any further code action.
 
 ---
 
-## 2. Git Status and Branch Inspection
+## 2. Git Status and Working Tree Verification
 
-- **Branch:** `fix/issue-12429-sidebar-font-flicker` (tracking `main`)
-- **Working Tree:** Clean (all prior changes committed in `cd732b7c8`)
-- **Recent Commits:**
-  - `cd732b7c8` - Modified the css styles (commented out `will-change: width;`)
-  - `baaa90693` - refactor(mdx-loader): replace stringify-object with estree-util-value-to-estree + astring (AI-assisted) (#12504)
-  - `e8acadcfb` - refactor(mdx-loader): wrap stringify-object in a local serializeJS() abstraction (AI-assisted) (#12503)
-- **Diff in `cd732b7c8`:**
+### Commands Executed & Output Summary
+
+- **`git status`**:
+  ```text
+  On branch fix/issue-12429-sidebar-font-flicker
+  Changes not staged for commit:
+    modified:   daily_investigation_report.md
+    modified:   packages/docusaurus-theme-classic/src/theme/DocRoot/Layout/Sidebar/styles.module.css
+  ```
+- **`git branch -vv`**:
+  ```text
+  * fix/issue-12429-sidebar-font-flicker 1721c1dfe Added my daily investigation
+    main                                 baaa90693 [origin/main] refactor(mdx-loader)...
+  ```
+- **`git log -n 5 --oneline`**:
+  ```text
+  1721c1dfe Added my daily investigation
+  cd732b7c8 Modified the css styles
+  baaa90693 refactor(mdx-loader): replace stringify-object with estree-util-value-to-estree + astring (AI-assisted) (#12504)
+  e8acadcfb refactor(mdx-loader): wrap stringify-object in a local serializeJS() abstraction (AI-assisted) (#12503)
+  e032336de docs: remove nonexistent postStart plugin lifecycle from plugin-methods docs (AI-assisted) (#12506)
+  ```
+- **`git diff main -- packages/docusaurus-theme-classic/src/theme/DocRoot/Layout/Sidebar/styles.module.css`**:
+  ```text
+  (Clean output: 0 differences compared to upstream main)
+  ```
+- **`git diff -- packages/docusaurus-theme-classic/src/theme/DocRoot/Layout/Sidebar/styles.module.css`**:
   ```diff
   diff --git a/packages/docusaurus-theme-classic/src/theme/DocRoot/Layout/Sidebar/styles.module.css b/packages/docusaurus-theme-classic/src/theme/DocRoot/Layout/Sidebar/styles.module.css
   --- a/packages/docusaurus-theme-classic/src/theme/DocRoot/Layout/Sidebar/styles.module.css
@@ -43,8 +57,8 @@ Key outcomes of today's work:
        width: var(--doc-sidebar-width);
        margin-top: calc(-1 * var(--ifm-navbar-height));
        border-right: 1px solid var(--ifm-toc-border-color);
-  -    will-change: width;
-  +    /* will-change: width; */
+  -    /* will-change: width; */
+  +    will-change: width;
        transition: width var(--ifm-transition-fast) ease;
        clip-path: inset(0);
      }
@@ -52,98 +66,40 @@ Key outcomes of today's work:
 
 ---
 
-## 3. Upstream Issue Review (facebook/docusaurus#12429)
+## 3. Rationale for Withdrawing the Experimental CSS Change
 
-- **Title:** Sidebar Navigation Font Style Randomly Changes While Scrolling
-- **Reporter:** `vinothkumarGanesan` (Opened Sept 9, 2026)
-- **Labels:** `bug`, `status: needs triage`
-- **State:** `OPEN` (Unassigned, 0 linked PRs)
-- **Reported Behavior:**
-  - Intermittent font-weight/style change in left sidebar items when scrolling upward from lower page sections.
-  - Returns to normal after a few seconds or further scrolling.
-  - No console errors.
-  - Attached screenshot has metadata dimensions of `375 x 828` px (mobile portrait viewport).
-- **Recent Community Interactions:**
-  - `AbarnaaSree` (Sept 12): Volunteered to investigate.
-  - `UdaySharmaGitHub` (Sept 20): Noted they could not reproduce the issue, suggested it might be environment/network-related.
-  - `fulluhere` (Sept 23): Referenced issue #12429.
-  - `Jashvanthan` (Sept 29): Asked maintainers if issue is open.
-  - `BhavishTrehan77` (Oct 7): Requested assignment.
-  - `Tejas-V-P` (Oct 9): Volunteered to investigate scroll-visibility/IntersectionObserver.
-- **Maintainer Feedback:** None to date. No triage confirmation that this is an upstream Docusaurus bug.
+1. **Lack of Empirical Reproduction:** Across 8 comprehensive upward and downward scroll cycles on extended documentation pages with the announcement bar enabled and disabled, the sidebar font remained completely stable.
+2. **Irrelevance of `width` During Scroll:** In `styles.module.css`, `will-change: width;` exists inside `@media (width >= 997px)` to assist hardware layer promotion for the sidebar collapse/expand animation. Page scrolling does not change or animate sidebar width.
+3. **Viewport Conflict:** The reporter's attached screenshot had dimensions of 375x828 px (mobile viewport), where `.docSidebarContainer` has `display: none;` and is not rendered.
+4. **Adherence to Contribution Guidelines:** `AGENTS.md` and `CONTRIBUTING.md` forbid proposing unverified or speculative modifications. Restoring `will-change: width;` in the working tree ensures the codebase is not modified based on guesswork while the issue remains under investigation.
 
 ---
 
-## 4. Code & Architecture Analysis
+## 4. Architectural Analysis: Mobile Drawer vs. Desktop Sidebar
 
-### A. Announcement Bar & Sidebar Interaction
-
-- `website/docusaurus.config.ts`:
-  ```ts
-  announcementBar: {
-    id: `announcementBar-v${announcedVersion}`,
-    content: `🎉️ <b><a target="_blank" href="...">Docusaurus v${announcedVersion}</a> is out!</b> 🥳️`,
-  }
-  ```
-- In `packages/docusaurus-theme-classic/src/theme/DocSidebar/Desktop/Content/index.tsx`:
-
-  ```tsx
-  function useShowAnnouncementBar() {
-    const {isActive} = useAnnouncementBar();
-    const [showAnnouncementBar, setShowAnnouncementBar] = useState(isActive);
-
-    useScrollPosition(
-      ({scrollY}) => {
-        if (isActive) {
-          setShowAnnouncementBar(scrollY === 0);
-        }
-      },
-      [isActive],
-    );
-    return isActive && showAnnouncementBar;
-  }
-  ```
-
-  - When scrolling starts (`scrollY > 0`), `showAnnouncementBar` flips from `true` to `false`, toggling `.menuWithAnnouncementBar` (`margin-bottom: var(--docusaurus-announcement-bar-height)`).
-  - When scrolling reaches top (`scrollY === 0`), it flips back to `true`.
-  - While this triggers a re-render of `DocSidebarDesktopContent`, font styles are inherited from Infima theme CSS (`--ifm-font-family-base`, `--ifm-menu-color`), and no inline font properties or weight classes change on scroll.
-
-### B. Critique of `will-change: width;` Removal
-
-- `will-change: width;` exists on `.docSidebarContainer` inside `@media (width >= 997px)` to assist hardware-accelerated transitions during sidebar collapse/expand.
-- While `will-change` creates a compositing layer in WebKit/Blink (which historically could alter subpixel font antialiasing on certain Windows ClearType setups), **scrolling down/up does not touch `width`**.
-- Most significantly, the reporter's screenshot was taken on a mobile resolution (375x828), where `.docSidebarContainer` has `display: none` and the mobile drawer (`DocSidebarMobile`) is rendered instead.
-- **Conclusion:** Removing `will-change: width;` is an unverified hypothesis and does not have empirical justification.
+- **Desktop (`width >= 997px`):**
+  - Rendered by `DocRoot/Layout/Sidebar` and `DocSidebar/Desktop`.
+  - Uses `position: sticky; top: 0; height: 100%; max-height: 100vh;`.
+  - Sticky sidebar stays visible in the viewport while the main document content scrolls.
+  - Subscribes to scroll events in `DocSidebar/Desktop/Content/index.tsx` to toggle `.menuWithAnnouncementBar` when `scrollY === 0`.
+- **Mobile (`width < 997px`):**
+  - The desktop container is hidden via `display: none;`.
+  - Uses `DocSidebarMobileSecondaryMenu` rendered inside a `Navbar/MobileSidebar` modal drawer.
+  - The mobile drawer completely overlays the screen. When page content is being scrolled, the drawer is closed; when the drawer is open, document body scrolling is inactive.
+- **Architectural Takeaway:** On standard Docusaurus, scrolling document text while simultaneously viewing sidebar navigation items only occurs on desktop viewports. The reporter's 375x828 px screenshot suggests either devtools mobile emulation, a cropped desktop capture, or a custom downstream layout.
 
 ---
 
-## 5. Empirical Reproduction & Testing
+## 5. Quality & Verification Testing
 
-### Test Setup
-
-- **Target Page:** `https://docusaurus.io/docs/api/themes/configuration` (extended documentation with hierarchical sidebar).
-- **Environment:** Chromium / Playwright Browser Automation (1280x800 desktop and responsive testing).
-- **Artifacts Recorded:**
-  - Browser recording: `repro_scroll_test_1792403319160.webp`
-  - Baseline screenshot with announcement bar: `theme_configuration_page_1792403391381.png`
-  - Screenshot after announcement bar dismissal: `announcement_bar_dismissed_1792403513353.png`
-
-### Test Cycles & Results
-
-| Phase | Condition | Action | Result |
-| --- | --- | --- | --- |
-| 1 | Announcement Bar Present | 4x full scroll cycles (0px -> 3200px -> 0px) | No font flicker, weight change, or visual artifact observed |
-| 2 | Announcement Bar Dismissed | Clicked `[x]` to dismiss bar, verified DOM removal | No layout instability |
-| 3 | Announcement Bar Dismissed | 4x full scroll cycles (0px -> 3200px -> 0px) | No font flicker, weight change, or visual artifact observed |
-
-### Quality & Regression Verification Commands
+### Commands & Results
 
 - **Stylelint:**
   ```powershell
   pnpm lint:style
-  # Result: Exited with code 0. No styling errors found.
+  # Result: Exited with code 0. Clean.
   ```
-- **Vitest Suite (`@docusaurus/theme-classic`):**
+- **Vitest Suite (`packages/docusaurus-theme-classic`):**
   ```powershell
   pnpm test packages/docusaurus-theme-classic
   # Result:
@@ -155,26 +111,69 @@ Key outcomes of today's work:
   # Tests: 64 passed (64)
   ```
 
----
+### Test Scope & Limitations
 
-## 6. Contribution Guidelines & `AGENTS.md` Compliance
-
-- **No Premature PR / Issue Creation:** Per `AGENTS.md` and repository guidelines, external contributors must not submit speculative or unvalidated AI-driven PRs.
-- **Preservation of Existing Work:** Branch `fix/issue-12429-sidebar-font-flicker` and commit `cd732b7c8` have been preserved. No uncommitted modifications have altered the tree.
-- **Upstream Status:** The issue remains open and untriaged on GitHub. We will not claim the issue is resolved upstream.
+- All reproduction testing was executed in an automated Chromium browser environment.
+- **Testing Limitations:** No tests were executed on Firefox (Gecko), Safari (WebKit), or physical iOS/Android mobile hardware. These environments were not tested and no claims are made regarding their behavior.
 
 ---
 
-## 7. Unresolved Questions & Next Steps
+## 6. Upstream Issue Review (facebook/docusaurus#12429)
+
+- **URL:** https://github.com/facebook/docusaurus/issues/12429
+- **Title:** Sidebar Navigation Font Style Randomly Changes While Scrolling
+- **Status:** `OPEN`
+- **Labels:** `bug`, `status: needs triage`
+- **Assignee:** None
+- **Linked PRs:** None
+- **Current State:** 6 total community comments. No maintainer feedback, triage assessment, or reporter reproduction details have been added since October 9, 2026.
+
+---
+
+## 7. Draft GitHub Issue Comment (Awaiting User Approval)
+
+Below is the proposed response to be reviewed and manually posted by the user once approved:
+
+```markdown
+Hi @vinothkumarGanesan and maintainers, (AI-assisted)
+
+I have been investigating this issue locally and attempted to reproduce the reported sidebar font style/weight flicker during scroll.
+
+Here is what was tested so far:
+
+- Tested scrolling on long documentation pages across multiple upward and downward scroll cycles.
+- Tested under two distinct states:
+  1. With the top announcement bar enabled.
+  2. With the announcement bar dismissed.
+- Tested in an automated Chromium browser environment.
+- Checked styles and ran `@docusaurus/theme-classic` tests and stylelint (`pnpm lint:style`), which all passed.
+
+In our tested Chromium environment, the sidebar text rendering remained consistent, and no font style or weight flickering was observed. Additionally, we noted that the attached screenshot has viewport dimensions of 375x828 px (mobile viewport), where the desktop sidebar container is hidden (`display: none`) and the mobile drawer modal is used instead.
+
+To help narrow down whether this is hardware, engine, or OS-specific rasterization:
+
+1. Which operating system and version are you using?
+2. Which browser and exact version did this occur on?
+3. What device type and display scaling / DPI setting (e.g., 100%, 125%, 150%) was active?
+4. Is browser hardware/GPU acceleration enabled or disabled?
+5. Could you share exact steps to reproduce the flicker, or a screen recording / reproducible example if available?
+
+Thank you!
+```
+
+---
+
+## 8. Unresolved Questions & Next Steps
 
 ### Unresolved Questions
 
-1. Under what specific client hardware or browser conditions did the reporter witness the font flicker? (e.g., Windows ClearType disabled, discrete GPU vs integrated GPU, specific Chrome/Edge flags, or macOS ProMotion variable refresh rates).
-2. Was the font flicker caused by external web fonts loading asynchronously (FOUT - Flash of Unstyled Text) during initial scroll rather than a scroll listener bug?
-3. Did the reporter reproduce this on a mobile browser or a desktop browser with dev tools responsive view enabled?
+1. Did the reporter observe this on mobile Safari (iOS), mobile Chrome (Android), or on a desktop browser resized to a mobile width?
+2. Does the issue correlate with a custom web font / FOUT (Flash of Unstyled Text) on a specific downstream Docusaurus site rather than the default Infima system font stack?
+3. Did the reporter have browser hardware acceleration disabled, causing CPU fallback rasterization differences during compositing?
 
-### Recommended Next Steps
+### Next Steps Needed to Reproduce the Issue
 
-1. **Maintainer / Issue Discussion:** Post a factual, structured comment on GitHub Issue #12429 detailing our reproduction attempts across desktop and mobile viewports with announcement bar enabled and disabled, asking the reporter for exact OS, browser version, zoom level, and GPU acceleration settings.
-2. **Hold on Submitting Code Changes:** Do not submit a PR for `will-change: width;` since there is no proof it solves the problem and it might degrade sidebar collapse performance.
-3. **If Maintainer Confirms Non-Reproducibility:** Suggest closing the issue as `cannot reproduce` unless additional environment details or a minimal reproduction repository can be provided.
+1. **User Review:** Review and approve the draft comment above.
+2. **Post Comment (Manual):** User posts the approved comment on GitHub Issue #12429.
+3. **Await Reporter Feedback:** Wait for the reporter or maintainer response regarding environment specifications.
+4. **Preserve Repository Cleanliness:** Maintain the working tree without unverified functional changes until empirical evidence is established.
