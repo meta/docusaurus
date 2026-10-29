@@ -54,7 +54,7 @@ const resolveAliases: AliasOptions = [
   // This won't always be true, but good enough for now
   {
     find: /^@theme\/(.*)$/,
-    replacement: '@docusaurus/theme-classic/src/theme/$1',
+    replacement: `${rootDir}packages/docusaurus-theme-classic/src/theme/$1`,
   },
 
   // Resolve `@site/*` aliases against our own website
