@@ -113,6 +113,7 @@ async function executePluginContentLoading({
 
     const pluginActionsUtils = await createPluginActionsUtils({
       plugin,
+      siteDir: context.siteDir,
       generatedFilesDir: context.generatedFilesDir,
       baseUrl: context.siteConfig.baseUrl,
       trailingSlash: context.siteConfig.trailingSlash,
@@ -167,6 +168,7 @@ async function executePluginAllContentLoaded({
       }
       const pluginActionsUtils = await createPluginActionsUtils({
         plugin,
+        siteDir: context.siteDir,
         generatedFilesDir: context.generatedFilesDir,
         baseUrl: context.siteConfig.baseUrl,
         trailingSlash: context.siteConfig.trailingSlash,

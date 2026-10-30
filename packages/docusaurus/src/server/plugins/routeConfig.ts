@@ -5,11 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import path from 'node:path';
+import _ from 'lodash';
+import {posixPath} from '@docusaurus/utils';
 import {
   applyTrailingSlash,
   type ApplyTrailingSlashParams,
 } from '@docusaurus/utils-common';
-import type {RouteConfig} from '@docusaurus/types';
+import {isModule} from '../codegen/codegenRoutes';
+import type {Module, RouteConfig, RouteModules} from '@docusaurus/types';
 
 /** Recursively applies trailing slash config to all nested routes. */
 export function applyRouteTrailingSlash<Route extends RouteConfig>(
@@ -25,6 +29,105 @@ export function applyRouteTrailingSlash<Route extends RouteConfig>(
       ),
     }),
   };
+}
+
+/**
+ * The site directories that always have a Webpack alias:
+ * `@site` for siteDir and `@generated` for generatedFilesDir.
+ */
+export type ModuleAliasContext = {
+  siteDir: string;
+  generatedFilesDir: string;
+};
+
+/**
+ * Plugins can reference route modules with absolute file paths, for example
+ * the path returned by `createData()`. We don't want machine-specific absolute
+ * paths in the codegen: they leak local paths in the build output, and make
+ * route hashes and chunk names differ across machines.
+ *
+ * This recursively aliases all the module paths of a route tree: the
+ * component, the modules and the context modules.
+ */
+export function aliasRouteModulePaths<Route extends RouteConfig>(
+  route: Route,
+  aliasContext: ModuleAliasContext,
+): Route {
+  // Conditional spreads preserve the keys order and JSON.stringify(route)
+  // so that route hashes don't change for routes that are already aliased
+  return {
+    ...route,
+    component: aliasModulePath(route.component, aliasContext),
+    ...(route.modules && {
+      modules: aliasRouteModules(route.modules, aliasContext),
+    }),
+    ...(route.context && {
+      context: aliasRouteModules(route.context, aliasContext),
+    }),
+    ...(route.routes && {
+      routes: route.routes.map((subRoute) =>
+        aliasRouteModulePaths(subRoute, aliasContext),
+      ),
+    }),
+  };
+}
+
+function aliasRouteModules(
+  routeModules: RouteModules,
+  aliasContext: ModuleAliasContext,
+): RouteModules {
+  return _.mapValues(routeModules, (value) => {
+    if (isModule(value)) {
+      return aliasModule(value, aliasContext);
+    }
+    if (Array.isArray(value)) {
+      return value.map((item) => aliasRouteModules(item, aliasContext));
+    }
+    return aliasRouteModules(value, aliasContext);
+  });
+}
+
+function aliasModule(module: Module, aliasContext: ModuleAliasContext): Module {
+  if (typeof module === 'string') {
+    return aliasModulePath(module, aliasContext);
+  }
+  return {...module, path: aliasModulePath(module.path, aliasContext)};
+}
+
+/**
+ * Absolute paths inside `generatedFilesDir` or `siteDir` are rewritten to
+ * the equivalent `@generated/...` or `@site/...` aliases. Other module paths
+ * (already aliased, bare specifiers, files outside the site) are kept as is.
+ */
+export function aliasModulePath(
+  modulePath: string,
+  {siteDir, generatedFilesDir}: ModuleAliasContext,
+): string {
+  if (!path.isAbsolute(modulePath)) {
+    return modulePath;
+  }
+  // generatedFilesDir is usually inside siteDir, so it must be checked first
+  if (isInsideDir(modulePath, generatedFilesDir)) {
+    return toAliasedPath('@generated', generatedFilesDir, modulePath);
+  }
+  if (isInsideDir(modulePath, siteDir)) {
+    return toAliasedPath('@site', siteDir, modulePath);
+  }
+  return modulePath;
+}
+
+function isInsideDir(filePath: string, dir: string): boolean {
+  const relativePath = path.relative(dir, filePath);
+  const isOutside =
+    relativePath === '..' ||
+    relativePath.startsWith(`..${path.sep}`) ||
+    // On Windows, a path on another drive can't be made relative
+    path.isAbsolute(relativePath);
+  return !isOutside;
+}
+
+function toAliasedPath(alias: string, dir: string, filePath: string): string {
+  return `${alias}/${posixPath(path.relative(dir, filePath))}`;
 }
 
 export function sortRoutes<Route extends RouteConfig>(

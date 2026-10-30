@@ -40,7 +40,6 @@ type CreateAllRoutesParam = {
   content: BlogContent;
   options: PluginOptions;
   actions: PluginContentLoadedActions;
-  aliasedSource: (str: string) => string;
 };
 
 export async function createAllRoutes(
@@ -55,7 +54,6 @@ export async function buildAllRoutes({
   content,
   actions,
   options,
-  aliasedSource,
 }: CreateAllRoutesParam): Promise<RouteConfig[]> {
   const {
     blogListComponent,
@@ -107,11 +105,7 @@ export async function buildAllRoutes({
       blogSidebarTitle,
       blogPosts: sidebarBlogPosts,
     });
-    const modulePath = await createData(
-      `blog-post-list-prop-${pluginId}.json`,
-      sidebarProp,
-    );
-    return aliasedSource(modulePath);
+    return createData(`blog-post-list-prop-${pluginId}.json`, sidebarProp);
   }
 
   async function createBlogMetadataModule() {
@@ -120,11 +114,7 @@ export async function buildAllRoutes({
       blogTitle,
       authorsListPath,
     };
-    const modulePath = await createData(
-      `blogMetadata-${pluginId}.json`,
-      blogMetadata,
-    );
-    return aliasedSource(modulePath);
+    return createData(`blogMetadata-${pluginId}.json`, blogMetadata);
   }
 
   // TODO we should have a parent blog route,

@@ -22,7 +22,6 @@ async function testBuildAllRoutes(overrides: PartialDeep<Params> = {}) {
 
   const params: Params = fromPartial<Params>({
     baseUrl: '/',
-    aliasedSource: (str: string) => `@aliased${str}`,
     ...overrides,
 
     content: {
@@ -104,7 +103,7 @@ describe('buildAllRoutes', () => {
           "exact": true,
           "modules": {
             "items": [],
-            "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+            "sidebar": "/data/blog-post-list-prop-default.json",
           },
           "path": "/blog",
           "props": {
@@ -150,7 +149,7 @@ describe('buildAllRoutes', () => {
         {
           "component": "@theme/BlogPostPage",
           "context": {
-            "blogMetadata": "@aliased/data/blogMetadata-default.json",
+            "blogMetadata": "/data/blogMetadata-default.json",
           },
           "exact": true,
           "metadata": {
@@ -159,7 +158,7 @@ describe('buildAllRoutes', () => {
           },
           "modules": {
             "content": "@site/blog/blog-post.md",
-            "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+            "sidebar": "/data/blog-post-list-prop-default.json",
           },
           "path": "/blog/blog-post",
         },
@@ -178,7 +177,7 @@ describe('buildAllRoutes', () => {
                 },
               },
             ],
-            "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+            "sidebar": "/data/blog-post-list-prop-default.json",
           },
           "path": "/blog",
           "props": {
