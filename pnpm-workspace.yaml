@@ -102,7 +102,7 @@ catalog:
   npm-to-yarn: ^3.2.0
   nprogress: ^0.2.0
   open: ^11.0.2
-  oxfmt: ^0.70.0
+  oxfmt: ^0.74.0
   p-map: ^7.0.8
   p-queue: ^9.3.3
   parse-numeric-range: ^1.3.0
