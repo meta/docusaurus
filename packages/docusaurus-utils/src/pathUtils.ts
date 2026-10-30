@@ -29,20 +29,29 @@ export const isNameTooLong = (str: string): boolean =>
 export function shortName(str: string): string {
   if (isMacOs() || isWindows()) {
     const overflowingChars = str.length - MAX_PATH_SEGMENT_CHARS;
-    return str.slice(
-      0,
-      str.length - overflowingChars - SPACE_FOR_APPENDING - 1,
-    );
+    let end = str.length - overflowingChars - SPACE_FOR_APPENDING - 1;
+    // Don't keep the first half of a surrogate pair (e.g. an emoji)
+    const lastCode = str.charCodeAt(end - 1);
+    if (end < str.length && lastCode >= 0xd800 && lastCode <= 0xdbff) {
+      end -= 1;
+    }
+    return str.slice(0, end);
   }
   const strBuffer = Buffer.from(str);
   const overflowingBytes =
     Buffer.byteLength(strBuffer) - MAX_PATH_SEGMENT_BYTES;
-  return strBuffer
-    .slice(
-      0,
-      Buffer.byteLength(strBuffer) - overflowingBytes - SPACE_FOR_APPENDING - 1,
-    )
-    .toString();
+  let end =
+    Buffer.byteLength(strBuffer) - overflowingBytes - SPACE_FOR_APPENDING - 1;
+  // Don't cut a multi-byte UTF-8 character in half: back up while the first
+  // byte left out is a continuation byte (0b10xxxxxx)
+  while (
+    end > 0 &&
+    end < strBuffer.length &&
+    (strBuffer[end]! & 0xc0) === 0x80
+  ) {
+    end -= 1;
+  }
+  return strBuffer.subarray(0, end).toString();
 }
 
 /**
