@@ -22,7 +22,7 @@
     "packages/create-docusaurus/lib/*",
     "!packages/create-docusaurus/src/**",
 
-    "!packages/docusaurus-*/lib/theme/**",
+    "!packages/docusaurus-*/lib/theme/",
 
     "packages/create-docusaurus/templates/*/docusaurus.config.js",
     "packages/eslint-plugin/lib/",
