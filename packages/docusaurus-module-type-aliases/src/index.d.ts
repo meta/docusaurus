@@ -280,6 +280,12 @@ declare module '@docusaurus/useDocusaurusContext' {
   export default function useDocusaurusContext(): DocusaurusContext;
 }
 
+declare module '@docusaurus/useThemeConfig' {
+  import type {ThemeConfig} from '@docusaurus/types';
+
+  export default function useThemeConfig(): ThemeConfig;
+}
+
 declare module '@docusaurus/useRouteContext' {
   import type {PluginRouteContext} from '@docusaurus/types';
 

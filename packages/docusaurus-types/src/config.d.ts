@@ -15,9 +15,32 @@ import type {MarkdownConfig} from './markdown';
 
 export type RouterType = 'browser' | 'hash';
 
-export type ThemeConfig = {
+/**
+ * Theme config, after validation and normalization by themes and plugins.
+ *
+ * Themes and plugins can declare their own fields with declaration merging:
+ *
+ * ```ts
+ * declare module '@docusaurus/types' {
+ *   interface ThemeConfig {
+ *     myTheme: {position: 'top' | 'bottom'};
+ *   }
+ * }
+ * ```
+ */
+export interface ThemeConfig {
   [key: string]: unknown;
-};
+}
+
+/**
+ * Theme config, as written by users in their site config, before validation.
+ *
+ * Themes and plugins can declare their own fields with declaration merging,
+ * like for {@link ThemeConfig}.
+ */
+export interface UserThemeConfig {
+  [key: string]: unknown;
+}
 
 export type StorageConfig = {
   type: SiteStorage['type'];
@@ -401,5 +424,6 @@ export type Config = Overwrite<
      */
     webpack?: boolean | WebpackConfig;
     future?: DeepPartial<FutureConfig>;
+    themeConfig?: UserThemeConfig;
   }
 >;

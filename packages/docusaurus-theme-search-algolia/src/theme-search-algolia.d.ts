@@ -59,25 +59,40 @@ declare module '@docusaurus/theme-search-algolia' {
     };
   };
 
+  export type UserThemeConfigAlgolia = Overwrite<
+    DeepPartial<ThemeConfigAlgolia>,
+    {
+      // Required fields:
+      appId: ThemeConfigAlgolia['appId'];
+      apiKey: ThemeConfigAlgolia['apiKey'];
+      indexName: ThemeConfigAlgolia['indexName'];
+      // askAi also accepts a shorter string form
+      askAi?: string | Optional<AskAiConfig, 'indexName' | 'appId' | 'apiKey'>;
+    }
+  >;
+
   export type ThemeConfig = {
     algolia: ThemeConfigAlgolia;
   };
 
   export type UserThemeConfig = {
-    algolia?: Overwrite<
-      DeepPartial<ThemeConfigAlgolia>,
-      {
-        // Required fields:
-        appId: ThemeConfigAlgolia['appId'];
-        apiKey: ThemeConfigAlgolia['apiKey'];
-        indexName: ThemeConfigAlgolia['indexName'];
-        // askAi also accepts a shorter string form
-        askAi?:
-          | string
-          | Optional<AskAiConfig, 'indexName' | 'appId' | 'apiKey'>;
-      }
-    >;
+    algolia?: UserThemeConfigAlgolia;
   };
+
+  // Adds the theme config fields to the @docusaurus/types interfaces
+  // Their names intentionally shadow the ThemeConfig types of this module
+  /* eslint-disable @typescript-eslint/no-shadow */
+  module '@docusaurus/types' {
+    interface ThemeConfig {
+      // Optional: the classic preset only enables this theme when the
+      // "algolia" field is provided
+      algolia?: ThemeConfigAlgolia;
+    }
+    interface UserThemeConfig {
+      algolia?: UserThemeConfigAlgolia;
+    }
+  }
+  /* eslint-enable @typescript-eslint/no-shadow */
 }
 
 declare module '@theme/SearchPage' {

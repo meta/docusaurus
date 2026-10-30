@@ -8,12 +8,10 @@
 import {describe, expect, it} from 'vitest';
 import {validateThemeConfig, DEFAULT_CONFIG} from '../validateThemeConfig';
 import type {Joi} from '@docusaurus/utils-validation';
+import type {ThemeConfig} from '@docusaurus/theme-live-codeblock';
 
 function testValidateThemeConfig(themeConfig: {[key: string]: unknown}) {
-  function validate(
-    schema: Joi.ObjectSchema<{[key: string]: unknown}>,
-    cfg: {[key: string]: unknown},
-  ) {
+  function validate(schema: Joi.ObjectSchema<ThemeConfig>, cfg: ThemeConfig) {
     const {value, error} = schema.validate(cfg, {
       convert: false,
     });
@@ -23,7 +21,11 @@ function testValidateThemeConfig(themeConfig: {[key: string]: unknown}) {
     return value;
   }
 
-  return validateThemeConfig({validate, themeConfig});
+  // Some tests pass invalid theme configs on purpose
+  return validateThemeConfig({
+    validate,
+    themeConfig: themeConfig as ThemeConfig,
+  });
 }
 
 describe('validateThemeConfig', () => {

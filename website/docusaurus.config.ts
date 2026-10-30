@@ -4,6 +4,10 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+
+// Adds the liveCodeBlock fields to the Preset.ThemeConfig type
+/// <reference types="@docusaurus/theme-live-codeblock" />
+
 import path from 'node:path';
 
 import npm2yarn from '@docusaurus/remark-plugin-npm2yarn';
@@ -34,9 +38,6 @@ import type {Options as BlogOptions} from '@docusaurus/plugin-content-blog';
 import type {Options as PageOptions} from '@docusaurus/plugin-content-pages';
 import type {Options as IdealImageOptions} from '@docusaurus/plugin-ideal-image';
 import type {Options as ClientRedirectsOptions} from '@docusaurus/plugin-client-redirects';
-import type {ThemeConfig as LiveCodeBlockThemeConfig} from '@docusaurus/theme-live-codeblock';
-
-type ThemeConfig = Preset.ThemeConfig & LiveCodeBlockThemeConfig;
 
 const ArchivedVersionsDropdownItems = Object.entries(VersionsArchived).splice(
   0,
@@ -882,6 +883,6 @@ export default async function createConfigAsync() {
         },
         copyright: `Copyright © ${new Date().getFullYear()} Meta Platforms, Inc. Built with Docusaurus.`,
       },
-    } satisfies ThemeConfig,
+    } satisfies Preset.ThemeConfig,
   } satisfies Config;
 }

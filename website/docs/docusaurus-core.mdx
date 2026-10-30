@@ -407,6 +407,25 @@ The `siteConfig` object only contains **serializable values** (values that are p
 
 :::
 
+### `useThemeConfig` {/* #useThemeConfig */}
+
+React hook to access the [`themeConfig`](api/docusaurus.config.js.mdx#themeConfig) object of the site, after themes and plugins have [validated and normalized it](api/plugin-methods/static-methods.mdx#validateThemeConfig).
+
+Its TypeScript type includes the fields declared by the themes and plugins you installed.
+
+Usage example:
+
+```jsx
+import React from 'react';
+import useThemeConfig from '@docusaurus/useThemeConfig';
+
+const MyComponent = () => {
+  // highlight-next-line
+  const {navbar} = useThemeConfig();
+  return <div>{navbar.title}</div>;
+};
+```
+
 ### `useIsBrowser` {/* #useIsBrowser */}
 
 Returns `true` after initial hydration completes in the browser.
