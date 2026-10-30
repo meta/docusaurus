@@ -27,7 +27,7 @@ jobs:
     # We only want to trigger Argos on PRs with the 'Argos' label
     # See https://stackoverflow.com/questions/62325286/run-github-actions-when-pull-requests-have-a-specific-label
     if: |
-      github.repository == 'facebook/docusaurus' &&
+      github.repository == 'meta/docusaurus' &&
       (
         (github.event_name != 'pull_request' && github.ref_name == 'main') ||
         (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Argos'))

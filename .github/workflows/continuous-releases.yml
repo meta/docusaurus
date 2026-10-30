@@ -22,7 +22,7 @@ cache-mode: none
 jobs:
   release:
     name: Continuous Releases
-    if: github.repository == 'facebook/docusaurus'
+    if: github.repository == 'meta/docusaurus'
     runs-on: ubuntu-latest
 
     steps:

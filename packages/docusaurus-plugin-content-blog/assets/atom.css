@@ -11,13 +11,7 @@ main {
   margin: 2rem auto;
   max-width: 800px;
   /* stylelint-disable-next-line font-family-name-quotes */
-  font-family:
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    Ubuntu,
-    Cantarell;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell;
 }
 
 .info {
