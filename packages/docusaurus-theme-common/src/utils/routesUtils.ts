@@ -6,9 +6,8 @@
  */
 
 import {useMemo} from 'react';
-import generatedRoutes from '@generated/routes';
+import generatedRoutes, {type RouteConfig} from '@generated/routes';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import type {RouteConfig} from 'react-router-config';
 
 /**
  * Compare the 2 paths, case insensitive and ignoring trailing slash

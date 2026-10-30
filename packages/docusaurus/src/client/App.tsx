@@ -8,13 +8,13 @@
 import type {ReactNode} from 'react';
 import '@generated/client-modules';
 
-import routes from '@generated/routes';
+import {useRoutes, type Location} from 'react-router';
 import {useLocation} from '@docusaurus/router';
-import renderRoutes from '@docusaurus/renderRoutes';
 import Root from '@theme/Root';
 import ThemeProvider from '@theme/ThemeProvider';
 import SiteMetadata from '@theme/SiteMetadata';
 import normalizeLocation from './normalizeLocation';
+import {routeObjects} from './routeObjects';
 import {DocusaurusContextProvider} from './docusaurusContext';
 import PendingNavigation from './PendingNavigation';
 import BaseUrlIssueBanner from './BaseUrlIssueBanner';
@@ -25,14 +25,16 @@ import SiteMetadataDefaults from './SiteMetadataDefaults';
 import ErrorBoundary from '@docusaurus/ErrorBoundary';
 import HasHydratedDataAttribute from './hasHydratedDataAttribute';
 
-const routesElement = renderRoutes(routes);
+function AppRoutes({location}: {location: Location}): ReactNode {
+  return useRoutes(routeObjects, location);
+}
 
 function AppNavigation() {
   const location = useLocation();
   const normalizedLocation = normalizeLocation(location);
   return (
     <PendingNavigation location={normalizedLocation}>
-      {routesElement}
+      {(pendingLocation) => <AppRoutes location={pendingLocation} />}
     </PendingNavigation>
   );
 }

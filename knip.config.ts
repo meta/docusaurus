@@ -139,10 +139,6 @@ const config: KnipConfig = ({
       // Knip doesn't detect imports in "declare module" blocks
       ignoreDependencies: ['utility-types'],
     },
-    'packages/docusaurus-plugin-content-docs': {
-      // Knip doesn't detect imports in "declare module" blocks
-      ignoreDependencies: ['@types/react-router-config'],
-    },
     'packages/docusaurus-plugin-debug': themePackageConfig(),
     // Client modules are resolved through getClientModules()
     'packages/docusaurus-plugin-google-gtag': {

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {StaticRouter} from 'react-router-dom';
+import {StaticRouter} from 'react-router';
 import {HelmetProvider, type FilledContext} from 'react-helmet-async';
 import Loadable from 'react-loadable';
 import {renderToHtml} from './renderToHtml';
@@ -22,7 +22,6 @@ const render: AppRenderer['render'] = async ({pathname}) => {
   await preload(pathname);
 
   const modules = new Set<string>();
-  const routerContext = {};
   const helmetContext = {};
   const statefulBrokenLinks = createStatefulBrokenLinks();
 
@@ -30,7 +29,7 @@ const render: AppRenderer['render'] = async ({pathname}) => {
     // @ts-expect-error: we are migrating away from react-loadable anyways
     <Loadable.Capture report={(moduleName) => modules.add(moduleName)}>
       <HelmetProvider context={helmetContext}>
-        <StaticRouter location={pathname} context={routerContext}>
+        <StaticRouter location={pathname}>
           <BrokenLinksProvider brokenLinks={statefulBrokenLinks}>
             <App />
           </BrokenLinksProvider>

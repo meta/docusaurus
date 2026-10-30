@@ -8,7 +8,7 @@
 import {useLayoutEffect, type ReactElement, type ReactNode} from 'react';
 import clientModules from '@generated/client-modules';
 import type {ClientModule} from '@docusaurus/types';
-import type {Location} from 'history';
+import type {Location} from 'react-router';
 
 export function dispatchLifecycleAction<K extends keyof ClientModule>(
   lifecycleAction: K,

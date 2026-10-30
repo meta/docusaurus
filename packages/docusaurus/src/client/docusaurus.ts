@@ -5,9 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {matchRoutes} from 'react-router-config';
 import routesChunkNames from '@generated/routesChunkNames';
-import routes from '@generated/routes';
+import {matchRouteConfigs} from './routeObjects';
 import prefetchHelper from './prefetch';
 import preloadHelper from './preload';
 import flat from './flat';
@@ -55,10 +54,8 @@ const prefetch: Docusaurus['prefetch'] = (
   fetched.add(routePath);
 
   // Find all webpack chunk names needed.
-  const matches = matchRoutes(routes, routePath);
-
-  const chunkNamesNeeded = matches.flatMap((match) =>
-    getChunkNamesToLoad(match.route.path),
+  const chunkNamesNeeded = matchRouteConfigs(routePath).flatMap((route) =>
+    getChunkNamesToLoad(route.path),
   );
 
   // Prefetch all webpack chunk assets file needed.

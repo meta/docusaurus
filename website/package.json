@@ -85,7 +85,6 @@
     "@docusaurus/tsconfig": "workspace:*",
     "@mdx-js/react": "catalog:",
     "@types/color": "catalog:dev",
-    "@types/history": "catalog:",
     "@types/node": "catalog:dev",
     "@types/prismjs": "catalog:dev",
     "copy-text-to-clipboard": "catalog:",

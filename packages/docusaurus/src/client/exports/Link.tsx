@@ -5,15 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {useEffect, useImperativeHandle, useRef, type ReactNode} from 'react';
 import {
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  type ComponentType,
-  type ReactNode,
-} from 'react';
-import {NavLink, Link as RRLink} from 'react-router-dom';
+  Link as RRLink,
+  matchPath,
+  parsePath,
+  useLocation,
+  type Location,
+} from 'react-router';
 import {applyTrailingSlash} from '@docusaurus/utils-common';
 import useDocusaurusContext from './useDocusaurusContext';
 import isInternalUrl from './isInternalUrl';
@@ -29,16 +28,53 @@ import type {Props} from '@docusaurus/Link';
 // like "introduction" to "/baseUrl/introduction" => bad behavior to fix
 const shouldAddBaseUrlAutomatically = (to: string) => to.startsWith('/');
 
+// React Router resolves relative links against the route hierarchy, but we
+// want to resolve them like the browser does for <a href>
+function resolveRelativeLink(link: string, location: Location): string {
+  if (link.startsWith('/')) {
+    return link;
+  }
+  const url = new URL(link, `https://example.com${location.pathname}`);
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
+// React Router's NavLink doesn't support a custom isActive function anymore
+function getNavLinkProps({
+  to,
+  location,
+  exact,
+  isActive,
+  className,
+  activeClassName = 'active',
+}: Pick<Props, 'exact' | 'isActive' | 'className' | 'activeClassName'> & {
+  to: string;
+  location: Location;
+}) {
+  const match = matchPath(
+    {path: parsePath(to).pathname!, end: exact},
+    location.pathname,
+  );
+  if (isActive ? !isActive(match, location) : !match) {
+    return {className};
+  }
+  return {
+    className: className ? `${className} ${activeClassName}` : activeClassName,
+    'aria-current': 'page' as const,
+  };
+}
+
 function Link({
   isNavLink,
   to,
   href,
   activeClassName,
   isActive,
+  exact,
   'data-noBrokenLinkCheck': noBrokenLinkCheck,
   autoAddBaseUrl = true,
   ...props
 }: Props): ReactNode {
+  const location = useLocation();
   const {siteConfig} = useDocusaurusContext();
   const {trailingSlash, baseUrl} = siteConfig;
   const router = siteConfig.future.experimental_router;
@@ -94,45 +130,8 @@ function Link({
   }
 
   const preloaded = useRef(false);
-  const LinkComponent = (isNavLink ? NavLink : RRLink) as ComponentType<Props>;
 
   const IOSupported = ExecutionEnvironment.canUseIntersectionObserver;
-
-  const ioRef = useRef<IntersectionObserver>(undefined);
-
-  const handleRef = useCallback(
-    (el: HTMLAnchorElement | null) => {
-      innerRef.current = el;
-      ioRef.current?.disconnect();
-      ioRef.current = undefined;
-
-      if (IOSupported && el && isInternal) {
-        // If IO supported and element reference found, set up Observer.
-        const observer = new window.IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (el === entry.target) {
-              // If element is in viewport, stop observing and run callback.
-              // https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
-              if (entry.isIntersecting || entry.intersectionRatio > 0) {
-                observer.unobserve(el);
-                observer.disconnect();
-                if (ioRef.current === observer) {
-                  ioRef.current = undefined;
-                }
-                if (targetLink != null) {
-                  window.docusaurus.prefetch(targetLink);
-                }
-              }
-            }
-          });
-        });
-        // Add element to the observer.
-        ioRef.current = observer;
-        observer.observe(el);
-      }
-    },
-    [IOSupported, isInternal, targetLink],
-  );
 
   const onInteractionEnter = () => {
     if (!preloaded.current && targetLink != null) {
@@ -168,6 +167,30 @@ function Link({
     // See also https://github.com/facebook/docusaurus/pull/10311
     (isAnchorLink && router !== 'hash');
 
+  // Not a callback ref: React Router's Link calls it again on every render
+  useEffect(() => {
+    const el = innerRef.current;
+    if (!IOSupported || !el || !isInternal || isRegularHtmlLink) {
+      return undefined;
+    }
+    const observer = new window.IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (el === entry.target) {
+          // If element is in viewport, stop observing and run callback.
+          // https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
+          if (entry.isIntersecting || entry.intersectionRatio > 0) {
+            observer.disconnect();
+            if (targetLink != null) {
+              window.docusaurus.prefetch(targetLink);
+            }
+          }
+        }
+      });
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [IOSupported, isInternal, isRegularHtmlLink, targetLink]);
+
   if (!noBrokenLinkCheck && (isAnchorLink || !isRegularHtmlLink)) {
     brokenLinks.collectLink(targetLink!);
   }
@@ -182,26 +205,39 @@ function Link({
       ? {'data-test-link-type': isRegularHtmlLink ? 'regular' : 'react-router'}
       : {};
 
-  return isRegularHtmlLink ? (
-    // eslint-disable-next-line jsx-a11y/anchor-has-content, @docusaurus/no-html-links
-    <a
-      ref={innerRef}
-      href={targetLink}
-      {...(targetLinkUnprefixed &&
-        !isInternal && {target: '_blank', rel: 'noopener noreferrer'})}
+  if (isRegularHtmlLink) {
+    return (
+      // eslint-disable-next-line jsx-a11y/anchor-has-content, @docusaurus/no-html-links
+      <a
+        ref={innerRef}
+        href={targetLink}
+        {...(targetLinkUnprefixed &&
+          !isInternal && {target: '_blank', rel: 'noopener noreferrer'})}
+        {...props}
+        {...testOnlyProps}
+      />
+    );
+  }
+
+  const routerLink = resolveRelativeLink(targetLink!, location);
+  return (
+    <RRLink
       {...props}
-      {...testOnlyProps}
-    />
-  ) : (
-    <LinkComponent
-      {...props}
+      {...(isNavLink &&
+        getNavLinkProps({
+          to: routerLink,
+          location,
+          exact,
+          isActive,
+          className: props.className,
+          activeClassName,
+        }))}
       onMouseEnter={onInteractionEnter}
       onTouchStart={onInteractionEnter}
-      innerRef={handleRef}
-      to={targetLink}
-      // Avoid "React does not recognize the `activeClassName` prop on a DOM
-      // element"
-      {...(isNavLink && {isActive, activeClassName})}
+      ref={innerRef}
+      to={routerLink}
+      // Only useful for React Router framework mode route discovery
+      discover="none"
       {...testOnlyProps}
     />
   );

@@ -83,7 +83,7 @@ export function genChunkName(
 
 /**
  * Takes a piece of route config, and serializes it into raw JS code. The shape
- * is the same as react-router's `RouteConfig`. Formatting is similar to
+ * is the `RouteConfig` of `@generated/routes`. Formatting is similar to
  * `JSON.stringify` but without all the quotes.
  */
 function serializeRouteConfig({

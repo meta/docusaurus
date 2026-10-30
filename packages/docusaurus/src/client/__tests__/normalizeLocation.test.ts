@@ -6,9 +6,10 @@
  */
 
 import {describe, expect, it, vi} from 'vitest';
+import {matchRoutes, type Location} from 'react-router';
 import normalizeLocation from '../normalizeLocation';
-import type {Location} from 'history';
 
+vi.mock('react-router', {spy: true});
 vi.mock('@generated/routes', () => import('./__mocks__/@generated/routes'));
 
 describe('normalizeLocation', () => {
@@ -74,7 +75,7 @@ describe('normalizeLocation', () => {
   });
 
   it('leaves pathnames untouched', () => {
-    const replaceMock = vi.spyOn(String.prototype, 'replace');
+    vi.mocked(matchRoutes).mockClear();
 
     expect(
       normalizeLocation({
@@ -100,7 +101,7 @@ describe('normalizeLocation', () => {
       search: '',
       hash: '#features',
     });
-    expect(replaceMock).toHaveBeenCalledTimes(1);
+    expect(matchRoutes).toHaveBeenCalledTimes(1);
 
     expect(
       normalizeLocation({
