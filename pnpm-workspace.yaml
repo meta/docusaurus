@@ -124,7 +124,7 @@ catalog:
   react-medium-image-zoom: ^5.4.9
   react-router: ^5.3.4
   react-router-config: ^5.1.1
-  react-router-dom: ^5.3.4
+  react-router-dom: ^6.30.6
   recma-mdx-displayname: ^0.4.1
   rehype-katex: ^7.0.1
   rehype-raw: ^7.0.0
