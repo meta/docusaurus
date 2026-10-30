@@ -185,10 +185,7 @@ type StaticHostResponse = {
 const StaticHostResponses: StaticHostResponse[] = [
   {pathname: '/tests.html', file: 'tests.html'},
   {pathname: '/tests/index.html', file: '404.html', status: 404},
-  {
-    pathname: '/tests/blog/x/y/caf%C3%A9.html',
-    file: 'tests/blog/x/y/café.html',
-  },
+  {pathname: '/tests/docs/caf%C3%A9.html', file: 'tests/docs/café.html'},
 ];
 
 function createStaticHostResponseTest({
