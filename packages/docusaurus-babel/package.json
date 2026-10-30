@@ -49,6 +49,6 @@
     "@types/babel__traverse": "catalog:dev"
   },
   "engines": {
-    "node": ">=24.21"
+    "node": ">=26.13"
   }
 }

@@ -24,7 +24,7 @@
     "tslib": "catalog:"
   },
   "engines": {
-    "node": ">=24.21"
+    "node": ">=26.13"
   },
   "devDependencies": {
     "@types/micromatch": "catalog:dev"
