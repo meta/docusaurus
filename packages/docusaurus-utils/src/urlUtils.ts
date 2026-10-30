@@ -314,14 +314,24 @@ export function buildHttpsUrl(
 /**
  * Whether the current URL is an SSH protocol. In addition to looking for
  * `ssh:`, it will also allow protocol-less URLs like
- * `git@github.com:facebook/docusaurus.git`.
+ * `git@github.com:facebook/docusaurus.git`, with or without the user part
+ * (`github.com:facebook/docusaurus.git`, or an SSH config host alias).
  */
 export function hasSSHProtocol(sourceRepoUrl: string): boolean {
   const url = URL.parse(sourceRepoUrl);
-  if (url === null) {
+  // Without "://", git reads `[user@]host:path` as an SCP-style address. When
+  // the user part is left out, URL.parse() takes the host for a URL scheme
+  // (`github.com:` is a valid one), so it is checked here as well.
+  if (url === null || !sourceRepoUrl.includes('://')) {
     // Recognizes SCP-style addresses, implying SSH
     // Example: git@github.com:facebook/docusaurus.git
-    return /^(?:[\w-]+@)?[\w.-]+:[\w./-]+/.test(sourceRepoUrl);
+    // Example: github.com:~user/docusaurus.git
+    // A Windows drive path like C:/repo or C:repo is not one: like git on
+    // Windows, a single-letter host is read as a drive letter.
+    return (
+      /^(?:[\w-]+@)?[\w.-]+:[\w./~-]+/.test(sourceRepoUrl) &&
+      !/^[a-z]:/i.test(sourceRepoUrl)
+    );
   }
   return url.protocol === 'ssh:';
 }
