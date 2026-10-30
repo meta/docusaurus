@@ -48,9 +48,8 @@
   "devDependencies": {
     "@types/nprogress": "catalog:dev",
     "@types/prismjs": "catalog:dev",
-    "@types/react-router-dom": "catalog:",
     "@types/rtlcss": "catalog:dev",
-    "react-router-dom": "catalog:"
+    "react-router": "catalog:"
   },
   "peerDependencies": {
     "react": "catalog:",

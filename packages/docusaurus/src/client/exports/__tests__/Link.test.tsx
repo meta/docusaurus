@@ -11,7 +11,7 @@ import type {ReactNode} from 'react';
 import {render as renderRTL} from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 import {fromPartial} from '@total-typescript/shoehorn';
-import {MemoryRouter, StaticRouter} from 'react-router-dom';
+import {MemoryRouter, StaticRouter} from 'react-router';
 import Link from '../Link';
 import ExecutionEnvironment from '../ExecutionEnvironment';
 import {Context} from '../../docusaurusContext';
@@ -61,7 +61,7 @@ function createLinkRenderer(defaultRendererOptions: Partial<Options> = {}) {
     };
     const docusaurusContext = createDocusaurusContext(options);
     return renderRTL(
-      <StaticRouter location={options.currentLocation} context={{}}>
+      <StaticRouter location={options.currentLocation}>
         <Context value={docusaurusContext}>{linkJsx}</Context>
       </StaticRouter>,
     );

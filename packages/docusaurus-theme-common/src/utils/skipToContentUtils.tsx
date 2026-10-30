@@ -7,7 +7,6 @@
 
 import type React from 'react';
 import {useCallback, useRef, type ComponentProps, type ReactNode} from 'react';
-import {useHistory} from '@docusaurus/router';
 import {translate} from '@docusaurus/Translate';
 import {useLocationChange} from './useLocationChange';
 
@@ -56,7 +55,6 @@ function useSkipToContent(): {
   onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 } {
   const containerRef = useRef<HTMLDivElement>(null);
-  const {action} = useHistory();
 
   const onClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -66,10 +64,14 @@ function useSkipToContent(): {
     }
   }, []);
 
-  // "Reset" focus when navigating.
+  // "Reset" focus when navigating to another page.
   // See https://github.com/facebook/docusaurus/pull/8204#issuecomment-1276547558
-  useLocationChange(({location}) => {
-    if (containerRef.current && !location.hash && action === 'PUSH') {
+  useLocationChange(({location, previousLocation}) => {
+    if (
+      containerRef.current &&
+      !location.hash &&
+      location.pathname !== previousLocation?.pathname
+    ) {
       programmaticFocus(containerRef.current);
     }
   });

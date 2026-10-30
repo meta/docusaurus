@@ -13,13 +13,11 @@
   },
   "dependencies": {
     "@docusaurus/types": "workspace:*",
-    "@types/history": "catalog:",
     "@types/react": "19.3.0",
     "@types/react-dom": "catalog:",
-    "@types/react-router-config": "catalog:",
-    "@types/react-router-dom": "catalog:",
     "react-helmet-async": "catalog:",
-    "react-loadable": "catalog:"
+    "react-loadable": "catalog:",
+    "react-router": "catalog:"
   },
   "peerDependencies": {
     "react": "catalog:",

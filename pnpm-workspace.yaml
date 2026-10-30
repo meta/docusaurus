@@ -47,12 +47,9 @@ catalog:
   '@svgr/webpack': ^8.1.0
   '@swc/core': ^1.16.2
   '@swc/html': ^1.16.2
-  '@types/history': ^4.7.11
   '@types/mdast': ^4.0.4
   '@types/react': ^19.3.0
   '@types/react-dom': ^19.3.0
-  '@types/react-router-config': ^5.0.11
-  '@types/react-router-dom': ^5.3.3
   '@typescript-eslint/types': ^8.71.0
   '@typescript-eslint/utils': ^8.71.0
   '@vercel/analytics': ^2.0.1
@@ -122,9 +119,7 @@ catalog:
   react-loadable: npm:@docusaurus/react-loadable@6.0.0
   react-loadable-ssr-addon-v5-slorber: ^1.0.3
   react-medium-image-zoom: ^5.4.9
-  react-router: ^5.3.4
-  react-router-config: ^5.1.1
-  react-router-dom: ^5.3.4
+  react-router: ^8.5.0
   recma-mdx-displayname: ^0.4.1
   rehype-katex: ^7.0.1
   rehype-raw: ^7.0.0

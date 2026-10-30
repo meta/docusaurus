@@ -14,12 +14,12 @@
   "license": "MIT",
   "dependencies": {
     "@mdx-js/mdx": "catalog:",
-    "@types/history": "catalog:",
     "@types/mdast": "catalog:",
     "@types/react": "19.3.0",
     "commander": "catalog:",
     "joi": "catalog:",
     "mdast-util-directive": "catalog:",
+    "react-router": "catalog:",
     "utility-types": "catalog:",
     "webpack": "catalog:",
     "webpack-merge": "catalog:"

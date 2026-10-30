@@ -10,7 +10,7 @@ import type {PropsWithChildren, ReactNode} from 'react';
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 import {ScrollControllerProvider} from '@docusaurus/theme-common/internal';
-import {StaticRouter} from 'react-router-dom';
+import {StaticRouter} from 'react-router';
 import Tabs from '../index';
 import TabItem from '../../TabItem';
 

@@ -6,11 +6,13 @@
  */
 
 import type {ReactNode} from 'react';
-import renderRoutes from '@docusaurus/renderRoutes';
+import {Outlet} from '@docusaurus/router';
 import Layout from '@theme/Layout';
 
-import type {Props} from '@theme/DocsRoot';
-
-export default function DocsRoot(props: Props): ReactNode {
-  return <Layout>{renderRoutes(props.route.routes!)}</Layout>;
+export default function DocsRoot(): ReactNode {
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  );
 }

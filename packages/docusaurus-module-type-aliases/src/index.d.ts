@@ -41,12 +41,19 @@ declare module '@generated/registry' {
 }
 
 declare module '@generated/routes' {
-  import type {RouteConfig as RRRouteConfig} from 'react-router-config';
-  import type Loadable from 'react-loadable';
+  import type {ComponentType} from 'react';
+  import type {LoadableComponent} from 'react-loadable';
 
-  type RouteConfig = RRRouteConfig & {
+  /**
+   * The client-side route config, passed to the route component as a `route`
+   * prop.
+   */
+  export type RouteConfig = {
     path: string;
-    component: ReturnType<typeof Loadable>;
+    component: ComponentType<{route: RouteConfig}> & LoadableComponent;
+    exact?: boolean;
+    routes?: RouteConfig[];
+    [attributeName: string]: unknown;
   };
   const routes: RouteConfig[];
   export default routes;
@@ -169,14 +176,22 @@ declare module '@docusaurus/Head' {
 
 declare module '@docusaurus/Link' {
   import type {CSSProperties, ComponentProps, ReactNode} from 'react';
-  import type {NavLinkProps as RRNavLinkProps} from 'react-router-dom';
+  import type {LinkProps, Location, PathMatch} from 'react-router';
 
-  type NavLinkProps = Partial<RRNavLinkProps>;
-  export type Props = NavLinkProps &
+  export type Props = Partial<LinkProps> &
     ComponentProps<'a'> & {
       readonly className?: string;
       readonly style?: CSSProperties;
       readonly isNavLink?: boolean;
+      /** NavLink only: active only when the location matches exactly. */
+      readonly exact?: boolean;
+      /** NavLink only: class name added when the link is active. */
+      readonly activeClassName?: string;
+      /** NavLink only: overrides the default active state computation. */
+      readonly isActive?: (
+        match: PathMatch | null,
+        location: Location,
+      ) => boolean;
       readonly to?: string;
       readonly href?: string;
       readonly autoAddBaseUrl?: boolean;
@@ -260,7 +275,14 @@ declare module '@docusaurus/Translate' {
 }
 
 declare module '@docusaurus/router' {
-  export {useHistory, useLocation, Redirect, matchPath} from 'react-router-dom';
+  export {
+    useLocation,
+    useNavigate,
+    Navigate,
+    Outlet,
+    matchPath,
+    type Location,
+  } from 'react-router';
 }
 
 // TODO Docusaurus v5: remove this deprecated hook
@@ -353,12 +375,6 @@ declare module '@docusaurus/isInternalUrl' {
 
 declare module '@docusaurus/Noop' {
   export default function (): null;
-}
-
-declare module '@docusaurus/renderRoutes' {
-  import {renderRoutes} from 'react-router-config';
-
-  export default renderRoutes;
 }
 
 declare module '@docusaurus/useGlobalData' {

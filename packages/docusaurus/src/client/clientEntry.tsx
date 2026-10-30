@@ -8,7 +8,7 @@
 import {startTransition, type ReactNode} from 'react';
 import ReactDOM, {type ErrorInfo} from 'react-dom/client';
 import {HelmetProvider} from 'react-helmet-async';
-import {BrowserRouter, HashRouter} from 'react-router-dom';
+import {BrowserRouter, HashRouter} from 'react-router';
 import siteConfig from '@generated/docusaurus.config';
 import ExecutionEnvironment from './exports/ExecutionEnvironment';
 import App from './App';
@@ -16,10 +16,11 @@ import preload from './preload';
 import docusaurus from './docusaurus';
 
 function Router({children}: {children: ReactNode}): ReactNode {
+  // No transitions: PendingNavigation runs side effects on location updates
   return siteConfig.future.experimental_router === 'hash' ? (
-    <HashRouter>{children}</HashRouter>
+    <HashRouter useTransitions={false}>{children}</HashRouter>
   ) : (
-    <BrowserRouter>{children}</BrowserRouter>
+    <BrowserRouter useTransitions={false}>{children}</BrowserRouter>
   );
 }
 

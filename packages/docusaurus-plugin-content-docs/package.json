@@ -46,7 +46,6 @@
     "@docusaurus/utils": "workspace:*",
     "@docusaurus/utils-common": "workspace:*",
     "@docusaurus/utils-validation": "workspace:*",
-    "@types/react-router-config": "catalog:",
     "combine-promises": "catalog:",
     "js-yaml": "catalog:",
     "lodash": "catalog:",
@@ -58,10 +57,9 @@
   "devDependencies": {
     "@total-typescript/shoehorn": "catalog:dev",
     "@types/picomatch": "catalog:dev",
-    "@types/react-router-dom": "catalog:",
     "commander": "catalog:",
     "picomatch": "catalog:dev",
-    "react-router-dom": "catalog:"
+    "react-router": "catalog:"
   },
   "peerDependencies": {
     "react": "catalog:",

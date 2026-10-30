@@ -7,22 +7,19 @@
 
 import _ from 'lodash';
 import logger from '@docusaurus/logger';
-import {matchRoutes as reactRouterMatchRoutes} from 'react-router-config';
+import {matchRoutes} from 'react-router';
 import {
   parseURLPath,
   serializeURLPath,
   flattenRoutes,
   type URLPath,
 } from '@docusaurus/utils';
-import {addTrailingSlash, removeTrailingSlash} from '@docusaurus/utils-common';
+import {
+  addTrailingSlash,
+  getLeafRouteRouterPath,
+  removeTrailingSlash,
+} from '@docusaurus/utils-common';
 import type {RouteConfig, ReportingSeverity} from '@docusaurus/types';
-
-function matchRoutes(routeConfig: RouteConfig[], pathname: string) {
-  // @ts-expect-error: React router types RouteConfig with an actual React
-  // component, but we load route components with string paths.
-  // We don't actually access component here, so it's fine.
-  return reactRouterMatchRoutes(routeConfig, pathname);
-}
 
 type BrokenLink = {
   link: string;
@@ -87,25 +84,27 @@ function createBrokenLinksHelper({
     if (disableOptimization) {
       return routes;
     }
-    // We must consider the "exact" and "strict" match attribute
+    // We must consider the "exact" match attribute
     // We can only infer pre-validated pathnames from a route from exact routes
     const [validPathnameRoutes, otherRoutes] = _.partition(
       routes,
       (route) => route.exact && validPathnames.has(route.path),
     );
-    // If a route is non-strict (non-sensitive to trailing slashes)
+    // Routes are not sensitive to trailing slashes
     // We must pre-validate all possible paths
     validPathnameRoutes.forEach((validPathnameRoute) => {
-      if (!validPathnameRoute.strict) {
-        validPathnames.add(addTrailingSlash(validPathnameRoute.path));
-        validPathnames.add(removeTrailingSlash(validPathnameRoute.path));
-      }
+      validPathnames.add(addTrailingSlash(validPathnameRoute.path));
+      validPathnames.add(removeTrailingSlash(validPathnameRoute.path));
     });
     return otherRoutes;
   })();
 
+  const remainingRouterRoutes = remainingRoutes.map((route) => ({
+    path: getLeafRouteRouterPath(route),
+  }));
+
   function isPathnameMatchingAnyRoute(pathname: string): boolean {
-    if (matchRoutes(remainingRoutes, pathname).length > 0) {
+    if (matchRoutes(remainingRouterRoutes, pathname)) {
       // IMPORTANT: this is an optimization
       // See https://github.com/facebook/docusaurus/issues/9754
       // Large Docusaurus sites have many routes!

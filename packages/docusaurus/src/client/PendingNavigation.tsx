@@ -5,18 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {type ReactNode} from 'react';
-import {Route} from 'react-router-dom';
+import React, {type ReactElement, type ReactNode} from 'react';
 import ClientLifecyclesDispatcher, {
   dispatchLifecycleAction,
 } from './ClientLifecyclesDispatcher';
 import ExecutionEnvironment from './exports/ExecutionEnvironment';
 import preload from './preload';
-import type {Location} from 'history';
+import type {Location} from 'react-router';
 
 type Props = {
   readonly location: Location;
-  readonly children: ReactNode;
+  readonly children: (location: Location) => ReactElement;
 };
 type State = {
   nextRouteHasLoaded: boolean;
@@ -82,13 +81,13 @@ class PendingNavigation extends React.Component<Props, State> {
 
   override render(): ReactNode {
     const {children, location} = this.props;
-    // Use a controlled <Route> to trick all descendants into rendering the old
-    // location.
+    // The children must render routes for this location, so that all
+    // descendants keep rendering the old location while the next one loads.
     return (
       <ClientLifecyclesDispatcher
         previousLocation={this.previousLocation}
         location={location}>
-        <Route location={location} render={() => children} />
+        {children(location)}
       </ClientLifecyclesDispatcher>
     );
   }
