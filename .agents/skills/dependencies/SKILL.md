@@ -12,7 +12,7 @@ description: Add, remove or upgrade npm dependencies in the Docusaurus monorepo.
 
 ## Catalogs
 
-All the monorepo dependencies are declared in the [pnpm catalogs](https://pnpm.io/catalogs) of `pnpm-workspace.yaml`. Packages reference them with the catalog protocol instead of a version range:
+All the monorepo dependencies are declared in the [pnpm catalogs](https://pnpm.io/catalogs) of `pnpm-catalogs.yaml`, which `pnpm-workspace.yaml` [includes](https://pnpm.io/config-includes). Packages reference them with the catalog protocol instead of a version range:
 
 - `"catalog:"`: the default catalog, for dependencies used at runtime by at least one package (`dependencies`, `optionalDependencies` or `peerDependencies`).
 - `"catalog:dev"`: the dev catalog, for dependencies only used as `devDependencies`.

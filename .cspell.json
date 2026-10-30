@@ -35,6 +35,7 @@
     "package.json",
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml",
+    "pnpm-catalogs.yaml",
     "yarn.lock",
     "project-words.txt",
     "__snapshots__",
