@@ -7,9 +7,11 @@
 
 import {useState, useRef, useEffect, type ReactNode} from 'react';
 import clsx from 'clsx';
+import {useLocalPathname} from '@docusaurus/theme-common/internal';
 import NavbarNavLink from '@theme/NavbarItem/NavbarNavLink';
 import NavbarItem from '@theme/NavbarItem';
 import type {Props} from '@theme/NavbarItem/DropdownNavbarItem/Desktop';
+import {containsActiveItems} from '../utils';
 
 export default function DropdownNavbarItemDesktop({
   items,
@@ -20,6 +22,8 @@ export default function DropdownNavbarItemDesktop({
 }: Props): ReactNode {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
+  const localPathname = useLocalPathname();
+  const hasActiveChild = containsActiveItems(items, localPathname);
 
   useEffect(() => {
     const handleClickOutside = (
@@ -60,7 +64,10 @@ export default function DropdownNavbarItemDesktop({
         // See https://github.com/facebook/docusaurus/pull/6003
         // There's probably a better solution though...
         href={props.to ? undefined : '#'}
-        className={clsx('navbar__link', className)}
+        className={clsx('navbar__link', className, {
+          // Highlight parent when a child is active and the dropdown is collapsed
+          'navbar__link--active': hasActiveChild && !showDropdown,
+        })}
         {...props}
         onClick={props.to ? undefined : (e) => e.preventDefault()}
         onKeyDown={(e) => {
