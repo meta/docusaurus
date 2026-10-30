@@ -53,7 +53,7 @@ export default function ThemedComponent({
     // We need to render both components on the server / hydration to avoid:
     // - a flash of wrong theme before hydration
     // - React hydration mismatches
-    // See https://github.com/facebook/docusaurus/pull/3730
+    // See https://github.com/meta/docusaurus/pull/3730
     return ['light', 'dark'];
   }
 

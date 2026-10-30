@@ -34,7 +34,7 @@ export async function getHtmlMinifier(): Promise<HtmlMinifier> {
 async function getSwcMinifier(): Promise<HtmlMinifier> {
   // Import it lazily: not need for the dev server, more performant
   // This also temporarily fix our StackBlitz playground
-  // See https://github.com/facebook/docusaurus/issues/12008
+  // See https://github.com/meta/docusaurus/issues/12008
   // See https://github.com/swc-project/swc/issues/11833
   const {minify: swcHtmlMinifier} = await import('@swc/html');
   return {
@@ -53,7 +53,7 @@ async function getSwcMinifier(): Promise<HtmlMinifier> {
 
           // Keep attribute quotes. WhatsApp and some RDFa parsers ignore
           // og:image when the minifier emits property=og:image without quotes.
-          // See https://github.com/facebook/docusaurus/issues/12368
+          // See https://github.com/meta/docusaurus/issues/12368
           quotes: true,
 
           // Sorting these attributes (class) can lead to React hydration errors

@@ -197,7 +197,7 @@ export async function createBaseConfig({
     devtool: isProd ? undefined : 'eval-cheap-module-source-map',
     resolve: {
       extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
-      symlinks: true, // See https://github.com/facebook/docusaurus/issues/3272
+      symlinks: true, // See https://github.com/meta/docusaurus/issues/3272
       roots: [
         // Allow resolution of url("/fonts/xyz.ttf") by webpack
         // See https://webpack.js.org/configuration/resolve/#resolveroots
@@ -234,7 +234,7 @@ export async function createBaseConfig({
       // - On the server, it's not useful to run it at all
       // - On the client, we compared assets/js before/after and see 0 change
       //   `du -sk js-before js-after` => the JS assets have the exact same size
-      // See also https://github.com/facebook/docusaurus/pull/11176
+      // See also https://github.com/meta/docusaurus/pull/11176
       mergeDuplicateChunks: false,
 
       // Only minimize client bundle in production because server bundle is only
@@ -261,7 +261,7 @@ export async function createBaseConfig({
               // Only create one CSS file to avoid
               // problems with code-split CSS loading in different orders
               // causing inconsistent/non-deterministic styling
-              // See https://github.com/facebook/docusaurus/issues/2006
+              // See https://github.com/meta/docusaurus/issues/2006
               styles: {
                 name: 'styles',
                 type: 'css/mini-extract',
@@ -279,7 +279,7 @@ export async function createBaseConfig({
           // new URL('./img.png', import.meta.url)
           // Relative URLs are needed for SSR: absolute URLs would otherwise
           // be resolved against the server bundle file:// URL
-          // See https://github.com/facebook/docusaurus/pull/12655
+          // See https://github.com/meta/docusaurus/pull/12655
           url: 'relative',
         },
       },
@@ -308,7 +308,7 @@ export async function createBaseConfig({
           use: configureWebpackUtils.getStyleLoaders(isServer, {
             modules: {
               // Using the same CSS Module class pattern in dev/prod on purpose
-              // See https://github.com/facebook/docusaurus/pull/10423
+              // See https://github.com/meta/docusaurus/pull/10423
               localIdentName: `[local]_[contenthash:base64:4]`,
               exportOnlyLocals: isServer,
               // Export CSS module class names compatible with css-loader v6

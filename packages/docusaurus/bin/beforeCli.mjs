@@ -71,13 +71,13 @@ export default async function beforeCli() {
       notifier.check();
     }
   } catch (err) {
-    // Do not stop cli if this fails, see https://github.com/facebook/docusaurus/issues/5400
+    // Do not stop cli if this fails, see https://github.com/meta/docusaurus/issues/5400
     logger.error(err);
   }
 
   /**
    * We don't want to display update message for canary releases.
-   * See https://github.com/facebook/docusaurus/issues/5378
+   * See https://github.com/meta/docusaurus/issues/5378
    * @param {import('update-notifier').UpdateInfo} update
    */
   function ignoreUpdate(update) {

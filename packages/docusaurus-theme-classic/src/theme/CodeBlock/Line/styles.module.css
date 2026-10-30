@@ -6,7 +6,7 @@
  */
 
 /* Intentionally has zero specificity, so that to be able to override
-the background in custom CSS file due bug https://github.com/facebook/docusaurus/issues/3678 */
+the background in custom CSS file due bug https://github.com/meta/docusaurus/issues/3678 */
 :where(:root) {
   --docusaurus-highlighted-code-line-bg: rgb(72 77 91);
 }

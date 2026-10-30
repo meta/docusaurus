@@ -144,7 +144,7 @@ export function createTOCExportNodeAST({
 
   return {
     type: 'mdxjsEsm',
-    value: '', // See https://github.com/facebook/docusaurus/pull/9684#discussion_r1457595181
+    value: '', // See https://github.com/meta/docusaurus/pull/9684#discussion_r1457595181
     data: {
       estree: {
         type: 'Program',
@@ -192,7 +192,7 @@ function stringifyChildren(node: Parent): string {
 function mdxJsxTextElementToHtml(element: MdxJsxTextElement): string {
   const tag = element.name;
 
-  // See https://github.com/facebook/docusaurus/issues/11003#issuecomment-2733925363
+  // See https://github.com/meta/docusaurus/issues/11003#issuecomment-2733925363
   if (tag === 'img') {
     return '';
   }

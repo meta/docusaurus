@@ -152,8 +152,8 @@ async function loadMDXWithCaching({
   // Notably: unused directives warnings are only reported by the client
   // Note: asset requests do not depend on the compiler, emitting assets
   // is controlled by the bundler asset rules
-  // See https://github.com/facebook/docusaurus/issues/10544#issuecomment-2390943794
-  // See https://github.com/facebook/docusaurus/pull/10553
+  // See https://github.com/meta/docusaurus/issues/10544#issuecomment-2390943794
+  // See https://github.com/meta/docusaurus/pull/10553
   if (compilerName === 'client') {
     const promise = loadMDX({
       fileContent,

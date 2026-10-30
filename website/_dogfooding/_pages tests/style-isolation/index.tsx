@@ -160,7 +160,7 @@ export default function StyleIsolation(): ReactNode {
           styles. A workaround for{' '}
           <Link
             target="_blank"
-            href="https://github.com/facebook/docusaurus/issues/6032">
+            href="https://github.com/meta/docusaurus/issues/6032">
             this issue
           </Link>
           .

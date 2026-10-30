@@ -61,7 +61,7 @@ export const DEFAULT_OPTIONS: PluginOptions = {
 // Removed in Docusaurus v4: Google ignores <changefreq> and <priority>,
 // and the same value for all routes does not make sense anyway
 // Users can still emit them per-route with createSitemapItems()
-// See also https://github.com/facebook/docusaurus/issues/2604
+// See also https://github.com/meta/docusaurus/issues/2604
 function removedOptionSchema(option: 'changefreq' | 'priority') {
   return Joi.any()
     .forbidden()

@@ -27,7 +27,7 @@ export default {
         blog: {
           routeBasePath: '/',
           path: 'blog',
-          editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
+          editUrl: 'https://github.com/meta/docusaurus/edit/main/website/',
           postsPerPage: 3,
           feedOptions: {
             type: 'all',

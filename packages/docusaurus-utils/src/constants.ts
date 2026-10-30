@@ -96,7 +96,7 @@ export const DEFAULT_PLUGIN_ID = 'default';
  * Overrides the default max size when the `DOCUSAURUS_ASSET_INLINE_MAX_SIZE`
  * env variable is set.
  *
- * @see https://github.com/facebook/docusaurus/issues/5493
+ * @see https://github.com/meta/docusaurus/issues/5493
  */
 export const ASSET_INLINE_MAX_SIZE: number | undefined = process.env
   .DOCUSAURUS_ASSET_INLINE_MAX_SIZE

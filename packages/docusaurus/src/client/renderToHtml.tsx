@@ -11,7 +11,7 @@ import {PassThrough} from 'node:stream';
 import {text} from 'node:stream/consumers';
 
 // See also https://github.com/facebook/react/issues/31134
-// See also https://github.com/facebook/docusaurus/issues/9985#issuecomment-2396367797
+// See also https://github.com/meta/docusaurus/issues/9985#issuecomment-2396367797
 export async function renderToHtml(app: ReactNode): Promise<string> {
   return new Promise((resolve, reject) => {
     const passThrough = new PassThrough();

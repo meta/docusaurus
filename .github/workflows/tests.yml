@@ -53,18 +53,18 @@ jobs:
         run: pnpm --filter @docusaurus/theme-common removeThemeInternalReexport
       - name: Docusaurus Build
         # We build 2 locales to ensure a localized site doesn't leak memory
-        # See https://github.com/facebook/docusaurus/issues/10944
+        # See https://github.com/meta/docusaurus/issues/10944
         run: pnpm build:website:fast --locale en --locale fr
         env:
           # Our website should build even with limited memory
-          # See https://github.com/facebook/docusaurus/pull/10590
+          # See https://github.com/meta/docusaurus/pull/10590
           NODE_OPTIONS: "--max-old-space-size=${{ matrix.node == '24.21' && 350 || 300 }}"
           DOCUSAURUS_PERF_LOGGER: 'true'
       - name: Docusaurus site CSS order
         run: pnpm --filter website test:css-order
 
       - name: TypeCheck website
-        # see https://github.com/facebook/docusaurus/pull/10486
+        # see https://github.com/meta/docusaurus/pull/10486
         run: pnpm --filter website typecheck
 
       # The TypeScript compiler of the tested version runs with pnpm dlx,
@@ -76,7 +76,7 @@ jobs:
 
       - name: TypeCheck website - max version - Latest
         # For latest TS there are often lib check errors, so we disable it
-        # Details: https://github.com/facebook/docusaurus/pull/10486
+        # Details: https://github.com/meta/docusaurus/pull/10486
         run: |
           pnpm dlx --package=typescript@latest tsc --version
           pnpm dlx --package=typescript@latest tsc --project website/tsconfig.skipLibCheck.json

@@ -15,7 +15,7 @@ import type {Options as PageOptions} from '@docusaurus/plugin-content-pages';
 
 // By default, we don't want to run "git log" commands on i18n sites
 // This makes localized sites build much slower on Netlify
-// See also https://github.com/facebook/docusaurus/issues/11208
+// See also https://github.com/meta/docusaurus/issues/11208
 // TODO duplicated :/
 const showLastUpdate = process.env.DOCUSAURUS_CURRENT_LOCALE === 'en';
 
@@ -44,7 +44,7 @@ export const dogfoodingPluginInstances: PluginConfig[] = [
       id: 'docs-tests',
       routeBasePath: '/tests/docs',
       sidebarPath: '_dogfooding/docs-tests-sidebars.js',
-      editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
+      editUrl: 'https://github.com/meta/docusaurus/edit/main/website/',
       versions: {
         current: {
           noIndex: !isArgosBuild,
@@ -60,7 +60,7 @@ export const dogfoodingPluginInstances: PluginConfig[] = [
         ],
       ],
 
-      // Using a _ prefix to test against an edge case regarding MDX partials: https://github.com/facebook/docusaurus/discussions/5181#discussioncomment-1018079
+      // Using a _ prefix to test against an edge case regarding MDX partials: https://github.com/meta/docusaurus/discussions/5181#discussioncomment-1018079
       path: '_dogfooding/_docs tests',
       showLastUpdateTime: showLastUpdate,
       showLastUpdateAuthor: showLastUpdate,
@@ -88,7 +88,7 @@ export const dogfoodingPluginInstances: PluginConfig[] = [
       id: 'blog-tests',
       path: '_dogfooding/_blog tests',
       routeBasePath: '/tests/blog',
-      editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
+      editUrl: 'https://github.com/meta/docusaurus/edit/main/website/',
       postsPerPage: 3,
       blogSidebarCount: 'ALL',
       feedOptions: {
@@ -124,7 +124,7 @@ export const dogfoodingPluginInstances: PluginConfig[] = [
       showLastUpdateTime: showLastUpdate,
       showLastUpdateAuthor: showLastUpdate,
       editUrl: ({pagesPath}) =>
-        `https://github.com/facebook/docusaurus/edit/main/website/_dogfooding/_pages tests/${pagesPath}`,
+        `https://github.com/meta/docusaurus/edit/main/website/_dogfooding/_pages tests/${pagesPath}`,
     } satisfies PageOptions,
   ],
 

@@ -99,7 +99,7 @@ export function StableVersion(): ReactNode {
 
 function GitBranchLink({branch}: {branch: string}): ReactNode {
   return (
-    <Link to={`https://github.com/facebook/docusaurus/tree/${branch}`}>
+    <Link to={`https://github.com/meta/docusaurus/tree/${branch}`}>
       <code>{branch}</code>
     </Link>
   );

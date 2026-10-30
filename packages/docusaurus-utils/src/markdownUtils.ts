@@ -178,7 +178,7 @@ export function createExcerpt(fileString: string): string | undefined {
     }
 
     // Pre/postprocessing to handle MDX special chars within inline code blocks
-    // See https://github.com/facebook/docusaurus/pull/11821
+    // See https://github.com/meta/docusaurus/pull/11821
     function preprocessLine(str: string) {
       return (
         str

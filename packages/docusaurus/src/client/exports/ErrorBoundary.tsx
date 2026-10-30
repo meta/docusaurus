@@ -49,7 +49,7 @@ export default class ErrorBoundary extends React.Component<Props, State> {
       return fallback(fallbackParams);
     }
 
-    // See https://github.com/facebook/docusaurus/issues/6337#issuecomment-1012913647
+    // See https://github.com/meta/docusaurus/issues/6337#issuecomment-1012913647
     return children ?? null;
   }
 }

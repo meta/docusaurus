@@ -197,7 +197,7 @@ function createProcessorUncached({
 
   if (format === 'md') {
     // This is what permits to embed HTML elements with format 'md'
-    // See https://github.com/facebook/docusaurus/pull/8960
+    // See https://github.com/meta/docusaurus/pull/8960
     // See https://github.com/mdx-js/mdx/pull/2295#issuecomment-1540085960
     const rehypeRawPlugin: MDXPlugin = [
       rehypeRaw,

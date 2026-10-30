@@ -70,7 +70,7 @@ function useContextValue(): ContextValue {
 }
 
 // A component hook wrapper enables conditional rendering
-// See reason here: https://github.com/facebook/docusaurus/issues/10988
+// See reason here: https://github.com/meta/docusaurus/issues/10988
 function OnHistoryPop({
   handler,
 }: {
@@ -93,13 +93,13 @@ export function NavbarMobileSidebarProvider({
         // Most likely firing when using the Android back button (but not only)
         // Important: we can only have a single history blocker at a time
         // That's why this needs to be rendered conditionally
-        // See bug report https://github.com/facebook/docusaurus/issues/10988
+        // See bug report https://github.com/meta/docusaurus/issues/10988
         value.shown && (
           <OnHistoryPop
             handler={() => {
               value.toggle();
               // Prevent pop navigation; seems desirable enough
-              // See https://github.com/facebook/docusaurus/pull/5462#issuecomment-911699846
+              // See https://github.com/meta/docusaurus/pull/5462#issuecomment-911699846
               return false;
             }}
           />

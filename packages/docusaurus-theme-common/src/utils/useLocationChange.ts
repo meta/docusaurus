@@ -13,7 +13,7 @@ import type {Location} from 'history';
 /**
  * Fires an effect when the location changes (which includes hash, query, etc.).
  * Importantly, doesn't fire when there's no previous location: see
- * https://github.com/facebook/docusaurus/pull/6696
+ * https://github.com/meta/docusaurus/pull/6696
  */
 export function useLocationChange(
   onLocationChange: (locationChangeEvent: {

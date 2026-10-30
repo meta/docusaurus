@@ -221,7 +221,7 @@ ${JSON.stringify(routeConfig)}`,
   }
 
   // Because 2 routes with the same path could lead to hash collisions
-  // See https://github.com/facebook/docusaurus/issues/10718#issuecomment-2498516394
+  // See https://github.com/meta/docusaurus/issues/10718#issuecomment-2498516394
   function generateUniqueRouteKey(): {
     routeKey: string;
     routeHash: string;
@@ -246,7 +246,7 @@ ${JSON.stringify(routeConfig)}`,
     throw new Error(
       `Docusaurus couldn't generate a unique hash for route ${routeConfig.path} (level=${level} - index=${index}).
 This is a bug, please report it here!
-https://github.com/facebook/docusaurus/issues/10718`,
+https://github.com/meta/docusaurus/issues/10718`,
     );
   }
 
@@ -358,7 +358,7 @@ type GenerateRouteFilesParams = {
 };
 
 // The generated filename per route must be unique to avoid conflicts
-// See also https://github.com/facebook/docusaurus/issues/10125
+// See also https://github.com/meta/docusaurus/issues/10125
 export function generateRoutePropFilename(route: RouteConfig): string {
   // TODO if possible, we could try to shorten the filename by removing
   //  the plugin routeBasePath prefix from the name

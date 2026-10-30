@@ -34,16 +34,16 @@ export function createToUrl(baseUrl: string, to: string): string {
 // served by host providers!
 // Otherwise it can produce infinite redirect loops!
 //
-// See https://github.com/facebook/docusaurus/issues/5055
-// See https://github.com/facebook/docusaurus/pull/5085
-// See https://github.com/facebook/docusaurus/pull/5102
+// See https://github.com/meta/docusaurus/issues/5055
+// See https://github.com/meta/docusaurus/pull/5085
+// See https://github.com/meta/docusaurus/pull/5102
 function getRedirectFilePath(
   fromPath: string,
   trailingSlash: boolean | undefined, // Now unused, on purpose
 ): string {
   const fileName = path.basename(fromPath);
   const filePath = path.dirname(fromPath);
-  // Edge case for https://github.com/facebook/docusaurus/pull/5102
+  // Edge case for https://github.com/meta/docusaurus/pull/5102
   // If the redirect source path is /xyz, with file /xyz.html
   // We can't write the redirect file at /xyz.html/index.html because for Unix
   // FS, a file/folder can't have the same name "xyz.html"

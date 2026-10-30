@@ -86,7 +86,7 @@ async function toImageRequireNode(
   imagePath: string,
   context: Context,
 ) {
-  // MdxJsxTextElement => see https://github.com/facebook/docusaurus/pull/8288#discussion_r1125871405
+  // MdxJsxTextElement => see https://github.com/meta/docusaurus/pull/8288#discussion_r1125871405
   const jsxNode = node as unknown as MdxJsxTextElement;
   const attributes: MdxJsxTextElement['attributes'] = [];
 
@@ -217,7 +217,7 @@ async function processImageNode(target: Target, context: Context) {
 
   // We decode it first because Node Url.pathname is always encoded
   // while the image file-system path are not.
-  // See https://github.com/facebook/docusaurus/discussions/10720
+  // See https://github.com/meta/docusaurus/discussions/10720
   const decodedPathname = decodeURIComponent(localUrlPath.pathname);
 
   // We try to convert image urls without protocol to images with require calls

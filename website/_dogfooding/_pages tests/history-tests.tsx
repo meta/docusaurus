@@ -9,7 +9,7 @@ import {useHistory} from '@docusaurus/router';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 
-// Test for https://github.com/facebook/docusaurus/issues/10988
+// Test for https://github.com/meta/docusaurus/issues/10988
 function BlockNavigation() {
   const history = useHistory();
   useEffect(() => {

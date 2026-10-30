@@ -3,7 +3,7 @@
   "npmClient": "pnpm",
   "useNx": false,
   "changelog": {
-    "repo": "facebook/docusaurus",
+    "repo": "meta/docusaurus",
     "labels": {
       "pr: breaking change": ":boom: Breaking Change",
       "pr: new feature": ":rocket: New Feature",

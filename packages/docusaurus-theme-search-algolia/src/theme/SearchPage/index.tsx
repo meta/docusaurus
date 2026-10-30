@@ -440,7 +440,7 @@ function SearchPageContent(): ReactNode {
       <Head>
         {/*
          We should not index search pages
-          See https://github.com/facebook/docusaurus/pull/3233
+          See https://github.com/meta/docusaurus/pull/3233
         */}
         <meta property="robots" content="noindex, follow" />
       </Head>

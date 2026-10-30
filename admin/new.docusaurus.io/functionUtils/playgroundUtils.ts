@@ -9,16 +9,16 @@ const CookieName = 'DocusaurusPlaygroundName';
 
 const PlaygroundConfigs = {
   codesandbox:
-    'https://codesandbox.io/p/sandbox/github/facebook/docusaurus/tree/main/examples/classic?file=%2FREADME.md&privacy=public',
+    'https://codesandbox.io/p/sandbox/github/meta/docusaurus/tree/main/examples/classic?file=%2FREADME.md&privacy=public',
   'codesandbox-ts':
-    'https://codesandbox.io/p/sandbox/github/facebook/docusaurus/tree/main/examples/classic-typescript?file=%2FREADME.md&privacy=public',
+    'https://codesandbox.io/p/sandbox/github/meta/docusaurus/tree/main/examples/classic-typescript?file=%2FREADME.md&privacy=public',
 
   // Slow to load
-  // stackblitz: 'https://stackblitz.com/github/facebook/docusaurus/tree/main/examples/classic',
+  // stackblitz: 'https://stackblitz.com/github/meta/docusaurus/tree/main/examples/classic',
   // Dedicated branch: faster load
-  stackblitz: 'https://stackblitz.com/github/facebook/docusaurus/tree/starter',
+  stackblitz: 'https://stackblitz.com/github/meta/docusaurus/tree/starter',
   'stackblitz-ts':
-    'https://stackblitz.com/github/facebook/docusaurus/tree/main/examples/classic-typescript',
+    'https://stackblitz.com/github/meta/docusaurus/tree/main/examples/classic-typescript',
 };
 
 const PlaygroundDocumentationUrl = 'https://docusaurus.io/docs/playground';

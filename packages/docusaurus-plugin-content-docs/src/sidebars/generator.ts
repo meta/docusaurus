@@ -44,7 +44,7 @@ type Dir = {
   [item: string]: Dir | string;
 };
 
-// Comment for this feature: https://github.com/facebook/docusaurus/issues/3464#issuecomment-818670449
+// Comment for this feature: https://github.com/meta/docusaurus/issues/3464#issuecomment-818670449
 export const DefaultSidebarItemsGenerator: SidebarItemsGenerator = ({
   numberPrefixParser,
   isCategoryIndex,

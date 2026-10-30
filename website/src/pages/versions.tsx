@@ -52,7 +52,7 @@ export default function Version(): ReactNode {
 
   function getReleaseNotesUrl(version: GlobalVersion): string {
     if (version.name === '2.x') {
-      return 'https://github.com/facebook/docusaurus/blob/main/CHANGELOG-v2.md';
+      return 'https://github.com/meta/docusaurus/blob/main/CHANGELOG-v2.md';
     }
     return `${repoUrl}/releases/tag/v${version.name}`;
   }

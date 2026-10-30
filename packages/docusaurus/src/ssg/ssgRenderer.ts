@@ -140,7 +140,7 @@ export async function loadSSGRenderer({
 // Some data (modules, metadata.internal) is only useful to create the HTML file
 // It's not useful to aggregate that collected data in memory
 // Keep this data structure as small as possible
-// See https://github.com/facebook/docusaurus/pull/11162
+// See https://github.com/meta/docusaurus/pull/11162
 function reduceCollectedData(
   pageCollectedData: PageCollectedDataInternal,
 ): PageCollectedData {

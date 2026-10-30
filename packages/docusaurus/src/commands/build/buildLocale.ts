@@ -47,7 +47,7 @@ export async function buildLocale({
 }: BuildLocaleParams): Promise<void> {
   // Temporary workaround to unlock the ability to translate the site config
   // We'll remove it if a better official API can be designed
-  // See https://github.com/facebook/docusaurus/issues/4542
+  // See https://github.com/meta/docusaurus/issues/4542
   process.env.DOCUSAURUS_CURRENT_LOCALE = locale;
 
   logger.info`name=${`[${locale}]`} Creating an optimized production build...`;
@@ -97,7 +97,7 @@ export async function buildLocale({
 
           // We also clear website/build dir
           // returns void, no useful result needed before compilation
-          // See also https://github.com/facebook/docusaurus/pull/11037
+          // See also https://github.com/meta/docusaurus/pull/11037
           SkipBundling ? undefined : clearPath(outDir),
         ]),
     );

@@ -8,7 +8,7 @@ import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import SiteStorage from '@generated/site-storage';
 
 // The purpose is to test a migration script for storage namespacing
-// See also: https://github.com/facebook/docusaurus/pull/10121
+// See also: https://github.com/meta/docusaurus/pull/10121
 
 if (ExecutionEnvironment.canUseDOM) {
   const migrateStorageKey = (key: string) => {

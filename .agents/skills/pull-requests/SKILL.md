@@ -1,6 +1,6 @@
 ---
 name: pull-requests
-description: Create, update, check the CI of, or merge a facebook/docusaurus pull request. Use before running `gh pr create`, pushing commits to an existing PR, reading its CI checks or bot comments, or merging it. Docusaurus maintainers only.
+description: Create, update, check the CI of, or merge a meta/docusaurus pull request. Use before running `gh pr create`, pushing commits to an existing PR, reading its CI checks or bot comments, or merging it. Docusaurus maintainers only.
 ---
 
 # Pull requests

@@ -65,7 +65,7 @@ export function createToExtensionsRedirects(
 /**
  * Create new `/path.html/index.html` that redirects to existing an `/path`
  * The filename pattern might look weird but it's on purpose (see
- * https://github.com/facebook/docusaurus/issues/5055)
+ * https://github.com/meta/docusaurus/issues/5055)
  */
 export function createFromExtensionsRedirects(
   paths: string[],

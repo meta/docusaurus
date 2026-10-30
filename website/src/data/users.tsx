@@ -13,7 +13,7 @@ import type {Props as IdealImageProps} from '@theme/IdealImage';
  * ADD YOUR SITE TO THE DOCUSAURUS SHOWCASE
  *
  * Please don't submit a PR yourself: use the Github Discussion instead:
- * https://github.com/facebook/docusaurus/discussions/7826
+ * https://github.com/meta/docusaurus/discussions/7826
  *
  * Instructions for maintainers:
  * - Add the site in the json array below
@@ -30,7 +30,7 @@ import type {Props as IdealImageProps} from '@theme/IdealImage';
  * - Run optimizt manually (see resize image script comment)
  * - Open a PR and check for reported CI errors
  *
- * Example PR: https://github.com/facebook/docusaurus/pull/7620
+ * Example PR: https://github.com/meta/docusaurus/pull/7620
  */
 
 // LIST OF AVAILABLE TAGS

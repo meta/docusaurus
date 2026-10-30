@@ -74,7 +74,7 @@ By default, GitHub Pages runs published files through [Jekyll](https://jekyllrb.
 
 | Name | Description |
 | --- | --- |
-| `USE_SSH` | Set to `true` to use SSH instead of the default HTTPS for the connection to the GitHub repo. If the source repo URL is an SSH URL (e.g. `git@github.com:facebook/docusaurus.git`), `USE_SSH` is inferred to be `true`. |
+| `USE_SSH` | Set to `true` to use SSH instead of the default HTTPS for the connection to the GitHub repo. If the source repo URL is an SSH URL (e.g. `git@github.com:meta/docusaurus.git`), `USE_SSH` is inferred to be `true`. |
 | `GIT_USER` | The username for a GitHub account that **has push access to the deployment repo**. For your own repositories, this will usually be your GitHub username. Required if not using SSH, and ignored otherwise. |
 | `GIT_PASS` | Personal access token of the git user (specified by `GIT_USER`), to facilitate non-interactive deployment (e.g. continuous deployment) |
 | `CURRENT_BRANCH` | The source branch. Usually, the branch will be `main` or `master`, but it could be any branch except for `gh-pages`. If nothing is set for this variable, then the current branch from which `docusaurus deploy` is invoked will be used. |

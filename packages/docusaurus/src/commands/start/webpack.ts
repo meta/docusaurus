@@ -92,7 +92,7 @@ function createDevServerConfig({
     devMiddleware: {
       publicPath:
         siteConfig.future.experimental_router === 'hash' ? 'auto' : baseUrl,
-      // Reduce log verbosity, see https://github.com/facebook/docusaurus/pull/5420#issuecomment-906613105
+      // Reduce log verbosity, see https://github.com/meta/docusaurus/pull/5420#issuecomment-906613105
       stats: 'summary',
     },
     static: siteConfig.staticDirectories.map((dir) => ({

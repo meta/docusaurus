@@ -30,14 +30,14 @@ updates:
       default-days: 5
       semver-major-days: 30
       # +1d compared to pnpm cutoff, otherwise Dependabot opens PRs too early
-      # See https://github.com/facebook/docusaurus/pull/12241
+      # See https://github.com/meta/docusaurus/pull/12241
       semver-minor-days: 8
       semver-patch-days: 8
     # Packages that must be upgraded atomically in a single PR
     # pnpm lint:catalogs checks that the catalog versions of each group match
     groups:
       # Released in lockstep, mixing versions breaks typechecking
-      # See https://github.com/facebook/docusaurus/pull/12634
+      # See https://github.com/meta/docusaurus/pull/12634
       typescript-eslint:
         patterns:
           - 'typescript-eslint'
@@ -70,7 +70,7 @@ updates:
           - '@svgr/*'
       # Babel packages depend on each other
       # Upgrading them independently duplicates Babel packages in the lockfile
-      # See https://github.com/facebook/docusaurus/pull/12704
+      # See https://github.com/meta/docusaurus/pull/12704
       babel:
         patterns:
           - '@babel/*'

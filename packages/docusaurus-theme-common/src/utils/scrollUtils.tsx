@@ -62,7 +62,7 @@ export function ScrollControllerProvider({
  * so as not to toggle Navbar/BackToTop visibility.
  *
  * This API permits to temporarily disable/ignore scroll events. Motivated by
- * https://github.com/facebook/docusaurus/pull/5618
+ * https://github.com/meta/docusaurus/pull/5618
  */
 function useScrollController(): ScrollController {
   const context = useContext(ScrollMonitorContext);
@@ -176,7 +176,7 @@ function useScrollPositionSaver(): UseScrollPositionSaver {
  * the same group upper in the tree, yet to avoid a bad UX, the clicked tab must
  * remain under the user mouse.
  *
- * @see https://github.com/facebook/docusaurus/pull/5618
+ * @see https://github.com/meta/docusaurus/pull/5618
  */
 export function useScrollPositionBlocker(): {
   /**
@@ -220,7 +220,7 @@ export function useScrollPositionBlocker(): {
   useLayoutEffect(() => {
     // Queuing permits to restore scroll position after all useLayoutEffect
     // have run, and yet preserve the sync nature of the scroll restoration
-    // See https://github.com/facebook/docusaurus/issues/8625
+    // See https://github.com/meta/docusaurus/issues/8625
     queueMicrotask(() => nextLayoutEffectCallbackRef.current?.());
   });
 

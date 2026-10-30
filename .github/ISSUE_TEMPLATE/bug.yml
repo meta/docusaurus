@@ -12,7 +12,7 @@ body:
         - Do I have basic ideas about where it goes wrong? (For example, if there are stack traces, are they pointing to one file?)
         - Could it be because of my own mistakes?
 
-        **The GitHub issue tracker is not a support forum**. If you are not sure whether it could be your mistakes, ask in the [Discord server](https://discord.gg/docusaurus) or [GitHub discussions](https://github.com/facebook/docusaurus/discussions) first. The quickest way to verify whether it's a Docusaurus defect is through a **reproduction**, starting with a fresh installation and making changes until the bug is reproduced.
+        **The GitHub issue tracker is not a support forum**. If you are not sure whether it could be your mistakes, ask in the [Discord server](https://discord.gg/docusaurus) or [GitHub discussions](https://github.com/meta/docusaurus/discussions) first. The quickest way to verify whether it's a Docusaurus defect is through a **reproduction**, starting with a fresh installation and making changes until the bug is reproduced.
 
         Make the bug obvious. Ideally, we should be able to understand it without running any code.
 
@@ -26,7 +26,7 @@ body:
     attributes:
       label: Have you read the Contributing Guidelines on issues?
       options:
-        - label: I have read the [Contributing Guidelines on issues](https://github.com/facebook/docusaurus/blob/main/CONTRIBUTING.md#issues).
+        - label: I have read the [Contributing Guidelines on issues](https://github.com/meta/docusaurus/blob/main/CONTRIBUTING.md#issues).
           required: true
 
   - type: checkboxes

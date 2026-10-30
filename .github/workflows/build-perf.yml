@@ -64,7 +64,7 @@ jobs:
           # Always rebuild packages, including for the base branch
           install-script: bash -c "pnpm install --frozen-lockfile --ignore-scripts && pnpm build:packages"
           build-script: build:website:fast
-          clean-script: clear:website # see https://github.com/facebook/docusaurus/pull/6838
+          clean-script: clear:website # see https://github.com/meta/docusaurus/pull/6838
           pattern: '{website/build/assets/js/main*js,website/build/assets/js/runtime~main*js,website/build/assets/css/styles*css,website/.docusaurus/globalData.json,website/.docusaurus/registry.js,website/.docusaurus/routes.js,website/.docusaurus/routesChunkNames.json,website/.docusaurus/site-metadata.json,website/.docusaurus/codeTranslations.json,website/.docusaurus/i18n.json,website/.docusaurus/docusaurus.config.mjs,website/build/index.html,website/build/docs.html,website/build/docs/**/*.html,website/build/blog.html,website/build/blog/**/*.html}'
           # HTML files: exclude versioned docs pages, tags pages, html redirect files
           exclude: '{website/build/docs/?.?.?/**/*.html,website/build/docs/next/**/*.html,website/build/blog/tags/**/*.html,**/*.html.html}'

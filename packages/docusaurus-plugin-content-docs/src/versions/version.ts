@@ -136,7 +136,7 @@ export function getVersionBadge({
 }: VersionContext): VersionMetadata['badge'] {
   // If site is not versioned or only one version is included
   // we don't show the version badge by default
-  // See https://github.com/facebook/docusaurus/issues/3362
+  // See https://github.com/meta/docusaurus/issues/3362
   const defaultVersionBadge = versionNames.length !== 1;
   return options.versions[versionName]?.badge ?? defaultVersionBadge;
 }

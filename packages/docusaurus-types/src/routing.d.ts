@@ -44,7 +44,7 @@ export type RouteModules = {
  *
  * Some plugins might use this data to provide additional features.
  * This is the case of the sitemap plugin to provide support for "lastmod".
- * See also: https://github.com/facebook/docusaurus/pull/9954
+ * See also: https://github.com/meta/docusaurus/pull/9954
  */
 export type RouteMetadata = {
   /**
@@ -59,7 +59,7 @@ export type RouteMetadata = {
    * but can also be provided through other means (usually front matter).
    *
    * This has notably been introduced for adding "lastmod" support to the
-   * sitemap plugin, see https://github.com/facebook/docusaurus/pull/9954
+   * sitemap plugin, see https://github.com/meta/docusaurus/pull/9954
    *
    * `undefined` means we haven't tried to compute the value for this route.
    * This is usually the case for routes created by third-party plugins that do
@@ -172,7 +172,7 @@ export type ChunkNames = {
  * Chunk keys are routes with a hash, because 2 routes can conflict with each
  * other if they have the same path, e.g.: parent=/docs, child=/docs
  *
- * @see https://github.com/facebook/docusaurus/issues/2917
+ * @see https://github.com/meta/docusaurus/issues/2917
  */
 export type RouteChunkNames = {
   [routePathHashed: string]: ChunkNames;

@@ -131,7 +131,7 @@ export default function Tabs(props: Props): ReactNode {
     <TabsProvider
       value={value}
       // Remount tabs after hydration
-      // Temporary fix for https://github.com/facebook/docusaurus/issues/5653
+      // Temporary fix for https://github.com/meta/docusaurus/issues/5653
       key={String(isBrowser)}>
       <TabsContainer className={props.className}>
         {sanitizeTabsChildren(props.children)}

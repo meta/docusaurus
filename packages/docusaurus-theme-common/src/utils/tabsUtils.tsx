@@ -256,7 +256,7 @@ export function useTabsContextValue(props: TabsProps): TabsContextValue {
     return value;
   })();
   // Sync in a layout/sync effect is important, for useScrollPositionBlocker
-  // See https://github.com/facebook/docusaurus/issues/8625
+  // See https://github.com/meta/docusaurus/issues/8625
   useLayoutEffect(() => {
     if (valueToSync) {
       setSelectedValue(valueToSync);

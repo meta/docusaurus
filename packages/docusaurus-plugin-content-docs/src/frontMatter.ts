@@ -23,13 +23,13 @@ import type {DocFrontMatter} from '@docusaurus/plugin-content-docs';
 // We use default values in code instead
 const DocFrontMatterSchema = Joi.object<DocFrontMatter>({
   id: Joi.string(),
-  // See https://github.com/facebook/docusaurus/issues/4591#issuecomment-822372398
+  // See https://github.com/meta/docusaurus/issues/4591#issuecomment-822372398
   title: Joi.string().allow(''),
   hide_title: Joi.boolean(),
   hide_table_of_contents: Joi.boolean(),
   keywords: Joi.array().items(Joi.string().required()),
   image: URISchema,
-  // See https://github.com/facebook/docusaurus/issues/4591#issuecomment-822372398
+  // See https://github.com/meta/docusaurus/issues/4591#issuecomment-822372398
   description: Joi.string().allow(''),
   slug: Joi.string(),
   sidebar_key: Joi.string(),

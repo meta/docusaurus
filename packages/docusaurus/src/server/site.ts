@@ -133,7 +133,7 @@ export async function loadContext(
   // The site baseUrl should be 100% decoupled from the file system output shape
   // We added this logic to restore v3 retro-compatibility, because by default
   // Docusaurus always wrote to ./build for sites having a baseUrl
-  // See also https://github.com/facebook/docusaurus/issues/11433
+  // See also https://github.com/meta/docusaurus/issues/11433
   // This logic assumes the locale baseUrl will start with the site baseUrl
   // which is the case if an explicit locale baseUrl is not provided
   // but in practice a custom locale baseUrl could be anything now

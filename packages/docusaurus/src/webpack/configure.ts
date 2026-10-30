@@ -171,7 +171,7 @@ export function executePluginsConfigureWebpack({
   // Step2 - For client code, configure PostCSS
   // The order matters! We want to configure PostCSS on loaders
   // that were potentially added by configureWebpack
-  // See https://github.com/facebook/docusaurus/issues/10106
+  // See https://github.com/meta/docusaurus/issues/10106
   // Note: it's useless to configure postCSS for the server
   if (!isServer) {
     config = executePluginsConfigurePostCss({

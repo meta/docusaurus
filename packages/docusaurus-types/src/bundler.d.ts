@@ -10,7 +10,7 @@ import type webpack from 'webpack';
 // We use Webpack and Rspack interchangeably because most Rspack APIs are
 // compatible with Webpack. So it's ok to use Webpack types for Rspack too.
 // When compatibility doesn't work, use "CurrentBundler.name"
-// See https://github.com/facebook/docusaurus/pull/10402
+// See https://github.com/meta/docusaurus/pull/10402
 export type CurrentBundler = {
   name: 'webpack' | 'rspack';
   instance: typeof webpack;

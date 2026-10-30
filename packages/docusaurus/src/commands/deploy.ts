@@ -29,7 +29,7 @@ function obfuscateGitPass(str: string) {
 const debugMode = !!process.env.DOCUSAURUS_DEPLOY_DEBUG;
 
 // Log executed commands so that user can figure out mistakes on his own
-// for example: https://github.com/facebook/docusaurus/issues/3875
+// for example: https://github.com/meta/docusaurus/issues/3875
 async function exec(
   file: string,
   args: string[],

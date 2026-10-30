@@ -35,7 +35,7 @@ function dispatchChangeEvent({
   // If we set multiple times the same storage value, events should not be fired
   // The native events behave this way, so our manual event dispatch should
   // rather behave exactly the same. Not doing so might create infinite loops.
-  // See https://github.com/facebook/docusaurus/issues/8594
+  // See https://github.com/meta/docusaurus/issues/8594
   if (oldValue === newValue) {
     return;
   }
@@ -57,7 +57,7 @@ function dispatchChangeEvent({
  * Will return `null` if browser storage is unavailable (like running Docusaurus
  * in an iframe). This should NOT be called in SSR.
  *
- * @see https://github.com/facebook/docusaurus/pull/4501
+ * @see https://github.com/meta/docusaurus/pull/4501
  */
 function getBrowserStorage(
   storageType: StorageType = DefaultStorageType,
@@ -134,7 +134,7 @@ Please only call storage APIs in effects and event handlers.`);
  * The API is fail-safe, since usage of browser storage should be considered
  * unreliable. Local storage might simply be unavailable (iframe + browser
  * security) or operations might fail individually. Please assume that using
- * this API can be a no-op. See also https://github.com/facebook/docusaurus/issues/6036
+ * this API can be a no-op. See also https://github.com/meta/docusaurus/issues/6036
  */
 export function createStorageSlot(
   keyInput: string,

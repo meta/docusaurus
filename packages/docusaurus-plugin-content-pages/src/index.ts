@@ -55,7 +55,7 @@ export default function pluginContentPages(
 
     return createMDXLoaderRule({
       include: contentDirs
-        // Trailing slash is important, see https://github.com/facebook/docusaurus/pull/3970
+        // Trailing slash is important, see https://github.com/meta/docusaurus/pull/3970
         .map(addTrailingPathSeparator),
       options: {
         admonitions,

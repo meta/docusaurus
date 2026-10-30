@@ -35,7 +35,7 @@ export type PageCollectedMetadata = {
 };
 
 // This data structure must remain serializable!
-// See why: https://github.com/facebook/docusaurus/pull/10826
+// See why: https://github.com/meta/docusaurus/pull/10826
 export type PageCollectedMetadataInternal = PageCollectedMetadata & {
   internal: RouteBuildMetadataInternal;
 };
@@ -48,7 +48,7 @@ export type PageCollectedDataInternal = {
 };
 
 // Keep this data structure as small as possible
-// See https://github.com/facebook/docusaurus/pull/11162
+// See https://github.com/meta/docusaurus/pull/11162
 export type PageCollectedData = {
   metadata: PageCollectedMetadata;
   links: string[];
@@ -56,7 +56,7 @@ export type PageCollectedData = {
 };
 
 // Keep this data structure as small as possible
-// See https://github.com/facebook/docusaurus/pull/11162
+// See https://github.com/meta/docusaurus/pull/11162
 export type SiteCollectedData = {
   [pathname: string]: PageCollectedData;
 };

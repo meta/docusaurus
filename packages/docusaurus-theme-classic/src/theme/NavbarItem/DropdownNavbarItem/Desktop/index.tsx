@@ -57,7 +57,7 @@ export default function DropdownNavbarItemDesktop({
         aria-expanded={showDropdown}
         role="button"
         // # hash permits to make the <a> tag focusable in case no link target
-        // See https://github.com/facebook/docusaurus/pull/6003
+        // See https://github.com/meta/docusaurus/pull/6003
         // There's probably a better solution though...
         href={props.to ? undefined : '#'}
         className={clsx('navbar__link', className)}

@@ -75,7 +75,7 @@ https://github.com/mui-org/material-ui/blob/e724d98eba018e55e1a684236a2037e24bcf
 function getAutoHeightDuration(height: number) {
   if (prefersReducedMotion()) {
     // Not using 0 because it prevents onTransitionEnd to fire and bubble up :/
-    // See https://github.com/facebook/docusaurus/pull/8906
+    // See https://github.com/meta/docusaurus/pull/8906
     return 1;
   }
   const constant = height / 36;
@@ -234,7 +234,7 @@ type CollapsibleProps = CollapsibleBaseProps & {
    * Delay rendering of the content till first expansion. Marked as required to
    * force us to think if content should be server-rendered or not. This has
    * perf impact since it reduces html file sizes, but could undermine SEO.
-   * @see https://github.com/facebook/docusaurus/issues/4753
+   * @see https://github.com/meta/docusaurus/issues/4753
    */
   lazy: boolean;
 };

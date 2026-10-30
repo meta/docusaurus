@@ -15,7 +15,7 @@ NODE_OPTIONS = "--max_old_space_size=8192"
 
 # Note, we run build:packages and git backfill in parallel to speed up builds
 # We run "git backfill" here to ensure the full Git history is available fast
-# See https://github.com/facebook/docusaurus/pull/11553
+# See https://github.com/meta/docusaurus/pull/11553
 # Only git backfill is backgrounded; build:packages runs in the foreground so
 # && catches its failure, and "wait $!" propagates the backfill's exit code
 # (bare "wait" always exits 0, which would swallow failures)

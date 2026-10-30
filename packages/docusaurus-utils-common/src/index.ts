@@ -6,7 +6,7 @@
  */
 
 // __ prefix allows search crawlers (Algolia/DocSearch) to ignore anchors
-// https://github.com/facebook/docusaurus/issues/8883#issuecomment-1516328368
+// https://github.com/meta/docusaurus/issues/8883#issuecomment-1516328368
 export const blogPostContainerID = '__blog-post-container';
 
 export {

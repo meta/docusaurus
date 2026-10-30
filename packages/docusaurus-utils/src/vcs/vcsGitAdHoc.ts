@@ -13,7 +13,7 @@ import type {VcsConfig} from '@docusaurus/types';
  * This is the default/historical Docusaurus Git VCS implementation.
  * Unfortunately, it is a major bottleneck for large sites/repositories.
  *
- * See also https://github.com/facebook/docusaurus/issues/11208
+ * See also https://github.com/meta/docusaurus/issues/11208
  */
 export const VcsGitAdHoc: VcsConfig = {
   initialize: () => {

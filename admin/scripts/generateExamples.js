@@ -14,7 +14,7 @@ import {readJSON} from '@docusaurus/fs';
 /**
  * Generate one example per init template
  * We use those generated examples as CodeSandbox projects
- * See https://github.com/facebook/docusaurus/issues/1699
+ * See https://github.com/meta/docusaurus/issues/1699
  * @param {string} template
  */
 async function generateTemplateExample(template) {
@@ -153,7 +153,7 @@ async function updateStarters() {
 
   console.log('');
 
-  console.log('Updating https://github.com/facebook/docusaurus/tree/starter');
+  console.log('Updating https://github.com/meta/docusaurus/tree/starter');
   await forcePushGitSubtree({
     subfolder: 'examples/classic',
     remote: 'origin',

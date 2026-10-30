@@ -9,7 +9,7 @@ import {useState, useCallback, useEffect, useRef} from 'react';
 import {useMutationObserver} from './useMutationObserver';
 
 // Callback fires when the "hidden" attribute of a tabpanel changes
-// See https://github.com/facebook/docusaurus/pull/7485
+// See https://github.com/meta/docusaurus/pull/7485
 function useTabBecameVisibleCallback(
   codeBlockRef: RefObject<HTMLPreElement | null>,
   callback: () => void,

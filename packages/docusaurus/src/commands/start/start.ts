@@ -31,7 +31,7 @@ async function doStart(
   logger.info('Starting the development server...');
   // Temporary workaround to unlock the ability to translate the site config
   // We'll remove it if a better official API can be designed
-  // See https://github.com/facebook/docusaurus/issues/4542
+  // See https://github.com/meta/docusaurus/issues/4542
   process.env.DOCUSAURUS_CURRENT_LOCALE = cliOptions.locale;
 
   const reloadableSite = await createReloadableSite({siteDirParam, cliOptions});

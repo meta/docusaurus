@@ -78,8 +78,8 @@ export async function loadPluginVersion(
 
 /**
  * We want all `@docusaurus/*` packages to have the exact same version!
- * @see https://github.com/facebook/docusaurus/issues/3371
- * @see https://github.com/facebook/docusaurus/pull/3386
+ * @see https://github.com/meta/docusaurus/issues/3371
+ * @see https://github.com/meta/docusaurus/pull/3386
  */
 function checkDocusaurusPackagesVersion(siteMetadata: SiteMetadata) {
   const {docusaurusVersion} = siteMetadata;

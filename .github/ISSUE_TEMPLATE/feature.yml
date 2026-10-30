@@ -15,7 +15,7 @@ body:
     attributes:
       label: Have you read the Contributing Guidelines on issues?
       options:
-        - label: I have read the [Contributing Guidelines on issues](https://github.com/facebook/docusaurus/blob/main/CONTRIBUTING.md#issues).
+        - label: I have read the [Contributing Guidelines on issues](https://github.com/meta/docusaurus/blob/main/CONTRIBUTING.md#issues).
           required: true
 
   - type: textarea

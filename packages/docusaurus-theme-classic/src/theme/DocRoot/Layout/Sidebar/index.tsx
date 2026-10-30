@@ -18,7 +18,7 @@ import styles from './styles.module.css';
 
 // Reset sidebar state when sidebar changes
 // Use React key to unmount/remount the children
-// See https://github.com/facebook/docusaurus/issues/3414
+// See https://github.com/meta/docusaurus/issues/3414
 function ResetOnSidebarChange({children}: {children: ReactNode}) {
   const sidebar = useDocsSidebar();
   return (
@@ -41,7 +41,7 @@ export default function DocRootLayoutSidebar({
       setHiddenSidebar(false);
     }
     // onTransitionEnd won't fire when sidebar animation is disabled
-    // fixes https://github.com/facebook/docusaurus/issues/8918
+    // fixes https://github.com/meta/docusaurus/issues/8918
     if (!hiddenSidebar && prefersReducedMotion()) {
       setHiddenSidebar(true);
     }

@@ -33,7 +33,7 @@ function getBreadcrumbsStructuredData({
     '@type': 'BreadcrumbList',
     itemListElement: breadcrumbs
       // We filter breadcrumb items without links, they are not allowed
-      // See also https://github.com/facebook/docusaurus/issues/9319#issuecomment-2643560845
+      // See also https://github.com/meta/docusaurus/issues/9319#issuecomment-2643560845
       .filter((breadcrumb) => breadcrumb.href)
       .map((breadcrumb, index) => ({
         '@type': 'ListItem',

@@ -13,7 +13,7 @@ import styles from './anchorUtils.module.css';
  * we do not navigate to an anchor that will appear below the navbar.
  * This happens in particular for MDX headings and footnotes.
  *
- * See https://github.com/facebook/docusaurus/issues/11232
+ * See https://github.com/meta/docusaurus/issues/11232
  * See also headings case https://x.com/JoshWComeau/status/1332015868725891076
  */
 export function useAnchorTargetClassName(

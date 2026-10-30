@@ -12,7 +12,7 @@ import {usePrismTheme} from '@docusaurus/theme-common';
 import type {Props} from '@theme/Playground/Provider';
 
 // this should rather be a stable function
-// see https://github.com/facebook/docusaurus/issues/9630#issuecomment-1855682643
+// see https://github.com/meta/docusaurus/issues/9630#issuecomment-1855682643
 const DEFAULT_TRANSFORM_CODE = (code: string) => `${code};`;
 
 function LiveProviderComponent({code, children, ...props}: Props): ReactNode {

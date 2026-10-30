@@ -96,7 +96,7 @@ function validateCollectedRedirects(
     // We now allow "to" to contain any string
     // We only do this "broken redirect" check from to that looks like pathnames
     // note: we allow querystring/anchors
-    // See https://github.com/facebook/docusaurus/issues/6845
+    // See https://github.com/meta/docusaurus/issues/6845
     .map((to) => {
       if (to.startsWith('/')) {
         const url = URL.parse(to, 'https://example.com');

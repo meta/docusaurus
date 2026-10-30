@@ -137,7 +137,7 @@ function createAssetRuleUtils({isServer}: {isServer: boolean}): AssetRuleUtils {
 
     /**
      * The SVG rule is isolated on purpose: our SVGR plugin enhances it
-     * See https://github.com/facebook/docusaurus/pull/10820
+     * See https://github.com/meta/docusaurus/pull/10820
      */
     svgs: () => ({
       test: /\.svg$/i,

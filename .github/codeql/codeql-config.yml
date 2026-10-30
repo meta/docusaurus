@@ -8,11 +8,11 @@ paths-ignore:
 # The inputs (files, CLI args) are usually controlled locally
 query-filters:
   # Many false positives
-  # Example: https://github.com/facebook/docusaurus/security/code-scanning/168
+  # Example: https://github.com/meta/docusaurus/security/code-scanning/168
   - exclude:
       id: js/path-injection
   # Many false positives
-  # Example: https://github.com/facebook/docusaurus/security/code-scanning/150
+  # Example: https://github.com/meta/docusaurus/security/code-scanning/150
   - exclude:
       id: js/polynomial-redos
   # - exclude:

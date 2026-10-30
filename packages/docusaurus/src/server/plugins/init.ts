@@ -144,7 +144,7 @@ export async function initPluginsConfigs(
 
     // Returning null has been explicitly allowed
     // It's a way for plugins to self-disable depending on context
-    // See https://github.com/facebook/docusaurus/pull/10286
+    // See https://github.com/meta/docusaurus/pull/10286
     if (pluginInstance === null) {
       return {config: normalizedPluginConfig, plugin: null};
     }

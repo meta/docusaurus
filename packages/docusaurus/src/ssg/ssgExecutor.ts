@@ -122,8 +122,8 @@ async function createSSGExecutor({
 
         // WORKER MEMORY MANAGEMENT
         // Allows containing SSG memory leaks with a thread recycling workaround
-        // See https://github.com/facebook/docusaurus/pull/11166
-        // See https://github.com/facebook/docusaurus/issues/11161
+        // See https://github.com/meta/docusaurus/pull/11166
+        // See https://github.com/meta/docusaurus/issues/11161
         maxMemoryLimitBeforeRecycle: SSGWorkerThreadRecyclerMaxMemory,
         resourceLimits: {
           // For some reason I can't figure out how to limit memory on a worker

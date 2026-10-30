@@ -34,7 +34,7 @@ export function useHideableNavbar(hideOnScroll: boolean): {
     }
 
     // Needed mostly for handling rubber band scrolling.
-    // See https://github.com/facebook/docusaurus/pull/5721
+    // See https://github.com/meta/docusaurus/pull/5721
     if (scrollTop < navbarHeight.current) {
       setIsNavbarVisible(true);
       return;
@@ -62,7 +62,7 @@ export function useHideableNavbar(hideOnScroll: boolean): {
       return;
     }
 
-    // See https://github.com/facebook/docusaurus/pull/8059#issuecomment-1239639480
+    // See https://github.com/meta/docusaurus/pull/8059#issuecomment-1239639480
     const currentHash = locationChangeEvent.location.hash;
     const currentHashAnchor = currentHash
       ? document.getElementById(currentHash.substring(1))

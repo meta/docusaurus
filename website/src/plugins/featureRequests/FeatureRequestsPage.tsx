@@ -18,8 +18,8 @@ const BOARD_TOKEN = '054e0e53-d951-b14c-7e74-9eb8f9ed2f91';
 // TODO useColorMode() hook is not reliable on first call
 //  To ensure we always init Canny with the correct theme, we prefer to delay
 //  initialization until we know the theme is correct
-//  See also https://github.com/facebook/docusaurus/issues/7986
-//  See also https://github.com/facebook/docusaurus/pull/11224
+//  See also https://github.com/meta/docusaurus/issues/7986
+//  See also https://github.com/meta/docusaurus/pull/11224
 function useIsColorModeReliable() {
   const [isColorModeReliable, setIsColorModeReliable] = useState(false);
   useEffect(() => {

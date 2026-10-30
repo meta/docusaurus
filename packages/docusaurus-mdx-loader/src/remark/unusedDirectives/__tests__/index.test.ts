@@ -79,7 +79,7 @@ describe('directives remark plugin - client compiler', () => {
           .rejects.toThrowErrorMatchingInlineSnapshot(`
           [Error: Docusaurus found 1 unused Markdown directives in file "packages/docusaurus-mdx-loader/src/remark/unusedDirectives/__tests__/__fixtures__/containerDirectives.md"
           - :::unusedDirective (7:1)
-          Your content might render in an unexpected way. Visit https://github.com/facebook/docusaurus/pull/9394 to find out why and how to fix it.
+          Your content might render in an unexpected way. Visit https://github.com/meta/docusaurus/pull/9394 to find out why and how to fix it.
           To ignore this error, use the \`siteConfig.markdown.hooks.onUnusedMarkdownDirectives\` option.]
         `);
       });
@@ -88,7 +88,7 @@ describe('directives remark plugin - client compiler', () => {
           .rejects.toThrowErrorMatchingInlineSnapshot(`
           [Error: Docusaurus found 1 unused Markdown directives in file "packages/docusaurus-mdx-loader/src/remark/unusedDirectives/__tests__/__fixtures__/leafDirectives.md"
           - ::unusedLeafDirective (1:1)
-          Your content might render in an unexpected way. Visit https://github.com/facebook/docusaurus/pull/9394 to find out why and how to fix it.
+          Your content might render in an unexpected way. Visit https://github.com/meta/docusaurus/pull/9394 to find out why and how to fix it.
           To ignore this error, use the \`siteConfig.markdown.hooks.onUnusedMarkdownDirectives\` option.]
         `);
       });
@@ -98,7 +98,7 @@ describe('directives remark plugin - client compiler', () => {
           [Error: Docusaurus found 2 unused Markdown directives in file "packages/docusaurus-mdx-loader/src/remark/unusedDirectives/__tests__/__fixtures__/textDirectives.md"
           - :textDirective3 (9:7)
           - :textDirective4 (11:7)
-          Your content might render in an unexpected way. Visit https://github.com/facebook/docusaurus/pull/9394 to find out why and how to fix it.
+          Your content might render in an unexpected way. Visit https://github.com/meta/docusaurus/pull/9394 to find out why and how to fix it.
           To ignore this error, use the \`siteConfig.markdown.hooks.onUnusedMarkdownDirectives\` option.]
         `);
       });
@@ -107,7 +107,7 @@ describe('directives remark plugin - client compiler', () => {
           .rejects.toThrowErrorMatchingInlineSnapshot(`
           [Error: Docusaurus found 1 unused Markdown directives in file "packages/docusaurus-mdx-loader/src/remark/unusedDirectives/__tests__/__fixtures__/cautionAdmonition.md"
           - :::caution (7:1) - the :::caution admonition has been removed in Docusaurus v4, use :::warning instead
-          Your content might render in an unexpected way. Visit https://github.com/facebook/docusaurus/pull/9394 to find out why and how to fix it.
+          Your content might render in an unexpected way. Visit https://github.com/meta/docusaurus/pull/9394 to find out why and how to fix it.
           To ignore this error, use the \`siteConfig.markdown.hooks.onUnusedMarkdownDirectives\` option.]
         `);
       });
@@ -119,7 +119,7 @@ describe('directives remark plugin - client compiler', () => {
           - :::secondary (7:1) - the :::secondary admonition has been removed in Docusaurus v4, use :::note instead
           - :::success (13:1) - the :::success admonition has been removed in Docusaurus v4, use :::tip instead
           - :::important (19:1) - the :::important admonition has been removed in Docusaurus v4, use :::info instead
-          Your content might render in an unexpected way. Visit https://github.com/facebook/docusaurus/pull/9394 to find out why and how to fix it.
+          Your content might render in an unexpected way. Visit https://github.com/meta/docusaurus/pull/9394 to find out why and how to fix it.
           To ignore this error, use the \`siteConfig.markdown.hooks.onUnusedMarkdownDirectives\` option.]
         `);
       });

@@ -18,7 +18,7 @@ export function codeTranslationLocalesToTry(locale: string): string[] {
   const intlLocale = new Intl.Locale(locale);
   // If locale is just a simple language like "pt", we want to fallback to
   // "pt-BR" (not "pt-PT"!)
-  // See https://github.com/facebook/docusaurus/pull/4536#issuecomment-810088783
+  // See https://github.com/meta/docusaurus/pull/4536#issuecomment-810088783
   const maximizedLocale = intlLocale.maximize(); // "pt-Latn-BR"
   return [
     // May be "zh", "zh-CN", "zh-Hans", "zh-cn", or anything: very likely to be

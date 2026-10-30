@@ -18,4 +18,4 @@ yarn add @docusaurus/theme-mermaid
 $ npm swizzle @docusaurus/theme-mermaid [component name]
 ```
 
-All components used by this theme can be found [here](https://github.com/facebook/docusaurus/tree/main/packages/docusaurus-theme-mermaid/src/theme)
+All components used by this theme can be found [here](https://github.com/meta/docusaurus/tree/main/packages/docusaurus-theme-mermaid/src/theme)

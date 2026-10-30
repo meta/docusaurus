@@ -56,7 +56,7 @@ const ruleFunction: Rule<boolean, SecondaryOption> =
 ruleFunction.ruleName = ruleName;
 ruleFunction.messages = messages;
 ruleFunction.meta = {
-  url: 'https://github.com/facebook/docusaurus/tree/main/packages/stylelint-copyright',
+  url: 'https://github.com/meta/docusaurus/tree/main/packages/stylelint-copyright',
   fixable: true,
   deprecated: false,
 };

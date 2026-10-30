@@ -17,4 +17,4 @@ After updating the theme code, you can "synchronize" the translations by running
 pnpm --filter @docusaurus/theme-translations run update
 ```
 
-Then, ask contributors to translate the newly added labels on this [issue](https://github.com/facebook/docusaurus/issues/3526)
+Then, ask contributors to translate the newly added labels on this [issue](https://github.com/meta/docusaurus/issues/3526)

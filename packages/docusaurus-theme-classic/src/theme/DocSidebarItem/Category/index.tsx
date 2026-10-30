@@ -78,7 +78,7 @@ function useAutoExpandActiveCategory({
  * the category even when JS fails to load, is delayed or simply disabled
  * React hydration becomes an optional progressive enhancement
  * see https://github.com/facebookincubator/infima/issues/36#issuecomment-772543188
- * see https://github.com/facebook/docusaurus/issues/3030
+ * see https://github.com/meta/docusaurus/issues/3030
  */
 function useCategoryHrefWithSSRFallback(
   item: Props['item'],
@@ -245,13 +245,13 @@ function DocSidebarItemCategoryCollapsible({
         // When already on the category's page, we collapse it
         // We don't use "isActive" because it would collapse the
         // category even when we browse a children element
-        // See https://github.com/facebook/docusaurus/issues/11213
+        // See https://github.com/meta/docusaurus/issues/11213
         if (isCurrentPage) {
           e.preventDefault();
           updateCollapsed();
         } else {
           // When navigating to a new category, we always expand
-          // see https://github.com/facebook/docusaurus/issues/10854#issuecomment-2609616182
+          // see https://github.com/meta/docusaurus/issues/10854#issuecomment-2609616182
           updateCollapsed(false);
         }
       } else {

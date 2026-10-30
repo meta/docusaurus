@@ -116,7 +116,7 @@ function pathnameToArgosName(pathname: string): string {
   return pathname;
 }
 
-// See https://github.com/facebook/docusaurus/pull/9256
+// See https://github.com/meta/docusaurus/pull/9256
 // Docusaurus adds a <html data-has-hydrated="true">
 function waitForDocusaurusHydration() {
   return document.documentElement.dataset.hasHydrated === 'true';

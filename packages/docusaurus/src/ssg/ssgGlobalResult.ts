@@ -19,7 +19,7 @@ export type SSGGlobalResult = {
 
 function printSSGWarnings(results: SSGSuccess[]): void {
   // Escape hatch because SWC is quite aggressive to report errors
-  // See https://github.com/facebook/docusaurus/pull/10554
+  // See https://github.com/meta/docusaurus/pull/10554
   // See https://github.com/swc-project/swc/discussions/9616#discussioncomment-10846201
   if (process.env.DOCUSAURUS_IGNORE_SSG_WARNINGS === 'true') {
     return;
@@ -39,7 +39,7 @@ function printSSGWarnings(results: SSGSuccess[]): void {
       resultsWithWarnings.length
     } path${resultsWithWarnings.length ? 's' : ''}
 This is non-critical and can be disabled with DOCUSAURUS_IGNORE_SSG_WARNINGS=true
-Troubleshooting guide: https://github.com/facebook/docusaurus/discussions/10580
+Troubleshooting guide: https://github.com/meta/docusaurus/discussions/10580
 
 - ${resultsWithWarnings
       .map(

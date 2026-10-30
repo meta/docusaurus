@@ -14,7 +14,7 @@ import {type PackageManager} from './constants.js';
  * We use a simple kebab-case-like conversion
  * It's not perfect, but good enough
  * We don't want to depend on lodash in this package
- * See https://github.com/facebook/docusaurus/pull/11653
+ * See https://github.com/meta/docusaurus/pull/11653
  * @param siteName
  */
 export function siteNameToPackageName(siteName: string): string {

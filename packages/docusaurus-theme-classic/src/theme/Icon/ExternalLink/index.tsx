@@ -12,7 +12,7 @@ import type {Props} from '@theme/Icon/ExternalLink';
 import styles from './styles.module.css';
 
 // References symbol in docusaurus-theme-classic/src/inlineSvgSprites.ts
-// See why: https://github.com/facebook/docusaurus/issues/5865
+// See why: https://github.com/meta/docusaurus/issues/5865
 const svgSprite = '#theme-svg-external-link';
 
 export default function IconExternalLink({

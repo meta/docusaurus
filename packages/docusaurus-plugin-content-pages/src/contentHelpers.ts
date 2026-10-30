@@ -13,8 +13,8 @@ function indexPagesBySource(content: LoadedContent): Map<string, Metadata> {
 
 // TODO this is bad, we should have a better way to do this (new lifecycle?)
 //  The source to page/permalink is a mutable map passed to the mdx loader
-//  See https://github.com/facebook/docusaurus/pull/10457
-//  See https://github.com/facebook/docusaurus/pull/10185
+//  See https://github.com/meta/docusaurus/pull/10457
+//  See https://github.com/meta/docusaurus/pull/10185
 export function createContentHelpers() {
   const sourceToPage = new Map<string, Metadata>();
   const sourceToPermalink = new Map<string, string>();
