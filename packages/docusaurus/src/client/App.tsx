@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {ReactNode} from 'react';
+import {Suspense, type ReactNode} from 'react';
 import '@generated/client-modules';
 
 import routes from '@generated/routes';
@@ -38,19 +38,23 @@ function AppNavigation() {
 }
 
 export default function App(): ReactNode {
+  // React keeps leftover server nodes at the root, but not inside a Suspense
+  // boundary: https://github.com/facebook/docusaurus/pull/10059
   return (
-    <ErrorBoundary>
-      <DocusaurusContextProvider>
-        <Root>
-          <ThemeProvider>
-            <SiteMetadataDefaults />
-            <SiteMetadata />
-            <BaseUrlIssueBanner />
-            <AppNavigation />
-          </ThemeProvider>
-        </Root>
-        <HasHydratedDataAttribute />
-      </DocusaurusContextProvider>
-    </ErrorBoundary>
+    <Suspense>
+      <ErrorBoundary>
+        <DocusaurusContextProvider>
+          <Root>
+            <ThemeProvider>
+              <SiteMetadataDefaults />
+              <SiteMetadata />
+              <BaseUrlIssueBanner />
+              <AppNavigation />
+            </ThemeProvider>
+          </Root>
+          <HasHydratedDataAttribute />
+        </DocusaurusContextProvider>
+      </ErrorBoundary>
+    </Suspense>
   );
 }
