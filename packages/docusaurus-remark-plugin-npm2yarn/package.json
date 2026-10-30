@@ -32,6 +32,6 @@
     "to-vfile": "catalog:dev"
   },
   "engines": {
-    "node": ">=24.21"
+    "node": ">=26.13"
   }
 }

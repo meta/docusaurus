@@ -35,6 +35,6 @@
     "baseline widely available"
   ],
   "engines": {
-    "node": ">=24.21"
+    "node": ">=26.13"
   }
 }

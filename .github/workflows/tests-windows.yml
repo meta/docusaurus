@@ -28,7 +28,7 @@ jobs:
     runs-on: windows-8-core
     strategy:
       matrix:
-        node: ['24.21', '26']
+        node: ['26.13', '26']
     steps:
       - name: Support longpaths
         run: git config --system core.longpaths true

@@ -58,7 +58,7 @@
     "react-dom": "catalog:"
   },
   "engines": {
-    "node": ">=24.21"
+    "node": ">=26.13"
   },
   "devDependencies": {
     "@mdx-js/mdx": "catalog:",

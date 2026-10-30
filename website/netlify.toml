@@ -9,7 +9,7 @@ command = "pnpm --dir .. build:packages && pnpm build"
 publish = "website/build"
 
 [build.environment]
-NODE_VERSION = "24"
+NODE_VERSION = "26"
 NODE_OPTIONS = "--max_old_space_size=8192"
 
 

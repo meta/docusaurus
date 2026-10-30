@@ -30,6 +30,6 @@
     "lodash": "catalog:"
   },
   "engines": {
-    "node": ">=24.21"
+    "node": ">=26.13"
   }
 }
