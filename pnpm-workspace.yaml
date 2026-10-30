@@ -25,14 +25,14 @@ catalog:
   '@algolia/autocomplete-core': ^1.19.10
   '@argos-ci/cli': ^6.9.2
   '@argos-ci/playwright': ^7.5.0
-  '@babel/core': ^7.29.7
-  '@babel/generator': ^7.29.8
-  '@babel/plugin-transform-runtime': ^7.29.7
-  '@babel/preset-env': ^7.29.7
-  '@babel/preset-react': ^7.29.7
-  '@babel/preset-typescript': ^7.29.7
+  '@babel/core': ^8.0.6
+  '@babel/generator': ^8.0.6
+  '@babel/plugin-transform-runtime': ^8.0.6
+  '@babel/preset-env': ^8.0.6
+  '@babel/preset-react': ^8.0.1
+  '@babel/preset-typescript': ^8.0.1
   '@babel/runtime': ^7.29.7
-  '@babel/traverse': ^7.29.8
+  '@babel/traverse': ^8.0.6
   '@crowdin/crowdin-api-client': ^1.57.0
   '@docsearch/react': ^4.7.0
   '@docusaurus/responsive-loader': ^1.7.1
