@@ -43,7 +43,7 @@ cache-mode: none
 jobs:
   publish:
     name: Publish NPM release
-    if: github.repository == 'facebook/docusaurus'
+    if: github.repository == 'meta/docusaurus'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
