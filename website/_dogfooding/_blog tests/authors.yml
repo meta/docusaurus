@@ -11,3 +11,11 @@ slorber:
 ozaki:
   name: ozaki
   page: {permalink: '/custom/ozaki/permalink'}
+
+john:
+  name: John Doe
+  page: true
+
+bob:
+  name: Bob Smith
+  page: true
