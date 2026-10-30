@@ -203,7 +203,13 @@ function createStaticHostResponseTest({
     await page.goto(siteUrl + pathname);
     await page.waitForFunction(waitForDocusaurusHydration);
     await page.addStyleTag({content: stylesheet});
-    await argosScreenshot(page, `static-host/${pathnameToArgosName(pathname)}`);
+    await argosScreenshot(
+      page,
+      `static-host/${pathnameToArgosName(pathname)}`,
+      {
+        ariaSnapshot: true,
+      },
+    );
   });
 }
 
