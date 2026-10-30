@@ -41,8 +41,8 @@ catalog:
   '@playwright/test': ^1.63.0
   '@rsdoctor/core': ^2.0.0
   '@rsdoctor/webpack-plugin': ^1.6.3
-  '@rspack/core': ^2.2.3
-  '@rspack/dev-server': ^2.2.1
+  '@rspack/core': ^2.3.0
+  '@rspack/dev-server': ^2.2.2
   '@slorber/remark-comment': ^1.0.0
   '@svgr/webpack': ^8.1.0
   '@swc/core': ^1.16.2
