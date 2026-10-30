@@ -283,7 +283,10 @@ declare module '@docusaurus/router' {
     Navigate,
     Outlet,
     matchPath,
+    useBlocker,
+    NavigationType,
     type Location,
+    type BlockerFunction,
   } from 'react-router';
   export function useRouter(): DataRouter;
 }

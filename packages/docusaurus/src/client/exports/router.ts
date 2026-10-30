@@ -11,5 +11,7 @@ export {
   Navigate,
   Outlet,
   matchPath,
+  useBlocker,
+  NavigationType,
 } from 'react-router';
 export {useRouter} from '../routerContext';

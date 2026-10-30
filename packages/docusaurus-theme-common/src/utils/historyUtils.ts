@@ -9,10 +9,10 @@ import {useCallback, useEffect, useMemo, useSyncExternalStore} from 'react';
 import {
   NavigationType,
   useBlocker,
+  useRouter,
   type BlockerFunction,
   type Location,
-} from 'react-router';
-import {useRouter} from '@docusaurus/router';
+} from '@docusaurus/router';
 import {useEvent} from './reactUtils';
 
 type HistoryBlockHandler = (

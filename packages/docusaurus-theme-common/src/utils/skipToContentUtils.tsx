@@ -7,8 +7,7 @@
 
 import type React from 'react';
 import {useCallback, useRef, type ComponentProps, type ReactNode} from 'react';
-import {NavigationType} from 'react-router';
-import {useRouter} from '@docusaurus/router';
+import {NavigationType, useRouter} from '@docusaurus/router';
 import {translate} from '@docusaurus/Translate';
 import {useLocationChange} from './useLocationChange';
 
