@@ -25,6 +25,16 @@ vi.mock('@generated/routes', () => ({
       ],
     },
     {path: '/app', component: ''},
+    {
+      path: '/',
+      component: '',
+      routes: [{path: '/plugin1-doc', exact: true, component: ''}],
+    },
+    {
+      path: '/',
+      component: '',
+      routes: [{path: '/plugin2-doc', exact: true, component: ''}],
+    },
     {path: '*', component: ''},
   ],
 }));
@@ -44,6 +54,11 @@ describe('matchRouteConfigs', () => {
     ]);
   });
 
+  it('matches nested routes of parent routes sharing the same path', () => {
+    expect(matchPaths('/plugin1-doc')).toEqual(['/', '/plugin1-doc']);
+    expect(matchPaths('/plugin2-doc')).toEqual(['/', '/plugin2-doc']);
+  });
+
   it('matches subpaths of non-exact routes', () => {
     expect(matchPaths('/app')).toEqual(['/app']);
     expect(matchPaths('/app/sub/path')).toEqual(['/app']);
@@ -53,5 +68,6 @@ describe('matchRouteConfigs', () => {
     expect(matchPaths('/unknown')).toEqual(['*']);
     expect(matchPaths('/docs/unknown')).toEqual(['*']);
     expect(matchPaths('/docs/intro/unknown')).toEqual(['*']);
+    expect(matchPaths('/plugin1-doc/unknown')).toEqual(['*']);
   });
 });
