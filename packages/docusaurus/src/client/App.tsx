@@ -39,18 +39,20 @@ function AppNavigation() {
 
 export default function App(): ReactNode {
   return (
-    <ErrorBoundary>
-      <DocusaurusContextProvider>
-        <Root>
-          <ThemeProvider>
-            <SiteMetadataDefaults />
-            <SiteMetadata />
-            <BaseUrlIssueBanner />
-            <AppNavigation />
-          </ThemeProvider>
-        </Root>
-        <HasHydratedDataAttribute />
-      </DocusaurusContextProvider>
-    </ErrorBoundary>
+    <div id="__docusaurus-app">
+      <ErrorBoundary>
+        <DocusaurusContextProvider>
+          <Root>
+            <ThemeProvider>
+              <SiteMetadataDefaults />
+              <SiteMetadata />
+              <BaseUrlIssueBanner />
+              <AppNavigation />
+            </ThemeProvider>
+          </Root>
+          <HasHydratedDataAttribute />
+        </DocusaurusContextProvider>
+      </ErrorBoundary>
+    </div>
   );
 }
