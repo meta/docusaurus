@@ -15,6 +15,7 @@ import {useHistory} from '@docusaurus/router';
 import {isRegexpStringMatch} from '@docusaurus/theme-common';
 import {
   useAlgoliaContextualFacetFilters,
+  useAlgoliaThemeConfig,
   useSearchResultUrlProcessor,
   useAlgoliaAskAi,
   mergeFacetFilters,
@@ -310,14 +311,14 @@ function DocSearch({externalUrlRegex, ...props}: DocSearchV4Props) {
 }
 
 export default function SearchBar(props: Partial<DocSearchV4Props>): ReactNode {
-  const {siteConfig} = useDocusaurusContext();
+  const {algolia} = useAlgoliaThemeConfig();
 
-  const docSearchProps: DocSearchV4Props = {
-    ...(siteConfig.themeConfig.algolia as DocSearchV4Props),
+  const docSearchProps = {
+    ...algolia,
     // Let props override theme config
     // See https://github.com/facebook/docusaurus/pull/11581
     ...props,
-  };
+  } as DocSearchV4Props;
 
   return <DocSearch {...docSearchProps} />;
 }
