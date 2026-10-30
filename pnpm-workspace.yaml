@@ -223,7 +223,7 @@ catalogs:
     lint-staged: ^17.5.0
     npm-run-all2: ^9.0.3
     picomatch: ^2.3.2
-    pkg-pr-new: ^0.0.75
+    pkg-pr-new: ^0.0.91
     rehype-stringify: ^10.0.1
     remark: ^15.0.1
     remark-rehype: ^11.1.2
