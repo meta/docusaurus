@@ -14,7 +14,7 @@ import logger from '@docusaurus/logger';
 import {fs, pathExists} from '@docusaurus/fs';
 
 // Quite high/conservative concurrency value (it was previously "Infinity")
-// See https://github.com/facebook/docusaurus/pull/10915
+// See https://github.com/meta/docusaurus/pull/10915
 const DefaultGitCommandConcurrency = os.availableParallelism() * 4;
 
 const GitCommandConcurrencyEnv = process.env.DOCUSAURUS_GIT_COMMAND_CONCURRENCY
@@ -27,7 +27,7 @@ const GitCommandConcurrency =
     : DefaultGitCommandConcurrency;
 
 // We use a queue to avoid running too many concurrent Git commands at once
-// See https://github.com/facebook/docusaurus/issues/10348
+// See https://github.com/meta/docusaurus/issues/10348
 const GitCommandQueue = new PQueue({
   concurrency: GitCommandConcurrency,
 });
@@ -130,7 +130,7 @@ export async function getFileCommitDate(
   }
 
   // We add a "RESULT:" prefix to make parsing easier
-  // See why: https://github.com/facebook/docusaurus/pull/10022
+  // See why: https://github.com/meta/docusaurus/pull/10022
   const resultFormat = includeAuthor ? 'RESULT:%ct,%an' : 'RESULT:%ct';
 
   const result = await GitCommandQueue.add(() => {
@@ -138,7 +138,7 @@ export async function getFileCommitDate(
       'git',
       [
         // Do not include GPG signature in the log output
-        // See https://github.com/facebook/docusaurus/pull/10022
+        // See https://github.com/meta/docusaurus/pull/10022
         '-c',
         'log.showSignature=false',
         'log',
@@ -155,7 +155,7 @@ export async function getFileCommitDate(
   });
 
   // We only parse the output line starting with our "RESULT:" prefix
-  // See why https://github.com/facebook/docusaurus/pull/10022
+  // See why https://github.com/meta/docusaurus/pull/10022
   const regex = includeAuthor
     ? /(?:^|\n)RESULT:(?<timestamp>\d+),(?<author>.+)(?:$|\n)/
     : /(?:^|\n)RESULT:(?<timestamp>\d+)(?:$|\n)/;
@@ -387,7 +387,7 @@ export async function getGitRepositoryFilesInfo(
     [
       '--no-pager',
       // Do not include GPG signature in the log output
-      // See https://github.com/facebook/docusaurus/pull/10022
+      // See https://github.com/meta/docusaurus/pull/10022
       '-c',
       'log.showSignature=false',
       // The git command we want to run

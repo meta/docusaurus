@@ -79,7 +79,7 @@ function formatUnusedDirectivesMessage({
   directives: Directives[];
   filePath: string;
 }): string {
-  const supportUrl = 'https://github.com/facebook/docusaurus/pull/9394';
+  const supportUrl = 'https://github.com/meta/docusaurus/pull/9394';
   const customPath = posixPath(path.relative(process.cwd(), filePath));
   const warningTitle = logger.interpolate`Docusaurus found ${directives.length} unused Markdown directives in file path=${customPath}`;
   const customSupportUrl = logger.interpolate`url=${supportUrl}`;

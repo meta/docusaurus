@@ -17,7 +17,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/facebook/docusaurus.git",
+    "url": "https://github.com/meta/docusaurus.git",
     "directory": "packages/docusaurus"
   },
   "bin": {
@@ -30,7 +30,7 @@
     "copy:watch": "copy-untyped-files --watch"
   },
   "bugs": {
-    "url": "https://github.com/facebook/docusaurus/issues"
+    "url": "https://github.com/meta/docusaurus/issues"
   },
   "dependencies": {
     "@docusaurus/babel": "workspace:*",

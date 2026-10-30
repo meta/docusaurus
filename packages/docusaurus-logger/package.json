@@ -5,11 +5,11 @@
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/facebook/docusaurus.git",
+    "url": "https://github.com/meta/docusaurus.git",
     "directory": "packages/docusaurus-logger"
   },
   "bugs": {
-    "url": "https://github.com/facebook/docusaurus/issues"
+    "url": "https://github.com/meta/docusaurus/issues"
   },
   "scripts": {
     "build": "tsc",

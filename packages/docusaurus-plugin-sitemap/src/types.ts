@@ -45,7 +45,7 @@ export type SitemapItem = {
    * - YYYY-MM-DD
    *
    * Note: as of 2024, Google uses this value for crawling priority.
-   * See also https://github.com/facebook/docusaurus/issues/2604
+   * See also https://github.com/meta/docusaurus/issues/2604
    */
   lastmod?: string | null;
 
@@ -53,7 +53,7 @@ export type SitemapItem = {
    * One of the specified enum values
    *
    * Note: as of 2024, Google ignores this value.
-   * See also https://github.com/facebook/docusaurus/issues/2604
+   * See also https://github.com/meta/docusaurus/issues/2604
    */
   changefreq?: ChangeFreq | null;
 
@@ -63,7 +63,7 @@ export type SitemapItem = {
    * The default priority of a page is 0.5.
    *
    * Note: as of 2024, Google ignores this value.
-   * See also https://github.com/facebook/docusaurus/issues/2604
+   * See also https://github.com/meta/docusaurus/issues/2604
    */
   priority?: number | null;
 };

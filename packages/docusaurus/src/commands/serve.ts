@@ -73,10 +73,10 @@ export async function serve(
 
     // We do the redirect ourselves for a good reason
     // server-handler is annoying and won't include /baseUrl/ in redirects
-    // See https://github.com/facebook/docusaurus/issues/10078#issuecomment-2084932934
+    // See https://github.com/meta/docusaurus/issues/10078#issuecomment-2084932934
     if (baseUrl !== '/') {
       // Not super robust, but should be good enough for our use case
-      // See https://github.com/facebook/docusaurus/pull/10090
+      // See https://github.com/meta/docusaurus/pull/10090
       const looksLikeAsset = !!req.url.match(/\.[a-z\d]{1,4}$/i);
       if (!looksLikeAsset) {
         const normalizedUrl = applyTrailingSlash(req.url, {
@@ -95,7 +95,7 @@ export async function serve(
     // Note server-handler is really annoying here:
     // - no easy way to do rewrites such as "/baseUrl/:path" => "/:path"
     // - no easy way to "reapply" the baseUrl to the redirect "Location" header
-    // See also https://github.com/facebook/docusaurus/pull/10090
+    // See also https://github.com/meta/docusaurus/pull/10090
     req.url = req.url.replace(baseUrl, '/');
 
     serveHandler(req, res, {

@@ -12,7 +12,7 @@ import type {Compiler} from 'webpack';
 // Bundle CPU profiling plugin, contributed by the Rspack team
 // Can be opened in https://www.speedscope.app/
 // See also https://github.com/jerrykingxyz/docusaurus/pull/1
-// See also https://github.com/facebook/docusaurus/pull/10985
+// See also https://github.com/meta/docusaurus/pull/10985
 export class BundlerCPUProfilerPlugin {
   output: string;
 

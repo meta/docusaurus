@@ -20,7 +20,7 @@ type WindowSize = keyof typeof windowSizes;
 // Note: this value is also hardcoded in Infima
 // Both JS and CSS must have the same value
 // Updating this JS value alone is not enough
-// See https://github.com/facebook/docusaurus/issues/9603
+// See https://github.com/meta/docusaurus/issues/9603
 const DesktopBreakpoint = 996;
 
 function getWindowSize(desktopBreakpoint: number): WindowSize {
@@ -61,7 +61,7 @@ export function useWindowSize({
     subscribeToWindowResize,
     () => getWindowSize(desktopBreakpoint),
     // super important to return a constant value to avoid hydration mismatch
-    // see https://github.com/facebook/docusaurus/issues/9379
+    // see https://github.com/meta/docusaurus/issues/9379
     () => windowSizes.ssr,
   );
 }

@@ -9,7 +9,7 @@ import type {ReactNode} from 'react';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 
-// See https://github.com/facebook/docusaurus/issues/6337#issuecomment-1012913647
+// See https://github.com/meta/docusaurus/issues/6337#issuecomment-1012913647
 export default function Analytics(): ReactNode {
   return (
     <Layout>

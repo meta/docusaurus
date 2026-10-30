@@ -314,13 +314,13 @@ export function buildHttpsUrl(
 /**
  * Whether the current URL is an SSH protocol. In addition to looking for
  * `ssh:`, it will also allow protocol-less URLs like
- * `git@github.com:facebook/docusaurus.git`.
+ * `git@github.com:meta/docusaurus.git`.
  */
 export function hasSSHProtocol(sourceRepoUrl: string): boolean {
   const url = URL.parse(sourceRepoUrl);
   if (url === null) {
     // Recognizes SCP-style addresses, implying SSH
-    // Example: git@github.com:facebook/docusaurus.git
+    // Example: git@github.com:meta/docusaurus.git
     return /^(?:[\w-]+@)?[\w.-]+:[\w./-]+/.test(sourceRepoUrl);
   }
   return url.protocol === 'ssh:';

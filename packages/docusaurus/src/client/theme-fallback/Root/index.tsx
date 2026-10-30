@@ -14,7 +14,7 @@ import type {Props} from '@theme/Root';
 // Gives the opportunity to add stateful providers on top of the app
 // and these providers won't reset state when we navigate
 //
-// See https://github.com/facebook/docusaurus/issues/3919
+// See https://github.com/meta/docusaurus/issues/3919
 export default function Root({children}: Props): ReactNode {
   return <>{children}</>;
 }

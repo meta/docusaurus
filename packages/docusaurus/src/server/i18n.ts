@@ -96,7 +96,7 @@ export function getDefaultLocaleConfig(
       htmlLang: htmlLang ?? locale,
       calendar: getDefaultCalendar(htmlLang ?? locale),
       // Fot the i18n/<path>, we don't use htmlLang on purpose
-      // see bug https://github.com/facebook/docusaurus/issues/11952
+      // see bug https://github.com/meta/docusaurus/issues/11952
       path: locale,
     };
   } catch (e) {

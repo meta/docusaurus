@@ -37,7 +37,7 @@ const plugins = defineConfig([
   docusaurus.configs.flat.all,
 
   // TODO replace by maintained plugin?
-  // See https://github.com/facebook/docusaurus/pull/11803
+  // See https://github.com/meta/docusaurus/pull/11803
   // This adapts the legacy plugin to flat config
   {
     plugins: {

@@ -26,7 +26,7 @@ import type {LoadedPlugin, RouterType} from '@docusaurus/types';
 
 // This code was historically in CRA/react-dev-utils (deprecated in 2025)
 // We internalized it, refactored and removed useless code paths
-// See https://github.com/facebook/docusaurus/pull/10956
+// See https://github.com/meta/docusaurus/pull/10956
 // See https://github.com/facebook/create-react-app/blob/main/packages/react-dev-utils/WebpackDevServerUtils.js
 function getOpenUrlOrigin(
   protocol: string,

@@ -165,7 +165,7 @@ function getLocalizedConfigValue(key: keyof typeof ConfigLocalized) {
 
 // By default, we don't want to run "git log" commands on i18n sites
 // This makes localized sites build much slower on Netlify
-// See also https://github.com/facebook/docusaurus/issues/11208
+// See also https://github.com/meta/docusaurus/issues/11208
 // const showLastUpdate = process.env.DOCUSAURUS_CURRENT_LOCALE === defaultLocale;
 const showLastUpdate = true;
 
@@ -173,7 +173,7 @@ export default async function createConfigAsync() {
   return {
     title: 'Docusaurus',
     tagline: getLocalizedConfigValue('tagline'),
-    organizationName: 'facebook',
+    organizationName: 'meta',
     projectName: 'docusaurus',
     baseUrl,
     baseUrlIssueBanner: true,
@@ -223,7 +223,7 @@ export default async function createConfigAsync() {
       },
       mdx1Compat: {
         // Needed for us until Crowdin improves support
-        // See https://github.com/facebook/docusaurus/pull/11847#issuecomment-4183213345
+        // See https://github.com/meta/docusaurus/pull/11847#issuecomment-4183213345
         admonitions: true,
       },
       remarkRehypeOptions: {
@@ -240,7 +240,7 @@ export default async function createConfigAsync() {
         let result = fileContent;
 
         // This fixes Crowdin bug altering MDX comments on i18n sites...
-        // https://github.com/facebook/docusaurus/pull/9220
+        // https://github.com/meta/docusaurus/pull/9220
         result = result.replaceAll('{/_', '{/*');
         result = result.replaceAll('_/}', '*/}');
 
@@ -294,7 +294,7 @@ export default async function createConfigAsync() {
           configureWebpack(_config, isServer) {
             // This optimization is expensive and only reduces by 3% the JS
             // Let's skip it for local and deploy preview builds
-            // See also https://github.com/facebook/docusaurus/discussions/11199
+            // See also https://github.com/meta/docusaurus/discussions/11199
             return {
               optimization: {
                 concatenateModules: isProductionDeployment ? !isServer : false,
@@ -355,7 +355,7 @@ export default async function createConfigAsync() {
             if (locale !== defaultLocale) {
               return `https://crowdin.com/project/docusaurus-v2/${locale}`;
             }
-            return `https://github.com/facebook/docusaurus/edit/main/website/${versionDocsDirPath}/${docPath}`;
+            return `https://github.com/meta/docusaurus/edit/main/website/${versionDocsDirPath}/${docPath}`;
           },
           remarkPlugins: [npm2yarn],
           editCurrentVersion: true,
@@ -492,7 +492,7 @@ export default async function createConfigAsync() {
               // We want users to submit updates to the upstream/next version!
               // Otherwise we risk losing the update on the next release.
               const nextVersionDocsDirPath = 'docs';
-              return `https://github.com/facebook/docusaurus/edit/main/website/${nextVersionDocsDirPath}/${docPath}`;
+              return `https://github.com/meta/docusaurus/edit/main/website/${nextVersionDocsDirPath}/${docPath}`;
             },
             admonitions: {
               keywords: ['my-custom-admonition'],
@@ -537,7 +537,7 @@ export default async function createConfigAsync() {
               if (locale !== defaultLocale) {
                 return `https://crowdin.com/project/docusaurus-v2/${locale}`;
               }
-              return `https://github.com/facebook/docusaurus/edit/main/website/${blogDirPath}/${blogPath}`;
+              return `https://github.com/meta/docusaurus/edit/main/website/${blogDirPath}/${blogPath}`;
             },
             remarkPlugins: [npm2yarn],
             postsPerPage: 5,
@@ -567,7 +567,7 @@ export default async function createConfigAsync() {
               if (locale !== defaultLocale) {
                 return `https://crowdin.com/project/docusaurus-v2/${locale}`;
               }
-              return `https://github.com/facebook/docusaurus/edit/main/website/src/pages/${pagesPath}`;
+              return `https://github.com/meta/docusaurus/edit/main/website/src/pages/${pagesPath}`;
             },
             showLastUpdateAuthor: showLastUpdate,
             showLastUpdateTime: showLastUpdate,
@@ -612,7 +612,7 @@ export default async function createConfigAsync() {
       },
       announcementBar: {
         id: `announcementBar-v${announcedVersion}`,
-        // content: `⭐️ If you like Docusaurus, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/facebook/docusaurus">GitHub</a> and follow us on <a target="_blank" rel="noopener noreferrer" href="https://x.com/docusaurus">X ${TwitterSvg}</a>`,
+        // content: `⭐️ If you like Docusaurus, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/meta/docusaurus">GitHub</a> and follow us on <a target="_blank" rel="noopener noreferrer" href="https://x.com/docusaurus">X ${TwitterSvg}</a>`,
         content: `🎉️ <b><a target="_blank" href="https://docusaurus.io/blog/releases/${announcedVersion}">Docusaurus v${announcedVersion}</a> is out!</b> 🥳️`,
       },
       prism: {
@@ -651,7 +651,7 @@ export default async function createConfigAsync() {
 
         // TODO Docusaurus v4: remove after we drop DocSearch v3
         //  temporary, for DocSearch v3/v4 conditional Ask AI integration
-        //  see https://github.com/facebook/docusaurus/pull/11327
+        //  see https://github.com/meta/docusaurus/pull/11327
         ...(require('@docsearch/react').version.startsWith('4.')
           ? {
               askAi: {
@@ -759,13 +759,13 @@ export default async function createConfigAsync() {
                 value: '<hr style="margin: 0.3rem 0;">',
               },
               {
-                href: 'https://github.com/facebook/docusaurus/issues/3526',
+                href: 'https://github.com/meta/docusaurus/issues/3526',
                 label: 'Help Us Translate',
               },
             ],
           },
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/meta/docusaurus',
             position: 'right',
             className: 'header-github-link',
             'aria-label': 'GitHub repository',
@@ -830,7 +830,7 @@ export default async function createConfigAsync() {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/meta/docusaurus',
               },
               {
                 label: 'X',

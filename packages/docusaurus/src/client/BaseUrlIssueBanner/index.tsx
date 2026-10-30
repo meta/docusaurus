@@ -15,7 +15,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import './styles.module.css';
 
 // __ prefix allows search crawlers (Algolia/DocSearch) to ignore anchors
-// https://github.com/facebook/docusaurus/issues/8883#issuecomment-1516328368
+// https://github.com/meta/docusaurus/issues/8883#issuecomment-1516328368
 const BannerContainerId = '__docusaurus-base-url-issue-banner-container';
 const BannerId = '__docusaurus-base-url-issue-banner';
 const SuggestionContainerId =
@@ -23,7 +23,7 @@ const SuggestionContainerId =
 
 // It is important to not use React to render this banner
 // otherwise Google would index it, even if it's hidden with some critical CSS!
-// See https://github.com/facebook/docusaurus/issues/4028
+// See https://github.com/meta/docusaurus/issues/4028
 // - We can't SSR (or it would be indexed)
 // - We can't CSR (as it means the baseurl is correct)
 function createInlineHtmlBanner(baseUrl: string) {
@@ -93,7 +93,7 @@ function BaseUrlIssueBanner() {
  *
  * Note: it might create false positives (ie network failures): not a big deal
  *
- * @see https://github.com/facebook/docusaurus/pull/3621
+ * @see https://github.com/meta/docusaurus/pull/3621
  */
 export default function MaybeBaseUrlIssueBanner(): ReactNode {
   const {

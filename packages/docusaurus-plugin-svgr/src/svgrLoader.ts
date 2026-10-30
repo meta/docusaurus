@@ -22,8 +22,8 @@ import type {Configuration, RuleSetRule} from 'webpack';
 // page, these ids clash and SVGs render with each other's gradients/masks.
 // We prefix ids with a short hash of the SVG file path to make them unique.
 // The path is relative to the site dir so that ids are stable across machines.
-// See https://github.com/facebook/docusaurus/issues/8297
-// See https://github.com/facebook/docusaurus/issues/10679
+// See https://github.com/meta/docusaurus/issues/8297
+// See https://github.com/meta/docusaurus/issues/10679
 function getSVGIdPrefix({
   siteDir,
   filePath,

@@ -9,7 +9,7 @@ import type {ReactNode} from 'react';
 import {useLocation} from '@docusaurus/router';
 
 // used to dogfood custom navbar elements are possible
-// see https://github.com/facebook/docusaurus/issues/7227
+// see https://github.com/meta/docusaurus/issues/7227
 export default function CustomDogfoodNavbarItem(props: {
   content: string;
   mobile?: boolean;

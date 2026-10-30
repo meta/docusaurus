@@ -11,8 +11,8 @@ export default OriginalLogger;
 
 // Extra named export to avoid problems in ESM modules
 // Notably: core .mjs CLI + create-docusaurus
-// See https://github.com/facebook/docusaurus/pull/6661
-// See https://github.com/facebook/docusaurus/pull/7295
+// See https://github.com/meta/docusaurus/pull/6661
+// See https://github.com/meta/docusaurus/pull/7295
 export const logger = OriginalLogger;
 
 export {PerfLogger} from './perfLogger';

@@ -51,7 +51,7 @@ jobs:
           DOCUSAURUS_PERF_LOGGER: 'true'
           DOCUSAURUS_ROUTER: 'hash'
           # Note: hash router + baseUrl do not play well together
-          # This would host at https://facebook.github.io/docusaurus/#/docusaurus/
+          # This would host at https://meta.github.io/docusaurus/#/docusaurus/
           # BASE_URL: '/docusaurus/' # hash router +
 
       - name: Upload Website artifact
@@ -65,7 +65,7 @@ jobs:
       #  with:
       #    path: website/build
 
-      # Deploy to https://facebook.github.io/docusaurus/
+      # Deploy to https://meta.github.io/docusaurus/
       - name: Deploy to GitHub Pages
         if: ${{ github.event_name != 'pull_request' && github.ref_name == 'main' }}
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
@@ -75,7 +75,7 @@ jobs:
 
   ## TODO we should be able to use this new deploy-pages action
   ## However this requires a Meta admin to configure it here
-  ## https://github.com/facebook/docusaurus/settings/pages
+  ## https://github.com/meta/docusaurus/settings/pages
   ## So for now we keep using the former method
   ## See https://docusaurus.io/docs/deployment#triggering-deployment-with-github-actions
   #deploy:

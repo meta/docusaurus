@@ -49,7 +49,7 @@ export type VscInitializeParams = {
 // VCS (Version Control System) config hooks to get file change info.
 // This lets you override and customize the default Docusaurus behavior.
 // This can be useful to optimize calls or when using something else than git
-// See https://github.com/facebook/docusaurus/issues/11208
+// See https://github.com/meta/docusaurus/issues/11208
 // See https://github.com/e18e/ecosystem-issues/issues/216
 export type VcsConfig = {
   /**
@@ -95,7 +95,7 @@ export type FutureConfig = {
    *   entry point, and use the browser hash for routing. The Docusaurus site
    *   content will be rendered client-side, like a regular single page
    *   application.
-   *   @see https://github.com/facebook/docusaurus/issues/3825
+   *   @see https://github.com/meta/docusaurus/issues/3825
    */
   experimental_router: RouterType;
 };

@@ -16,7 +16,7 @@ import beforeCli from './beforeCli.mjs';
 
 // Env variables are initialized to dev, but can be overridden by each command
 // For example, "docusaurus build" overrides them to "production"
-// See also https://github.com/facebook/docusaurus/issues/8599
+// See also https://github.com/meta/docusaurus/issues/8599
 process.env.BABEL_ENV ??= 'development';
 process.env.NODE_ENV ??= 'development';
 

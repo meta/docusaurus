@@ -17,7 +17,7 @@ languages_mapping: &languages_mapping
 # Crowdin regularly update their MDX parser, leading to subtle breakage.
 # Freezing the parser to a specific version is helpful to ensure things keep
 # working when they upgrade their MDX parser.
-# See https://github.com/facebook/docusaurus/pull/11432
+# See https://github.com/meta/docusaurus/pull/11432
 #
 # Note: you can find the parser version of a Crowdin file using browser DevTools
 # and inspecting the MDX file icon, it should have a class ".file_type_mdx_v1_2"

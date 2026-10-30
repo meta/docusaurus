@@ -20,7 +20,7 @@ on run argv
   end if
 
   -- Arc: simple open + activate, no tab reuse
-  -- See https://github.com/facebook/docusaurus/issues/11582
+  -- See https://github.com/meta/docusaurus/issues/11582
   if theProgram is "Arc" then
     tell application "Arc"
       activate

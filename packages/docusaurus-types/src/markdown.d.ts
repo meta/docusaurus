@@ -140,7 +140,7 @@ export type MarkdownConfig = {
    * A function callback that lets users parse the front matter themselves.
    * Gives the opportunity to read it from a different source, or process it.
    *
-   * @see https://github.com/facebook/docusaurus/issues/5568
+   * @see https://github.com/meta/docusaurus/issues/5568
    */
   parseFrontMatter: ParseFrontMatter;
 
@@ -176,7 +176,7 @@ export type MarkdownConfig = {
 
   /**
    * Set of flags make it easier to upgrade from MDX 1 to MDX 2
-   * See also https://github.com/facebook/docusaurus/issues/4029
+   * See also https://github.com/meta/docusaurus/issues/4029
    */
   mdx1Compat: MDX1CompatOptions;
 

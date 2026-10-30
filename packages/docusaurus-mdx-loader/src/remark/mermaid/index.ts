@@ -13,7 +13,7 @@ import type {Root} from 'mdast';
 
 // TODO: this plugin shouldn't be in the core MDX loader
 // After we allow plugins to provide Remark/Rehype plugins (see
-// https://github.com/facebook/docusaurus/issues/6370), this should be provided
+// https://github.com/meta/docusaurus/issues/6370), this should be provided
 // by theme-mermaid itself
 export default function plugin(): Transformer<Root> {
   return (root) => {

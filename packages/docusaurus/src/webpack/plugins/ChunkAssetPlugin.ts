@@ -12,7 +12,7 @@ import type {Compiler} from 'webpack';
 // gca = Get Chunk Asset, it converts a chunkName to a JS asset URL
 // It is called in Core client/docusaurus.ts for chunk preloading/prefetching
 // Example: gca("814f3328") = "/baseUrl/assets/js/814f3328.03fcc178.js"
-// See also: https://github.com/facebook/docusaurus/pull/10485
+// See also: https://github.com/meta/docusaurus/pull/10485
 
 // The name of the custom Docusaurus Webpack runtime function
 const DocusaurusGetChunkAssetFn = '__webpack_require__.gca';

@@ -135,7 +135,7 @@ async function defaultCreateFeedItems({
         String(new URL(src, blogPostAbsoluteUrl));
 
       // Make links and image urls absolute
-      // See https://github.com/facebook/docusaurus/issues/9136
+      // See https://github.com/meta/docusaurus/issues/9136
       $(`div#${blogPostContainerID} a, div#${blogPostContainerID} img`).each(
         (_, elm) => {
           if (elm.tagName === 'a') {

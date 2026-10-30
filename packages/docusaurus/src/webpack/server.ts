@@ -56,9 +56,9 @@ export default async function createServerConfig({
       // - On the server, it's not useful to run it at all
       // - On the client, it leads to a ~3% JS assets total size decrease
       //   Let's keep it by default, but large sites may prefer faster builds
-      // See also https://github.com/facebook/docusaurus/pull/11176
+      // See also https://github.com/meta/docusaurus/pull/11176
       // Note: we don't want to enable it on the client for "docusaurus start"
-      // See also https://github.com/facebook/docusaurus/pull/11222
+      // See also https://github.com/meta/docusaurus/pull/11222
       concatenateModules: false,
     },
   });

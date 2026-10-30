@@ -94,7 +94,7 @@ export async function createStartClientConfig({
         poll,
       },
       infrastructureLogging: {
-        // Reduce log verbosity, see https://github.com/facebook/docusaurus/pull/5420#issuecomment-906613105
+        // Reduce log verbosity, see https://github.com/meta/docusaurus/pull/5420#issuecomment-906613105
         level: 'warn',
       },
       plugins: [

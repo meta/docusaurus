@@ -180,7 +180,7 @@ export default async function pluginContentBlog(
     return {
       test: /\.mdx?$/i,
       include: contentDirs
-        // Trailing slash is important, see https://github.com/facebook/docusaurus/pull/3970
+        // Trailing slash is important, see https://github.com/meta/docusaurus/pull/3970
         .map(addTrailingPathSeparator),
       use: [mdxLoaderItem, createBlogMarkdownLoader()],
     };
@@ -303,7 +303,7 @@ export default async function pluginContentBlog(
       });
 
       // TODO this is not the correct place to aggregate and paginate tags
-      //  for reasons similar to https://github.com/facebook/docusaurus/pull/11562
+      //  for reasons similar to https://github.com/meta/docusaurus/pull/11562
       //  What we should do here is only read the tags file (similar to authors)
       const blogTags: BlogTags = getBlogTags({
         blogPosts,

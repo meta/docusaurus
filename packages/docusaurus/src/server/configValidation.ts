@@ -84,7 +84,7 @@ const DEFAULT_MARKDOWN_HOOKS: MarkdownHooks = {
 const DEFAULT_MARKDOWN_CONFIG: MarkdownConfig = {
   // TODO Docusaurus v5: change this to "detect"?
   //  we probably need stable CommonMark support first
-  //  see https://github.com/facebook/docusaurus/issues/9092
+  //  see https://github.com/meta/docusaurus/issues/9092
   format: 'mdx',
   mermaid: false,
   emoji: true,
@@ -428,7 +428,7 @@ export const ConfigSchema = Joi.object<
         async: Joi.bool(),
         defer: Joi.bool(),
       })
-        // See https://github.com/facebook/docusaurus/issues/3378
+        // See https://github.com/meta/docusaurus/issues/3378
         .unknown(),
     )
     .messages({

@@ -31,6 +31,6 @@ export function duplicates<T>(
  * @returns An array with duplicate elements removed by reference comparison.
  */
 export function uniq<T>(arr: T[]): T[] {
-  // Note: had problems with [...new Set()]: https://github.com/facebook/docusaurus/issues/4972#issuecomment-863895061
+  // Note: had problems with [...new Set()]: https://github.com/meta/docusaurus/issues/4972#issuecomment-863895061
   return Array.from(new Set(arr));
 }

@@ -11,7 +11,7 @@ import Heading from '@theme/Heading';
 import IframeWindow from '@site/src/components/BrowserWindow/IframeWindow';
 import PagePartial from './_pagePartial.mdx';
 
-// See https://github.com/facebook/docusaurus/issues/8672
+// See https://github.com/meta/docusaurus/issues/8672
 export default function Embeds(): ReactNode {
   return (
     <Layout>

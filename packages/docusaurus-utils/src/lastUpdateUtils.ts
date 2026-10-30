@@ -73,7 +73,7 @@ export async function readLastUpdateData(
   );
   const getLastUpdateBy = () =>
     getLastUpdateMemoized().then((update) => {
-      // Important, see https://github.com/facebook/docusaurus/pull/11211
+      // Important, see https://github.com/meta/docusaurus/pull/11211
       if (update === null) {
         return null;
       }
@@ -81,7 +81,7 @@ export async function readLastUpdateData(
     });
   const getLastUpdateAt = () =>
     getLastUpdateMemoized().then((update) => {
-      // Important, see https://github.com/facebook/docusaurus/pull/11211
+      // Important, see https://github.com/meta/docusaurus/pull/11211
       if (update === null) {
         return null;
       }

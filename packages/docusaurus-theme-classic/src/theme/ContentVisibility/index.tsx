@@ -15,7 +15,7 @@ export default function ContentVisibility({metadata}: Props): ReactNode {
   const {unlisted, frontMatter} = metadata;
   // Reading draft/unlisted status from frontMatter is useful to display
   // the banners in dev mode (in dev, metadata.unlisted is always false)
-  // See https://github.com/facebook/docusaurus/issues/8285
+  // See https://github.com/meta/docusaurus/issues/8285
   return (
     <>
       {(unlisted || frontMatter.unlisted) && <Unlisted />}

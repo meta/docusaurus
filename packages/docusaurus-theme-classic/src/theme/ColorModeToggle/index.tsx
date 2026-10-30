@@ -128,7 +128,7 @@ function ColorModeToggle({
         aria-label={getColorModeAriaLabel(value)}
 
         // For accessibility decisions
-        // See https://github.com/facebook/docusaurus/issues/7667#issuecomment-2724401796
+        // See https://github.com/meta/docusaurus/issues/7667#issuecomment-2724401796
 
         // aria-live disabled on purpose - This is annoying because:
         // - without this attribute, VoiceOver doesn't announce on button enter

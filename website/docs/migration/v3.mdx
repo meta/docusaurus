@@ -23,7 +23,7 @@ For complex sites, we also recommend to set up [**visual regression tests**](/bl
 
 :::note
 
-Check the release notes for [**Docusaurus v3.0.0**](https://github.com/facebook/docusaurus/releases/tag/v3.0.0), and browse the pull-requests for additional useful information and the motivation behind each change mentioned here.
+Check the release notes for [**Docusaurus v3.0.0**](https://github.com/meta/docusaurus/releases/tag/v3.0.0), and browse the pull-requests for additional useful information and the motivation behind each change mentioned here.
 
 :::
 
@@ -548,7 +548,7 @@ module.exports = async function () {
 
 :::info For plugin authors
 
-If you created custom Remark or Rehype plugins, you may need to refactor those, or eventually rewrite them completely, due to how the new AST is structured. We have created a [dedicated support discussion](https://github.com/facebook/docusaurus/discussions/9337) to help plugin authors upgrade their code.
+If you created custom Remark or Rehype plugins, you may need to refactor those, or eventually rewrite them completely, due to how the new AST is structured. We have created a [dedicated support discussion](https://github.com/meta/docusaurus/discussions/9337) to help plugin authors upgrade their code.
 
 :::
 
@@ -790,7 +790,7 @@ This is a Docusaurus v3 `:::warning` admonition.
 
 If you previously used the undocumented `:::warning` admonition, make sure to verify for each usage if yellow is now an appropriate color. If you want to keep the red color, use `:::danger` instead.
 
-Docusaurus v3 also [deprecated the `:::caution`](https://github.com/facebook/docusaurus/pull/9308) admonition. Please refactor `:::caution` (yellow) to either `:::warning` (yellow) or `:::danger` (red).
+Docusaurus v3 also [deprecated the `:::caution`](https://github.com/meta/docusaurus/pull/9308) admonition. Please refactor `:::caution` (yellow) to either `:::warning` (yellow) or `:::danger` (red).
 
 If you want to keep the title “caution”, you might want to refactor it to `:::warning[caution]` (yellow).
 
@@ -800,7 +800,7 @@ If you want to keep the title “caution”, you might want to refactor it to `:
 
 This breaking change will only affect **Docusaurus v2 early adopters** who versioned their docs before `v2.0.0-beta.10` (December 2021).
 
-When creating version `v1.0.0`, the sidebar file contained a prefix `version-v1.0.0/` that [Docusaurus v3 does not support anymore](https://github.com/facebook/docusaurus/pull/9310).
+When creating version `v1.0.0`, the sidebar file contained a prefix `version-v1.0.0/` that [Docusaurus v3 does not support anymore](https://github.com/meta/docusaurus/pull/9310).
 
 ```json title="versioned_sidebars/version-v1.0.0-sidebars.json"
 {
@@ -852,7 +852,7 @@ Technically, **this is not a breaking change** because these components are **fl
 
 Delete all your swizzled components, re-swizzle them, and re-apply your customizations on top of the newly updated components.
 
-Alternatively, you can look at the [pull-request notes](https://github.com/facebook/docusaurus/pull/7966) to understand the new theme component tree structure, and eventually try to patch your swizzled components manually.
+Alternatively, you can look at the [pull-request notes](https://github.com/meta/docusaurus/pull/7966) to understand the new theme component tree structure, and eventually try to patch your swizzled components manually.
 
 :::
 
@@ -907,7 +907,7 @@ export default config;
 
 We recommend using the `.mdx` extension whenever you use JSX, `import`, or `export` (i.e. MDX features) inside a Markdown file. It is semantically more correct and improves compatibility with external tools (IDEs, formatters, linters, etc.).
 
-In future versions of Docusaurus, `.md` files will be parsed as standard [CommonMark](https://commonmark.org/), which does not support these features. In Docusaurus v3, `.md` files keep being compiled as MDX files, but it will be possible to [opt-in for CommonMark](https://github.com/facebook/docusaurus/issues/3018).
+In future versions of Docusaurus, `.md` files will be parsed as standard [CommonMark](https://commonmark.org/), which does not support these features. In Docusaurus v3, `.md` files keep being compiled as MDX files, but it will be possible to [opt-in for CommonMark](https://github.com/meta/docusaurus/issues/3018).
 
 ### Upgrading math packages {/* #upgrading-math-packages */}
 
@@ -1002,10 +1002,10 @@ In case of any upgrade problem, the first things to try are:
 
 Once you have tried that, you can ask for support through the following support channels:
 
-- [Docusaurus v3 - Upgrade Support](https://github.com/facebook/docusaurus/discussions/9336)
+- [Docusaurus v3 - Upgrade Support](https://github.com/meta/docusaurus/discussions/9336)
 - [Docusaurus v3 - Discord channel #migration-v2-to-v3](https://discord.com/channels/398180168688074762/1154771869094912090)
-- [MDX v3 - Upgrade Support](https://github.com/facebook/docusaurus/discussions/9053)
-- [MDX v3 - Remark/Rehype Plugins Support](https://github.com/facebook/docusaurus/discussions/9337)
+- [MDX v3 - Upgrade Support](https://github.com/meta/docusaurus/discussions/9053)
+- [MDX v3 - Remark/Rehype Plugins Support](https://github.com/meta/docusaurus/discussions/9337)
 - [MDX v3 - Discord channel #migration-mdx-v3](https://discord.com/channels/398180168688074762/1116724556976111616)
 
 Please consider **our time is precious**. To ensure that your support request is not ignored, we kindly ask you to:
@@ -1016,4 +1016,4 @@ Please consider **our time is precious**. To ensure that your support request is
 - include as much relevant material as possible: code snippets, repo url, git branch urls, full stack traces, screenshots and videos
 - present your request clearly, concisely, showing us that you have made an effort to help us help you
 
-Alternatively, you can look for a paid [Docusaurus Service Provider](https://github.com/facebook/docusaurus/discussions/9281) to execute this upgrade for you. If your site is open source, you can also ask our community for [free, benevolent help](https://github.com/facebook/docusaurus/discussions/9283).
+Alternatively, you can look for a paid [Docusaurus Service Provider](https://github.com/meta/docusaurus/discussions/9281) to execute this upgrade for you. If your site is open source, you can also ask our community for [free, benevolent help](https://github.com/meta/docusaurus/discussions/9283).

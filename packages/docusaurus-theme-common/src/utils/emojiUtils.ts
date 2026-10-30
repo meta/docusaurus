@@ -30,7 +30,7 @@ export function extractLeadingEmoji(input: string): {
 
   // Leading grapheme contains an emoji
   // Covers flags/ZWJ/skin tones, excludes digits
-  // See https://github.com/facebook/docusaurus/pull/12072
+  // See https://github.com/meta/docusaurus/pull/12072
   if (!/^\p{RGI_Emoji}$/v.test(grapheme)) {
     return {emoji: null, rest: input};
   }

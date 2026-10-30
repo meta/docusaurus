@@ -315,7 +315,7 @@ export default function SearchBar(props: Partial<DocSearchV4Props>): ReactNode {
   const docSearchProps: DocSearchV4Props = {
     ...(siteConfig.themeConfig.algolia as DocSearchV4Props),
     // Let props override theme config
-    // See https://github.com/facebook/docusaurus/pull/11581
+    // See https://github.com/meta/docusaurus/pull/11581
     ...props,
   };
 

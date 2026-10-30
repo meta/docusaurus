@@ -7,7 +7,7 @@ Since April 2026, Docusaurus releases are published in a GitHub Action `deploy.y
 See also:
 
 - https://docusaurus.io/blog/releases/3.10#trusted-publishing
-- https://github.com/facebook/docusaurus/pull/11819
+- https://github.com/meta/docusaurus/pull/11819
 - ***
 
 Docusaurus is published as an npm package that can be installed via `npm` or `yarn`.
@@ -76,7 +76,7 @@ yarn build
 yarn serve
 ```
 
-This local test step is optional because it will be run by the CI on your release PR ([see](https://github.com/facebook/docusaurus/pull/2954/checks?check_run_id=780871959))
+This local test step is optional because it will be run by the CI on your release PR ([see](https://github.com/meta/docusaurus/pull/2954/checks?check_run_id=780871959))
 
 ### 3. Update the changelog
 
@@ -88,7 +88,7 @@ Not all labels will appear in the changelog—some are designed not to. However,
 is:pr is:merged sort:updated-desc -label:"pr: breaking change","pr: new feature","pr: bug fix","pr: performance","pr: polish","pr: documentation","pr: maintenance","pr: internal","pr: dependencies","pr: showcase"
 ```
 
-[Check tags of all recently merged Pull-Requests](https://github.com/facebook/docusaurus/pulls?q=is%3Apr+is%3Amerged+sort%3Aupdated-desc+-label%3A%22pr%3A+breaking+change%22%2C%22pr%3A+new+feature%22%2C%22pr%3A+bug+fix%22%2C%22pr%3A+performance%22%2C%22pr%3A+polish%22%2C%22pr%3A+documentation%22%2C%22pr%3A+maintenance%22%2C%22pr%3A+internal%22%2C%22pr%3A+dependencies%22%2C%22pr%3A+showcase%22%2C%22pr%3A+ignore%22%2C%22pr%3A+translations%22+)
+[Check tags of all recently merged Pull-Requests](https://github.com/meta/docusaurus/pulls?q=is%3Apr+is%3Amerged+sort%3Aupdated-desc+-label%3A%22pr%3A+breaking+change%22%2C%22pr%3A+new+feature%22%2C%22pr%3A+bug+fix%22%2C%22pr%3A+performance%22%2C%22pr%3A+polish%22%2C%22pr%3A+documentation%22%2C%22pr%3A+maintenance%22%2C%22pr%3A+internal%22%2C%22pr%3A+dependencies%22%2C%22pr%3A+showcase%22%2C%22pr%3A+ignore%22%2C%22pr%3A+translations%22+)
 
 Some general principles about the labeling process:
 
@@ -139,7 +139,7 @@ You should still be on your local branch `<your_username>/<version_to_release>`
 
 Make a commit/push, create a pull request with the changes.
 
-Example PR: [#3114](https://github.com/facebook/docusaurus/pull/5098), using title such as `chore: prepare v2.0.0-beta.0 release`
+Example PR: [#3114](https://github.com/meta/docusaurus/pull/5098), using title such as `chore: prepare v2.0.0-beta.0 release`
 
 **Don't merge it yet**, but wait for the CI checks to complete.
 
@@ -213,7 +213,7 @@ Now that the release is done, **merge the pull request**.
 
 ### 7. Create a release on GitHub
 
-- Go to https://github.com/facebook/docusaurus/releases/new
+- Go to https://github.com/meta/docusaurus/releases/new
 - Under the "Tag version" field, look for the newly-created tag, which is `v2.0.0-beta.0` in this case
 - Paste the CHANGELOG changes in the textarea below
 - Hit the green "Publish release" button
@@ -233,7 +233,7 @@ For Discord:
 
 ```
 A new version %VER% is available now! 🎉
-See release notes at the following link https://github.com/facebook/docusaurus/releases/tag/%VER%
+See release notes at the following link https://github.com/meta/docusaurus/releases/tag/%VER%
 ```
 
 For X:
@@ -255,5 +255,5 @@ NOTE: most likely this last item will be relevant for each new release, so do no
 - Many documentation improvements and bug fixes! 🐛
 ###
 
-https://github.com/facebook/docusaurus/releases/tag/%VER%
+https://github.com/meta/docusaurus/releases/tag/%VER%
 ```

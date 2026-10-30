@@ -28,7 +28,7 @@ export function isSamePath(
 /**
  * Note that sites don't always have a homepage in practice, so we can't assume
  * that linking to '/' is always safe.
- * @see https://github.com/facebook/docusaurus/pull/6517#issuecomment-1048709116
+ * @see https://github.com/meta/docusaurus/pull/6517#issuecomment-1048709116
  */
 export function findHomePageRoute({
   baseUrl,

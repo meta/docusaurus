@@ -69,7 +69,7 @@ export default function pluginIdealImage(
         dependency: {not: 'url'},
         // We don't want to use the image loader for non-React source code
         // ie we don't want to use ideal image loader for CSS files...
-        // See https://github.com/facebook/docusaurus/issues/10862
+        // See https://github.com/meta/docusaurus/issues/10862
         issuer: {
           and: [/\.(?:tsx?|jsx?|mdx?)$/i],
         },

@@ -47,7 +47,7 @@ You will have to upgrade your component manually and maintain it over time.
 ${logger.green(
   'Tip',
 )}: your customization can't be done in a ${tableStatusLabel('safe')} way?
-Report it here: https://github.com/facebook/docusaurus/discussions/5468
+Report it here: https://github.com/meta/docusaurus/discussions/5468
 `,
       ],
     },

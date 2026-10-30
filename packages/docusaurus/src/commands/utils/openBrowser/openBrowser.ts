@@ -7,7 +7,7 @@
 
 // This code was initially in CRA/react-dev-utils (deprecated in 2025)
 // We copied and refactored it
-// See https://github.com/facebook/docusaurus/pull/10956
+// See https://github.com/meta/docusaurus/pull/10956
 // See https://github.com/facebook/create-react-app/blob/main/packages/react-dev-utils/openBrowser.js
 
 /* eslint-disable */
@@ -73,11 +73,11 @@ async function tryOpenWithAppleScript({
       )})$"`;
 
       // Promise.try() also catches errors thrown synchronously
-      // See https://github.com/facebook/docusaurus/issues/11204#issuecomment-3073480330
+      // See https://github.com/meta/docusaurus/issues/11204#issuecomment-3073480330
       const result = await Promise.try(() => execPromise(command)).catch(() => {
         // Ignore all errors
         // In particular grep errors when macOS user has no Chromium-based browser open
-        // See https://github.com/facebook/docusaurus/issues/11204
+        // See https://github.com/meta/docusaurus/issues/11204
       });
       if (!result) {
         return [];

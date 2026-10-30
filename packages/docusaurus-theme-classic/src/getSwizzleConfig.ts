@@ -396,7 +396,7 @@ export default function getSwizzleConfig(): SwizzleConfig {
           wrap: 'forbidden',
         },
         description:
-          'The Navbar item components mapping. Can be ejected to add custom navbar item types.\nSee https://github.com/facebook/docusaurus/issues/7227.',
+          'The Navbar item components mapping. Can be ejected to add custom navbar item types.\nSee https://github.com/meta/docusaurus/issues/7227.',
       },
       NotFound: {
         actions: {

@@ -44,7 +44,7 @@ async function main() {
 
 ```ts
 // The toggle event also fires when React syncs the open attribute
-// See https://github.com/facebook/docusaurus/pull/12277
+// See https://github.com/meta/docusaurus/pull/12277
 ```
 
 ## Readability over micro-optimizations

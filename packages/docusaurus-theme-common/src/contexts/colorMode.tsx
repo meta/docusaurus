@@ -114,7 +114,7 @@ const persistColorModeChoice = (newColorMode: ColorModeChoice) => {
 // to avoid a React hydration mismatch errors
 // The useColorMode() hook value lags behind on purpose
 // This helps users avoid hydration mismatch errors in their code
-// See also https://github.com/facebook/docusaurus/issues/7986
+// See also https://github.com/meta/docusaurus/issues/7986
 function useColorModeState() {
   const {
     colorMode: {defaultMode},
@@ -123,7 +123,7 @@ function useColorModeState() {
 
   // Since the provider may unmount/remount on client navigation, we need to
   // reinitialize the state with the correct values to avoid visual glitches.
-  // See also https://github.com/facebook/docusaurus/issues/11399#issuecomment-3279181314
+  // See also https://github.com/meta/docusaurus/issues/11399#issuecomment-3279181314
   const [colorMode, setColorModeState] = useState<ColorMode>(
     isBrowser ? ColorModeAttribute.get() : defaultMode,
   );
@@ -220,7 +220,7 @@ function useContextValue(): ContextValue {
       // Note: we don't use "setColorMode" on purpose
       // The system changes should never be considered an explicit theme choice
       // They only affect the "effective" color, and should never be persisted
-      // Note: this listener also fire when printing, see https://github.com/facebook/docusaurus/pull/6490
+      // Note: this listener also fire when printing, see https://github.com/meta/docusaurus/pull/6490
       setColorModeState(newSystemColorMode);
       ColorModeAttribute.set(newSystemColorMode);
     });

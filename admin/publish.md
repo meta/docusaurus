@@ -1,6 +1,6 @@
 # Publishing Instructions
 
-These instructions have been updated on April 2026, after the [adoption of npm Trusted Publishing](https://docusaurus.io/blog/releases/3.10#trusted-publishing) in v3.10 ([PR](https://github.com/facebook/docusaurus/pull/11819)).
+These instructions have been updated on April 2026, after the [adoption of npm Trusted Publishing](https://docusaurus.io/blog/releases/3.10#trusted-publishing) in v3.10 ([PR](https://github.com/meta/docusaurus/pull/11819)).
 
 This guide is designed to be a very concise overview. Read the [publish-legacy.md](./publish-legacy.md) guide for more details, many steps remain the same, and it provides more details.
 
@@ -27,7 +27,7 @@ However, we need a release branch to cut the new docs version, publish a release
 
 1. Create a release branch: `git co -b slorber/release-3.11.0`
 
-2. Make sure all the recent PRs have a `pr: ` GitHub label. This [link](https://github.com/facebook/docusaurus/pulls?q=is%3Apr+is%3Amerged+sort%3Aupdated-desc+-label%3A%22pr%3A+breaking+change%22%2C%22pr%3A+new+feature%22%2C%22pr%3A+bug+fix%22%2C%22pr%3A+performance%22%2C%22pr%3A+polish%22%2C%22pr%3A+documentation%22%2C%22pr%3A+maintenance%22%2C%22pr%3A+internal%22%2C%22pr%3A+dependencies%22%2C%22pr%3A+showcase%22%2C%22pr%3A+ignore%22%2C%22pr%3A+translations%22+) helps you find untagged PRs.
+2. Make sure all the recent PRs have a `pr: ` GitHub label. This [link](https://github.com/meta/docusaurus/pulls?q=is%3Apr+is%3Amerged+sort%3Aupdated-desc+-label%3A%22pr%3A+breaking+change%22%2C%22pr%3A+new+feature%22%2C%22pr%3A+bug+fix%22%2C%22pr%3A+performance%22%2C%22pr%3A+polish%22%2C%22pr%3A+documentation%22%2C%22pr%3A+maintenance%22%2C%22pr%3A+internal%22%2C%22pr%3A+dependencies%22%2C%22pr%3A+showcase%22%2C%22pr%3A+ignore%22%2C%22pr%3A+translations%22+) helps you find untagged PRs.
 
 3. Run `pnpm changelog --from v3.10.0` to generate a changelog from the tagged PRs since a given release/tag.
 
@@ -46,11 +46,11 @@ pnpm crowdin:download:website
 pnpm build:website
 ```
 
-8. Create a PR ([example](https://github.com/facebook/docusaurus/pull/11825)). Make sure all CI checks pass. If useful, create it earlier to get a deploy preview to review.
+8. Create a PR ([example](https://github.com/meta/docusaurus/pull/11825)). Make sure all CI checks pass. If useful, create it earlier to get a deploy preview to review.
 
 9. Upgrade the `package.json` versions: `pnpm lerna version 3.11.0 --exact --no-push --yes` (mostly useful for canary releases versions).
 
-10. Go to the [Publish workflow](https://github.com/facebook/docusaurus/actions/workflows/publish.yml) and click the "Run workflow" button. Fill in the form with:
+10. Go to the [Publish workflow](https://github.com/meta/docusaurus/actions/workflows/publish.yml) and click the "Run workflow" button. Fill in the form with:
 
 - From branch: `main`
 - NPM version: `3.10.0`
@@ -103,7 +103,7 @@ If you want to release `3.10.1` while `main` is already for `4.0.0`
 
 0. Make sure `docusaurus-v3-maintenance` is up to date. If not, upgrade it from the latest v3 release. The branch is protected so you need to use PRs.
 
-1. Backport/merge all the fixes for the patch release to `docusaurus-v3-maintenance` (using a PR, [example](https://github.com/facebook/docusaurus/pull/11982))
+1. Backport/merge all the fixes for the patch release to `docusaurus-v3-maintenance` (using a PR, [example](https://github.com/meta/docusaurus/pull/11982))
 
 2. Create a release branch from **main**: `git co main && git pull && git co -b slorber/release-v3.10.1`
 
@@ -111,9 +111,9 @@ If you want to release `3.10.1` while `main` is already for `4.0.0`
 
 4. Create the `3.10.1` changelog entry: `pnpm changelog --from v3.10.0 --to docusaurus-v3-maintenance`
 
-5. Create a release PR that targets `main` ([example](https://github.com/facebook/docusaurus/pull/11983))
+5. Create a release PR that targets `main` ([example](https://github.com/meta/docusaurus/pull/11983))
 
-6. Go to the [Publish workflow](https://github.com/facebook/docusaurus/actions/workflows/publish.yml) and click the "Run workflow" button. Fill in the form with:
+6. Go to the [Publish workflow](https://github.com/meta/docusaurus/actions/workflows/publish.yml) and click the "Run workflow" button. Fill in the form with:
 
 - From branch: `docusaurus-v3-maintenance` - ⚠️ Do not use `main`!
 - NPM version: `3.10.1`
@@ -143,7 +143,7 @@ Make sure the [Docusaurus Playground](https://docusaurus.new) sandboxes keeps wo
 
 ### Publish the GitHub release
 
-- Go to https://github.com/facebook/docusaurus/releases/new
+- Go to https://github.com/meta/docusaurus/releases/new
 - Use tag `v3.11.0`
 - Use title `3.11.0`
 - Paste the release changelog

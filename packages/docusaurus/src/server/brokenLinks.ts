@@ -39,7 +39,7 @@ type CollectedLinks = {
 };
 
 // We use efficient data structures for performance reasons
-// See https://github.com/facebook/docusaurus/issues/9754
+// See https://github.com/meta/docusaurus/issues/9754
 type CollectedLinksNormalized = Map<
   string,
   {links: Set<string>; anchors: Set<string>}
@@ -77,7 +77,7 @@ function createBrokenLinksHelper({
   const validPathnames = new Set(collectedLinks.keys());
 
   // IMPORTANT: this is an optimization
-  // See https://github.com/facebook/docusaurus/issues/9754
+  // See https://github.com/meta/docusaurus/issues/9754
   // Matching against the route array can be expensive
   // If the route is already in the valid pathnames,
   // we can avoid matching against it
@@ -107,7 +107,7 @@ function createBrokenLinksHelper({
   function isPathnameMatchingAnyRoute(pathname: string): boolean {
     if (matchRoutes(remainingRoutes, pathname).length > 0) {
       // IMPORTANT: this is an optimization
-      // See https://github.com/facebook/docusaurus/issues/9754
+      // See https://github.com/meta/docusaurus/issues/9754
       // Large Docusaurus sites have many routes!
       // We try to minimize calls to a possibly expensive matchRoutes function
       validPathnames.add(pathname);
@@ -136,7 +136,7 @@ function createBrokenLinksHelper({
     }
     // Link has empty hash ("#", "/page#"...): we do not report it as broken
     // Empty hashes are used for various weird reasons, by us and other users...
-    // See for example: https://github.com/facebook/docusaurus/pull/6003
+    // See for example: https://github.com/meta/docusaurus/pull/6003
     if (hash === '') {
       return false;
     }
@@ -145,7 +145,7 @@ function createBrokenLinksHelper({
       collectedLinks.get(safeDecodeURI(pathname)) ??
       // The broken link checker should not care about a trailing slash
       // Those are already covered by the broken pathname checker
-      // See https://github.com/facebook/docusaurus/issues/10116
+      // See https://github.com/meta/docusaurus/issues/10116
       collectedLinks.get(addTrailingSlash(pathname)) ??
       collectedLinks.get(addTrailingSlash(safeDecodeURI(pathname))) ??
       collectedLinks.get(removeTrailingSlash(pathname)) ??
@@ -299,7 +299,7 @@ function createBrokenPathsMessage(
   /**
    * If there's a broken link appearing very often, it is probably a broken link
    * on the layout. Add an additional message in such case to help user figure
-   * this out. See https://github.com/facebook/docusaurus/issues/3567#issuecomment-706973805
+   * this out. See https://github.com/meta/docusaurus/issues/3567#issuecomment-706973805
    */
   function getLayoutBrokenLinksHelpMessage() {
     const flatList = Object.entries(brokenPathsMap).flatMap(

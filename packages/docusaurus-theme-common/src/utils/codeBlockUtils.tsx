@@ -350,7 +350,7 @@ export function parseClassNameLanguage(
 
 // Prism languages are always lowercase
 // We want to fail-safe and allow both "php" and "PHP"
-// See https://github.com/facebook/docusaurus/issues/9012
+// See https://github.com/meta/docusaurus/issues/9012
 function normalizeLanguage(language: string | undefined): string | undefined {
   return language?.toLowerCase();
 }

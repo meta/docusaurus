@@ -131,7 +131,7 @@ export default defineConfig({
       },
     },
     // Default 5s timeout often fails on Windows runners.
-    // See https://github.com/facebook/docusaurus/pull/8259
+    // See https://github.com/meta/docusaurus/pull/8259
     testTimeout: 25000,
     include: [
       // Vitest default

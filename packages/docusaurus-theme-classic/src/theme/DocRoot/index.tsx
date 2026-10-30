@@ -20,7 +20,7 @@ export default function DocRoot(props: Props): ReactNode {
   const currentDocRouteMetadata = useDocRootMetadata(props);
   if (!currentDocRouteMetadata) {
     // We only render the not found content to avoid a double layout
-    // see https://github.com/facebook/docusaurus/pull/7966#pullrequestreview-1077276692
+    // see https://github.com/meta/docusaurus/pull/7966#pullrequestreview-1077276692
     return <NotFoundContent />;
   }
   const {docElement, sidebarName, sidebarItems} = currentDocRouteMetadata;

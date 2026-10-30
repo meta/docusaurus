@@ -51,7 +51,7 @@ import type {RuleSetRule} from 'webpack';
 
 // MDX loader is not 100% deterministic, leading to cache invalidation issue
 // This permits to invalidate the MDX loader cache entries when content changes
-// Problem documented here: https://github.com/facebook/docusaurus/pull/10934
+// Problem documented here: https://github.com/meta/docusaurus/pull/10934
 // TODO this is not a perfect solution, find better?
 async function createMdxLoaderDependencyFile({
   dataDir,
@@ -123,7 +123,7 @@ export default async function pluginContentDocs(
     } = options;
     const contentDirs = versionsMetadata
       .flatMap(getContentPathList)
-      // Trailing slash is important, see https://github.com/facebook/docusaurus/pull/3970
+      // Trailing slash is important, see https://github.com/meta/docusaurus/pull/3970
       .map(addTrailingPathSeparator);
 
     return createMDXLoaderRule({

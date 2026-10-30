@@ -46,10 +46,10 @@ type CLIArgs = [string, string, ...string[]];
 //  no way to know the siteDir/config yet.
 //  The individual CLI commands can declare/read siteDir on their own
 //  The env variable is an escape hatch
-//  See https://github.com/facebook/docusaurus/issues/8903
+//  See https://github.com/meta/docusaurus/issues/8903
 const DEFAULT_SITE_DIR = process.env.DOCUSAURUS_CLI_SITE_DIR ?? '.';
 // Similarly we give an env escape hatch for config
-// See https://github.com/facebook/docusaurus/issues/8903
+// See https://github.com/meta/docusaurus/issues/8903
 const DEFAULT_CONFIG = process.env.DOCUSAURUS_CLI_CONFIG ?? undefined;
 
 export async function runCLI(cliArgs: CLIArgs): Promise<void> {

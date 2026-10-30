@@ -52,8 +52,8 @@ jobs:
       - name: Docusaurus Tests
         run: pnpm test
       - name: Create a deep path
-        # https://github.com/facebook/docusaurus/pull/4899
-        # https://github.com/facebook/docusaurus/issues/5793
+        # https://github.com/meta/docusaurus/pull/4899
+        # https://github.com/meta/docusaurus/issues/5793
         run: |
           mkdir -p "website/_dogfooding/_pages tests/deep-file-path-test/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar/foo/bar"
           cd "$_"
@@ -67,7 +67,7 @@ jobs:
           DOCUSAURUS_PERF_LOGGER: 'true'
 
       - name: TypeCheck website
-        # see https://github.com/facebook/docusaurus/pull/10486
+        # see https://github.com/meta/docusaurus/pull/10486
         run: pnpm --filter website typecheck
 
       # The TypeScript compiler of the tested version runs with pnpm dlx,
@@ -79,7 +79,7 @@ jobs:
 
       - name: TypeCheck website - max version - Latest
         # For latest TS there are often lib check errors, so we disable it
-        # Details: https://github.com/facebook/docusaurus/pull/10486
+        # Details: https://github.com/meta/docusaurus/pull/10486
         run: |
           pnpm dlx --package=typescript@latest tsc --version
           pnpm dlx --package=typescript@latest tsc --project website/tsconfig.skipLibCheck.json

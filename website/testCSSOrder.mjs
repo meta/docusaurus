@@ -16,8 +16,8 @@ There are multiple ways to provide some CSS to Docusaurus
 and Docusaurus should guarantee a consistent CSS ordering over time
 
 See also
-- https://github.com/facebook/docusaurus/issues/3678
-- https://github.com/facebook/docusaurus/pull/5987
+- https://github.com/meta/docusaurus/issues/3678
+- https://github.com/meta/docusaurus/pull/5987
 
 TODO we should probably add a real e2e test in core instead of using our own
 website? Current solution looks good-enough for now
@@ -28,7 +28,7 @@ website? Current solution looks good-enough for now
 const EXPECTED_CSS_MARKERS = [
   // Note, Infima and site classes are optimized/deduplicated and put at the top
   // We don't agree yet on what should be the order for those classes
-  // See https://github.com/facebook/docusaurus/pull/6222
+  // See https://github.com/meta/docusaurus/pull/6222
   '--ifm-color-scheme:light',
   '.col[class*=col--]',
   '.padding-vert--xl',
@@ -47,7 +47,7 @@ const EXPECTED_CSS_MARKERS = [
   '.test-marker-site-index-page',
 
   // Lazy-loaded lib
-  // Looks like order changed during Webpack 5: https://github.com/facebook/docusaurus/pull/10455
+  // Looks like order changed during Webpack 5: https://github.com/meta/docusaurus/pull/10455
   // Note a big deal though
   // '.DocSearch-Modal',
   // '.DocSearch-Hit-content-wrapper',

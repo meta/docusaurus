@@ -5,7 +5,7 @@ exports[`directives remark plugin - client compiler > default behavior for conta
   [
     "[WARNING] Docusaurus found 1 unused Markdown directives in file "packages/docusaurus-mdx-loader/src/remark/unusedDirectives/__tests__/__fixtures__/containerDirectives.md"
 - :::unusedDirective (7:1)
-Your content might render in an unexpected way. Visit https://github.com/facebook/docusaurus/pull/9394 to find out why and how to fix it.",
+Your content might render in an unexpected way. Visit https://github.com/meta/docusaurus/pull/9394 to find out why and how to fix it.",
   ],
 ]
 `;
@@ -24,7 +24,7 @@ exports[`directives remark plugin - client compiler > default behavior for leaf 
   [
     "[WARNING] Docusaurus found 1 unused Markdown directives in file "packages/docusaurus-mdx-loader/src/remark/unusedDirectives/__tests__/__fixtures__/leafDirectives.md"
 - ::unusedLeafDirective (1:1)
-Your content might render in an unexpected way. Visit https://github.com/facebook/docusaurus/pull/9394 to find out why and how to fix it.",
+Your content might render in an unexpected way. Visit https://github.com/meta/docusaurus/pull/9394 to find out why and how to fix it.",
   ],
 ]
 `;
@@ -41,7 +41,7 @@ exports[`directives remark plugin - client compiler > default behavior for text 
     "[WARNING] Docusaurus found 2 unused Markdown directives in file "packages/docusaurus-mdx-loader/src/remark/unusedDirectives/__tests__/__fixtures__/textDirectives.md"
 - :textDirective3 (9:7)
 - :textDirective4 (11:7)
-Your content might render in an unexpected way. Visit https://github.com/facebook/docusaurus/pull/9394 to find out why and how to fix it.",
+Your content might render in an unexpected way. Visit https://github.com/meta/docusaurus/pull/9394 to find out why and how to fix it.",
   ],
 ]
 `;

@@ -22,7 +22,7 @@ import type {MDXComponentsObject} from '@theme/MDXComponents';
 
 const MDXComponents: MDXComponentsObject = {
   Head,
-  details: MDXDetails, // For MD mode support, see https://github.com/facebook/docusaurus/issues/9092#issuecomment-1602902274
+  details: MDXDetails, // For MD mode support, see https://github.com/meta/docusaurus/issues/9092#issuecomment-1602902274
   Details: MDXDetails,
   code: MDXCode,
   a: MDXA,

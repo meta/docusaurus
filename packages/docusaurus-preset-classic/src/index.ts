@@ -58,7 +58,7 @@ You can now use either:
 - @docusaurus/plugin-google-gtag - presetOptions.gtag
 - @docusaurus/plugin-google-tag-manager - presetOptions.googleTagManager
 
-See also: https://github.com/facebook/docusaurus/issues/7221`,
+See also: https://github.com/meta/docusaurus/issues/7221`,
     );
   }
 

@@ -58,7 +58,7 @@ jobs:
 
   # Check our init template deps for new supply chain compromissions
   # This workflow is not ideal but good enough for now
-  # See why https://github.com/facebook/docusaurus/pull/12448
+  # See why https://github.com/meta/docusaurus/pull/12448
   supply-chain-site-template:
     name: Supply Chain - Site Template @${{ matrix.npm_dist_tag }}
     timeout-minutes: 30

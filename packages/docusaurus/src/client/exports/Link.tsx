@@ -65,7 +65,7 @@ function Link({
   // pathname:// is a special "protocol" we use to tell Docusaurus link
   // that a link is not "internal" and that we shouldn't use history.push()
   // this is not ideal but a good enough escape hatch for now
-  // see https://github.com/facebook/docusaurus/issues/3309
+  // see https://github.com/meta/docusaurus/issues/3309
   // note: we want baseUrl to be appended (see issue for details)
   // TODO read routes and automatically detect internal/external links?
   const targetLinkWithoutPathnameProtocol = targetLinkUnprefixed?.replace(
@@ -165,7 +165,7 @@ function Link({
     // When using the hash router, we can't use the regular <a> link for anchors
     // We need to use React Router to navigate to /#/pathname/#anchor
     // And not /#anchor
-    // See also https://github.com/facebook/docusaurus/pull/10311
+    // See also https://github.com/meta/docusaurus/pull/10311
     (isAnchorLink && router !== 'hash');
 
   if (!noBrokenLinkCheck && (isAnchorLink || !isRegularHtmlLink)) {

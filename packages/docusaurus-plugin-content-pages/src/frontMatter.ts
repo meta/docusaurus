@@ -17,9 +17,9 @@ import type {PageFrontMatter} from '@docusaurus/plugin-content-pages';
 /* eslint-disable camelcase */
 
 const PageFrontMatterSchema = Joi.object<PageFrontMatter>({
-  // See https://github.com/facebook/docusaurus/issues/4591#issuecomment-822372398
+  // See https://github.com/meta/docusaurus/issues/4591#issuecomment-822372398
   title: Joi.string().allow(''),
-  // See https://github.com/facebook/docusaurus/issues/4591#issuecomment-822372398
+  // See https://github.com/meta/docusaurus/issues/4591#issuecomment-822372398
   description: Joi.string().allow(''),
   keywords: Joi.array().items(Joi.string().required()),
   image: URISchema,

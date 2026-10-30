@@ -28,4 +28,4 @@ module.exports = {
 $ npm swizzle @docusaurus/theme-classic [component name]
 ```
 
-All components used by this theme can be found [here](https://github.com/facebook/docusaurus/tree/main/packages/docusaurus-theme-classic/src/theme)
+All components used by this theme can be found [here](https://github.com/meta/docusaurus/tree/main/packages/docusaurus-theme-classic/src/theme)

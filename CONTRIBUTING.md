@@ -16,10 +16,10 @@ Meta has adopted a Code of Conduct that we expect project participants to adhere
 There are many ways to contribute to Docusaurus, and many of them do not involve writing any code. Here's a few ideas to get started:
 
 - Simply start using Docusaurus. Go through the [Getting Started](https://docusaurus.io/docs/installation) guide. Does everything work as expected? If not, we're always looking for improvements. Let us know by [opening an issue](#issues).
-- Look through the [open issues](https://github.com/facebook/docusaurus/issues). Provide workarounds, ask for clarification, or suggest labels. Help [triage issues](#triaging-issues-and-pull-requests).
-- If you find an issue you would like to fix, [open a pull request](#pull-requests). Issues tagged as [_Good first issue_](https://github.com/facebook/docusaurus/labels/Good%20first%20issue) are a good place to get started.
+- Look through the [open issues](https://github.com/meta/docusaurus/issues). Provide workarounds, ask for clarification, or suggest labels. Help [triage issues](#triaging-issues-and-pull-requests).
+- If you find an issue you would like to fix, [open a pull request](#pull-requests). Issues tagged as [_Good first issue_](https://github.com/meta/docusaurus/labels/Good%20first%20issue) are a good place to get started.
 - Read through the [Docusaurus docs](https://docusaurus.io/docs/installation). If you find anything that is confusing or can be improved, you can click "Edit this page" at the bottom of most docs, which takes you to the GitHub interface to make and propose changes.
-- Take a look at the [features requested](https://github.com/facebook/docusaurus/labels/feature) by others in the community and consider opening a pull request if you see something you want to work on.
+- Take a look at the [features requested](https://github.com/meta/docusaurus/labels/feature) by others in the community and consider opening a pull request if you see something you want to work on.
 
 Contributions are very welcome. If you think you need help planning your contribution, please ping us on X at [@docusaurus](https://x.com/docusaurus) and let us know you are looking for a bit of help.
 
@@ -32,13 +32,13 @@ We have the [`#contributors`](https://discord.gg/6g6ASPA) channel on [Discord](h
 One great way you can contribute to the project without writing any code is to help triage issues and pull requests as they come in.
 
 - Ask for more information if you believe the issue does not provide all the details required to solve it.
-- Suggest [labels](https://github.com/facebook/docusaurus/labels) that can help categorize issues.
+- Suggest [labels](https://github.com/meta/docusaurus/labels) that can help categorize issues.
 - Flag issues that are stale or that should be closed.
 - Ask for test plans and review code.
 
 ## Our Development Process
 
-Docusaurus uses [GitHub](https://github.com/facebook/docusaurus) as its source of truth. The core team will be working directly there. All changes will be public from the beginning.
+Docusaurus uses [GitHub](https://github.com/meta/docusaurus) as its source of truth. The core team will be working directly there. All changes will be public from the beginning.
 
 All pull requests will be checked by the continuous integration system, GitHub actions. There are unit tests, end-to-end tests, performance tests, style tests, and much more.
 
@@ -48,13 +48,13 @@ Docusaurus has one primary branch `main` and we use feature branches with deploy
 
 ## Issues
 
-When [opening a new issue](https://github.com/facebook/docusaurus/issues/new/choose), always make sure to fill out the issue template. **This step is very important!** Not doing so may result in your issue not being managed in a timely fashion. Don't take this personally if this happens, and feel free to open a new issue once you've gathered all the information required by the template.
+When [opening a new issue](https://github.com/meta/docusaurus/issues/new/choose), always make sure to fill out the issue template. **This step is very important!** Not doing so may result in your issue not being managed in a timely fashion. Don't take this personally if this happens, and feel free to open a new issue once you've gathered all the information required by the template.
 
 **Please don't use the GitHub issue tracker for questions.** If you have questions about using Docusaurus, use any of our [support channels](https://docusaurus.io/community/support), and we will do our best to answer your questions.
 
 ### Bugs
 
-We use [GitHub Issues](https://github.com/facebook/docusaurus/issues) for our public bugs. If you would like to report a problem, take a look around and see if someone already opened an issue about it. If you are certain this is a new, unreported bug, you can submit a [bug report](https://github.com/facebook/docusaurus/issues/new?assignees=&labels=bug%2Cstatus%3A+needs+triage&template=bug.yml).
+We use [GitHub Issues](https://github.com/meta/docusaurus/issues) for our public bugs. If you would like to report a problem, take a look around and see if someone already opened an issue about it. If you are certain this is a new, unreported bug, you can submit a [bug report](https://github.com/meta/docusaurus/issues/new?assignees=&labels=bug%2Cstatus%3A+needs+triage&template=bug.yml).
 
 - **One issue, one bug:** Please report a single bug per issue.
 - **Provide reproduction steps:** List all the steps necessary to reproduce the issue. The person reading your bug report should be able to follow these steps to reproduce your issue with minimal effort.
@@ -67,20 +67,20 @@ Meta has a [bounty program](https://www.facebook.com/whitehat/) for the safe dis
 
 ### Feature requests
 
-If you would like to request a new feature or enhancement but are not yet thinking about opening a pull request, you can file an issue with the [feature template](https://github.com/facebook/docusaurus/issues/new?assignees=&labels=feature%2Cstatus%3A+needs+triage&template=feature.yml) in the form of an **elaborated RFC**. Alternatively, you can use the [Canny board](https://docusaurus.io/feature-requests) for more casual feature requests and gain enough traction before proposing an RFC.
+If you would like to request a new feature or enhancement but are not yet thinking about opening a pull request, you can file an issue with the [feature template](https://github.com/meta/docusaurus/issues/new?assignees=&labels=feature%2Cstatus%3A+needs+triage&template=feature.yml) in the form of an **elaborated RFC**. Alternatively, you can use the [Canny board](https://docusaurus.io/feature-requests) for more casual feature requests and gain enough traction before proposing an RFC.
 
 ### Proposals
 
-If you intend to make any non-trivial changes to existing implementations, we recommend filing an issue with the [proposal template](https://github.com/facebook/docusaurus/issues/new?assignees=&labels=proposal%2Cstatus%3A+needs+triage&template=proposal.yml). This lets us reach an agreement on your proposal before you put significant effort into it. These types of issues should be rare.
+If you intend to make any non-trivial changes to existing implementations, we recommend filing an issue with the [proposal template](https://github.com/meta/docusaurus/issues/new?assignees=&labels=proposal%2Cstatus%3A+needs+triage&template=proposal.yml). This lets us reach an agreement on your proposal before you put significant effort into it. These types of issues should be rare.
 
 ### Claiming issues
 
-We have a list of [beginner-friendly issues](https://github.com/facebook/docusaurus/labels/good%20first%20issue) to help you get your feet wet in the Docusaurus codebase and familiar with our contribution process. This is a great place to get started.
+We have a list of [beginner-friendly issues](https://github.com/meta/docusaurus/labels/good%20first%20issue) to help you get your feet wet in the Docusaurus codebase and familiar with our contribution process. This is a great place to get started.
 
 Apart from the `good first issue`, the following labels are also worth looking at:
 
-- [`help wanted`](https://github.com/facebook/docusaurus/labels/help%20wanted): if you have specific knowledge in one domain, working on these issues can make your expertise shine.
-- [`status: accepting pr`](https://github.com/facebook/docusaurus/labels/status%3A%20accepting%20pr): community contributors can feel free to claim any of these.
+- [`help wanted`](https://github.com/meta/docusaurus/labels/help%20wanted): if you have specific knowledge in one domain, working on these issues can make your expertise shine.
+- [`status: accepting pr`](https://github.com/meta/docusaurus/labels/status%3A%20accepting%20pr): community contributors can feel free to claim any of these.
 
 If you want to work on any of these issues, just drop a message saying "I am working on this". **You do not need to ask for assignment to work on any issue explicitly marked as welcoming external contributions.** However, don't "cookie lick", or squat on an issue without actually sending a PR. You are automatically considered as giving up if you don't **send a PR within seven days after your comment**, and the issue automatically becomes up for grabs again.
 
@@ -98,9 +98,9 @@ You can use Gitpod (a free, online, VS Code-like IDE) for contributing. With a s
 
 So that you can start contributing straight away.
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/facebook/docusaurus)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/meta/docusaurus)
 
-You can also try using the new [github.dev](https://github.dev/facebook/docusaurus) feature. While you are browsing any file, changing the domain name from `github.com` to `github.dev` will turn your browser into an online editor. You can start making changes and send pull requests right away.
+You can also try using the new [github.dev](https://github.dev/meta/docusaurus) feature. While you are browsing any file, changing the domain name from `github.com` to `github.dev` will turn your browser into an online editor. You can start making changes and send pull requests right away.
 
 ### Installation
 
@@ -187,7 +187,7 @@ Tests are integrated into our continuous integration system, so you don't always
 - **Build and typecheck.** We use TypeScript in our codebase, which can make sure your code is consistent and catches some obvious mistakes early.
 - **Unit tests.** We use [Vitest](https://vitest.dev/) for unit tests of API endpoints' behavior. You can run `pnpm test` in the root directory to run all tests, or `pnpm test path/to/your/file.test.ts` to run a specific test.
 - **Dogfooding.** Our website itself covers all kinds of potential configuration cases and we even have a dedicated [tests area](https://docusaurus.io/tests). Don't be afraid to update our website's configuration in your PR—it can help the maintainers preview the effects. We can decide if the website change should be kept when merging and deploying for production.
-- **E2E tests.** You can simulate the distribution and installation of the code with your fresh changes. If you need help testing your changes locally, you can check out the doc on doing [local third-party testing](https://github.com/facebook/docusaurus/blob/main/admin/local-third-party-project-testing.md).
+- **E2E tests.** You can simulate the distribution and installation of the code with your fresh changes. If you need help testing your changes locally, you can check out the doc on doing [local third-party testing](https://github.com/meta/docusaurus/blob/main/admin/local-third-party-project-testing.md).
 
 ### Licensing
 

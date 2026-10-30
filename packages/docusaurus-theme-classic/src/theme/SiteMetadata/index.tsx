@@ -21,7 +21,7 @@ import SearchMetadata from '@theme/SearchMetadata';
 // TODO move to SiteMetadataDefaults or theme-common ?
 // Useful for i18n/SEO
 // See https://developers.google.com/search/docs/advanced/crawling/localized-versions
-// See https://github.com/facebook/docusaurus/issues/3317
+// See https://github.com/meta/docusaurus/issues/3317
 function AlternateLangHeaders(): ReactNode {
   const {
     i18n: {currentLocale, defaultLocale, localeConfigs},
@@ -85,7 +85,7 @@ function useDefaultCanonicalUrl() {
   } = useDocusaurusContext();
 
   // TODO using useLocation().pathname is not a super idea
-  // See https://github.com/facebook/docusaurus/issues/9170
+  // See https://github.com/meta/docusaurus/issues/9170
   const {pathname} = useLocation();
 
   const canonicalPathname = applyTrailingSlash(useBaseUrl(pathname), {

@@ -32,7 +32,7 @@ export function addBaseUrl({
 
   // TODO hash router + /baseUrl/ is unlikely to work well in all situations
   // This will support most cases, but not all
-  // See https://github.com/facebook/docusaurus/pull/9859
+  // See https://github.com/meta/docusaurus/pull/9859
   if (router === 'hash') {
     return url.startsWith('/') ? `.${url}` : `./${url}`;
   }
@@ -42,7 +42,7 @@ export function addBaseUrl({
   }
 
   // /baseUrl -> /baseUrl/
-  // https://github.com/facebook/docusaurus/issues/6315
+  // https://github.com/meta/docusaurus/issues/6315
   if (url === baseUrl.replace(/\/$/, '')) {
     return baseUrl;
   }

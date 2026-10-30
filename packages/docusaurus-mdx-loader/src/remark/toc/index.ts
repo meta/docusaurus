@@ -160,7 +160,7 @@ const plugin: Plugin<PluginOptions[], Root> = function plugin(
 
     // If user explicitly writes "export const toc" in his mdx file
     // We keep it as is do not override their explicit toc structure
-    // See https://github.com/facebook/docusaurus/pull/7530#discussion_r1458087876
+    // See https://github.com/meta/docusaurus/pull/7530#discussion_r1458087876
     if (existingTocExport) {
       return;
     }

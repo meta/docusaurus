@@ -58,7 +58,7 @@ function ErrorBoundaryError({error}: {error: Error}): ReactNode {
 // A bit hacky: we need to add an artificial RouteContextProvider here
 // The goal is to be able to render the error inside the theme layout
 // Without this, our theme classic would crash due to lack of route context
-// See also https://github.com/facebook/docusaurus/pull/9852
+// See also https://github.com/meta/docusaurus/pull/9852
 function ErrorRouteContextProvider({children}: {children: ReactNode}) {
   return (
     <RouteContextProvider

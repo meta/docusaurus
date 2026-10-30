@@ -10,5 +10,5 @@ contact_links:
     url: https://stackoverflow.com/questions/tagged/docusaurus
     about: This issue tracker is not for technical support. Please use Stack Overflow, and ask the community for help.
   - name: ❓ Advanced question - GitHub Discussions
-    url: https://github.com/facebook/docusaurus/discussions
+    url: https://github.com/meta/docusaurus/discussions
     about: Use GitHub Discussions for advanced and unanswered questions only, requiring a maintainer's answer. Make sure the question wasn't already asked.

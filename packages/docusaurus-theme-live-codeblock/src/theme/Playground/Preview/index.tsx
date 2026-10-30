@@ -23,7 +23,7 @@ function Loader() {
 
 function PlaygroundLivePreview(): ReactNode {
   // No SSR for the live preview
-  // See https://github.com/facebook/docusaurus/issues/5747
+  // See https://github.com/meta/docusaurus/issues/5747
   return (
     <BrowserOnly fallback={<Loader />}>
       {() => (
