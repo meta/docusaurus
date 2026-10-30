@@ -1,0 +1,55 @@
+name: Tests CLI docusaurus deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - packages/docusaurus/src/commands/deploy.ts
+      - .github/workflows/tests-cli-deploy.yml
+
+# We queue those jobs on purpose to avoid race conditions
+# Using a single static deploy branch: good enough
+concurrency:
+  group: cli-deploy-singleton-group
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: Tests
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ['16.14', '16', '18']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd # v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: yarn
+      - name: Installation
+        run: yarn
+
+      - name: Cleanup Deployment Git Branch
+        run: git push origin --delete ci-deploy-test-branch
+        # Normally that branch does not exist, but who knows what can happen
+        continue-on-error: true
+
+      # We only test the deployment script, not the website build process
+      - name: Create artificial build dir
+        run: |
+          mkdir website/build
+          echo "CI CLI Deployment tests" > website/build/README.md
+
+      # We run twice the same CLI deployment command
+      # The script has different code for new vs existing remote branch
+      - name: Test CLI deployment 1 (new branch)
+        run: DEPLOYMENT_BRANCH=ci-deploy-test-branch yarn workspace website deploy --skip-build
+      - name: Test CLI deployment 2 (existing branch)
+        run: DEPLOYMENT_BRANCH=ci-deploy-test-branch yarn workspace website deploy --skip-build
+
+      - name: Cleanup Deployment Git Branch
+        run: git push origin --delete ci-deploy-test-branch
