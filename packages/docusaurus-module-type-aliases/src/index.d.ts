@@ -275,6 +275,8 @@ declare module '@docusaurus/Translate' {
 }
 
 declare module '@docusaurus/router' {
+  import type {DataRouter} from 'react-router';
+
   export {
     useLocation,
     useNavigate,
@@ -283,6 +285,7 @@ declare module '@docusaurus/router' {
     matchPath,
     type Location,
   } from 'react-router';
+  export function useRouter(): DataRouter;
 }
 
 // TODO Docusaurus v5: remove this deprecated hook

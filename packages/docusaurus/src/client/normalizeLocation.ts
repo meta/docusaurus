@@ -6,7 +6,8 @@
  */
 
 import {matchRouteConfigs} from './routeObjects';
-import type {Location} from 'react-router';
+import preload from './preload';
+import type {Location, PatchRoutesOnNavigationFunction} from 'react-router';
 
 // Memoize previously normalized pathnames.
 const pathnames = new Map<string, string>();
@@ -36,5 +37,22 @@ export default function normalizeLocation<T extends Location>(location: T): T {
   return {
     ...location,
     pathname,
+  };
+}
+
+/**
+ * Hosts without clean URLs serve the `/page` route at `/page.html`. The app
+ * renders the `/page` routes for these paths, and this route preloads them.
+ */
+export function patchHtmlRoutes(
+  parentRouteId: string,
+): PatchRoutesOnNavigationFunction {
+  return ({path, patch}) => {
+    const {pathname} = normalizeLocation({pathname: path} as Location);
+    if (pathname !== path) {
+      patch(parentRouteId, [
+        {path, loader: () => preload(pathname).then(() => null)},
+      ]);
+    }
   };
 }

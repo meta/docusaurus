@@ -5,12 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {StaticRouter} from 'react-router';
+import {
+  createStaticHandler,
+  createStaticRouter,
+  StaticRouterProvider,
+} from 'react-router';
 import {HelmetProvider, type FilledContext} from 'react-helmet-async';
 import Loadable from 'react-loadable';
+import siteConfig from '@generated/docusaurus.config';
 import {renderToHtml} from './renderToHtml';
-import preload from './preload';
-import App from './App';
+import {appRoutes} from './appRouter';
+import {RouterContextProvider} from './routerContext';
 import {
   createStatefulBrokenLinks,
   BrokenLinksProvider,
@@ -18,8 +23,17 @@ import {
 import {toPageCollectedMetadataInternal} from './serverHelmetUtils';
 import type {AppRenderer, PageCollectedDataInternal} from '../common';
 
+const staticHandler = createStaticHandler(appRoutes);
+
 const render: AppRenderer['render'] = async ({pathname}) => {
-  await preload(pathname);
+  // Runs the route loaders, which preload the page chunks
+  const routerContext = await staticHandler.query(
+    new Request(new URL(pathname, siteConfig.url)),
+  );
+  if (routerContext instanceof Response) {
+    throw new Error(`Unexpected router response for ${pathname}`);
+  }
+  const router = createStaticRouter(staticHandler.dataRoutes, routerContext);
 
   const modules = new Set<string>();
   const helmetContext = {};
@@ -29,11 +43,15 @@ const render: AppRenderer['render'] = async ({pathname}) => {
     // @ts-expect-error: we are migrating away from react-loadable anyways
     <Loadable.Capture report={(moduleName) => modules.add(moduleName)}>
       <HelmetProvider context={helmetContext}>
-        <StaticRouter location={pathname}>
+        <RouterContextProvider router={router}>
           <BrokenLinksProvider brokenLinks={statefulBrokenLinks}>
-            <App />
+            <StaticRouterProvider
+              router={router}
+              context={routerContext}
+              hydrate={false}
+            />
           </BrokenLinksProvider>
-        </StaticRouter>
+        </RouterContextProvider>
       </HelmetProvider>
     </Loadable.Capture>
   );

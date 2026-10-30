@@ -5,24 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {startTransition, type ReactNode} from 'react';
+import {startTransition} from 'react';
 import ReactDOM, {type ErrorInfo} from 'react-dom/client';
 import {HelmetProvider} from 'react-helmet-async';
-import {BrowserRouter, HashRouter} from 'react-router';
-import siteConfig from '@generated/docusaurus.config';
+import {RouterProvider} from 'react-router';
 import ExecutionEnvironment from './exports/ExecutionEnvironment';
-import App from './App';
-import preload from './preload';
+import {createAppRouter, waitForInitialization} from './appRouter';
+import {RouterContextProvider} from './routerContext';
+import {dispatchRouteUpdates} from './ClientLifecyclesDispatcher';
 import docusaurus from './docusaurus';
-
-function Router({children}: {children: ReactNode}): ReactNode {
-  // No transitions: PendingNavigation runs side effects on location updates
-  return siteConfig.future.experimental_router === 'hash' ? (
-    <HashRouter useTransitions={false}>{children}</HashRouter>
-  ) : (
-    <BrowserRouter useTransitions={false}>{children}</BrowserRouter>
-  );
-}
 
 const hydrate = Boolean(process.env.HYDRATE_CLIENT_ENTRY);
 
@@ -31,12 +22,14 @@ const hydrate = Boolean(process.env.HYDRATE_CLIENT_ENTRY);
 if (ExecutionEnvironment.canUseDOM) {
   window.docusaurus = docusaurus;
   const container = document.getElementById('__docusaurus')!;
+  const router = createAppRouter();
 
   const app = (
     <HelmetProvider>
-      <Router>
-        <App />
-      </Router>
+      <RouterContextProvider router={router}>
+        {/* Navigation lifecycles expect synchronous location updates */}
+        <RouterProvider router={router} useTransitions={false} />
+      </RouterContextProvider>
     </HelmetProvider>
   );
 
@@ -64,12 +57,16 @@ if (ExecutionEnvironment.canUseDOM) {
     }
   };
 
-  preload(window.location.pathname).then(() => {
+  // Hydrating before the page chunks are loaded would render a mismatch
+  waitForInitialization(router).then(() => {
+    dispatchRouteUpdates(router);
     startTransition(renderApp);
   });
 
   // Webpack Hot Module Replacement API
   if (module.hot) {
+    // The next module execution creates a new router
+    module.hot.dispose(() => router.dispose());
     // Self-accepting method/ trick
     // (https://github.com/webpack/webpack-dev-server/issues/100#issuecomment-290911036)
     module.hot.accept();

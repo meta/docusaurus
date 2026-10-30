@@ -14,7 +14,7 @@ import React, {
 } from 'react';
 import {useNavbarSecondaryMenuContent} from './navbarSecondaryMenu/content';
 import {useWindowSize} from '../hooks/useWindowSize';
-import {useLocationChange} from '../utils/useLocationChange';
+import {useHistoryPopHandler} from '../utils/historyUtils';
 import {useThemeConfig} from '../utils/useThemeConfig';
 import {ReactContextError} from '../utils/reactUtils';
 
@@ -63,15 +63,21 @@ function useContextValue(): ContextValue {
     }
   }, [windowSize]);
 
-  // Close mobile sidebar on navigation, including the Android back button
-  useLocationChange(() => {
-    setShown(false);
-  });
-
   return useMemo(
     () => ({disabled, shouldRender, toggle, shown}),
     [disabled, shouldRender, toggle, shown],
   );
+}
+
+// A component hook wrapper enables conditional rendering
+// See reason here: https://github.com/facebook/docusaurus/issues/10988
+function OnHistoryPop({
+  handler,
+}: {
+  handler: Parameters<typeof useHistoryPopHandler>[0];
+}) {
+  useHistoryPopHandler(handler);
+  return null;
 }
 
 export function NavbarMobileSidebarProvider({
@@ -80,7 +86,28 @@ export function NavbarMobileSidebarProvider({
   children: ReactNode;
 }): ReactNode {
   const value = useContextValue();
-  return <Context value={value}>{children}</Context>;
+  return (
+    <>
+      {
+        // Close mobile sidebar on navigation pop
+        // Most likely firing when using the Android back button (but not only)
+        // Important: we can only have a single history blocker at a time
+        // That's why this needs to be rendered conditionally
+        // See bug report https://github.com/facebook/docusaurus/issues/10988
+        value.shown && (
+          <OnHistoryPop
+            handler={() => {
+              value.toggle();
+              // Prevent pop navigation; seems desirable enough
+              // See https://github.com/facebook/docusaurus/pull/5462#issuecomment-911699846
+              return false;
+            }}
+          />
+        )
+      }
+      <Context value={value}>{children}</Context>
+    </>
+  );
 }
 
 export function useNavbarMobileSidebar(): ContextValue {

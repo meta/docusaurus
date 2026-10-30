@@ -8,6 +8,23 @@
 import {matchRoutes, type RouteObject} from 'react-router';
 import {getLeafRouteRouterPath} from '@docusaurus/utils-common';
 import routes, {type RouteConfig} from '@generated/routes';
+import ExecutionEnvironment from './exports/ExecutionEnvironment';
+
+async function loadRouteComponent(route: RouteConfig): Promise<null> {
+  try {
+    await route.component.preload?.();
+  } catch (error) {
+    if (!ExecutionEnvironment.canUseDOM) {
+      throw error;
+    }
+    console.warn(error);
+    // If chunk loading failed, it could be because the path to a chunk
+    // no longer exists due to a new deployment. Force refresh the page
+    // instead of just not navigating.
+    window.location.reload();
+  }
+  return null;
+}
 
 function toRouteObject(route: RouteConfig): RouteObject {
   return {
@@ -17,6 +34,10 @@ function toRouteObject(route: RouteConfig): RouteObject {
     element: <route.component route={route} />,
     children: route.routes?.map(toRouteObject),
     handle: route,
+    // The router keeps rendering the current page until the next one loads
+    loader: () => loadRouteComponent(route),
+    // Loaders only load code, they don't need to run again
+    shouldRevalidate: () => false,
   };
 }
 

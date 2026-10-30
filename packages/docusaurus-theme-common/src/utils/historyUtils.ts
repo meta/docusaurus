@@ -5,31 +5,83 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {useCallback, useMemo} from 'react';
-import {useLocation, useNavigate, type Location} from '@docusaurus/router';
-import useIsBrowser from '@docusaurus/useIsBrowser';
+import {useCallback, useEffect, useMemo, useSyncExternalStore} from 'react';
+import {
+  NavigationType,
+  useBlocker,
+  type BlockerFunction,
+  type Location,
+} from 'react-router';
+import {useRouter} from '@docusaurus/router';
+import {useEvent} from './reactUtils';
+
+type HistoryBlockHandler = (
+  location: Location,
+  action: NavigationType,
+) => void | false;
 
 /**
- * Permits to subscribe to a slice of the history location
+ * Permits to register a handler that will be called on history actions (pop,
+ * push, replace). If the handler returns `false`, the navigation transition
+ * will be blocked/cancelled.
+ */
+function useHistoryActionHandler(handler: HistoryBlockHandler): void {
+  const stableHandler = useEvent(handler);
+  const shouldBlock: BlockerFunction = useCallback(
+    ({nextLocation, historyAction}) =>
+      stableHandler(nextLocation, historyAction) === false,
+    [stableHandler],
+  );
+  const blocker = useBlocker(shouldBlock);
+  useEffect(() => {
+    // The handler already handled the blocked navigation
+    if (blocker.state === 'blocked') {
+      blocker.reset();
+    }
+  }, [blocker]);
+}
+
+/**
+ * Permits to register a handler that will be called on history pop navigation
+ * (backward/forward). If the handler returns `false`, the backward/forward
+ * transition will be blocked. Unfortunately there's no good way to detect the
+ * "direction" (backward/forward) of the POP event.
+ */
+export function useHistoryPopHandler(handler: HistoryBlockHandler): void {
+  useHistoryActionHandler((location, action) => {
+    if (action === NavigationType.Pop) {
+      // Maybe block navigation if handler returns false
+      return handler(location, action);
+    }
+    // Don't block other navigation actions
+    return undefined;
+  });
+}
+
+/**
+ * Permits to efficiently subscribe to a slice of the history
+ * See https://thisweekinreact.com/articles/useSyncExternalStore-the-underrated-react-api
  * @param selector
  */
 export function useHistorySelector<Value>(
   selector: (history: {location: Location}) => Value,
 ): Value {
-  const location = useLocation();
-  const isBrowser = useIsBrowser();
-  return selector({
-    location: isBrowser
-      ? location
-      : {
-          ...location,
+  const router = useRouter();
+  return useSyncExternalStore(
+    router.subscribe,
+    () => selector({location: router.state.location}),
+    () =>
+      selector({
+        location: {
+          ...router.state.location,
           // On the server/hydration, these attributes should always be empty
           // Forcing empty state makes this hook safe from hydration errors
           search: '',
           hash: '',
           state: undefined,
         },
-  });
+      }),
+  );
 }
 
 /**
@@ -48,19 +100,21 @@ export function useQueryStringValue(key: string | null): string | null {
 function useQueryStringUpdater(
   key: string,
 ): (newValue: string | null, options?: {push: boolean}) => void {
-  const {search} = useLocation();
-  const navigate = useNavigate();
+  const router = useRouter();
   return useCallback(
     (newValue, options) => {
-      const searchParams = new URLSearchParams(search);
+      const searchParams = new URLSearchParams(router.state.location.search);
       if (newValue) {
         searchParams.set(key, newValue);
       } else {
         searchParams.delete(key);
       }
-      navigate({search: searchParams.toString()}, {replace: !options?.push});
+      router.navigate(
+        {search: searchParams.toString()},
+        {replace: !options?.push},
+      );
     },
-    [key, search, navigate],
+    [key, router],
   );
 }
 
@@ -90,20 +144,22 @@ type ListUpdateFunction = (
 ) => void;
 
 function useQueryStringListUpdater(key: string): ListUpdateFunction {
-  const {search} = useLocation();
-  const navigate = useNavigate();
+  const router = useRouter();
   const setValues: ListUpdateFunction = useCallback(
     (update, options) => {
-      const searchParams = new URLSearchParams(search);
+      const searchParams = new URLSearchParams(router.state.location.search);
       const newValues = Array.isArray(update)
         ? update
         : update(searchParams.getAll(key));
       searchParams.delete(key);
       newValues.forEach((v) => searchParams.append(key, v));
 
-      navigate({search: searchParams.toString()}, {replace: !options?.push});
+      router.navigate(
+        {search: searchParams.toString()},
+        {replace: !options?.push},
+      );
     },
-    [key, search, navigate],
+    [key, router],
   );
   return setValues;
 }
@@ -117,10 +173,10 @@ export function useQueryStringList(
 }
 
 export function useClearQueryString(): () => void {
-  const navigate = useNavigate();
+  const router = useRouter();
   return useCallback(() => {
-    navigate({search: ''}, {replace: true});
-  }, [navigate]);
+    router.navigate({search: ''}, {replace: true});
+  }, [router]);
 }
 
 export function mergeSearchParams(
