@@ -11,6 +11,7 @@ import * as cheerio from 'cheerio';
 import type {Page} from '@playwright/test';
 
 const siteUrl = 'http://localhost:3000';
+const buildPath = '../website/build';
 const sitemapPath = '../website/build/sitemap.xml';
 const stylesheetPath = './tests/screenshot.css';
 
@@ -171,6 +172,47 @@ function createPathnameTest(pathname: string) {
   });
 }
 
+type StaticHostResponse = {
+  pathname: string;
+  file: string;
+  status?: number;
+};
+
+// docusaurus serve redirects these URLs, but static hosts like Netlify serve
+// them, and React can render the page twice
+// See https://github.com/facebook/docusaurus/pull/10059
+const StaticHostResponses: StaticHostResponse[] = [
+  {pathname: '/tests.html', file: 'tests.html'},
+  {pathname: '/tests/index.html', file: '404.html', status: 404},
+];
+
+function createStaticHostResponseTest({
+  pathname,
+  file,
+  status,
+}: StaticHostResponse) {
+  test(`pathname ${pathname} served with ${file}`, async ({page}) => {
+    // The 404 page HTML doesn't match the page: React logs a hydration error
+    if (status !== 404) {
+      throwOnConsole(page);
+    }
+    await page.route(
+      (url) => url.pathname === pathname,
+      (route) => route.fulfill({path: `${buildPath}/${file}`, status}),
+    );
+    await page.goto(siteUrl + pathname);
+    await page.waitForFunction(waitForDocusaurusHydration);
+    await page.addStyleTag({content: stylesheet});
+    await argosScreenshot(
+      page,
+      `static-host/${pathnameToArgosName(pathname)}`,
+      {
+        ariaSnapshot: true,
+      },
+    );
+  });
+}
+
 // Allow parallel execution within a single test file
 // See https://playwright.dev/docs/test-parallel
 test.describe.configure({mode: 'parallel'});
@@ -178,4 +220,8 @@ test.describe.configure({mode: 'parallel'});
 test.describe('Docusaurus site screenshots', () => {
   const pathnames = getPathnames();
   pathnames.forEach(createPathnameTest);
+});
+
+test.describe('Docusaurus site screenshots served by static hosts', () => {
+  StaticHostResponses.forEach(createStaticHostResponseTest);
 });
