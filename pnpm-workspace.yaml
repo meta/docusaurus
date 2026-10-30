@@ -47,7 +47,7 @@ catalog:
   '@svgr/webpack': ^8.1.0
   '@swc/core': ^1.16.2
   '@swc/html': ^1.16.2
-  '@types/history': ^4.7.11
+  '@types/history': ^5.0.0
   '@types/mdast': ^4.0.4
   '@types/react': ^19.3.0
   '@types/react-dom': ^19.3.0
