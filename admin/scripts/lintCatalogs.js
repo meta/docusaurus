@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-// Checks the content of the pnpm catalogs of pnpm-workspace.yaml.
+// Checks the content of the pnpm catalogs of pnpm-catalogs.yaml.
 // Syncpack checks that dependencies use the catalogs, but it can't compare
 // catalog entries with each other, nor with the explicit versions of the
 // site templates and pnpm overrides, which can't use catalogs.
@@ -66,12 +66,13 @@ async function main() {
 /** @returns {Promise<Monorepo>} */
 async function loadMonorepo() {
   const workspace = await readYaml('pnpm-workspace.yaml');
+  const catalogsFile = await readYaml('pnpm-catalogs.yaml');
   const dependabot = await readYaml('.github/dependabot.yml');
 
   return {
     catalogs: {
-      default: workspace.catalog ?? {},
-      dev: workspace.catalogs?.dev ?? {},
+      default: catalogsFile.catalog ?? {},
+      dev: catalogsFile.catalogs?.dev ?? {},
     },
     overrides: workspace.overrides ?? {},
     packages: await loadPackages([
@@ -123,7 +124,7 @@ function checkUnusedCatalogEntries({catalogs, packages}) {
     .filter((name) => !usedNames.has(name))
     .map(
       (name) =>
-        `pnpm-workspace.yaml: ${name} isn't used by any package, remove it from the catalog`,
+        `pnpm-catalogs.yaml: ${name} isn't used by any package, remove it from the catalog`,
     );
 }
 
@@ -165,14 +166,14 @@ function checkCatalogsSplit({catalogs, packages}) {
     .filter((name) => usedNames.has(name) && !runtimeDependencyNames.has(name))
     .map(
       (name) =>
-        `pnpm-workspace.yaml: ${name} is only used by devDependencies, move it to the dev catalog`,
+        `pnpm-catalogs.yaml: ${name} is only used by devDependencies, move it to the dev catalog`,
     );
 
   const inBothCatalogs = Object.keys(catalogs.dev)
     .filter((name) => name in catalogs.default)
     .map(
       (name) =>
-        `pnpm-workspace.yaml: ${name} is declared in both the default and dev catalogs`,
+        `pnpm-catalogs.yaml: ${name} is declared in both the default and dev catalogs`,
     );
 
   return [
@@ -248,7 +249,7 @@ function checkDependencyGroups({catalogs, dependencyGroups}) {
       ? 'the same major version'
       : 'the same version';
     return [
-      `pnpm-workspace.yaml: the packages of the "${group.name}" Dependabot group must use ${expectedVersion}: ${membersDescription}`,
+      `pnpm-catalogs.yaml: the packages of the "${group.name}" Dependabot group must use ${expectedVersion}: ${membersDescription}`,
     ];
   });
 }

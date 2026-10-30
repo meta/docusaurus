@@ -7,96 +7,153 @@ importers:
     configDependencies: {}
     packageManagerDependencies:
       pnpm:
-        specifier: 12.3.4
-        version: 12.3.4
+        specifier: 12.15.0
+        version: 12.15.0
 
 packages:
 
-  '@pnpm/exe.darwin-arm64@12.3.4':
-    resolution: {integrity: sha512-PAyUol8T1+/+ViOiXAt51ECA+QnfXCqz6foL4bW+LsoX0NcVd5XVEM2mRQu+LV4oc7uRz9zf9U0P+XFfuQeDAw==}
+  '@pnpm/exe.android-arm64@12.15.0':
+    resolution: {integrity: sha512-eVCqmscY70LGvgRzu3mi8IBWBFGix+a6mNZoWmXxESsBdeiKEF9xQSuaeel10yn+zI7TXy2jlI63vFLzETk+aQ==}
+    cpu: [arm64]
+    os: [android]
+
+  '@pnpm/exe.android-x64@12.15.0':
+    resolution: {integrity: sha512-Gx/WbkFcdUFUg8g8AShezcS9EiQxfYvdAm2hfKLO8sfJmJvKOCt5fzlgHWDzmGhoclibgW+tUGZ/KF4F4wOTCA==}
+    cpu: [x64]
+    os: [android]
+
+  '@pnpm/exe.darwin-arm64@12.15.0':
+    resolution: {integrity: sha512-N0ZykiDWCvqSBJvt71j7cSoBR993FqvYZFtmpCtqvW3pguiI+NAgraLPA5OTwu5mV+/d8hYpVcPktJA3xFDLtA==}
     cpu: [arm64]
     os: [darwin]
 
-  '@pnpm/exe.darwin-x64@12.3.4':
-    resolution: {integrity: sha512-fxP9JCk0Cdye+ePuj+GJJLMUMTqHGWRdb1dtv4How876uQ2ehxvenpgiYAir/ceO9PsYUZkFTtyZdx+rRu5QOA==}
+  '@pnpm/exe.darwin-x64@12.15.0':
+    resolution: {integrity: sha512-7Ntr2HlBUxzwWOg7NwDxCbRW/3vXuqKO+hcXm+w3SBi9rrHY53li1wLqWVT7Gjxd+lVEHM1QJZo6WJEGFU8C6A==}
     cpu: [x64]
     os: [darwin]
 
-  '@pnpm/exe.linux-arm64-musl@12.3.4':
-    resolution: {integrity: sha512-FBOt0/7ye6O6q4AllVV5QMviB6qE6fqkeczV/+MDWQsmo+QJrlfsh6X7CpH/tClVpBZEyIbjpUoT8bNhCYBxEg==}
+  '@pnpm/exe.freebsd-x64@12.15.0':
+    resolution: {integrity: sha512-btOiyL7fL7W4uQGH0aqFai2TNC3IoKcZ7gNHBVbEFZt2dWrnrD0SufL3iGs3fLlmb4OtuU35uf4Zpr9V9Jh9mA==}
+    cpu: [x64]
+    os: [freebsd]
+
+  '@pnpm/exe.linux-arm64-musl@12.15.0':
+    resolution: {integrity: sha512-pNC38k+O+90FOjbPNSnw0E7apq1PKTmz3fFe1amn+lys/U5kL++uzir8bRiho8ONcyA3d9EU7wdqcY0DKkj+JA==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@pnpm/exe.linux-arm64@12.3.4':
-    resolution: {integrity: sha512-t71AVA7LRqiKTyZ5xMYaZc2n5DfdpMbfokZuiIOXHBOM03ECnF0t4iYwaBDqJgVjlKYUOwaF/bRQajGNA4cJ4w==}
+  '@pnpm/exe.linux-arm64@12.15.0':
+    resolution: {integrity: sha512-qML/8aCXslh8td/w4U+HJNqUcZ2+m6EfTbWScIzZRmyPsRFN+xB4LP1U/hymxc1iSJiKtG56HJx2fvUErWFIGw==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-x64-musl@12.3.4':
-    resolution: {integrity: sha512-RPmk7Jb/aYaFvL2iyDN/AtMY+hUEsue732WmXpcuQ9tBpMnGyA5py7Z3+e+qmQaJ0zY/4ni9jJiyPBQHujmv6w==}
+  '@pnpm/exe.linux-ppc64@12.15.0':
+    resolution: {integrity: sha512-tjRDUUl7RCJ6T/6eoNPxOqkwU4Mzi5RtTXmSAxujyz37OTwwsMU7Ps087Zk4gHcUvRSeyF40ZFsew3vtE+nmUA==}
+    cpu: [ppc64]
+    os: [linux]
+    libc: [glibc]
+
+  '@pnpm/exe.linux-riscv64@12.15.0':
+    resolution: {integrity: sha512-bF1uBWEfbwaeryz6lIiaJ8AWD082otZfvzGX5l+6LZRpRwUEpJHUsJrORaYP5/cNMv5ZR2p6TvvcJcQzwtDzmw==}
+    cpu: [riscv64]
+    os: [linux]
+    libc: [glibc]
+
+  '@pnpm/exe.linux-s390x@12.15.0':
+    resolution: {integrity: sha512-zKMhIzsexYMToeLmqV5jPsvV/f9vwsJb2kUH2NFYzalbxImeBrlA4kL7GwF8gD4pagV6jYYcJb8RjbZIdjHptg==}
+    cpu: [s390x]
+    os: [linux]
+    libc: [glibc]
+
+  '@pnpm/exe.linux-x64-musl@12.15.0':
+    resolution: {integrity: sha512-A9J0Jg0Rdx+qQU4qXtwyST5tto9IOu1zi4fDk35nbc6DWahggbcKtFvZPKFwL2qgUXGXOX//hXv6z/sp6emO8A==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@pnpm/exe.linux-x64@12.3.4':
-    resolution: {integrity: sha512-2ZqOlSPkfwX1h5cR+FPiWf8+F+2hZT/3TvhUK5sigHqwaQCIiq8R7CGxhndKs63JtcLi2a1Qpo+wX/EoyfjyJQ==}
+  '@pnpm/exe.linux-x64@12.15.0':
+    resolution: {integrity: sha512-yc+QlZR+9+nr29J4fRzhMoapgxTBDndq/+peyoq1XUufnQFnfbXUMFudDIKzHi545linGqmOmXfn0NoufNgcOg==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.win32-arm64@12.3.4':
-    resolution: {integrity: sha512-ANyrHqyqco6SXBysUTRF74itDyyraea7IbFsKFdNXTjcFnfycTDx37EwuhdpPYFNSIh2JhUG4fByclsRfiHX7w==}
+  '@pnpm/exe.win32-arm64@12.15.0':
+    resolution: {integrity: sha512-fPXZxuY1VclkOga9bc53qNCXcegfeoBR8+Ue+AospDwKzuGGSHll0oDxkLfkmpjyRqpe7bH5DyQPYp/xSMaIVA==}
     cpu: [arm64]
     os: [win32]
 
-  '@pnpm/exe.win32-x64@12.3.4':
-    resolution: {integrity: sha512-WH/KqBPY/hq2Tb7SgQltEZytimcjgKRaCRL/aM9CI0c67iKc5TVmHUhIiL3Ux9FB4bWn36i6XewUcScQI+zG8w==}
+  '@pnpm/exe.win32-x64@12.15.0':
+    resolution: {integrity: sha512-nrd+Tp1We1DGj4DGG5Bea9lZNh9y1PjlLBdEwdInS4D0h0UIDtM7JaGGGDJhNzIwcHASyihWI7HLV+dtG+fhYg==}
     cpu: [x64]
     os: [win32]
 
-  pnpm@12.3.4:
-    resolution: {integrity: sha512-lhqkH7B32joEpEHZ+OFevAyW2o73ELLrZ7+e58sGEOq9SPH9hfUc/+c4RnhfoPh8VqOocqHYk/hEZ0G1zORUVw==}
-    engines: {node: '>=18.*'}
+  pnpm@12.15.0:
+    resolution: {integrity: sha512-s5UdbW/0qfE9x89WzSjSuOs328ycaOUuHhGRhz6p+CoBcoerULqtxczElPA2xnwOR+sTYIwvo29HcRth6hKOYQ==}
+    engines: {node: '>=18'}
     hasBin: true
 
 snapshots:
 
-  '@pnpm/exe.darwin-arm64@12.3.4':
+  '@pnpm/exe.android-arm64@12.15.0':
     optional: true
 
-  '@pnpm/exe.darwin-x64@12.3.4':
+  '@pnpm/exe.android-x64@12.15.0':
     optional: true
 
-  '@pnpm/exe.linux-arm64-musl@12.3.4':
+  '@pnpm/exe.darwin-arm64@12.15.0':
     optional: true
 
-  '@pnpm/exe.linux-arm64@12.3.4':
+  '@pnpm/exe.darwin-x64@12.15.0':
     optional: true
 
-  '@pnpm/exe.linux-x64-musl@12.3.4':
+  '@pnpm/exe.freebsd-x64@12.15.0':
     optional: true
 
-  '@pnpm/exe.linux-x64@12.3.4':
+  '@pnpm/exe.linux-arm64-musl@12.15.0':
     optional: true
 
-  '@pnpm/exe.win32-arm64@12.3.4':
+  '@pnpm/exe.linux-arm64@12.15.0':
     optional: true
 
-  '@pnpm/exe.win32-x64@12.3.4':
+  '@pnpm/exe.linux-ppc64@12.15.0':
     optional: true
 
-  pnpm@12.3.4:
+  '@pnpm/exe.linux-riscv64@12.15.0':
+    optional: true
+
+  '@pnpm/exe.linux-s390x@12.15.0':
+    optional: true
+
+  '@pnpm/exe.linux-x64-musl@12.15.0':
+    optional: true
+
+  '@pnpm/exe.linux-x64@12.15.0':
+    optional: true
+
+  '@pnpm/exe.win32-arm64@12.15.0':
+    optional: true
+
+  '@pnpm/exe.win32-x64@12.15.0':
+    optional: true
+
+  pnpm@12.15.0:
     optionalDependencies:
-      '@pnpm/exe.darwin-arm64': 12.3.4
-      '@pnpm/exe.darwin-x64': 12.3.4
-      '@pnpm/exe.linux-arm64': 12.3.4
-      '@pnpm/exe.linux-arm64-musl': 12.3.4
-      '@pnpm/exe.linux-x64': 12.3.4
-      '@pnpm/exe.linux-x64-musl': 12.3.4
-      '@pnpm/exe.win32-arm64': 12.3.4
-      '@pnpm/exe.win32-x64': 12.3.4
+      '@pnpm/exe.android-arm64': 12.15.0
+      '@pnpm/exe.android-x64': 12.15.0
+      '@pnpm/exe.darwin-arm64': 12.15.0
+      '@pnpm/exe.darwin-x64': 12.15.0
+      '@pnpm/exe.freebsd-x64': 12.15.0
+      '@pnpm/exe.linux-arm64': 12.15.0
+      '@pnpm/exe.linux-arm64-musl': 12.15.0
+      '@pnpm/exe.linux-ppc64': 12.15.0
+      '@pnpm/exe.linux-riscv64': 12.15.0
+      '@pnpm/exe.linux-s390x': 12.15.0
+      '@pnpm/exe.linux-x64': 12.15.0
+      '@pnpm/exe.linux-x64-musl': 12.15.0
+      '@pnpm/exe.win32-arm64': 12.15.0
+      '@pnpm/exe.win32-x64': 12.15.0
 
 ---
 lockfileVersion: '9.0'
@@ -1187,7 +1244,7 @@ importers:
         version: '@docusaurus/react-loadable@6.0.0(react@19.3.0)'
       react-loadable-ssr-addon-v5-slorber:
         specifier: 'catalog:'
-        version: 1.0.3(@docusaurus/react-loadable@6.0.0(react@19.3.0))(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3))
+        version: 1.0.3(@docusaurus/react-loadable@6.0.0(react@19.3.0))(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3))
       react-router:
         specifier: 'catalog:'
         version: 5.3.4(react@19.3.0)
@@ -1214,10 +1271,10 @@ importers:
         version: 7.3.1
       webpack:
         specifier: 'catalog:'
-        version: 5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3)
+        version: 5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3)
       webpack-dev-server:
         specifier: 'catalog:'
-        version: 6.0.0(supports-color@10.2.2)(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3))
+        version: 6.0.0(supports-color@10.2.2)(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3))
       webpack-merge:
         specifier: 'catalog:'
         version: 6.0.1
@@ -7471,7 +7528,6 @@ packages:
 
   ansi-html-community@0.0.8:
     resolution: {integrity: sha512-1APHAyr3+PCamwNw3bXCPp4HFLONZt/yIH0sZp0/469KWNTEy+qN5jQ3GVX6DMZ1UXAi34yVwtTeaG/HpBuuzw==}
-    engines: {'0': node >= 0.8.0}
     hasBin: true
 
   ansi-regex@5.0.1:
@@ -7671,10 +7727,6 @@ packages:
   balanced-match@4.0.3:
     resolution: {integrity: sha512-1pHv8LX9CpKut1Zp4EXey7Z8OfH11ONNH6Dhi2WDUt31VVZFXZzKwXcysBgqSumFCmR+0dqjMK5v5JiFHzi0+g==}
     engines: {node: 20 || >=22}
-
-  balanced-match@4.0.4:
-    resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
-    engines: {node: 18 || 20 || >=22}
 
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
@@ -7913,10 +7965,6 @@ packages:
 
   ci-info@4.3.1:
     resolution: {integrity: sha512-Wdy2Igu8OcBpI2pZePZ5oWjPC38tmDVx5WKUXKwlLYkA0ozo85sLsLvkBbBn/sZaSCMFOGZJ14fvW9t5/d7kdA==}
-    engines: {node: '>=8'}
-
-  ci-info@4.4.0:
-    resolution: {integrity: sha512-77PSwercCZU2Fc4sX94eF8k8Pxte6JAwL4/ICZLFjJLqegs7kCuAsqqj/70NQF6TvDpgFjkubQB2FW2ZZddvQg==}
     engines: {node: '>=8'}
 
   clean-css@5.3.3:
@@ -10171,7 +10219,6 @@ packages:
 
   jsonparse@1.3.1:
     resolution: {integrity: sha512-POQXvpdL69+CluYsillJ7SUhKvytYjW9vG/GKpnf+xP8UWgYEM/RaMzHHofbALDiKbbP1W8UEYmgGl39WkPZsg==}
-    engines: {'0': node >= 0.2.0}
 
   jsonpointer@5.0.1:
     resolution: {integrity: sha512-p/nXbhSEcu3pZRdkW1OfJhpsVtW1gd4Wa1fnQc9YLiTfAjn0312eMKimbdIQzuZl9aa9xUGaRlP9T/CJE/ditQ==}
@@ -12254,10 +12301,6 @@ packages:
 
   run-applescript@7.0.0:
     resolution: {integrity: sha512-9by4Ij99JUr/MCFBUkDKLWK3G9HVXmabKz9U5MlIAIuvuzkiOicRYs8XJLxX+xahD+mLiiCYDqF9dKAgtzKP1A==}
-    engines: {node: '>=18'}
-
-  run-applescript@7.1.0:
-    resolution: {integrity: sha512-DPe5pVFaAsinSaV6QjQ6gdiedWDcRCbUuiQfQa2wmWV7+xC9bGulGI8+TdRmoFkAPaBXk8CrAbnlY2ISniJ47Q==}
     engines: {node: '>=18'}
 
   run-async@4.0.6:
@@ -14793,8 +14836,7 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@borewit/text-codec@0.2.2':
-    optional: true
+  '@borewit/text-codec@0.2.2': {}
 
   '@braintree/sanitize-url@7.1.2': {}
 
@@ -15511,6 +15553,7 @@ snapshots:
     dependencies:
       '@emnapi/wasi-threads': 1.2.3
       tslib: 2.8.1
+    optional: true
 
   '@emnapi/core@1.4.5':
     dependencies:
@@ -15525,6 +15568,7 @@ snapshots:
   '@emnapi/runtime@1.11.3':
     dependencies:
       tslib: 2.8.1
+    optional: true
 
   '@emnapi/runtime@1.4.5':
     dependencies:
@@ -15542,6 +15586,7 @@ snapshots:
   '@emnapi/wasi-threads@1.2.3':
     dependencies:
       tslib: 2.8.1
+    optional: true
 
   '@epic-web/invariant@1.0.0': {}
 
@@ -15920,7 +15965,6 @@ snapshots:
       mime: 3.0.0
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/diff@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -15930,10 +15974,8 @@ snapshots:
       pixelmatch: 5.3.0
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
-  '@jimp/file-ops@1.6.1':
-    optional: true
+  '@jimp/file-ops@1.6.1': {}
 
   '@jimp/js-bmp@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -15943,7 +15985,6 @@ snapshots:
       bmp-ts: 1.0.9
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/js-gif@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -15953,7 +15994,6 @@ snapshots:
       omggif: 1.0.10
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/js-jpeg@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -15962,7 +16002,6 @@ snapshots:
       jpeg-js: 0.4.4
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/js-png@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -15971,7 +16010,6 @@ snapshots:
       pngjs: 7.0.0
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/js-tiff@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -15980,14 +16018,12 @@ snapshots:
       utif2: 4.1.0
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/plugin-blit@1.6.1':
     dependencies:
       '@jimp/types': 1.6.1
       '@jimp/utils': 1.6.1
       zod: 3.25.76
-    optional: true
 
   '@jimp/plugin-blur@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -15995,13 +16031,11 @@ snapshots:
       '@jimp/utils': 1.6.1
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/plugin-circle@1.6.1':
     dependencies:
       '@jimp/types': 1.6.1
       zod: 3.25.76
-    optional: true
 
   '@jimp/plugin-color@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -16012,7 +16046,6 @@ snapshots:
       zod: 3.25.76
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/plugin-contain@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -16024,7 +16057,6 @@ snapshots:
       zod: 3.25.76
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/plugin-cover@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -16035,7 +16067,6 @@ snapshots:
       zod: 3.25.76
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/plugin-crop@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -16045,32 +16076,27 @@ snapshots:
       zod: 3.25.76
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/plugin-displace@1.6.1':
     dependencies:
       '@jimp/types': 1.6.1
       '@jimp/utils': 1.6.1
       zod: 3.25.76
-    optional: true
 
   '@jimp/plugin-dither@1.6.1':
     dependencies:
       '@jimp/types': 1.6.1
-    optional: true
 
   '@jimp/plugin-fisheye@1.6.1':
     dependencies:
       '@jimp/types': 1.6.1
       '@jimp/utils': 1.6.1
       zod: 3.25.76
-    optional: true
 
   '@jimp/plugin-flip@1.6.1':
     dependencies:
       '@jimp/types': 1.6.1
       zod: 3.25.76
-    optional: true
 
   '@jimp/plugin-hash@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -16086,13 +16112,11 @@ snapshots:
       any-base: 1.1.0
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/plugin-mask@1.6.1':
     dependencies:
       '@jimp/types': 1.6.1
       zod: 3.25.76
-    optional: true
 
   '@jimp/plugin-print@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -16108,13 +16132,11 @@ snapshots:
       zod: 3.25.76
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/plugin-quantize@1.6.1':
     dependencies:
       image-q: 4.0.0
       zod: 3.25.76
-    optional: true
 
   '@jimp/plugin-resize@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -16123,7 +16145,6 @@ snapshots:
       zod: 3.25.76
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/plugin-rotate@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -16135,7 +16156,6 @@ snapshots:
       zod: 3.25.76
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/plugin-threshold@1.6.1(supports-color@10.2.2)':
     dependencies:
@@ -16147,18 +16167,15 @@ snapshots:
       zod: 3.25.76
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@jimp/types@1.6.1':
     dependencies:
       zod: 3.25.76
-    optional: true
 
   '@jimp/utils@1.6.1':
     dependencies:
       '@jimp/types': 1.6.1
       tinycolor2: 1.6.0
-    optional: true
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -16371,8 +16388,8 @@ snapshots:
 
   '@napi-rs/wasm-runtime@0.2.4':
     dependencies:
-      '@emnapi/core': 1.11.3
-      '@emnapi/runtime': 1.11.3
+      '@emnapi/core': 1.4.5
+      '@emnapi/runtime': 1.4.5
       '@tybys/wasm-util': 0.9.0
 
   '@napi-rs/wasm-runtime@1.1.6(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)':
@@ -17716,10 +17733,8 @@ snapshots:
       token-types: 6.1.2
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
-  '@tokenizer/token@0.3.0':
-    optional: true
+  '@tokenizer/token@0.3.0': {}
 
   '@tootallnate/once@1.1.2': {}
 
@@ -17992,8 +18007,7 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
-  '@types/node@16.9.1':
-    optional: true
+  '@types/node@16.9.1': {}
 
   '@types/node@24.13.6':
     dependencies:
@@ -18499,8 +18513,8 @@ snapshots:
       '@opentelemetry/api': 1.9.1
       zod: 4.5.4
 
-  ajv-formats@3.0.1(ajv@8.20.0):
-    optionalDependencies:
+  ajv-formats@3.0.1:
+    dependencies:
       ajv: 8.20.0
 
   ajv-keywords@3.5.2(ajv@6.15.0):
@@ -18570,8 +18584,7 @@ snapshots:
 
   ansis@3.17.0: {}
 
-  any-base@1.1.0:
-    optional: true
+  any-base@1.1.0: {}
 
   any-promise@1.3.0: {}
 
@@ -18701,8 +18714,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  await-to-js@3.0.0:
-    optional: true
+  await-to-js@3.0.0: {}
 
   axe-core@4.13.0: {}
 
@@ -18778,8 +18790,6 @@ snapshots:
 
   balanced-match@4.0.3: {}
 
-  balanced-match@4.0.4: {}
-
   base64-js@1.5.1: {}
 
   base64id@2.0.0: {}
@@ -18812,8 +18822,7 @@ snapshots:
       inherits: 2.0.4
       readable-stream: 3.6.2
 
-  bmp-ts@1.0.9:
-    optional: true
+  bmp-ts@1.0.9: {}
 
   body-parser@2.3.0(supports-color@10.2.2):
     dependencies:
@@ -18879,7 +18888,7 @@ snapshots:
 
   brace-expansion@5.0.9:
     dependencies:
-      balanced-match: 4.0.4
+      balanced-match: 4.0.3
 
   braces@3.0.3:
     dependencies:
@@ -18913,7 +18922,7 @@ snapshots:
 
   bundle-name@4.1.0:
     dependencies:
-      run-applescript: 7.1.0
+      run-applescript: 7.0.0
 
   bytes@3.0.0: {}
 
@@ -19092,8 +19101,6 @@ snapshots:
   chrome-trace-event@1.0.4: {}
 
   ci-info@4.3.1: {}
-
-  ci-info@4.4.0: {}
 
   clean-css@5.3.3:
     dependencies:
@@ -19350,7 +19357,7 @@ snapshots:
     dependencies:
       env-paths: 2.2.1
       import-fresh: 3.3.1
-      js-yaml: 4.3.2
+      js-yaml: 4.3.0
       parse-json: 5.2.0
     optionalDependencies:
       typescript: '@typescript/typescript6@6.0.2'
@@ -19878,7 +19885,7 @@ snapshots:
   default-browser@5.2.1:
     dependencies:
       bundle-name: 4.1.0
-      default-browser-id: 5.0.1
+      default-browser-id: 5.0.0
 
   default-browser@5.5.1:
     dependencies:
@@ -20548,8 +20555,7 @@ snapshots:
       signal-exit: 3.0.7
       strip-final-newline: 2.0.0
 
-  exif-parser@0.1.12:
-    optional: true
+  exif-parser@0.1.12: {}
 
   expect-type@1.4.0: {}
 
@@ -20668,7 +20674,6 @@ snapshots:
       uint8array-extras: 1.5.0
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   filelist@1.0.6:
     dependencies:
@@ -20828,7 +20833,7 @@ snapshots:
   get-proto@1.0.1:
     dependencies:
       dunder-proto: 1.0.1
-      es-object-atoms: 1.1.2
+      es-object-atoms: 1.1.1
 
   get-stream@6.0.1: {}
 
@@ -20851,7 +20856,6 @@ snapshots:
     dependencies:
       image-q: 4.0.0
       omggif: 1.0.10
-    optional: true
 
   git-up@7.0.0:
     dependencies:
@@ -21306,7 +21310,6 @@ snapshots:
   image-q@4.0.0:
     dependencies:
       '@types/node': 16.9.1
-    optional: true
 
   image-size@2.0.4: {}
 
@@ -21672,7 +21675,6 @@ snapshots:
       '@jimp/utils': 1.6.1
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   jiti@2.7.0: {}
 
@@ -21686,8 +21688,7 @@ snapshots:
       '@hapi/topo': 6.0.2
       '@standard-schema/spec': 1.1.0
 
-  jpeg-js@0.4.4:
-    optional: true
+  jpeg-js@0.4.4: {}
 
   js-tokens@4.0.0: {}
 
@@ -21933,7 +21934,7 @@ snapshots:
   libnpmpublish@11.1.2(supports-color@7.2.0):
     dependencies:
       '@npmcli/package-json': 7.0.2
-      ci-info: 4.4.0
+      ci-info: 4.3.1
       npm-package-arg: 13.0.1
       npm-registry-fetch: 19.1.0(supports-color@7.2.0)
       proc-log: 5.0.0
@@ -22749,8 +22750,7 @@ snapshots:
     dependencies:
       mime-db: 1.54.0
 
-  mime@3.0.0:
-    optional: true
+  mime@3.0.0: {}
 
   mimic-fn@2.1.0: {}
 
@@ -22785,6 +22785,26 @@ snapshots:
       brace-expansion: 2.1.4
 
   minimist@1.2.8: {}
+
+  minimizer-webpack-plugin@5.13.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3)(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3)):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.31
+      jest-worker: 27.5.1
+      schema-utils: 4.5.0
+      terser: 5.51.2
+      webpack: 5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3)
+    optionalDependencies:
+      '@swc/core': 1.16.2
+      '@swc/html': 1.16.2
+      clean-css: 5.3.3
+      cssnano: 7.1.9(postcss@8.5.28)
+      csso: 5.0.5
+      html-minifier-terser: 7.2.0
+      lightningcss: 1.33.0
+      postcss: 8.5.28
+      sharp: 0.35.5(@types/node@26.6.1)
+      svgo: 3.3.5
+      uglify-js: 3.19.3
 
   minimizer-webpack-plugin@5.13.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3)(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3)):
     dependencies:
@@ -23009,7 +23029,7 @@ snapshots:
     dependencies:
       '@npmcli/redact': 3.2.2
       jsonparse: 1.3.1
-      make-fetch-happen: 15.0.6(supports-color@7.2.0)
+      make-fetch-happen: 15.0.2(supports-color@7.2.0)
       minipass: 7.1.3
       minipass-fetch: 4.0.1
       minizlib: 3.1.0
@@ -23229,8 +23249,7 @@ snapshots:
 
   obug@2.1.4: {}
 
-  omggif@1.0.10:
-    optional: true
+  omggif@1.0.10: {}
 
   on-finished@2.4.1:
     dependencies:
@@ -23252,10 +23271,10 @@ snapshots:
 
   open@10.1.0:
     dependencies:
-      default-browser: 5.5.1
+      default-browser: 5.2.1
       define-lazy-prop: 3.0.0
       is-inside-container: 1.0.0
-      is-wsl: 3.1.1
+      is-wsl: 3.1.0
 
   open@11.0.4:
     dependencies:
@@ -23486,8 +23505,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  pako@1.0.11:
-    optional: true
+  pako@1.0.11: {}
 
   param-case@3.0.4:
     dependencies:
@@ -23499,17 +23517,14 @@ snapshots:
     dependencies:
       callsites: 3.1.0
 
-  parse-bmfont-ascii@1.0.6:
-    optional: true
+  parse-bmfont-ascii@1.0.6: {}
 
-  parse-bmfont-binary@1.0.6:
-    optional: true
+  parse-bmfont-binary@1.0.6: {}
 
   parse-bmfont-xml@1.1.6:
     dependencies:
       xml-parse-from-string: 1.0.1
       xml2js: 0.5.0
-    optional: true
 
   parse-conflict-json@4.0.0:
     dependencies:
@@ -23623,7 +23638,6 @@ snapshots:
   pixelmatch@5.3.0:
     dependencies:
       pngjs: 6.0.0
-    optional: true
 
   pkg-dir@4.2.0:
     dependencies:
@@ -23646,11 +23660,9 @@ snapshots:
     dependencies:
       playwright-core: 1.63.0
 
-  pngjs@6.0.0:
-    optional: true
+  pngjs@6.0.0: {}
 
-  pngjs@7.0.0:
-    optional: true
+  pngjs@7.0.0: {}
 
   points-on-curve@0.2.0: {}
 
@@ -24277,11 +24289,11 @@ snapshots:
       sucrase: 3.35.1
       use-editable: 2.3.3(react@19.3.0)
 
-  react-loadable-ssr-addon-v5-slorber@1.0.3(@docusaurus/react-loadable@6.0.0(react@19.3.0))(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3)):
+  react-loadable-ssr-addon-v5-slorber@1.0.3(@docusaurus/react-loadable@6.0.0(react@19.3.0))(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3)):
     dependencies:
       '@babel/runtime': 7.29.7
       react-loadable: '@docusaurus/react-loadable@6.0.0(react@19.3.0)'
-      webpack: 5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3)
+      webpack: 5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3)
 
   react-medium-image-zoom@5.4.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
@@ -24705,8 +24717,6 @@ snapshots:
 
   run-applescript@7.0.0: {}
 
-  run-applescript@7.1.0: {}
-
   run-async@4.0.6: {}
 
   run-parallel@1.2.0:
@@ -24767,7 +24777,7 @@ snapshots:
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.20.0
-      ajv-formats: 3.0.1(ajv@8.20.0)
+      ajv-formats: 3.0.1
       ajv-keywords: 5.1.0(ajv@8.20.0)
 
   scslre@0.3.0:
@@ -24965,8 +24975,7 @@ snapshots:
     dependencies:
       is-arrayish: 0.3.4
 
-  simple-xml-to-json@1.2.7:
-    optional: true
+  simple-xml-to-json@1.2.7: {}
 
   sirv@3.0.2:
     dependencies:
@@ -25246,7 +25255,6 @@ snapshots:
   strtok3@10.3.5:
     dependencies:
       '@tokenizer/token': 0.3.0
-    optional: true
 
   stubborn-fs@2.0.0:
     dependencies:
@@ -25480,8 +25488,7 @@ snapshots:
 
   tinybench@6.1.4: {}
 
-  tinycolor2@1.6.0:
-    optional: true
+  tinycolor2@1.6.0: {}
 
   tinyexec@1.3.0: {}
 
@@ -25522,7 +25529,6 @@ snapshots:
       '@borewit/text-codec': 0.2.2
       '@tokenizer/token': 0.3.0
       ieee754: 1.2.1
-    optional: true
 
   totalist@3.0.1: {}
 
@@ -25583,7 +25589,7 @@ snapshots:
     dependencies:
       '@tufjs/models': 4.1.0
       debug: 4.4.3(supports-color@7.2.0)
-      make-fetch-happen: 15.0.6(supports-color@7.2.0)
+      make-fetch-happen: 15.0.2(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -25683,8 +25689,7 @@ snapshots:
   uglify-js@3.19.3:
     optional: true
 
-  uint8array-extras@1.5.0:
-    optional: true
+  uint8array-extras@1.5.0: {}
 
   unbash@4.0.11: {}
 
@@ -25827,7 +25832,6 @@ snapshots:
   utif2@4.1.0:
     dependencies:
       pako: 1.0.11
-    optional: true
 
   util-deprecate@1.0.2: {}
 
@@ -25920,7 +25924,7 @@ snapshots:
 
   webidl-conversions@8.0.1: {}
 
-  webpack-dev-middleware@8.3.0(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3)):
+  webpack-dev-middleware@8.3.0(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3)):
     dependencies:
       ansi-html-community: 0.0.8
       memfs: 4.71.0
@@ -25928,9 +25932,9 @@ snapshots:
       range-parser: 1.3.0
       schema-utils: 4.5.0
     optionalDependencies:
-      webpack: 5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3)
+      webpack: 5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3)
 
-  webpack-dev-server@6.0.0(supports-color@10.2.2)(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3)):
+  webpack-dev-server@6.0.0(supports-color@10.2.2)(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3)):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -25955,10 +25959,10 @@ snapshots:
       selfsigned: 5.5.0
       serve-index: 1.9.2(supports-color@10.2.2)
       tinyglobby: 0.2.17
-      webpack-dev-middleware: 8.3.0(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3))
+      webpack-dev-middleware: 8.3.0(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3))
       ws: 8.21.3
     optionalDependencies:
-      webpack: 5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3)
+      webpack: 5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -25971,6 +25975,43 @@ snapshots:
       wildcard: 2.0.1
 
   webpack-sources@3.5.1: {}
+
+  webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3):
+    dependencies:
+      '@types/estree': 1.0.9
+      '@types/json-schema': 7.0.15
+      '@webassemblyjs/ast': 1.14.1
+      '@webassemblyjs/wasm-edit': 1.14.1
+      '@webassemblyjs/wasm-parser': 1.14.1
+      browserslist: 4.29.0
+      chrome-trace-event: 1.0.4
+      enhanced-resolve: 5.25.0
+      es-module-lexer: 2.3.2
+      events: 3.3.0
+      graceful-fs: 4.2.11
+      mime-db: 1.54.0
+      minimizer-webpack-plugin: 5.13.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3)(webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@3.3.5)(uglify-js@3.19.3))
+      schema-utils: 4.5.0
+      tapable: 2.3.3
+      watchpack: 2.5.2
+      webpack-sources: 3.5.1
+    transitivePeerDependencies:
+      - '@minify-html/node'
+      - '@napi-rs/image'
+      - '@swc/core'
+      - '@swc/css'
+      - '@swc/html'
+      - clean-css
+      - cssnano
+      - csso
+      - esbuild
+      - html-minifier-terser
+      - imagemin
+      - lightningcss
+      - postcss
+      - sharp
+      - svgo
+      - uglify-js
 
   webpack@5.111.0(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.1))(svgo@4.1.0)(uglify-js@3.19.3):
     dependencies:
@@ -26312,8 +26353,7 @@ snapshots:
 
   xml-name-validator@5.0.0: {}
 
-  xml-parse-from-string@1.0.1:
-    optional: true
+  xml-parse-from-string@1.0.1: {}
 
   xml-parser-xo@4.1.6: {}
 
@@ -26321,10 +26361,8 @@ snapshots:
     dependencies:
       sax: 1.6.1
       xmlbuilder: 11.0.1
-    optional: true
 
-  xmlbuilder@11.0.1:
-    optional: true
+  xmlbuilder@11.0.1: {}
 
   xmlchars@2.2.0: {}
 
@@ -26384,8 +26422,7 @@ snapshots:
     dependencies:
       zod: 4.5.4
 
-  zod@3.25.76:
-    optional: true
+  zod@3.25.76: {}
 
   zod@4.5.4: {}
 
