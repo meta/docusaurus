@@ -15,4 +15,6 @@
   line-clamp: 2;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  /* Firefox on Windows clips glyph descenders (g/p/q/y) with line-clamp */
+  padding-bottom: 1px;
 }
