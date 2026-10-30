@@ -13,7 +13,7 @@ import siteConfig from '@generated/docusaurus.config';
 import ExecutionEnvironment from './exports/ExecutionEnvironment';
 import App from './App';
 import preload from './preload';
-import {normalizePathname} from './normalizeLocation';
+import {normalizeBrowserPathname} from './normalizeLocation';
 import docusaurus from './docusaurus';
 
 function Router({children}: {children: ReactNode}): ReactNode {
@@ -66,7 +66,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
   // Preload the route App renders, or hydration of /page.html URLs can leave
   // the server HTML in place: https://github.com/facebook/docusaurus/pull/10059
-  preload(normalizePathname(window.location.pathname)).then(() => {
+  preload(normalizeBrowserPathname(window.location.pathname)).then(() => {
     startTransition(renderApp);
   });
 

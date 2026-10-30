@@ -6,7 +6,9 @@
  */
 
 import {describe, expect, it, vi} from 'vitest';
-import normalizeLocation, {normalizePathname} from '../normalizeLocation';
+import normalizeLocation, {
+  normalizeBrowserPathname,
+} from '../normalizeLocation';
 import type {Location} from 'history';
 
 vi.mock('@generated/routes', () => import('./__mocks__/@generated/routes'));
@@ -112,16 +114,18 @@ describe('normalizeLocation', () => {
   });
 });
 
-describe('normalizePathname', () => {
-  it('normalizes pathnames like normalizeLocation', () => {
-    expect(normalizePathname('/index.html')).toBe('/');
-    expect(normalizePathname('/docs/introduction/index.html')).toBe(
-      '/docs/introduction',
-    );
-    expect(normalizePathname('/docs/installation.html')).toBe(
+describe('normalizeBrowserPathname', () => {
+  it('normalizes the decoded pathname', () => {
+    expect(normalizeBrowserPathname('/index.html')).toBe('/');
+    expect(normalizeBrowserPathname('/docs/installation.html')).toBe(
       '/docs/installation',
     );
-    expect(normalizePathname('/page.html')).toBe('/page.html');
-    expect(normalizePathname('/docs/introduction')).toBe('/docs/introduction');
+    expect(normalizeBrowserPathname('/caf%C3%A9.html')).toBe('/caf%C3%A9.html');
+  });
+
+  it('returns a pathname that can be decoded', () => {
+    const pathname = normalizeBrowserPathname('/100%25.html');
+    expect(pathname).toBe('/100%25');
+    expect(decodeURI(pathname)).toBe('/100%');
   });
 });

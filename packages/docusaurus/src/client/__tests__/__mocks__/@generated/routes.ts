@@ -12,6 +12,11 @@ export default [
     component: '',
   },
   {
+    path: '/café.html',
+    exact: true,
+    component: '',
+  },
+  {
     path: '/docs',
     exact: false,
     component: '',

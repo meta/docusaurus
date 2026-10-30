@@ -22,7 +22,7 @@ function computeNormalizedPathname(pathname: string): string {
   return pathname.trim().replace(/(?:\/index)?\.html$/, '') || '/';
 }
 
-export function normalizePathname(pathname: string): string {
+function normalizePathname(pathname: string): string {
   let normalizedPathname = pathnames.get(pathname);
   if (normalizedPathname === undefined) {
     normalizedPathname = computeNormalizedPathname(pathname);
@@ -36,4 +36,11 @@ export default function normalizeLocation<T extends Location>(location: T): T {
     ...location,
     pathname: normalizePathname(location.pathname),
   };
+}
+
+// The router decodes the browser pathname before App normalizes it. Encode it
+// back for preload(), which decodes again and throws on /100%25 if not encoded
+export function normalizeBrowserPathname(browserPathname: string): string {
+  const routerPathname = decodeURI(browserPathname);
+  return encodeURI(normalizePathname(routerPathname));
 }
