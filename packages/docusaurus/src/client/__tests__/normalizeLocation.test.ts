@@ -6,7 +6,9 @@
  */
 
 import {describe, expect, it, vi} from 'vitest';
-import normalizeLocation from '../normalizeLocation';
+import normalizeLocation, {
+  normalizeBrowserPathname,
+} from '../normalizeLocation';
 import type {Location} from 'history';
 
 vi.mock('@generated/routes', () => import('./__mocks__/@generated/routes'));
@@ -109,5 +111,21 @@ describe('normalizeLocation', () => {
     ).toEqual({
       pathname: '/',
     });
+  });
+});
+
+describe('normalizeBrowserPathname', () => {
+  it('normalizes the decoded pathname', () => {
+    expect(normalizeBrowserPathname('/index.html')).toBe('/');
+    expect(normalizeBrowserPathname('/docs/installation.html')).toBe(
+      '/docs/installation',
+    );
+    expect(normalizeBrowserPathname('/caf%C3%A9.html')).toBe('/caf%C3%A9.html');
+  });
+
+  it('returns a pathname that can be decoded', () => {
+    const pathname = normalizeBrowserPathname('/100%25.html');
+    expect(pathname).toBe('/100%25');
+    expect(decodeURI(pathname)).toBe('/100%');
   });
 });

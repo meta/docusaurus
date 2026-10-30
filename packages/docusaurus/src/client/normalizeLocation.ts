@@ -12,29 +12,35 @@ import type {Location} from 'history';
 // Memoize previously normalized pathnames.
 const pathnames = new Map<string, string>();
 
-export default function normalizeLocation<T extends Location>(location: T): T {
-  if (pathnames.has(location.pathname)) {
-    return {
-      ...location,
-      pathname: pathnames.get(location.pathname),
-    };
-  }
-
+function computeNormalizedPathname(pathname: string): string {
   // If the location was registered with an `.html` extension, we don't strip it
   // away, or it will render to a 404 page.
-  const matchedRoutes = matchRoutes(routes, location.pathname);
+  const matchedRoutes = matchRoutes(routes, pathname);
   if (matchedRoutes.some(({route}) => route.exact === true)) {
-    pathnames.set(location.pathname, location.pathname);
-    return location;
+    return pathname;
   }
+  return pathname.trim().replace(/(?:\/index)?\.html$/, '') || '/';
+}
 
-  const pathname =
-    location.pathname.trim().replace(/(?:\/index)?\.html$/, '') || '/';
+function normalizePathname(pathname: string): string {
+  let normalizedPathname = pathnames.get(pathname);
+  if (normalizedPathname === undefined) {
+    normalizedPathname = computeNormalizedPathname(pathname);
+    pathnames.set(pathname, normalizedPathname);
+  }
+  return normalizedPathname;
+}
 
-  pathnames.set(location.pathname, pathname);
-
+export default function normalizeLocation<T extends Location>(location: T): T {
   return {
     ...location,
-    pathname,
+    pathname: normalizePathname(location.pathname),
   };
+}
+
+// The router decodes the browser pathname before App normalizes it. Encode it
+// back for preload(), which decodes again and throws on /100%25 if not encoded
+export function normalizeBrowserPathname(browserPathname: string): string {
+  const routerPathname = decodeURI(browserPathname);
+  return encodeURI(normalizePathname(routerPathname));
 }
