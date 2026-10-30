@@ -700,8 +700,8 @@ catalogs:
       specifier: ^2.3.2
       version: 2.3.2
     pkg-pr-new:
-      specifier: ^0.0.75
-      version: 0.0.75
+      specifier: ^0.0.91
+      version: 0.0.91
     rehype-stringify:
       specifier: ^10.0.1
       version: 10.0.1
@@ -888,7 +888,7 @@ importers:
         version: 0.74.0
       pkg-pr-new:
         specifier: catalog:dev
-        version: 0.0.75
+        version: 0.0.91
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -11382,8 +11382,8 @@ packages:
     resolution: {integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==}
     engines: {node: '>=8'}
 
-  pkg-pr-new@0.0.75:
-    resolution: {integrity: sha512-u9mdErTewKSMsr+ceCt8VcNuNP0ro5AXiPXhUVApuEyqr2Zlvt+DdCFBcm+yGWN8mhOdZJ27meIDbnoZgfzpOw==}
+  pkg-pr-new@0.0.91:
+    resolution: {integrity: sha512-FQPmjspKRKYV4MlHQnun9snJqlYm6Yhmo12x1O3pgE2Akim/y/BZjMOppK//BFdh222WOj6WGqlmeZfrtUtfgQ==}
     hasBin: true
 
   pkijs@3.4.0:
@@ -23629,7 +23629,7 @@ snapshots:
     dependencies:
       find-up: 4.1.0
 
-  pkg-pr-new@0.0.75: {}
+  pkg-pr-new@0.0.91: {}
 
   pkijs@3.4.0:
     dependencies:
