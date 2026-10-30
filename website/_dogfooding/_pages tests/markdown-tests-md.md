@@ -14,19 +14,21 @@ This file should be interpreted in a more CommonMark compliant way
 <head>
   <title>HEAD Markdown Page tests title</title>
   <meta name="keywords" content="cooking, blog"/>
+  <script type="application/ld+json">
+    {"@context": "https://schema.org", "@type": "WebPage", "name": "HEAD Markdown Page tests"}
+  </script>
 </head>
 ```
 
 <head>
   <title>HEAD Markdown Page tests title</title>
   <meta name="keywords" content="cooking, blog"/>
+  <script type="application/ld+json">
+    {"@context": "https://schema.org", "@type": "WebPage", "name": "HEAD Markdown Page tests"}
+  </script>
 </head>
 
-:::danger
-
-TODO unsupported (yet), see [issue](https://github.com/facebook/docusaurus/issues/9092)
-
-:::
+The title, keywords and structured data should be in the `<head>` of the static HTML page
 
 ## Comment
 
@@ -153,12 +155,6 @@ function Clock(props) {
   );
 }
 ```
-
-:::danger
-
-TODO unsupported (yet), see [issue](https://github.com/facebook/docusaurus/issues/9092)
-
-:::
 
 ## Mermaid
 
