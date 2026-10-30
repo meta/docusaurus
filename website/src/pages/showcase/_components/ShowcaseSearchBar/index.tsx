@@ -5,13 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {type ReactNode} from 'react';
+import {type ReactNode, useState} from 'react';
 import {translate} from '@docusaurus/Translate';
 import {useSearchName} from '@site/src/pages/showcase/_utils';
 import styles from './styles.module.css';
 
 export default function ShowcaseSearchBar(): ReactNode {
   const [searchName, setSearchName] = useSearchName();
+  const [compositionValue, setCompositionValue] = useState<string | null>(null);
   return (
     <div className={styles.searchBar}>
       <input
@@ -19,9 +20,20 @@ export default function ShowcaseSearchBar(): ReactNode {
           message: 'Search for site name...',
           id: 'showcase.searchBar.placeholder',
         })}
-        value={searchName}
-        onInput={(e) => {
+        value={compositionValue ?? searchName}
+        onCompositionStart={(e) => {
+          setCompositionValue(e.currentTarget.value);
+        }}
+        onCompositionEnd={(e) => {
+          setCompositionValue(null);
           setSearchName(e.currentTarget.value);
+        }}
+        onInput={(e) => {
+          if (compositionValue !== null) {
+            setCompositionValue(e.currentTarget.value);
+          } else {
+            setSearchName(e.currentTarget.value);
+          }
         }}
       />
     </div>
