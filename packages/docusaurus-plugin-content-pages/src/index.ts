@@ -31,7 +31,7 @@ export default function pluginContentPages(
   context: LoadContext,
   options: PluginOptions,
 ): Plugin<LoadedContent | null> {
-  const {siteConfig, siteDir, generatedFilesDir} = context;
+  const {siteConfig, siteDir, generatedFilesDir, siteMarkdownLinks} = context;
 
   const contentPaths = createPagesContentPaths({context, options});
   const contentHelpers = createContentHelpers();
@@ -91,6 +91,7 @@ export default function pluginContentPages(
             contentPaths,
           });
         },
+        resolveSiteMarkdownLink: siteMarkdownLinks.resolveMarkdownLink,
       },
     });
   }

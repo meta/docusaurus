@@ -28,6 +28,10 @@ import {generateSiteFiles} from './codegen/codegen';
 import {getRoutesPaths, handleDuplicateRoutes} from './routes';
 import {createSiteStorage} from './storage';
 import {emitSiteMessages} from './siteMessages';
+import {
+  createSiteMarkdownLinks,
+  updateSiteMarkdownLinks,
+} from './siteMarkdownLinks';
 import type {LoadPluginsResult} from './plugins/plugins';
 import type {
   DocusaurusConfig,
@@ -35,6 +39,7 @@ import type {
   LoadContext,
   Props,
   PluginIdentifier,
+  SiteMarkdownLinks,
 } from '@docusaurus/types';
 
 export type LoadContextParams = {
@@ -61,6 +66,16 @@ export type LoadContextParams = {
    * provided value over the inferred one, letting you override it.
    */
   automaticBaseUrlLocalizationDisabled?: boolean;
+
+  /**
+   * The site-wide Markdown files registry to reuse, if any.
+   *
+   * On site reloads (`docusaurus start`), a brand new `LoadContext` is created,
+   * but the bundler config isn't recreated: the MDX loader keeps a reference to
+   * the registry object it received on the initial load. We must therefore keep
+   * mutating that very object instead of creating a new one.
+   */
+  siteMarkdownLinks?: SiteMarkdownLinks;
 };
 
 export type LoadSiteParams = LoadContextParams & {
@@ -87,6 +102,7 @@ export async function loadContext(
     locale,
     config: customConfigFilePath,
     automaticBaseUrlLocalizationDisabled,
+    siteMarkdownLinks = createSiteMarkdownLinks({siteDir: params.siteDir}),
   } = params;
   const generatedFilesDir = path.resolve(siteDir, GENERATED_FILES_DIR_NAME);
 
@@ -170,6 +186,7 @@ export async function loadContext(
     i18n,
     codeTranslations,
     currentBundler,
+    siteMarkdownLinks,
   };
 }
 
@@ -190,6 +207,7 @@ function createSiteProps(
     localizationDir,
     codeTranslations: siteCodeTranslations,
     currentBundler,
+    siteMarkdownLinks,
   } = context;
 
   const {headTags, preBodyTags, postBodyTags} = loadHtmlTags({
@@ -206,6 +224,8 @@ function createSiteProps(
 
   handleDuplicateRoutes(routes, siteConfig.onDuplicateRoutes);
   const routesPaths = getRoutesPaths(routes, baseUrl);
+
+  updateSiteMarkdownLinks({siteMarkdownLinks, routes});
 
   return {
     siteConfig,
@@ -227,6 +247,7 @@ function createSiteProps(
     postBodyTags,
     codeTranslations,
     currentBundler,
+    siteMarkdownLinks,
   };
 }
 
@@ -305,6 +326,10 @@ export async function reloadSite(site: Site): Promise<Site> {
   return loadSite({
     ...site.params,
     isReload: true,
+    // The bundler config is not recreated on reload: the MDX loader still holds
+    // a reference to the previous site-wide Markdown links registry, so we have
+    // to keep refreshing that same object.
+    siteMarkdownLinks: site.props.siteMarkdownLinks,
   });
 }
 

@@ -62,6 +62,7 @@ export default async function pluginContentBlog(
     siteConfig,
     generatedFilesDir,
     localizationDir,
+    siteMarkdownLinks,
     i18n: {currentLocale},
   } = context;
 
@@ -165,6 +166,7 @@ export default async function pluginContentBlog(
           contentPaths,
         });
       },
+      resolveSiteMarkdownLink: siteMarkdownLinks.resolveMarkdownLink,
     });
 
     function createBlogMarkdownLoader(): RuleSetUseItem {
