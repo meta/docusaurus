@@ -39,6 +39,10 @@
   padding: 6px;
 }
 
+.navlinkActive {
+  background-color: #363739;
+}
+
 .navlink:hover {
   text-decoration: none;
   background-color: #292a2b;

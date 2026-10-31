@@ -32,11 +32,7 @@ export function getActivePlugin(
     .sort((a, b) => b[1].path.localeCompare(a[1].path))
     .find(
       ([, pluginData]) =>
-        !!matchPath(pathname, {
-          path: pluginData.path,
-          exact: false,
-          strict: false,
-        }),
+        !!matchPath({path: pluginData.path, end: false}, pathname),
     );
 
   const activePlugin: ActivePlugin | undefined = activeEntry
@@ -80,12 +76,7 @@ export function getActiveVersion(
   });
 
   return sortedVersions.find(
-    (version) =>
-      !!matchPath(pathname, {
-        path: version.path,
-        exact: false,
-        strict: false,
-      }),
+    (version) => !!matchPath({path: version.path, end: false}, pathname),
   );
 }
 
@@ -95,12 +86,7 @@ export function getActiveDocContext(
 ): ActiveDocContext {
   const activeVersion = getActiveVersion(data, pathname);
   const activeDoc = activeVersion?.docs.find(
-    (doc) =>
-      !!matchPath(pathname, {
-        path: doc.path,
-        exact: true,
-        strict: false,
-      }),
+    (doc) => !!matchPath({path: doc.path, end: true}, pathname),
   );
 
   function getAlternateVersionDocs(

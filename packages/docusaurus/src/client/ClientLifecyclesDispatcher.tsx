@@ -5,12 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {useLayoutEffect, type ReactElement, type ReactNode} from 'react';
+import {
+  useLayoutEffect,
+  useRef,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
 import clientModules from '@generated/client-modules';
 import type {ClientModule} from '@docusaurus/types';
-import type {Location} from 'history';
+import type {DataRouter, Location} from 'react-router';
 
-export function dispatchLifecycleAction<K extends keyof ClientModule>(
+function dispatchLifecycleAction<K extends keyof ClientModule>(
   lifecycleAction: K,
   ...args: Parameters<NonNullable<ClientModule[K]>>
 ): () => void {
@@ -57,21 +62,53 @@ function scrollAfterNavigation({
   }
 }
 
+/**
+ * Dispatches `onRouteUpdate` when a navigation starts, and calls its cleanup
+ * callback once the router renders the new location.
+ */
+export function dispatchRouteUpdates(router: DataRouter): void {
+  let currentLocation = router.state.location;
+  let pendingUpdate: {location: Location; cleanup: () => void} | null = null;
+
+  dispatchLifecycleAction('onRouteUpdate', {
+    previousLocation: null,
+    location: currentLocation,
+  });
+
+  router.subscribe((state) => {
+    const nextLocation = state.navigation.location ?? state.location;
+    if (nextLocation.key !== (pendingUpdate?.location ?? currentLocation).key) {
+      pendingUpdate?.cleanup();
+      pendingUpdate = {
+        location: nextLocation,
+        cleanup: dispatchLifecycleAction('onRouteUpdate', {
+          previousLocation: currentLocation,
+          location: nextLocation,
+        }),
+      };
+    }
+    if (state.navigation.state === 'idle') {
+      pendingUpdate?.cleanup();
+      pendingUpdate = null;
+      currentLocation = state.location;
+    }
+  });
+}
+
 function ClientLifecyclesDispatcher({
   children,
   location,
-  previousLocation,
 }: {
   children: ReactElement;
   location: Location;
-  previousLocation: Location | null;
 }): ReactNode {
+  const previousLocationRef = useRef<Location | null>(null);
   useLayoutEffect(() => {
-    if (previousLocation !== location) {
-      scrollAfterNavigation({location, previousLocation});
-      dispatchLifecycleAction('onRouteDidUpdate', {previousLocation, location});
-    }
-  }, [previousLocation, location]);
+    const previousLocation = previousLocationRef.current;
+    previousLocationRef.current = location;
+    scrollAfterNavigation({location, previousLocation});
+    dispatchLifecycleAction('onRouteDidUpdate', {previousLocation, location});
+  }, [location]);
   return children;
 }
 

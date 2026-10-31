@@ -6,9 +6,8 @@
  */
 
 import {useEffect} from 'react';
-import {useLocation} from '@docusaurus/router';
+import {useLocation, type Location} from '@docusaurus/router';
 import {useEvent, usePrevious} from './reactUtils';
-import type {Location} from 'history';
 
 /**
  * Fires an effect when the location changes (which includes hash, query, etc.).

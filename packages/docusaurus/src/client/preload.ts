@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import routes from '@generated/routes';
-import {matchRoutes} from 'react-router-config';
+import {matchRouteConfigs} from './routeObjects';
 
 /**
  * Helper function to make sure all async components for that particular route
@@ -17,9 +16,9 @@ import {matchRoutes} from 'react-router-config';
  * @returns Promise object represents whether pathname has been preloaded
  */
 export default function preload(pathname: string): Promise<void[]> {
-  const matches = Array.from(new Set([pathname, decodeURI(pathname)])).flatMap(
-    (p) => matchRoutes(routes, p),
-  );
+  const matchedRoutes = Array.from(
+    new Set([pathname, decodeURI(pathname)]),
+  ).flatMap((p) => matchRouteConfigs(p));
 
-  return Promise.all(matches.map((match) => match.route.component.preload?.()));
+  return Promise.all(matchedRoutes.map((route) => route.component.preload?.()));
 }

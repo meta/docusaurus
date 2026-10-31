@@ -8,15 +8,15 @@
 import type {ReactNode} from 'react';
 import '@generated/client-modules';
 
-import routes from '@generated/routes';
-import {useLocation} from '@docusaurus/router';
-import renderRoutes from '@docusaurus/renderRoutes';
+import {useRoutes, type Location} from 'react-router';
+import {Outlet, useLocation} from '@docusaurus/router';
 import Root from '@theme/Root';
 import ThemeProvider from '@theme/ThemeProvider';
 import SiteMetadata from '@theme/SiteMetadata';
 import normalizeLocation from './normalizeLocation';
+import {routeObjects} from './routeObjects';
 import {DocusaurusContextProvider} from './docusaurusContext';
-import PendingNavigation from './PendingNavigation';
+import ClientLifecyclesDispatcher from './ClientLifecyclesDispatcher';
 import BaseUrlIssueBanner from './BaseUrlIssueBanner';
 import SiteMetadataDefaults from './SiteMetadataDefaults';
 
@@ -25,15 +25,23 @@ import SiteMetadataDefaults from './SiteMetadataDefaults';
 import ErrorBoundary from '@docusaurus/ErrorBoundary';
 import HasHydratedDataAttribute from './hasHydratedDataAttribute';
 
-const routesElement = renderRoutes(routes);
+function NormalizedRoutes({location}: {location: Location}): ReactNode {
+  return useRoutes(routeObjects, location);
+}
 
 function AppNavigation() {
   const location = useLocation();
   const normalizedLocation = normalizeLocation(location);
   return (
-    <PendingNavigation location={normalizedLocation}>
-      {routesElement}
-    </PendingNavigation>
+    <ClientLifecyclesDispatcher location={location}>
+      {normalizedLocation.pathname === location.pathname ? (
+        <Outlet />
+      ) : (
+        // The router only renders the URL location: route components must
+        // read the normalized location, like /page for /page.html
+        <NormalizedRoutes location={normalizedLocation} />
+      )}
+    </ClientLifecyclesDispatcher>
   );
 }
 

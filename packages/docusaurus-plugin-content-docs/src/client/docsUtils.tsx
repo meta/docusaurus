@@ -6,8 +6,7 @@
  */
 
 import {type ReactNode, useMemo} from 'react';
-import {matchPath, useLocation} from '@docusaurus/router';
-import renderRoutes from '@docusaurus/renderRoutes';
+import {matchPath, useLocation, Outlet} from '@docusaurus/router';
 import {
   useActivePlugin,
   useActiveDocContext,
@@ -403,7 +402,7 @@ export function useDocRootMetadata({route}: DocRootProps): null | {
   const versionMetadata = useDocsVersion();
   const docRoutes = route.routes!;
   const currentDocRoute = docRoutes.find((docRoute) =>
-    matchPath(location.pathname, docRoute),
+    matchPath(docRoute.path, location.pathname),
   );
   if (!currentDocRoute) {
     return null;
@@ -416,7 +415,7 @@ export function useDocRootMetadata({route}: DocRootProps): null | {
     ? versionMetadata.docsSidebars[sidebarName]
     : undefined;
 
-  const docElement = renderRoutes(docRoutes);
+  const docElement = <Outlet />;
 
   return {
     docElement,

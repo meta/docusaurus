@@ -34,9 +34,7 @@
     "@docusaurus/module-type-aliases": "workspace:*",
     "@docusaurus/utils": "workspace:*",
     "@docusaurus/utils-common": "workspace:*",
-    "@types/history": "catalog:",
     "@types/react": "19.3.0",
-    "@types/react-router-config": "catalog:",
     "clsx": "catalog:",
     "parse-numeric-range": "catalog:",
     "prism-react-renderer": "catalog:",
@@ -47,9 +45,8 @@
     "@docusaurus/core": "workspace:*",
     "@docusaurus/types": "workspace:*",
     "@total-typescript/shoehorn": "catalog:dev",
-    "@types/react-router-dom": "catalog:",
     "lodash": "catalog:",
-    "react-router-dom": "catalog:"
+    "react-router": "catalog:"
   },
   "peerDependencies": {
     "react": "catalog:",

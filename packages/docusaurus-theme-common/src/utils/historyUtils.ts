@@ -6,12 +6,19 @@
  */
 
 import {useCallback, useEffect, useMemo, useSyncExternalStore} from 'react';
-import {useHistory} from '@docusaurus/router';
+import {
+  NavigationType,
+  useBlocker,
+  useRouter,
+  type BlockerFunction,
+  type Location,
+} from '@docusaurus/router';
 import {useEvent} from './reactUtils';
 
-import type {History, Location, Action} from 'history';
-
-type HistoryBlockHandler = (location: Location, action: Action) => void | false;
+type HistoryBlockHandler = (
+  location: Location,
+  action: NavigationType,
+) => void | false;
 
 /**
  * Permits to register a handler that will be called on history actions (pop,
@@ -19,13 +26,19 @@ type HistoryBlockHandler = (location: Location, action: Action) => void | false;
  * will be blocked/cancelled.
  */
 function useHistoryActionHandler(handler: HistoryBlockHandler): void {
-  const history = useHistory();
   const stableHandler = useEvent(handler);
-  useEffect(
-    // See https://github.com/remix-run/history/blob/main/docs/blocking-transitions.md
-    () => history.block((location, action) => stableHandler(location, action)),
-    [history, stableHandler],
+  const shouldBlock: BlockerFunction = useCallback(
+    ({nextLocation, historyAction}) =>
+      stableHandler(nextLocation, historyAction) === false,
+    [stableHandler],
   );
+  const blocker = useBlocker(shouldBlock);
+  useEffect(() => {
+    // The handler already handled the blocked navigation
+    if (blocker.state === 'blocked') {
+      blocker.reset();
+    }
+  }, [blocker]);
 }
 
 /**
@@ -36,7 +49,7 @@ function useHistoryActionHandler(handler: HistoryBlockHandler): void {
  */
 export function useHistoryPopHandler(handler: HistoryBlockHandler): void {
   useHistoryActionHandler((location, action) => {
-    if (action === 'POP') {
+    if (action === NavigationType.Pop) {
       // Maybe block navigation if handler returns false
       return handler(location, action);
     }
@@ -51,17 +64,16 @@ export function useHistoryPopHandler(handler: HistoryBlockHandler): void {
  * @param selector
  */
 export function useHistorySelector<Value>(
-  selector: (history: History<unknown>) => Value,
+  selector: (history: {location: Location}) => Value,
 ): Value {
-  const history = useHistory();
+  const router = useRouter();
   return useSyncExternalStore(
-    history.listen,
-    () => selector(history),
+    router.subscribe,
+    () => selector({location: router.state.location}),
     () =>
       selector({
-        ...history,
         location: {
-          ...history.location,
+          ...router.state.location,
           // On the server/hydration, these attributes should always be empty
           // Forcing empty state makes this hook safe from hydration errors
           search: '',
@@ -88,21 +100,21 @@ export function useQueryStringValue(key: string | null): string | null {
 function useQueryStringUpdater(
   key: string,
 ): (newValue: string | null, options?: {push: boolean}) => void {
-  const history = useHistory();
+  const router = useRouter();
   return useCallback(
     (newValue, options) => {
-      const searchParams = new URLSearchParams(history.location.search);
+      const searchParams = new URLSearchParams(router.state.location.search);
       if (newValue) {
         searchParams.set(key, newValue);
       } else {
         searchParams.delete(key);
       }
-      const updateHistory = options?.push ? history.push : history.replace;
-      updateHistory({
-        search: searchParams.toString(),
-      });
+      router.navigate(
+        {search: searchParams.toString()},
+        {replace: !options?.push},
+      );
     },
-    [key, history],
+    [key, router],
   );
 }
 
@@ -132,22 +144,22 @@ type ListUpdateFunction = (
 ) => void;
 
 function useQueryStringListUpdater(key: string): ListUpdateFunction {
-  const history = useHistory();
+  const router = useRouter();
   const setValues: ListUpdateFunction = useCallback(
     (update, options) => {
-      const searchParams = new URLSearchParams(history.location.search);
+      const searchParams = new URLSearchParams(router.state.location.search);
       const newValues = Array.isArray(update)
         ? update
         : update(searchParams.getAll(key));
       searchParams.delete(key);
       newValues.forEach((v) => searchParams.append(key, v));
 
-      const updateHistory = options?.push ? history.push : history.replace;
-      updateHistory({
-        search: searchParams.toString(),
-      });
+      router.navigate(
+        {search: searchParams.toString()},
+        {replace: !options?.push},
+      );
     },
-    [history, key],
+    [key, router],
   );
   return setValues;
 }
@@ -161,12 +173,10 @@ export function useQueryStringList(
 }
 
 export function useClearQueryString(): () => void {
-  const history = useHistory();
+  const router = useRouter();
   return useCallback(() => {
-    history.replace({
-      search: undefined,
-    });
-  }, [history]);
+    router.navigate({search: ''}, {replace: true});
+  }, [router]);
 }
 
 export function mergeSearchParams(

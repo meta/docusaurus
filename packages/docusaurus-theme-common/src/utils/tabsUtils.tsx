@@ -15,7 +15,7 @@ import React, {
   type ReactNode,
   type ReactElement,
 } from 'react';
-import {useHistory} from '@docusaurus/router';
+import {useRouter} from '@docusaurus/router';
 import {useQueryStringValue} from '@docusaurus/theme-common/internal';
 import {duplicates, useStorageSlot} from '../index';
 
@@ -187,7 +187,7 @@ function useTabQueryString({
   queryString = false,
   groupId,
 }: Pick<TabsProps, 'queryString' | 'groupId'>) {
-  const history = useHistory();
+  const router = useRouter();
   const key = getQueryStringKey({queryString, groupId});
   const value = useQueryStringValue(key);
 
@@ -196,11 +196,15 @@ function useTabQueryString({
       if (!key) {
         return; // no-op
       }
-      const searchParams = new URLSearchParams(history.location.search);
+      const {location} = router.state;
+      const searchParams = new URLSearchParams(location.search);
       searchParams.set(key, newValue);
-      history.replace({...history.location, search: searchParams.toString()});
+      router.navigate(
+        {search: searchParams.toString(), hash: location.hash},
+        {replace: true, state: location.state},
+      );
     },
-    [key, history],
+    [key, router],
   );
 
   return [value, setValue] as const;

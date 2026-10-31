@@ -18,3 +18,4 @@ export {
 } from './applyTrailingSlash';
 export {addPrefix, removeSuffix, addSuffix, removePrefix} from './stringUtils';
 export {getErrorCausalChain} from './errorUtils';
+export {getLeafRouteRouterPath} from './routeUtils';

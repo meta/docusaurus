@@ -11,10 +11,8 @@ import {
   getDocsVersionSearchTag,
   useDocsVersion,
 } from '@docusaurus/plugin-content-docs/client';
-import renderRoutes from '@docusaurus/renderRoutes';
+import {Outlet} from '@docusaurus/router';
 import SearchMetadata from '@theme/SearchMetadata';
-
-import type {Props} from '@theme/DocVersionRoot';
 
 function DocVersionRootMetadata(): ReactNode {
   const version = useDocsVersion();
@@ -31,19 +29,19 @@ function DocVersionRootMetadata(): ReactNode {
   );
 }
 
-function DocVersionRootContent(props: Props): ReactNode {
+function DocVersionRootContent(): ReactNode {
   const version = useDocsVersion();
   return (
     <HtmlClassNameProvider className={version.className}>
-      {renderRoutes(props.route.routes!)}
+      <Outlet />
     </HtmlClassNameProvider>
   );
 }
-export default function DocVersionRoot(props: Props): ReactNode {
+export default function DocVersionRoot(): ReactNode {
   return (
     <>
       <DocVersionRootMetadata />
-      <DocVersionRootContent {...props} />
+      <DocVersionRootContent />
     </>
   );
 }

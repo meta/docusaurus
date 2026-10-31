@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {Location} from 'history';
+import type {Location} from 'react-router';
 
 export type ClientModule = {
   onRouteDidUpdate?: (args: {

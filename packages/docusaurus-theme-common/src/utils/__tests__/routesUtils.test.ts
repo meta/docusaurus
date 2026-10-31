@@ -6,8 +6,9 @@
  */
 
 import {describe, expect, it} from 'vitest';
+import {fromPartial} from '@total-typescript/shoehorn';
 import {findHomePageRoute, isSamePath} from '../routesUtils';
-import type {RouteConfig} from 'react-router-config';
+import type {RouteConfig} from '@generated/routes';
 
 describe('isSamePath', () => {
   it('returns true for compared path without trailing slash', () => {
@@ -42,10 +43,10 @@ describe('isSamePath', () => {
 });
 
 describe('findHomePageRoute', () => {
-  const homePage: RouteConfig = {
+  const homePage = fromPartial<RouteConfig>({
     path: '/',
     exact: true,
-  };
+  });
 
   it('returns undefined for no routes', () => {
     expect(findHomePageRoute({baseUrl: '/', routes: []})).toBeUndefined();
@@ -55,7 +56,7 @@ describe('findHomePageRoute', () => {
     expect(
       findHomePageRoute({
         baseUrl: '/',
-        routes: [
+        routes: fromPartial<RouteConfig[]>([
           {path: '/a', exact: true},
           {path: '/b', exact: false},
           {path: '/c', exact: undefined},
@@ -68,7 +69,7 @@ describe('findHomePageRoute', () => {
               {path: '/d/3', exact: undefined},
             ],
           },
-        ],
+        ]),
       }),
     ).toBeUndefined();
   });
@@ -77,14 +78,14 @@ describe('findHomePageRoute', () => {
     expect(
       findHomePageRoute({
         baseUrl: '/',
-        routes: [
+        routes: fromPartial<RouteConfig[]>([
           {path: '/a', exact: true},
           {path: '/b', exact: false},
           {path: '/c', exact: undefined},
           {...homePage, exact: false},
           homePage,
           {...homePage, exact: undefined},
-        ],
+        ]),
       }),
     ).toEqual(homePage);
   });
@@ -93,7 +94,7 @@ describe('findHomePageRoute', () => {
     expect(
       findHomePageRoute({
         baseUrl: '/',
-        routes: [
+        routes: fromPartial<RouteConfig[]>([
           {path: '/a', exact: true},
           {
             path: '/',
@@ -108,7 +109,7 @@ describe('findHomePageRoute', () => {
             ],
           },
           {path: '/d', exact: true},
-        ],
+        ]),
       }),
     ).toEqual(homePage);
   });
@@ -119,7 +120,7 @@ describe('findHomePageRoute', () => {
     expect(
       findHomePageRoute({
         baseUrl,
-        routes: [
+        routes: fromPartial<RouteConfig[]>([
           {path: `${baseUrl}a`, exact: true},
           {
             path: baseUrl,
@@ -134,7 +135,7 @@ describe('findHomePageRoute', () => {
             ],
           },
           {path: `${baseUrl}d`, exact: true},
-        ],
+        ]),
       }),
     ).toEqual(baseUrlHomePage);
   });

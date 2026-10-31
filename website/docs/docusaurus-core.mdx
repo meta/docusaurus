@@ -157,26 +157,26 @@ Prefer this component to vanilla `<a>` tags because Docusaurus does a lot of opt
 
 :::
 
-### `<Redirect/>` {/* #redirect */}
+### `<Navigate/>` {/* #navigate */}
 
-Rendering a `<Redirect>` will navigate to a new location. The new location will override the current location in the history stack like server-side redirects (HTTP 3xx) do. You can refer to [React Router's Redirect documentation](https://reacttraining.com/react-router/web/api/Redirect) for more info on available props.
+Rendering a `<Navigate>` will navigate to a new location. With the `replace` prop, the new location will override the current location in the history stack like server-side redirects (HTTP 3xx) do. You can refer to [React Router's Navigate documentation](https://reactrouter.com/api/components/Navigate) for more info on available props.
 
 Example usage:
 
 ```jsx
 import React from 'react';
 // highlight-next-line
-import {Redirect} from '@docusaurus/router';
+import {Navigate} from '@docusaurus/router';
 
 const Home = () => {
   // highlight-next-line
-  return <Redirect to="/docs/test" />;
+  return <Navigate to="/docs/test" replace />;
 };
 ```
 
 :::note
 
-`@docusaurus/router` implements [React Router](https://reacttraining.com/react-router/web/guides/quick-start) and supports its features.
+`@docusaurus/router` re-exports a subset of [React Router](https://reactrouter.com/start/declarative/routing) APIs.
 
 :::
 

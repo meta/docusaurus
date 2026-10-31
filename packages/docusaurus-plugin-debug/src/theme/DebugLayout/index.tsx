@@ -17,9 +17,7 @@ function DebugNavLink({to, children}: {to: string; children: ReactNode}) {
       isNavLink
       to={to}
       exact
-      activeStyle={{
-        backgroundColor: '#363739',
-      }}>
+      activeClassName={styles.navlinkActive}>
       {children}
     </Link>
   );

@@ -6,14 +6,13 @@
  */
 
 import {describe, expect, it, vi} from 'vitest';
-import * as reactRouterConfig from 'react-router-config';
+import * as reactRouter from 'react-router';
 import {handleBrokenLinks} from '../brokenLinks';
 import type {RouteConfig} from '@docusaurus/types';
 
-vi.mock('react-router-config', async () => {
-  const actual = await vi.importActual<typeof import('react-router-config')>(
-    'react-router-config',
-  );
+vi.mock('react-router', async () => {
+  const actual =
+    await vi.importActual<typeof import('react-router')>('react-router');
 
   return {
     ...actual,
@@ -28,7 +27,6 @@ type SimpleRoute = {
   path: string;
   routes?: SimpleRoute[];
   exact?: boolean;
-  strict?: boolean;
 };
 
 // Conveniently apply defaults to function under test
@@ -89,9 +87,9 @@ describe('handleBrokenLinks', () => {
     });
   });
 
-  it('accepts valid non-strict link', async () => {
+  it('accepts valid link with or without trailing slash', async () => {
     await testBrokenLinks({
-      routes: [{path: '/page1', strict: false}, {path: '/page2/'}],
+      routes: [{path: '/page1'}, {path: '/page2/'}],
       collectedLinks: {
         '/page1': {
           links: ['/page1', '/page1/', '/page2', '/page2/'],
@@ -159,9 +157,9 @@ describe('handleBrokenLinks', () => {
     });
   });
 
-  it('accepts valid non-strict link with anchor', async () => {
+  it('accepts valid link with or without trailing slash with anchor', async () => {
     await testBrokenLinks({
-      routes: [{path: '/page1', strict: false}, {path: '/page2/'}],
+      routes: [{path: '/page1'}, {path: '/page2/'}],
       collectedLinks: {
         '/page1': {
           links: [
@@ -441,76 +439,6 @@ describe('handleBrokenLinks', () => {
       Exhaustive list of all broken links found:
       - Broken link on source page path = /page1:
          -> linking to /brokenLink
-      ]
-    `);
-  });
-
-  it('rejects broken link due to strict matching', async () => {
-    await expect(() =>
-      testBrokenLinks({
-        routes: [
-          {path: '/page1', strict: true},
-          {path: '/page2/', strict: true},
-        ],
-
-        collectedLinks: {
-          '/page1': {
-            links: ['/page1', '/page1/', '/page2', '/page2/'],
-            anchors: [],
-          },
-          '/page2/': {
-            links: ['/page1', '/page1/', '/page2', '/page2/'],
-            anchors: [],
-          },
-        },
-      }),
-    ).rejects.toThrowErrorMatchingInlineSnapshot(`
-      [Error: Docusaurus found broken links!
-
-      Please check the pages of your site in the list below, and make sure you don't reference any path that does not exist.
-      Note: it's possible to ignore broken links with the 'onBrokenLinks' Docusaurus configuration, and let the build pass.
-
-      Exhaustive list of all broken links found:
-      - Broken link on source page path = /page1:
-         -> linking to /page2
-      - Broken link on source page path = /page2/:
-         -> linking to /page2
-      ]
-    `);
-  });
-
-  it('rejects broken link due to strict exact matching', async () => {
-    await expect(() =>
-      testBrokenLinks({
-        routes: [
-          {path: '/page1', exact: true, strict: true},
-          {path: '/page2/', exact: true, strict: true},
-        ],
-
-        collectedLinks: {
-          '/page1': {
-            links: ['/page1', '/page1/', '/page2', '/page2/'],
-            anchors: [],
-          },
-          '/page2/': {
-            links: ['/page1', '/page1/', '/page2', '/page2/'],
-            anchors: [],
-          },
-        },
-      }),
-    ).rejects.toThrowErrorMatchingInlineSnapshot(`
-      [Error: Docusaurus found broken links!
-
-      Please check the pages of your site in the list below, and make sure you don't reference any path that does not exist.
-      Note: it's possible to ignore broken links with the 'onBrokenLinks' Docusaurus configuration, and let the build pass.
-
-      Exhaustive list of all broken links found:
-      - Broken link on source page path = /page1:
-         -> linking to /page1/
-         -> linking to /page2
-      - Broken link on source page path = /page2/:
-         -> linking to /page1/
-         -> linking to /page2
       ]
     `);
   });
@@ -941,7 +869,7 @@ describe('handleBrokenLinks', () => {
   });
 
   it('is performant and minimize calls to matchRoutes', async () => {
-    const matchRoutesMock = vi.mocked(reactRouterConfig.matchRoutes);
+    const matchRoutesMock = vi.mocked(reactRouter.matchRoutes);
 
     const scale = 100;
 

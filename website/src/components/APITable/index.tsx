@@ -14,7 +14,7 @@ import React, {
   useEffect,
 } from 'react';
 import useBrokenLinks from '@docusaurus/useBrokenLinks';
-import {useHistory} from '@docusaurus/router';
+import {useLocation, useNavigate} from '@docusaurus/router';
 import styles from './styles.module.css';
 
 interface Props {
@@ -54,13 +54,14 @@ function APITableRow({
   const entryName = getRowName(children);
   const id = name ? `${name}-${entryName}` : entryName;
   const anchor = `#${id}`;
-  const history = useHistory();
+  const location = useLocation();
+  const navigate = useNavigate();
   useBrokenLinks().collectAnchor(id);
   return (
     <tr
       id={id}
       tabIndex={0}
-      ref={history.location.hash === anchor ? ref : undefined}
+      ref={location.hash === anchor ? ref : undefined}
       onClick={(e) => {
         const isTDClick =
           (e.target as HTMLElement).tagName.toUpperCase() === 'TD';
@@ -68,12 +69,12 @@ function APITableRow({
 
         const shouldNavigate = isTDClick && !hasSelectedText;
         if (shouldNavigate) {
-          history.push(anchor);
+          navigate(anchor);
         }
       }}
       onKeyDown={(e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
-          history.push(anchor);
+          navigate(anchor);
         }
       }}>
       {children.props.children}

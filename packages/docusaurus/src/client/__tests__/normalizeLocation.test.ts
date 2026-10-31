@@ -6,9 +6,11 @@
  */
 
 import {describe, expect, it, vi} from 'vitest';
-import normalizeLocation from '../normalizeLocation';
-import type {Location} from 'history';
+import {createMemoryRouter, matchRoutes, type Location} from 'react-router';
+import normalizeLocation, {patchHtmlRoutes} from '../normalizeLocation';
+import {routeObjects} from '../routeObjects';
 
+vi.mock('react-router', {spy: true});
 vi.mock('@generated/routes', () => import('./__mocks__/@generated/routes'));
 
 describe('normalizeLocation', () => {
@@ -74,7 +76,7 @@ describe('normalizeLocation', () => {
   });
 
   it('leaves pathnames untouched', () => {
-    const replaceMock = vi.spyOn(String.prototype, 'replace');
+    vi.mocked(matchRoutes).mockClear();
 
     expect(
       normalizeLocation({
@@ -100,7 +102,7 @@ describe('normalizeLocation', () => {
       search: '',
       hash: '#features',
     });
-    expect(replaceMock).toHaveBeenCalledTimes(1);
+    expect(matchRoutes).toHaveBeenCalledTimes(1);
 
     expect(
       normalizeLocation({
@@ -108,6 +110,35 @@ describe('normalizeLocation', () => {
       } as Location),
     ).toEqual({
       pathname: '/',
+    });
+  });
+});
+
+describe('patchHtmlRoutes', () => {
+  async function getLeafRoute(pathname: string) {
+    const router = createMemoryRouter([{id: 'root', children: routeObjects}], {
+      initialEntries: [pathname],
+      patchRoutesOnNavigation: patchHtmlRoutes('root'),
+    });
+    await vi.waitFor(() => expect(router.state.initialized).toBe(true));
+    const {path, handle} = router.state.matches.at(-1)!.route;
+    return {path, patched: handle === undefined};
+  }
+
+  it('adds routes for .html paths', async () => {
+    await expect(getLeafRoute('/docs/installation.html')).resolves.toEqual({
+      path: '/docs/installation.html',
+      patched: true,
+    });
+    await expect(
+      getLeafRoute('/docs/installation/index.html'),
+    ).resolves.toEqual({path: '/docs/installation/index.html', patched: true});
+  });
+
+  it('does not patch routes registered with an .html extension', async () => {
+    await expect(getLeafRoute('/page.html')).resolves.toEqual({
+      path: '/page.html',
+      patched: false,
     });
   });
 });

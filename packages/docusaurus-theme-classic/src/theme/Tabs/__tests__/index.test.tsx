@@ -5,14 +5,21 @@
  * LICENSE file in the root directory of this source tree.
  */
 // @vitest-environment jsdom
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import type {PropsWithChildren, ReactNode} from 'react';
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 import {ScrollControllerProvider} from '@docusaurus/theme-common/internal';
-import {StaticRouter} from 'react-router-dom';
+import {StaticRouter} from 'react-router';
 import Tabs from '../index';
 import TabItem from '../../TabItem';
+
+// Tabs read the query string from the router of the Docusaurus app
+vi.mock('@docusaurus/router', async (importOriginal) => {
+  const {createMemoryRouter} = await import('react-router');
+  const router = createMemoryRouter([{path: '*'}]);
+  return {...(await importOriginal<object>()), useRouter: () => router};
+});
 
 function TestProviders({
   children,

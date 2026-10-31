@@ -6,7 +6,7 @@
  */
 
 import siteConfig from '@generated/docusaurus.config';
-import type {Location} from 'history';
+import type {Location} from '@docusaurus/router';
 
 function logPage(
   event: string,
