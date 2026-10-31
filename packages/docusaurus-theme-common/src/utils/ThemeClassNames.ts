@@ -53,6 +53,9 @@ export const ThemeClassNames = {
       container: 'theme-layout-navbar',
       containerLeft: 'theme-layout-navbar-left',
       containerRight: 'theme-layout-navbar-right',
+      item: {
+        html: 'theme-navbar-item-html',
+      },
       mobileSidebar: {
         container: 'theme-layout-navbar-sidebar',
         panel: 'theme-layout-navbar-sidebar-panel',
