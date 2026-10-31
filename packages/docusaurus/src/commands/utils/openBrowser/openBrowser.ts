@@ -28,25 +28,16 @@ type Params = {
   browserArgs: BrowserArgs;
 };
 
-// Not sure if we need this, but let's keep a secret escape hatch
-// CRA/react-dev-utils supported BROWSER/BROWSER_ARGS
-const BrowserEnv: BrowserName = process.env.DOCUSAURUS_BROWSER;
-const BrowserEnvArgs: string[] = process.env.DOCUSAURUS_BROWSER_ARGS
-  ? process.env.DOCUSAURUS_BROWSER_ARGS.split(' ')
-  : [];
-
-// If we're on OS X, the user hasn't specifically
-// requested a different browser, we can try opening
-// Chrome with AppleScript. This lets us reuse an
-// existing tab when possible instead of creating a new one.
+// On macOS, reuse an existing Chrome tab via AppleScript only when Chrome
+// is explicitly selected. With DOCUSAURUS_BROWSER unset, the generic opener
+// resolves the system default browser.
 // Copied from https://github.com/facebook/create-react-app/blob/main/packages/react-dev-utils/openBrowser.js
 async function tryOpenWithAppleScript({
   url,
   browser,
 }: Params): Promise<boolean> {
   const shouldTryOpenChromiumWithAppleScript =
-    process.platform === 'darwin' &&
-    (typeof browser !== 'string' || browser === 'google chrome');
+    process.platform === 'darwin' && browser === 'google chrome';
 
   if (!shouldTryOpenChromiumWithAppleScript) {
     return false;
@@ -171,9 +162,14 @@ async function startBrowserProcess(params: Params): Promise<boolean> {
  * Returns true if it opened a browser
  */
 export default async function openBrowser(url: string): Promise<boolean> {
+  // Not sure if we need this, but let's keep a secret escape hatch
+  // CRA/react-dev-utils supported BROWSER/BROWSER_ARGS
+  // Read on each call so the current process environment is honored.
   return startBrowserProcess({
     url,
-    browser: BrowserEnv,
-    browserArgs: BrowserEnvArgs,
+    browser: process.env.DOCUSAURUS_BROWSER,
+    browserArgs: process.env.DOCUSAURUS_BROWSER_ARGS
+      ? process.env.DOCUSAURUS_BROWSER_ARGS.split(' ')
+      : [],
   });
 }
