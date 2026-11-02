@@ -229,6 +229,14 @@ describe('escapeMarkdownHeadingIds', () => {
     );
   });
 
+  it('escapes every heading id on the same line', () => {
+    // parseMarkdownHeadingId supports multiple {#id} on a single heading, so
+    // all of them must be escaped for MDX, not just the first one.
+    expect(escapeMarkdownHeadingIds('## Some heading {#id1} {#id2}')).toBe(
+      '## Some heading \\{#id1} \\{#id2}',
+    );
+  });
+
   it('can escape level 1-6 heading ids', () => {
     expect(
       escapeMarkdownHeadingIds(dedent`

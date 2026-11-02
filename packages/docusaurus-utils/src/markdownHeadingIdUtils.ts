@@ -73,9 +73,9 @@ export function escapeMarkdownHeadingIds(content: string): string {
   return content.replaceAll(markdownHeadingRegexp, (substring) =>
     // TODO probably not the most efficient impl...
     substring
-      .replace('{#', '\\{#')
+      .replaceAll('{#', '\\{#')
       // prevent duplicate escaping
-      .replace('\\\\{#', '\\{#'),
+      .replaceAll('\\\\{#', '\\{#'),
   );
 }
 
