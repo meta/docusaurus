@@ -20,6 +20,10 @@
     max-width: calc(100% - var(--doc-sidebar-hidden-width));
   }
 
+  .docMainContainerNoSidebar {
+    max-width: 100%;
+  }
+
   .docItemWrapperEnhanced {
     max-width: calc(
       var(--ifm-container-width) + var(--doc-sidebar-width)
