@@ -7,6 +7,12 @@
 
 import {useState, useRef, useEffect, type ReactNode} from 'react';
 import clsx from 'clsx';
+import {useLocation} from '@docusaurus/router';
+import {
+  useLocalPathname,
+  containsActiveItems,
+  isItemActive,
+} from '@docusaurus/theme-common/internal';
 import NavbarNavLink from '@theme/NavbarItem/NavbarNavLink';
 import NavbarItem from '@theme/NavbarItem';
 import type {Props} from '@theme/NavbarItem/DropdownNavbarItem/Desktop';
@@ -20,6 +26,19 @@ export default function DropdownNavbarItemDesktop({
 }: Props): ReactNode {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
+  const localPathname = useLocalPathname();
+  const location = useLocation();
+  const containsActive = containsActiveItems(items, localPathname, location);
+
+  const isDropdownActive = () => {
+    if (props.isActive) {
+      return props.isActive(null, location);
+    }
+    return isItemActive(props, localPathname, location) || containsActive;
+  };
+
+  const active = isDropdownActive();
+  const activeClassName = props.activeClassName ?? 'navbar__link--active';
 
   useEffect(() => {
     const handleClickOutside = (
@@ -60,8 +79,12 @@ export default function DropdownNavbarItemDesktop({
         // See https://github.com/facebook/docusaurus/pull/6003
         // There's probably a better solution though...
         href={props.to ? undefined : '#'}
-        className={clsx('navbar__link', className)}
+        className={clsx('navbar__link', className, {
+          [activeClassName]: active,
+        })}
         {...props}
+        activeClassName={activeClassName}
+        isActive={props.to ? () => active : undefined}
         onClick={props.to ? undefined : (e) => e.preventDefault()}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {

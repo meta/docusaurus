@@ -7,40 +7,18 @@
 
 import {useState, type ReactNode, type ComponentProps} from 'react';
 import clsx from 'clsx';
+import {useLocation} from '@docusaurus/router';
+import {useCollapsible, Collapsible} from '@docusaurus/theme-common';
 import {
-  isRegexpStringMatch,
-  useCollapsible,
-  Collapsible,
-} from '@docusaurus/theme-common';
-import {isSamePath, useLocalPathname} from '@docusaurus/theme-common/internal';
+  isSamePath,
+  useLocalPathname,
+  containsActiveItems,
+} from '@docusaurus/theme-common/internal';
 import {translate} from '@docusaurus/Translate';
 import NavbarNavLink from '@theme/NavbarItem/NavbarNavLink';
-import NavbarItem, {type LinkLikeNavbarItemProps} from '@theme/NavbarItem';
+import NavbarItem from '@theme/NavbarItem';
 import type {Props} from '@theme/NavbarItem/DropdownNavbarItem/Mobile';
 import styles from './styles.module.css';
-
-function isItemActive(
-  item: LinkLikeNavbarItemProps,
-  localPathname: string,
-): boolean {
-  if (isSamePath(item.to, localPathname)) {
-    return true;
-  }
-  if (isRegexpStringMatch(item.activeBaseRegex, localPathname)) {
-    return true;
-  }
-  if (item.activeBasePath && localPathname.startsWith(item.activeBasePath)) {
-    return true;
-  }
-  return false;
-}
-
-function containsActiveItems(
-  items: readonly LinkLikeNavbarItemProps[],
-  localPathname: string,
-): boolean {
-  return items.some((item) => isItemActive(item, localPathname));
-}
 
 function CollapseButton({
   collapsed,
@@ -103,8 +81,11 @@ export default function DropdownNavbarItemMobile({
   ...props
 }: Props): ReactNode {
   const localPathname = useLocalPathname();
-  const isActive = isSamePath(props.to, localPathname);
-  const containsActive = containsActiveItems(items, localPathname);
+  const location = useLocation();
+  const containsActive = containsActiveItems(items, localPathname, location);
+  const isActive = props.isActive
+    ? props.isActive(null, location)
+    : isSamePath(props.to, localPathname);
 
   const {collapsed, toggleCollapsed} = useItemCollapsible({
     active: isActive || containsActive,
