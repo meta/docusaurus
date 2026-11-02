@@ -15,7 +15,7 @@ There are two ways of adding a link to another page: through a **URL path** and 
 
 URL paths are unprocessed by Docusaurus, and you can see them as directly rendering to `<a href="./installation">`, i.e. it will be resolved according to the page's URL location, rather than its file-system location.
 
-If you want to reference another Markdown file **included by the same plugin**, you could use the relative path of the document you want to link to. Docusaurus' Markdown loader will convert the file path to the target file's URL path (and hence remove the `.md` extension).
+If you want to reference another Markdown file **of your site**, you could use the relative path of the document you want to link to. Docusaurus' Markdown loader will convert the file path to the target file's URL path (and hence remove the `.md` extension).
 
 For example, if you are in `docs/folder/doc1.md` and you want to reference `docs/folder/doc2.md`, `docs/folder/subfolder/doc3.md`, and `docs/otherFolder/doc4.md`:
 
@@ -49,8 +49,23 @@ Using relative _file_ paths (with `.md` extensions) instead of relative _URL_ li
 - A [versioned doc](../docs/versioning.mdx) will link to another doc of the exact same version
 - Relative URL links are very likely to break if you update the [`trailingSlash` config](../../api/docusaurus.config.js.mdx#trailingSlash)
 
+## Cross-plugin links
+
+Markdown file references also work across plugins: a blog post can link to a doc, a doc can link to a standalone page, and so on.
+
+Docusaurus resolves a Markdown link in two steps:
+
+1. It looks for the target file in the plugin instance **owning the source file**, using the resolution rules described above.
+2. If it can't find it, it looks for the target file in **the whole site**, using the site directory as the content root.
+
+The second step only kicks in for cross-plugin links, so the links of a plugin keep resolving in priority to the content of that plugin, notably for [versioned docs](../docs/versioning.mdx) and [localized content](../../i18n/i18n-introduction.mdx).
+
+```md title="blog/2024-01-01-post.md"
+Read our [installation doc](../docs/installation.mdx) first.
+```
+
 :::warning
 
-Markdown file references only work when the source and target files are processed by the same plugin instance. This is a technical limitation of our Markdown processing architecture and will be fixed in the future. If you are linking files between plugins (e.g. linking to a doc page from a blog post), you have to use URL links.
+Cross-plugin absolute file paths (`[link](/docs/target.mdx)`) are resolved from the site directory, and are **not portable**: you would need to update them manually if you create new doc versions or localize them.
 
 :::

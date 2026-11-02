@@ -39,7 +39,17 @@ export type ResolveMarkdownLink = (
 ) => string | null;
 
 export interface PluginOptions {
-  resolveMarkdownLink: ResolveMarkdownLink;
+  /**
+   * Resolves the link against the Markdown files of the plugin owning the
+   * source file. It has priority over `resolveSiteMarkdownLink`.
+   */
+  resolveMarkdownLink?: ResolveMarkdownLink;
+  /**
+   * Resolves the link against the Markdown files of the whole site, whatever
+   * plugin owns them. Used as a fallback, to support cross-plugin links.
+   * See https://github.com/facebook/docusaurus/issues/9117
+   */
+  resolveSiteMarkdownLink?: ResolveMarkdownLink;
   onBrokenMarkdownLinks: MarkdownConfig['hooks']['onBrokenMarkdownLinks'];
 }
 
@@ -58,7 +68,7 @@ function asFunction(
       )`Markdown link with URL code=${linkUrl} in source file path=${relativePath}${formatNodePositionExtraMessage(
         node,
       )} couldn't be resolved.
-Make sure it references a local Markdown file that exists within the current plugin.${extraHelp}`;
+Make sure it references a local Markdown file that exists within the site.${extraHelp}`;
     };
   } else {
     return (params) =>
@@ -97,7 +107,7 @@ function parseMarkdownLinkURLPath(link: string): URLPath | null {
 const plugin: Plugin<PluginOptions[], Root> = function plugin(
   options,
 ): Transformer<Root> {
-  const {resolveMarkdownLink} = options;
+  const {resolveMarkdownLink, resolveSiteMarkdownLink} = options;
 
   const onBrokenMarkdownLinks = asFunction(options.onBrokenMarkdownLinks);
 
@@ -111,10 +121,17 @@ const plugin: Plugin<PluginOptions[], Root> = function plugin(
 
       const sourceFilePath = file.path;
 
-      const permalink = resolveMarkdownLink({
+      const resolveParams = {
         sourceFilePath,
         linkPathname: linkURLPath.pathname,
-      });
+      };
+
+      // The plugin owning the source file resolves its own links in priority
+      // We only fall back to the site-wide registry for cross-plugin links
+      const permalink =
+        resolveMarkdownLink?.(resolveParams) ??
+        resolveSiteMarkdownLink?.(resolveParams) ??
+        null;
 
       if (permalink) {
         // This reapplies the link ?qs#hash part to the resolved pathname

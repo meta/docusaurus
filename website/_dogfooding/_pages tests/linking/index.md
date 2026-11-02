@@ -19,6 +19,15 @@ This folder contains test pages to verify markdown file path links work correctl
 - [`/page-a.md`](/linking/page-a.md)
 - [`/nested/page-b.md`](/linking/nested/page-b.md)
 
+## Cross-plugin file path links
+
+Links to Markdown files owned by another plugin, see [#9117](https://github.com/facebook/docusaurus/issues/9117)
+
+- [`../../_docs tests/tests/links/target.mdx`](<../../_docs tests/tests/links/target.mdx>)
+- [`../../_blog tests/2023-08-05.mdx`](<../../_blog tests/2023-08-05.mdx>)
+- [`../../../docs/introduction.mdx`](../../../docs/introduction.mdx)
+- [`/docs/introduction.mdx`](/docs/introduction.mdx)
+
 ## Site alias file path links
 
 - [`@site/_dogfooding/_pages tests/linking/index.md`](<@site/_dogfooding/_pages tests/linking/index.md>)
