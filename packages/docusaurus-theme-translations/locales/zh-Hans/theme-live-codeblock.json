@@ -1,5 +1,5 @@
 {
-  "theme.Playground.buttons.reset": "Reset",
+  "theme.Playground.buttons.reset": "重置",
   "theme.Playground.liveEditor": "实时编辑器",
   "theme.Playground.result": "结果"
 }
