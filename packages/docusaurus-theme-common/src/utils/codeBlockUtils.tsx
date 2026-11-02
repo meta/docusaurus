@@ -48,6 +48,7 @@ export type MagicCommentConfig = {
   className: string;
   line?: string;
   block?: {start: string; end: string};
+  anchor?: string;
 };
 
 function getCommentPattern(
@@ -59,7 +60,7 @@ function getCommentPattern(
     .map((lang) => {
       const {start, end} = commentPatterns[lang];
       return `(?:${start}\\s*(${magicCommentDirectives
-        .flatMap((d) => [d.line, d.block?.start, d.block?.end].filter(Boolean))
+        .flatMap((d) => [d.line, d.block?.start, d.block?.end, d.anchor].filter(Boolean))
         .join('|')})\\s*${end})`;
     })
     .join('|');
@@ -264,6 +265,11 @@ function parseCodeLinesFromContent(
       .filter((d) => d.line)
       .map(({className, line}) => [line!, className] as [string, string]),
   );
+  const anchorToClassName: {[comment: string]: string} = Object.fromEntries(
+    magicComments
+      .filter((d) => d.anchor)
+      .map(({className, anchor}) => [anchor!, className] as [string, string]),
+  );
   const blockStartToClassName: {[comment: string]: string} = Object.fromEntries(
     magicComments
       .filter((d) => d.block)
@@ -293,6 +299,8 @@ function parseCodeLinesFromContent(
       blocks[blockEndToClassName[directive]!]!.range += `${
         blocks[blockEndToClassName[directive]!]!.start
       }-${lineNumber - 1},`;
+    } else if (anchorToClassName[directive]) {
+      blocks[anchorToClassName[directive]!]!.range += `${lineNumber},`;
     }
     lines.splice(lineNumber, 1);
   }
