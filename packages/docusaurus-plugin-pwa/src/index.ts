@@ -15,7 +15,7 @@ import {
 } from '@docusaurus/bundler';
 import {injectManifest} from 'workbox-build';
 import {normalizeUrl} from '@docusaurus/utils';
-import logger from '@docusaurus/logger';
+import {logger} from '@docusaurus/logger';
 import {readDefaultCodeTranslationMessages} from '@docusaurus/theme-translations';
 import type {HtmlTags, LoadContext, Plugin} from '@docusaurus/types';
 import type {PluginOptions} from '@docusaurus/plugin-pwa';
@@ -192,4 +192,4 @@ export default function pluginPWA(
   };
 }
 
-export {validateOptions} from './options';
+export {validateOptions} from './options.js';

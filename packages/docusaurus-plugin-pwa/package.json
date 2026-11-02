@@ -4,6 +4,7 @@
   "description": "Docusaurus Plugin to add PWA support.",
   "main": "lib/index.js",
   "types": "src/plugin-pwa.d.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc --build && copy-untyped-files && format-gitignored-files \"lib/theme/**/*.js\"",
     "watch": "run-p -c copy:watch build:watch",
