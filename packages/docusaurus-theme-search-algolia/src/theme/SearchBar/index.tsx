@@ -14,11 +14,10 @@ import Link from '@docusaurus/Link';
 import {useHistory} from '@docusaurus/router';
 import {isRegexpStringMatch} from '@docusaurus/theme-common';
 import {
-  useAlgoliaContextualFacetFilters,
   useSearchResultUrlProcessor,
   useAlgoliaAskAi,
-  mergeFacetFilters,
   useSearchLinkCreator,
+  useNormalizeIndices,
 } from '@docusaurus/theme-search-algolia/client';
 import Translate from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -30,22 +29,11 @@ import {
   type StoredDocSearchHit,
   type DocSearchTransformClient,
   type DocSearchHit,
-  type DocSearchAskAi,
 } from '@docsearch/react';
 import translations from '@theme/SearchTranslations';
+import type {DocSearchProps} from '@docusaurus/theme-search-algolia/client';
 
 import type {AutocompleteState} from '@algolia/autocomplete-core';
-import type {FacetFilters} from 'algoliasearch/lite';
-
-type DocSearchProps = Omit<
-  DocSearchModalProps,
-  'onClose' | 'initialScrollY'
-> & {
-  contextualSearch?: string;
-  externalUrlRegex?: string;
-  searchPagePath: boolean | string;
-  askAi?: DocSearchAskAi;
-};
 
 type ModalKind = 'askai' | 'search';
 type ModalComponentType =
@@ -164,39 +152,6 @@ function ResultsFooter({state, onClose}: ResultsFooterProps) {
       </Translate>
     </Link>
   );
-}
-
-// Normalizes `indices` with configured and merged search parameters
-function useNormalizeIndices({
-  contextualSearch,
-  ...props
-}: DocSearchProps): DocSearchProps['indices'] {
-  const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters();
-  const indices: DocSearchProps['indices'] = [];
-
-  for (const index of props.indices) {
-    const normalizedIndex =
-      typeof index === 'string' ? {name: index, searchParameters: {}} : index;
-    const configFacetFilters: FacetFilters =
-      normalizedIndex.searchParameters?.facetFilters ?? [];
-
-    const facetFilters: FacetFilters = contextualSearch
-      ? // Merge contextual search filters with config filters
-        mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
-      : // ... or use config facetFilters
-        configFacetFilters;
-
-    // We let users override default searchParameters if they want to
-    indices.push({
-      name: normalizedIndex.name,
-      searchParameters: {
-        ...normalizedIndex.searchParameters,
-        facetFilters,
-      },
-    });
-  }
-
-  return indices;
 }
 
 function DocSearch({externalUrlRegex, ...props}: DocSearchProps) {

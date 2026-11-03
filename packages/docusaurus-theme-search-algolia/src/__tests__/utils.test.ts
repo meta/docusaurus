@@ -6,11 +6,7 @@
  */
 
 import {describe, expect, it} from 'vitest';
-import {
-  facetFiltersToFilterString,
-  mergeFacetFilters,
-  mergeFilters,
-} from '../client/utils';
+import {mergeFacetFilters} from '../client/utils';
 
 describe('mergeFacetFilters', () => {
   it('merges [string,string]', () => {
@@ -56,38 +52,5 @@ describe('mergeFacetFilters', () => {
       'f3',
       ['f4', 'f5'],
     ]);
-  });
-});
-
-describe('facetFiltersToFilterString', () => {
-  it('converts a single filter to filters syntax', () => {
-    expect(facetFiltersToFilterString('language:en')).toBe('language:"en"');
-  });
-
-  it('joins filters with AND', () => {
-    expect(facetFiltersToFilterString(['language:en', 'version:current'])).toBe(
-      'language:"en" AND version:"current"',
-    );
-  });
-
-  it('groups nested filters with OR', () => {
-    expect(
-      facetFiltersToFilterString([
-        ['language:en', 'language:fr'],
-        'version:current',
-      ]),
-    ).toBe('(language:"en" OR language:"fr") AND version:"current"');
-  });
-});
-
-describe('mergeFilters', () => {
-  it('returns the added filter when no existing filter is configured', () => {
-    expect(mergeFilters(undefined, 'version:current')).toBe('version:current');
-  });
-
-  it('groups and joins existing and added filters with AND', () => {
-    expect(mergeFilters('language:en OR language:fr', 'version:current')).toBe(
-      '(language:en OR language:fr) AND (version:current)',
-    );
   });
 });

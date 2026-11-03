@@ -53,6 +53,12 @@ const resolveAliases: AliasOptions = [
   // Stub `@generated/*` modules for tests
   {find: /^@generated\/.*/, replacement: `${rootDir}test/emptyModule.ts`},
 
+  // Resolve `@theme/*` components provided by theme-search-algolia
+  {
+    find: /^@theme\/(SearchTranslations)$/,
+    replacement: `${rootDir}packages/docusaurus-theme-search-algolia/src/theme/$1`,
+  },
+
   // Resolve `@theme/*` aliases to theme-classic components
   // This won't always be true, but good enough for now
   {

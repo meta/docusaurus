@@ -7,6 +7,7 @@
 
 declare module '@docusaurus/theme-search-algolia' {
   import type {DeepPartial, Overwrite, Optional} from 'utility-types';
+  import type {FacetFilters} from 'algoliasearch/lite';
 
   import type {
     DocSearchProps,
@@ -15,12 +16,20 @@ declare module '@docusaurus/theme-search-algolia' {
     AskAiSearchParameters,
   } from '@docsearch/react';
 
+  // TODO: Remove this with newest version of DocSearch
+  type AskAiIndexSearchParameters = Omit<
+    AskAiSearchParameters,
+    'facetFilters'
+  > & {
+    facetFilters?: FacetFilters;
+  };
+
   // `tools` won't currently work as they require functions
-  // NOTE: Agent Studio doesn't support `facetFilters` for search parameters,
-  // we allow them here since they are converted into `filters` before being
-  // passed to the modal. Ideally this should be resolved at the package level.
-  export type AskAiConfig = Omit<DocSearchAskAi, 'tools'> & {
-    searchParameters?: Record<string, AskAiSearchParameters>;
+  export type AskAiConfig = Omit<
+    DocSearchAskAi,
+    'tools' | 'searchParameters'
+  > & {
+    searchParameters?: Record<string, AskAiIndexSearchParameters>;
   };
 
   // DocSearch props that Docusaurus exposes directly through props forwarding

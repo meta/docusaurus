@@ -14,3 +14,5 @@ export {useSearchResultUrlProcessor} from './useSearchResultUrlProcessor';
 export {useAlgoliaAskAi} from './useAlgoliaAskAi';
 export {useSearchQueryString, useSearchLinkCreator} from './searchPage';
 export {mergeFacetFilters} from './utils';
+export {useNormalizeIndices} from './useNormalizeIndices';
+export type {DocSearchProps} from './types';

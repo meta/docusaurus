@@ -8,17 +8,11 @@
 import {useCallback, useMemo, useState} from 'react';
 import translations from '@theme/SearchTranslations';
 import {useAlgoliaContextualFacetFiltersIfEnabled} from './useAlgoliaContextualFacetFilters';
-import {facetFiltersToFilterString, mergeFilters} from './utils';
+import {mergeFacetFilters} from './utils';
+import type {DocSearchProps} from './types';
 import type {FacetFilters} from 'algoliasearch/lite';
 import type {AskAiConfig} from '@docusaurus/theme-search-algolia';
-import type {DocSearchAskAi, DocSearchModalProps} from '@docsearch/react';
-
-type DocSearchProps = Omit<
-  DocSearchModalProps,
-  'onClose' | 'initialScrollY'
-> & {
-  askAi?: DocSearchAskAi;
-};
+import type {DocSearchModalProps} from '@docsearch/react';
 
 type UseAskAiResult = {
   canHandleAskAi: boolean;
@@ -34,7 +28,7 @@ type UseAskAiResult = {
   };
 };
 
-function buildAskAiSearchParameters(
+export function buildAskAiSearchParameters(
   askAi: AskAiConfig | undefined,
   contextualSearchFilters: FacetFilters | undefined,
 ): AskAiConfig | undefined {
@@ -42,44 +36,32 @@ function buildAskAiSearchParameters(
     return undefined;
   }
 
-  const indices = [
-    ...new Set([
-      ...(askAi.indices ?? []),
-      ...Object.keys(askAi.searchParameters ?? {}),
-    ]),
-  ];
+  const indices = new Set([
+    ...(askAi.indices ?? []),
+    ...Object.keys(askAi.searchParameters ?? {}),
+  ]);
 
-  if (!indices.length) {
+  if (!indices.size) {
     return askAi;
   }
 
-  // Agent Studio accepts `filters`, not `facetFilters`.
-  const contextualFilters = contextualSearchFilters
-    ? facetFiltersToFilterString(contextualSearchFilters)
-    : undefined;
-  const searchParameters = {...askAi.searchParameters};
+  const searchParameters = Object.fromEntries(
+    [...indices].map((indexName) => {
+      const params = askAi.searchParameters?.[indexName];
+      return [
+        indexName,
+        {
+          ...params,
+          facetFilters: mergeFacetFilters(
+            contextualSearchFilters,
+            params?.facetFilters,
+          ),
+        },
+      ];
+    }),
+  );
 
-  for (const indexName of indices) {
-    const {facetFilters, ...current} = searchParameters[indexName] ?? {};
-    let currentFilters = current.filters;
-
-    if (facetFilters?.length) {
-      currentFilters = mergeFilters(
-        current.filters,
-        facetFiltersToFilterString(facetFilters),
-      );
-    }
-
-    searchParameters[indexName] = {
-      ...current,
-      filters: mergeFilters(currentFilters, contextualFilters),
-    };
-  }
-
-  return {
-    ...askAi,
-    searchParameters,
-  };
+  return {...askAi, searchParameters};
 }
 
 export function useAlgoliaAskAi(props: DocSearchProps): UseAskAiResult {

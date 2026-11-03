@@ -648,12 +648,9 @@ export default async function createConfigAsync() {
         appId: 'X1Z85QJPUV',
         apiKey: 'bf7211c161e8205da2f933a02534105a',
         indexName: 'docusaurus-2',
-        // TODO Enable once there is an Agent Studio agent to use
-        // askAi: {
-        // cSpell:ignore IMYF
-        //   agentId: 'RgIMYFUmTfrN',
-        //   suggestedQuestions: true,
-        // },
+        askAi: {
+          agentId: 'a68b3c4a-0df2-44c8-a370-1de6bfcfa801',
+        },
         replaceSearchResultPathname:
           isDev || isDeployPreview
             ? {
