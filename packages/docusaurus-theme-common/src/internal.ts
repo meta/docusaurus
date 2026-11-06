@@ -31,6 +31,8 @@ export {
 } from './utils/tabsUtils';
 export type {TabValue, TabsProps, TabItemProps} from './utils/tabsUtils';
 
+export type {ClassicThemeConfig} from './utils/useThemeConfig';
+
 export {useNavbarMobileSidebar} from './contexts/navbarMobileSidebar';
 export {useNavbarSecondaryMenu} from './contexts/navbarSecondaryMenu/display';
 

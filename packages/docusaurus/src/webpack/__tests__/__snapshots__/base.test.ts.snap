@@ -22,6 +22,7 @@ exports[`base webpack config > creates webpack aliases 1`] = `
   "@docusaurus/useIsBrowser": "../../../../client/exports/useIsBrowser.ts",
   "@docusaurus/useIsomorphicLayoutEffect": "../../../../client/exports/useIsomorphicLayoutEffect.tsx",
   "@docusaurus/useRouteContext": "../../../../client/exports/useRouteContext.tsx",
+  "@docusaurus/useThemeConfig": "../../../../client/exports/useThemeConfig.ts",
   "@generated": "../../../../../../..",
   "@mdx-js/react": "../../../../../../../node_modules/@mdx-js/react",
   "@site": "",

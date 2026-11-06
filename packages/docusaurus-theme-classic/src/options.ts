@@ -13,6 +13,7 @@ import type {
 } from '@theme/NavbarItem/DocsVersionDropdownNavbarItem';
 import type {Options, PluginOptions} from '@docusaurus/theme-classic';
 import type {ThemeConfig} from '@docusaurus/theme-common';
+import type {ClassicThemeConfig} from '@docusaurus/theme-common/internal';
 import type {
   ThemeConfigValidationContext,
   OptionValidationContext,
@@ -58,7 +59,7 @@ const DEFAULT_COLOR_MODE_CONFIG: ThemeConfig['colorMode'] = {
   respectPrefersColorScheme: true,
 };
 
-export const DEFAULT_CONFIG: ThemeConfig = {
+export const DEFAULT_CONFIG: ClassicThemeConfig = {
   colorMode: DEFAULT_COLOR_MODE_CONFIG,
   docs: DEFAULT_DOCS_CONFIG,
   blog: DEFAULT_BLOG_CONFIG,

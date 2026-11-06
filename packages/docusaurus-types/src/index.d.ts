@@ -8,6 +8,7 @@
 export {
   RouterType,
   ThemeConfig,
+  UserThemeConfig,
   DocusaurusConfig,
   FutureConfig,
   WebpackConfig,

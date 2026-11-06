@@ -11,11 +11,26 @@
 declare module '@docusaurus/theme-live-codeblock' {
   import type {PlaygroundPosition} from '@theme/Playground';
 
-  export type ThemeConfig = {
-    liveCodeBlock: {
-      playgroundPosition: PlaygroundPosition;
-    };
+  export type ThemeConfigLiveCodeBlock = {
+    playgroundPosition: PlaygroundPosition;
   };
+
+  export type ThemeConfig = {
+    liveCodeBlock: ThemeConfigLiveCodeBlock;
+  };
+
+  // Adds the theme config fields to the @docusaurus/types interfaces
+  // Their names intentionally shadow the ThemeConfig types of this module
+  /* eslint-disable @typescript-eslint/no-shadow */
+  module '@docusaurus/types' {
+    interface ThemeConfig {
+      liveCodeBlock: ThemeConfigLiveCodeBlock;
+    }
+    interface UserThemeConfig {
+      liveCodeBlock?: Partial<ThemeConfigLiveCodeBlock>;
+    }
+  }
+  /* eslint-enable @typescript-eslint/no-shadow */
 }
 
 declare module '@theme/LiveCodeBlock' {

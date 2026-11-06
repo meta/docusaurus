@@ -22,6 +22,7 @@ exports[`getDocusaurusAliases > returns appropriate webpack aliases 1`] = `
   "@docusaurus/useIsBrowser": "<PROJECT_ROOT>/packages/docusaurus/src/client/exports/useIsBrowser.ts",
   "@docusaurus/useIsomorphicLayoutEffect": "<PROJECT_ROOT>/packages/docusaurus/src/client/exports/useIsomorphicLayoutEffect.tsx",
   "@docusaurus/useRouteContext": "<PROJECT_ROOT>/packages/docusaurus/src/client/exports/useRouteContext.tsx",
+  "@docusaurus/useThemeConfig": "<PROJECT_ROOT>/packages/docusaurus/src/client/exports/useThemeConfig.ts",
 }
 `;
 
