@@ -17,9 +17,11 @@
 .buttonGroup button {
   display: flex;
   align-items: center;
-  background: var(--prism-background-color);
+  /* Opaque, neutral background so the buttons stand out against the code
+     instead of blending into it (see #10821). */
+  background: var(--ifm-color-emphasis-200);
   color: var(--prism-color);
-  border: 1px solid var(--ifm-color-emphasis-300);
+  border: 1px solid var(--ifm-color-emphasis-400);
   border-radius: var(--ifm-global-radius);
   padding: 0.4rem;
   line-height: 0;
@@ -30,8 +32,10 @@
 .buttonGroup button:focus-visible,
 .buttonGroup button:hover {
   opacity: 1 !important;
+  background: var(--ifm-color-emphasis-300);
 }
 
 :global(.theme-code-block:hover) .buttonGroup button {
-  opacity: 0.4;
+  /* Fully opaque on hover so code no longer shows through the buttons. */
+  opacity: 1;
 }
