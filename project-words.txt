@@ -170,6 +170,7 @@ mkdn
 mkdocs
 mkdown
 moonwave
+MSYS
 Nabors
 Nakagawa
 nand
@@ -219,6 +220,7 @@ printfn
 producthunt
 Profilo
 profilo
+projets
 PRPL
 Pyltsyn
 QJPUV

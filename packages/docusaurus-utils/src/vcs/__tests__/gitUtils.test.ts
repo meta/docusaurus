@@ -20,6 +20,7 @@ import {
   getGitSubmodulePaths,
   getGitAllRepoRoots,
   getGitRepositoryFilesInfo,
+  fromGitBashPath,
 } from '../gitUtils';
 import {createVcsGitEagerConfig} from '../vcsGitEager';
 
@@ -445,6 +446,33 @@ describe('getGitRepoRoot', () => {
     await expect(getGitRepoRoot(cwd)).rejects.toThrow(
       /Couldn't find the git repository root directory/,
     );
+  });
+});
+
+describe('fromGitBashPath', () => {
+  it('converts Git Bash / MSYS mount paths to Windows paths', () => {
+    expect(fromGitBashPath('/p/projets/my-repo')).toBe('P:\\projets\\my-repo');
+    expect(fromGitBashPath('/c/dev/docusaurus')).toBe('C:\\dev\\docusaurus');
+    expect(fromGitBashPath('/d/a/b/c')).toBe('D:\\a\\b\\c');
+  });
+
+  it('upper-cases the drive letter', () => {
+    expect(fromGitBashPath('/e/folder')).toBe('E:\\folder');
+  });
+
+  it('converts a repository located at a drive root', () => {
+    expect(fromGitBashPath('/c')).toBe('C:\\');
+    expect(fromGitBashPath('/c/')).toBe('C:\\');
+  });
+
+  it('leaves regular paths unchanged', () => {
+    // Standard Git for Windows output (drive letter + forward slashes)
+    expect(fromGitBashPath('C:/dev/docusaurus')).toBe('C:/dev/docusaurus');
+    // POSIX paths that are not single-letter mount paths
+    expect(fromGitBashPath('/home/user/repo')).toBe('/home/user/repo');
+    expect(fromGitBashPath('/usr/local')).toBe('/usr/local');
+    expect(fromGitBashPath('/usr')).toBe('/usr');
+    expect(fromGitBashPath('/cc')).toBe('/cc');
   });
 });
 

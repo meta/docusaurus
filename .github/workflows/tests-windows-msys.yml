@@ -1,0 +1,51 @@
+name: Windows MSYS Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+      - docusaurus-v**
+    paths:
+      - packages/docusaurus-utils/src/vcs/**
+      - .github/workflows/tests-windows-msys.yml
+      - .github/actions/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  windows-msys-build:
+    name: Windows MSYS Build
+    timeout-minutes: 30
+    runs-on: windows-latest
+    steps:
+      - name: Support longpaths
+        run: git config --system core.longpaths true
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Set up pnpm, Node.js and dependencies
+        uses: ./.github/actions/setup
+        with:
+          node-version: '26'
+      # Git for Windows prints native paths: only the MSYS2 build of Git prints
+      # the /d/a/... paths of https://github.com/meta/docusaurus/issues/11920
+      # "path-type: inherit" keeps Node.js on the PATH, after the MSYS2 tools
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@ec48f7c5447b3140e2b088413ae3a55687bccb6e # v2.33.0
+        with:
+          msystem: MSYS
+          path-type: inherit
+          install: git
+      - name: Docusaurus Build
+        shell: msys2 {0}
+        working-directory: website
+        run: |
+          # This job proves nothing if Git doesn't print an MSYS path
+          git rev-parse --show-toplevel | grep -E '^/[a-z]/'
+          ./node_modules/.bin/docusaurus build --locale en
+        env:
+          BUILD_FAST: 'true'
