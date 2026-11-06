@@ -24,6 +24,8 @@ const AnnouncementBarDismissStorage = createStorageSlot(
   'docusaurus.announcement.dismiss',
 );
 const IdStorage = createStorageSlot('docusaurus.announcement.id');
+const AnnouncementBarDismissDataAttribute =
+  'data-announcement-bar-initially-dismissed';
 
 const isDismissedInStorage = () =>
   AnnouncementBarDismissStorage.get() === 'true';
@@ -78,6 +80,10 @@ function useContextValue(): ContextValue {
     }
 
     if (isNewAnnouncement || !isDismissedInStorage()) {
+      document.documentElement.setAttribute(
+        AnnouncementBarDismissDataAttribute,
+        'false',
+      );
       setClosed(false);
     }
   }, [announcementBar]);
