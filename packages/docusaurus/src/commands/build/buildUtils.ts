@@ -16,5 +16,5 @@ import type {BuildCLIOptions} from './build';
 export function isAutomaticBaseUrlLocalizationDisabled(
   cliOptions: BuildCLIOptions,
 ): boolean {
-  return cliOptions.locale?.length === 1;
+  return cliOptions.locale?.length === 1 && !cliOptions.keepLocalePath;
 }
