@@ -6,8 +6,8 @@
  */
 
 import path from 'node:path';
-import {generate, posixPath} from '@docusaurus/utils';
-import {applyRouteTrailingSlash} from './routeConfig';
+import {generate} from '@docusaurus/utils';
+import {aliasRouteModulePaths, applyRouteTrailingSlash} from './routeConfig';
 import type {
   InitializedPlugin,
   PluginContentLoadedActions,
@@ -37,26 +37,19 @@ function namespaceRouteContextData(route: RouteConfig): RouteConfig {
 //  Particularly, createData() modules should rather be declarative
 export async function createPluginActionsUtils({
   plugin,
+  siteDir,
   generatedFilesDir,
   baseUrl,
   trailingSlash,
 }: {
   plugin: InitializedPlugin;
+  siteDir: string;
   generatedFilesDir: string;
   baseUrl: string;
   trailingSlash: boolean | undefined;
 }): Promise<PluginActionUtils> {
   const pluginId = plugin.options.id;
   // Plugins data files are namespaced by pluginName/pluginId
-
-  // TODO Docusaurus v4 breaking change
-  //  module aliasing should be automatic
-  //  we should never find local absolute FS paths in the codegen registry
-  const aliasedSource = (source: string) =>
-    `@generated/${posixPath(path.relative(generatedFilesDir, source))}`;
-
-  // TODO use @generated data dir here!
-  // The module registry should not contain absolute paths
   const dataDir = path.join(generatedFilesDir, plugin.name, pluginId);
 
   const pluginRouteContext: PluginRouteContext['plugin'] = {
@@ -86,13 +79,18 @@ export async function createPluginActionsUtils({
           trailingSlash,
         }),
       );
-      routes.push({
+      const routeWithContext: RouteConfig = {
         ...finalRouteConfig,
         context: {
           ...finalRouteConfig.context,
-          plugin: aliasedSource(pluginRouteContextModulePath),
+          plugin: pluginRouteContextModulePath,
         },
-      });
+      };
+      // Plugins can use absolute module paths, such as createData() paths
+      // We alias them so that the codegen doesn't contain local FS paths
+      routes.push(
+        aliasRouteModulePaths(routeWithContext, {siteDir, generatedFilesDir}),
+      );
     },
     async createData(name, data) {
       const modulePath = path.join(dataDir, name);

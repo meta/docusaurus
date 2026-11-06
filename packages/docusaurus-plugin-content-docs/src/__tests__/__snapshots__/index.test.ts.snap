@@ -1148,7 +1148,7 @@ exports[`simple website > content > route config 1`] = `
       {
         "component": "@theme/DocVersionRoot",
         "context": {
-          "docsVersion": "~docs/version-current-43b.json",
+          "docsVersion": "<PROJECT_ROOT>/packages/docusaurus-plugin-content-docs/src/__tests__/__fixtures__/simple-site/.docusaurus/docusaurus-plugin-content-docs/version-current-43b.json",
         },
         "exact": false,
         "path": "/docs",
@@ -3199,7 +3199,7 @@ exports[`versioned website (community) > content > route config 1`] = `
       {
         "component": "@theme/DocVersionRoot",
         "context": {
-          "docsVersion": "~docs/version-current-43b.json",
+          "docsVersion": "<PROJECT_ROOT>/packages/docusaurus-plugin-content-docs/src/__tests__/__fixtures__/versioned-site/.docusaurus/docusaurus-plugin-content-docs/version-current-43b.json",
         },
         "exact": false,
         "path": "/community/next",
@@ -3230,7 +3230,7 @@ exports[`versioned website (community) > content > route config 1`] = `
       {
         "component": "@theme/DocVersionRoot",
         "context": {
-          "docsVersion": "~docs/version-1-0-0-47c.json",
+          "docsVersion": "<PROJECT_ROOT>/packages/docusaurus-plugin-content-docs/src/__tests__/__fixtures__/versioned-site/.docusaurus/docusaurus-plugin-content-docs/version-1-0-0-47c.json",
         },
         "exact": false,
         "path": "/community",
@@ -4432,7 +4432,7 @@ exports[`versioned website > content > route config 1`] = `
       {
         "component": "@theme/DocVersionRoot",
         "context": {
-          "docsVersion": "~docs/version-1-0-0-47c.json",
+          "docsVersion": "<PROJECT_ROOT>/packages/docusaurus-plugin-content-docs/src/__tests__/__fixtures__/versioned-site/.docusaurus/docusaurus-plugin-content-docs/version-1-0-0-47c.json",
         },
         "exact": false,
         "path": "/docs/1.0.0",
@@ -4556,7 +4556,7 @@ exports[`versioned website > content > route config 1`] = `
       {
         "component": "@theme/DocVersionRoot",
         "context": {
-          "docsVersion": "~docs/version-current-43b.json",
+          "docsVersion": "<PROJECT_ROOT>/packages/docusaurus-plugin-content-docs/src/__tests__/__fixtures__/versioned-site/.docusaurus/docusaurus-plugin-content-docs/version-current-43b.json",
         },
         "exact": false,
         "path": "/docs/next",
@@ -4744,7 +4744,7 @@ exports[`versioned website > content > route config 1`] = `
       {
         "component": "@theme/DocVersionRoot",
         "context": {
-          "docsVersion": "~docs/version-with-slugs-068.json",
+          "docsVersion": "<PROJECT_ROOT>/packages/docusaurus-plugin-content-docs/src/__tests__/__fixtures__/versioned-site/.docusaurus/docusaurus-plugin-content-docs/version-with-slugs-068.json",
         },
         "exact": false,
         "path": "/docs/withSlugs",
@@ -4859,7 +4859,7 @@ exports[`versioned website > content > route config 1`] = `
       {
         "component": "@theme/DocVersionRoot",
         "context": {
-          "docsVersion": "~docs/version-1-0-1-3ac.json",
+          "docsVersion": "<PROJECT_ROOT>/packages/docusaurus-plugin-content-docs/src/__tests__/__fixtures__/versioned-site/.docusaurus/docusaurus-plugin-content-docs/version-1-0-1-3ac.json",
         },
         "exact": false,
         "path": "/docs",

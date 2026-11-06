@@ -100,6 +100,43 @@ describe('loadPlugins', () => {
     expect(globalData).toEqual({});
   });
 
+  it('plugin adding routes with absolute module paths', async () => {
+    const {routes} = await testPlugin((context) => ({
+      name: 'plugin-name',
+      async contentLoaded({actions}) {
+        const dataPath = await actions.createData('data.json', {foo: 'bar'});
+        actions.addRoute({
+          path: '/foo',
+          component: path.join(context.siteDir, 'src', 'Comp.js'),
+          modules: {data: dataPath},
+          context: {dataContext: dataPath},
+        });
+      },
+    }));
+
+    expect(routes).toMatchInlineSnapshot(`
+      [
+        {
+          "component": "@site/src/Comp.js",
+          "context": {
+            "data": {
+              "dataContext": "@generated/plugin-name/default/data.json",
+            },
+            "plugin": "@generated/plugin-name/default/__plugin.json",
+          },
+          "modules": {
+            "data": "@generated/plugin-name/default/data.json",
+          },
+          "path": "/foo/",
+          "plugin": {
+            "id": "default",
+            "name": "plugin-name",
+          },
+        },
+      ]
+    `);
+  });
+
   describe('typical plugin', () => {
     function typicalPlugin(options: TestOptions) {
       return testPlugin(

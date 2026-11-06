@@ -6,12 +6,18 @@
  */
 
 import {describe, expect, it} from 'vitest';
-import {applyRouteTrailingSlash, sortRoutes} from '../routeConfig';
+import path from 'node:path';
+import {
+  aliasModulePath,
+  aliasRouteModulePaths,
+  applyRouteTrailingSlash,
+  sortRoutes,
+} from '../routeConfig';
 import type {RouteConfig} from '@docusaurus/types';
 import type {ApplyTrailingSlashParams} from '@docusaurus/utils-common';
 
-function route(path: string, subRoutes?: string[]): RouteConfig {
-  const result: RouteConfig = {path, component: 'any'};
+function route(routePath: string, subRoutes?: string[]): RouteConfig {
+  const result: RouteConfig = {path: routePath, component: 'any'};
 
   if (subRoutes) {
     result.routes = subRoutes.map((subRoute) => route(subRoute));
@@ -309,5 +315,128 @@ describe('sortRoutes', () => {
 
     expect(sortRoutes([r1, r2, r3], '/')).toEqual([r3, r1, r2]);
     expect(sortRoutes([r3, r1, r2], '/')).toEqual([r3, r1, r2]);
+  });
+});
+
+const siteDir = path.resolve('/site');
+const generatedFilesDir = path.join(siteDir, '.docusaurus');
+const aliasContext = {siteDir, generatedFilesDir};
+
+describe('aliasModulePath', () => {
+  it('aliases absolute paths inside generatedFilesDir', () => {
+    expect(
+      aliasModulePath(
+        path.join(generatedFilesDir, 'my-plugin', 'default', 'data.json'),
+        aliasContext,
+      ),
+    ).toBe('@generated/my-plugin/default/data.json');
+  });
+
+  it('aliases absolute paths inside siteDir', () => {
+    expect(
+      aliasModulePath(path.join(siteDir, 'src', 'Comp.tsx'), aliasContext),
+    ).toBe('@site/src/Comp.tsx');
+  });
+
+  it('keeps absolute paths outside siteDir', () => {
+    const outsidePath = path.resolve('/node_modules/some-theme/Comp.js');
+    expect(aliasModulePath(outsidePath, aliasContext)).toBe(outsidePath);
+  });
+
+  it('keeps absolute paths of a sibling dir sharing the siteDir prefix', () => {
+    const siblingPath = path.resolve('/site-other/Comp.js');
+    expect(aliasModulePath(siblingPath, aliasContext)).toBe(siblingPath);
+  });
+
+  it('keeps non-absolute paths', () => {
+    expect(aliasModulePath('@theme/DocItem', aliasContext)).toBe(
+      '@theme/DocItem',
+    );
+    expect(aliasModulePath('@site/docs/hello.md', aliasContext)).toBe(
+      '@site/docs/hello.md',
+    );
+    expect(aliasModulePath('~blog/default/data.json', aliasContext)).toBe(
+      '~blog/default/data.json',
+    );
+    expect(aliasModulePath('some-package/Comp', aliasContext)).toBe(
+      'some-package/Comp',
+    );
+  });
+});
+
+describe('aliasRouteModulePaths', () => {
+  const dataPath = (name: string) =>
+    path.join(generatedFilesDir, 'my-plugin', 'default', name);
+
+  it('aliases all the module paths of a route tree', () => {
+    const routeConfig: RouteConfig = {
+      path: '/page',
+      component: path.join(siteDir, 'src', 'Layout.tsx'),
+      context: {plugin: dataPath('__plugin.json')},
+      routes: [
+        {
+          path: '/page/sub',
+          component: '@theme/SubPage',
+          modules: {
+            data: dataPath('data.json'),
+            items: [
+              {
+                content: {
+                  __import: true,
+                  path: path.join(siteDir, 'blog', 'post.md'),
+                  query: {truncated: true},
+                },
+              },
+            ],
+          },
+        },
+      ],
+    };
+
+    expect(aliasRouteModulePaths(routeConfig, aliasContext))
+      .toMatchInlineSnapshot(`
+      {
+        "component": "@site/src/Layout.tsx",
+        "context": {
+          "plugin": "@generated/my-plugin/default/__plugin.json",
+        },
+        "path": "/page",
+        "routes": [
+          {
+            "component": "@theme/SubPage",
+            "modules": {
+              "data": "@generated/my-plugin/default/data.json",
+              "items": [
+                {
+                  "content": {
+                    "__import": true,
+                    "path": "@site/blog/post.md",
+                    "query": {
+                      "truncated": true,
+                    },
+                  },
+                },
+              ],
+            },
+            "path": "/page/sub",
+          },
+        ],
+      }
+    `);
+  });
+
+  it('keeps routes that are already aliased unchanged', () => {
+    const routeConfig: RouteConfig = {
+      path: '/page',
+      component: '@theme/Page',
+      exact: true,
+      modules: {data: '@generated/my-plugin/default/data.json'},
+      context: {plugin: '@generated/my-plugin/default/__plugin.json'},
+    };
+
+    // The key order matters: route hashes are computed from JSON.stringify()
+    expect(
+      JSON.stringify(aliasRouteModulePaths(routeConfig, aliasContext)),
+    ).toBe(JSON.stringify(routeConfig));
   });
 });

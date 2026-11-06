@@ -128,7 +128,7 @@ ${indent(parts.join(',\n'))}
 }`;
 }
 
-const isModule = (value: unknown): value is Module =>
+export const isModule = (value: unknown): value is Module =>
   typeof value === 'string' ||
   (typeof value === 'object' &&
     !!(value as {[key: string]: unknown} | null)?.__import);
