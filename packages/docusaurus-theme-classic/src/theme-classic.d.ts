@@ -213,6 +213,16 @@ declare module '@theme/Blog/Components/Author/Socials' {
   export default function BlogAuthorSocials(props: Props): ReactNode;
 }
 
+declare module '@theme/Blog/Components/Author/GeneratedImage' {
+  export interface Props {
+    readonly name: string;
+    readonly link?: string;
+    readonly className?: string;
+  }
+
+  export default function GeneratedImage(props: Props): JSX.Element;
+}
+
 declare module '@theme/BlogListPaginator' {
   import type {ReactNode} from 'react';
   import type {BlogPaginatedMetadata} from '@docusaurus/plugin-content-blog';
