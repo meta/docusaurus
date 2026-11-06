@@ -165,7 +165,7 @@ catalog:
 # Dependencies only used for development (devDependencies)
 catalogs:
   dev:
-    '@ai-sdk/react': ^3.0.280
+    '@ai-sdk/react': ^4.0.134
     '@crowdin/cli': ^5.0.2
     '@eslint/js': ^10.0.1
     '@svgr/core': ^8.1.0
