@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {truncate} from './blogUtils';
+import {aliasedSitePath} from '@docusaurus/utils';
+import {resolveTruncatedAnchorLinks, truncate} from './blogUtils';
 import type {BlogMarkdownLoaderOptions} from './types';
 import type {LoaderContext} from 'webpack';
 
@@ -28,6 +29,15 @@ export default function markdownLoader(
   // TODO truncate with the AST instead of the string ?
   if (truncated) {
     finalContent = truncate(finalContent, markdownLoaderOptions.truncateMarker);
+
+    // In list views the truncated preview is rendered under the list page URL,
+    // so in-page anchor links must be rebased to the post permalink (#9731).
+    const permalink = markdownLoaderOptions.sourceToPermalink.get(
+      aliasedSitePath(this.resourcePath, markdownLoaderOptions.siteDir),
+    );
+    if (permalink) {
+      finalContent = resolveTruncatedAnchorLinks(finalContent, permalink);
+    }
   }
 
   return callback(null, finalContent);
