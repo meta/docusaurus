@@ -6,6 +6,7 @@
  */
 
 import {getCSSExtractPlugin} from '../currentBundler';
+import {getBrowserslistQueries} from '../browserslist';
 import type {ConfigureWebpackUtils, CurrentBundler} from '@docusaurus/types';
 
 export async function createStyleLoadersFactory({
@@ -14,6 +15,7 @@ export async function createStyleLoadersFactory({
   currentBundler: CurrentBundler;
 }): Promise<ConfigureWebpackUtils['getStyleLoaders']> {
   const CssExtractPlugin = await getCSSExtractPlugin({currentBundler});
+  const browserslistQueries = getBrowserslistQueries();
 
   return function getStyleLoaders(
     isServer: boolean,
@@ -72,8 +74,10 @@ export async function createStyleLoadersFactory({
               [
                 require.resolve('postcss-preset-env'),
                 {
-                  // Keeping this empty options object on purpose
-                  // It could be more convenient for configurePostCss() usage
+                  // Use the same browsers as the JS loader and CSS minimizer
+                  // Without a site Browserslist config, postcss-preset-env
+                  // would use the Browserslist defaults instead of ours
+                  browsers: browserslistQueries,
                 },
               ],
             ],
