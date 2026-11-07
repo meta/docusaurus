@@ -61,6 +61,7 @@ const defaultSvgrConfig = {
   prettier: false,
   svgo: true,
   titleProp: true,
+  runtimeConfig: false,
   svgoConfig: {
     plugins: [
       {
@@ -87,5 +88,7 @@ const defaultSvgrConfig = {
 ```
 
 The `prefixIds` plugin prefixes SVG ids (for example, `id="a"` becomes `id="svg-3f2a1c-a"`) to avoid clashes between multiple SVGs inlined in the same page. Class names are not prefixed.
+
+`runtimeConfig: false` disables discovery of [SVGR configuration files](https://react-svgr.com/docs/configuration-files/) (for example `svgr.config.js`) in the site directory and ancestor directories. Configure SVGR through the `svgrConfig` option.
 
 Providing `svgoConfig` replaces the default [SVGO](https://svgo.dev/) config entirely. Use `svgoConfig: undefined` to read your own [`svgo.config.js` file](https://svgo.dev/docs/introduction/#configuration) instead.
