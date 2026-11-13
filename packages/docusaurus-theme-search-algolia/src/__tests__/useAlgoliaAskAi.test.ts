@@ -125,6 +125,60 @@ describe('buildAskAiSearchParameters', () => {
     });
   });
 
+  it('merges config facetFilters on the same facet with an OR', () => {
+    expect(
+      buildAskAiSearchParameters(
+        {
+          agentId: 'agent',
+          searchParameters: {'index-1': {facetFilters: ['language:fr']}},
+        },
+        contextualFacetFilters,
+      ),
+    ).toEqual({
+      agentId: 'agent',
+      searchParameters: {
+        'index-1': {
+          facetFilters: [
+            ['language:en', 'language:fr'],
+            ['docusaurus_tag:default', 'docusaurus_tag:docs-default-current'],
+          ],
+        },
+      },
+    });
+  });
+
+  it('merges negated config facetFilters on the same facet with an AND', () => {
+    expect(
+      buildAskAiSearchParameters(
+        {
+          agentId: 'agent',
+          searchParameters: {'index-1': {facetFilters: ['language:-fr']}},
+        },
+        contextualFacetFilters,
+      ),
+    ).toEqual({
+      agentId: 'agent',
+      searchParameters: {
+        'index-1': {facetFilters: [...contextualFacetFilters, 'language:-fr']},
+      },
+    });
+  });
+
+  it('removes config facetFilters duplicating the contextual ones', () => {
+    expect(
+      buildAskAiSearchParameters(
+        {
+          agentId: 'agent',
+          searchParameters: {'index-1': {facetFilters: ['language:en']}},
+        },
+        contextualFacetFilters,
+      ),
+    ).toEqual({
+      agentId: 'agent',
+      searchParameters: {'index-1': {facetFilters: contextualFacetFilters}},
+    });
+  });
+
   it('keeps the config filters', () => {
     expect(
       buildAskAiSearchParameters(

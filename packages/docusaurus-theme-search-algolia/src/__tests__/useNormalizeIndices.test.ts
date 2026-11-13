@@ -145,6 +145,56 @@ describe('normalizeIndex', () => {
       });
     });
 
+    it('merges config facetFilters on the same facet with an OR', () => {
+      expect(
+        normalize({
+          name: 'my-index',
+          searchParameters: {facetFilters: ['language:fr']},
+        }),
+      ).toEqual({
+        name: 'my-index',
+        searchParameters: {
+          facetFilters: [
+            ['language:en', 'language:fr'],
+            ['docusaurus_tag:default', 'docusaurus_tag:docs-default-current'],
+          ],
+        },
+      });
+    });
+
+    it('merges negated config facetFilters on the same facet with an AND', () => {
+      expect(
+        normalize({
+          name: 'my-index',
+          searchParameters: {facetFilters: ['language:-fr']},
+        }),
+      ).toEqual({
+        name: 'my-index',
+        searchParameters: {
+          facetFilters: [...contextualFacetFilters, 'language:-fr'],
+        },
+      });
+    });
+
+    it('removes config facetFilters duplicating the contextual ones', () => {
+      expect(
+        normalize({
+          name: 'my-index',
+          searchParameters: {facetFilters: ['language:en']},
+        }),
+      ).toEqual({
+        name: 'my-index',
+        searchParameters: {facetFilters: contextualFacetFilters},
+      });
+    });
+
+    it('returns empty facetFilters when contextual and config ones are empty', () => {
+      expect(normalizeIndex([], 'true')('my-index')).toEqual({
+        name: 'my-index',
+        searchParameters: {facetFilters: []},
+      });
+    });
+
     it('merges the contextual and config string facetFilters', () => {
       expect(
         normalize({

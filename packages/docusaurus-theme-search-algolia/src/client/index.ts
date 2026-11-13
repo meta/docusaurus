@@ -13,6 +13,7 @@ export {
 export {useSearchResultUrlProcessor} from './useSearchResultUrlProcessor';
 export {useAlgoliaAskAi} from './useAlgoliaAskAi';
 export {useSearchQueryString, useSearchLinkCreator} from './searchPage';
-export {mergeFacetFilters} from './utils';
+// TODO Docusaurus v5: remove this re-export, use @docsearch/react/utils
+export {mergeFacetFilters} from '@docsearch/react/utils';
 export {useNormalizeIndices} from './useNormalizeIndices';
 export type {DocSearchProps} from './types';

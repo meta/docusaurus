@@ -186,7 +186,7 @@ To solve this problem, the contextual search feature understands that you are br
 
 :::info
 
-When using `contextualSearch: true` (default), the contextual facet filters will be merged with the ones provided with `algolia.searchParameters.facetFilters` .
+When using `contextualSearch: true` (default), the contextual facet filters will be merged with the ones provided with `algolia.searchParameters.facetFilters`. Filters on the same facet are combined with an `OR`, filters on different facets with an `AND`, and negated filters (such as `language:-fr`) are always combined with an `AND`. For example, adding `language:fr` on the English site returns results in both English and French.
 
 For specific needs, you can disable `contextualSearch` and define your own `facetFilters`:
 

@@ -6,9 +6,9 @@
  */
 
 import {useCallback, useMemo, useState} from 'react';
+import {mergeFacetFilters} from '@docsearch/react/utils';
 import translations from '@theme/SearchTranslations';
 import {useAlgoliaContextualFacetFiltersIfEnabled} from './useAlgoliaContextualFacetFilters';
-import {mergeFacetFilters} from './utils';
 import type {DocSearchProps} from './types';
 import type {FacetFilters} from 'algoliasearch/lite';
 import type {AskAiConfig} from '@docusaurus/theme-search-algolia';

@@ -7,30 +7,15 @@
 
 declare module '@docusaurus/theme-search-algolia' {
   import type {DeepPartial, Overwrite, Optional} from 'utility-types';
-  import type {FacetFilters} from 'algoliasearch/lite';
 
   import type {
     DocSearchProps,
     DocSearchAskAi,
     DocSearchIndex,
-    AskAiSearchParameters,
   } from '@docsearch/react';
 
-  // TODO: Remove this with newest version of DocSearch
-  type AskAiIndexSearchParameters = Omit<
-    AskAiSearchParameters,
-    'facetFilters'
-  > & {
-    facetFilters?: FacetFilters;
-  };
-
   // `tools` won't currently work as they require functions
-  export type AskAiConfig = Omit<
-    DocSearchAskAi,
-    'tools' | 'searchParameters'
-  > & {
-    searchParameters?: Record<string, AskAiIndexSearchParameters>;
-  };
+  export type AskAiConfig = Omit<DocSearchAskAi, 'tools'>;
 
   // DocSearch props that Docusaurus exposes directly through props forwarding
   type DocusaurusDocSearchProps = Pick<

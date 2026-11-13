@@ -20,8 +20,11 @@ export const DEFAULT_CONFIG = {
   searchPagePath: 'search',
 } satisfies Partial<ThemeConfigAlgolia>;
 
-const FacetFiltersSchema = Joi.array().items(
-  Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string())),
+const FacetFiltersSchema = Joi.alternatives().try(
+  Joi.string(),
+  Joi.array().items(
+    Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string())),
+  ),
 );
 
 const SearchParametersSchema = Joi.object({

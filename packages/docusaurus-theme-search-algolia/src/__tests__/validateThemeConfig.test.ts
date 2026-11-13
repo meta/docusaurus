@@ -405,6 +405,57 @@ describe('validateThemeConfig', () => {
     });
   });
 
+  it('searchParameters.facetFilters string search config', () => {
+    const algolia: AlgoliaInput = {
+      appId: 'BH4D9OD16A',
+      indices: [
+        {name: 'index', searchParameters: {facetFilters: 'version:1.0'}},
+      ],
+      apiKey: 'apiKey',
+    };
+    expect(testValidateThemeConfig(algolia)).toEqual({
+      algolia: {
+        ...DEFAULT_CONFIG,
+        ...algolia,
+      },
+    });
+  });
+
+  it('askAi.searchParameters.facetFilters string config', () => {
+    const algolia: AlgoliaInput = {
+      appId: 'BH4D9OD16A',
+      indices: ['index'],
+      apiKey: 'apiKey',
+      askAi: {
+        agentId: 'agent',
+        apiKey: 'apiKey',
+        appId: 'BH4D9OD16A',
+        searchParameters: {index: {facetFilters: 'version:1.0'}},
+      },
+    };
+    expect(testValidateThemeConfig(algolia)).toEqual({
+      algolia: {
+        ...DEFAULT_CONFIG,
+        ...algolia,
+      },
+    });
+  });
+
+  it('rejects invalid facetFilters', () => {
+    expect(() =>
+      testValidateThemeConfig({
+        appId: 'BH4D9OD16A',
+        indices: [
+          {
+            name: 'index',
+            searchParameters: {facetFilters: 42 as unknown as string},
+          },
+        ],
+        apiKey: 'apiKey',
+      }),
+    ).toThrow();
+  });
+
   describe('facets config', () => {
     it('accepts facets and a result badge key', () => {
       const algolia: AlgoliaInput = {

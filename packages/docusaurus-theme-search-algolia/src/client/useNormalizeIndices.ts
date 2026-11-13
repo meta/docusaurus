@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {useMemo} from 'react';
+import {mergeFacetFilters} from '@docsearch/react/utils';
 import {useAlgoliaContextualFacetFilters} from './useAlgoliaContextualFacetFilters';
-import {mergeFacetFilters} from './utils';
 import type {DocSearchProps} from './types';
 import type {FacetFilters} from 'algoliasearch/lite';
 
@@ -24,7 +25,7 @@ export function normalizeIndex(
 
     const facetFilters: FacetFilters = contextualSearch
       ? // Merge contextual search filters with config filters
-        mergeFacetFilters(contextualFacetFilters, configFacetFilters)
+        (mergeFacetFilters(contextualFacetFilters, configFacetFilters) ?? [])
       : // ... or use config facetFilters
         configFacetFilters;
 
@@ -45,7 +46,11 @@ export function useNormalizeIndices({
 }: DocSearchProps): Index[] {
   const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters();
 
-  return props.indices.map(
-    normalizeIndex(contextualSearchFacetFilters, contextualSearch),
+  return useMemo(
+    () =>
+      props.indices.map(
+        normalizeIndex(contextualSearchFacetFilters, contextualSearch),
+      ),
+    [props.indices, contextualSearchFacetFilters, contextualSearch],
   );
 }
