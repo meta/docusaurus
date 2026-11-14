@@ -169,7 +169,9 @@ function createProcessorUncached({
       } satisfies TransformLinksOptions,
     ],
     gfm,
-    options.markdownConfig.mdx1Compat.comments ? remarkComment : null,
+    options.markdownConfig.mdx1Compat.comments
+      ? [remarkComment, {ast: true}]
+      : null,
     ...(options.remarkPlugins ?? []),
     [
       unusedDirectives,

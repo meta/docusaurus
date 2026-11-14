@@ -290,6 +290,22 @@ Body
     expect(result.content).toMatchSnapshot();
   });
 
+  it('extracts explicit heading ID from HTML comment with mdx1Compat.comments', async () => {
+    const options = createOptions({
+      markdownConfig: {
+        format: 'md',
+        mdx1Compat: {comments: true},
+      },
+    });
+    const result = await processContent(
+      '## Hello World <!-- #my-explicit-id -->',
+      options,
+    );
+    expect(result.content).toContain('id: "my-explicit-id"');
+    expect(result.content).toContain('"value": "Hello World"');
+    expect(result.content).not.toContain('hello-world');
+  });
+
   it('preserves legacy heading IDs', async () => {
     const options = createOptions();
     const result = await processContent('## Heading {#custom-id}', options);

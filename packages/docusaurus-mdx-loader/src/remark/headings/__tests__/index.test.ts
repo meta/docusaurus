@@ -10,12 +10,13 @@
 import {describe, expect, it} from 'vitest';
 import {remark} from 'remark';
 import mdx from 'remark-mdx';
+import remarkComment from '@slorber/remark-comment';
 import {u} from 'unist-builder';
 import {visit} from 'unist-util-visit';
 import {escapeMarkdownHeadingIds} from '@docusaurus/utils';
 import plugin from '../index';
 import type {PluginOptions} from '../index';
-import type {Plugin} from 'unified';
+import type {Pluggable} from 'unified';
 import type {Parent, Node} from 'unist';
 import type {Heading, Root} from 'mdast';
 
@@ -29,12 +30,12 @@ function removePositions(tree: Node) {
 
 async function process(
   input: string,
-  plugins: Plugin[] = [],
+  plugins: Pluggable[] = [],
   options: Partial<PluginOptions> = {anchorsMaintainCase: false},
   format: 'md' | 'mdx' = 'mdx',
 ): Promise<Root> {
   let content = input;
-  let formatPlugins: Plugin[] = [];
+  let formatPlugins: Pluggable[] = [];
 
   if (format === 'mdx') {
     // Preprocess the input to support our invalid heading ids syntax
@@ -438,6 +439,30 @@ describe('headings remark plugin', () => {
           // In CommonMark (no remark-mdx), {/* #id */} is regular text
           const id = await headingIdFor('# Heading {/* #my-id */}', 'md');
           expect(id).not.toEqual('my-id');
+        });
+
+        it('extracts id from HTML comment when remarkComment is enabled', async () => {
+          const result = await process(
+            '## Heading <!-- #my-id -->',
+            [[remarkComment, {ast: true}]],
+            {},
+            'md',
+          );
+          const heading = result.children[0] as Heading;
+          expect((heading.data as {id: string}).id).toEqual('my-id');
+          expect(heading).toEqual(h('Heading', 2, 'my-id'));
+        });
+
+        it('removes the remark-comment node when it is the only heading content', async () => {
+          const result = await process(
+            '## <!-- #id-only -->',
+            [[remarkComment, {ast: true}]],
+            {},
+            'md',
+          );
+          const heading = result.children[0] as Heading;
+          expect((heading.data as {id: string}).id).toEqual('id-only');
+          expect(heading).toEqual(h(null, 2, 'id-only'));
         });
       });
 
