@@ -43,6 +43,9 @@
     "mermaid": "catalog:",
     "tslib": "catalog:"
   },
+  "devDependencies": {
+    "@types/d3-selection": "catalog:dev"
+  },
   "peerDependencies": {
     "react": "catalog:",
     "react-dom": "catalog:"
