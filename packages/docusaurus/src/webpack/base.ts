@@ -21,11 +21,27 @@ import {realpath} from '@docusaurus/fs';
 import {loadDocusaurusAliases, loadThemeAliases} from './aliases';
 import {BundlerCPUProfilerPlugin} from './plugins/BundlerCPUProfilerPlugin';
 import type {Configuration, RuleSetRule} from 'webpack';
-import type {Configuration as RspackConfiguration} from '@rspack/core';
+import type {
+  Configuration as RspackConfiguration,
+  RuleSetRule as RspackRuleSetRule,
+} from '@rspack/core';
 import type {ConfigureWebpackUtils, Props} from '@docusaurus/types';
 
 const CSS_REGEX = /\.css$/i;
 const CSS_MODULE_REGEX = /\.module\.css$/i;
+
+// Text imports get the 'asset/source' type from a default rule, but the
+// loaders of all the other matching rules would still apply (JS, MDX, SVGR...)
+// Matching the subsequent rules against `file.js.text` skips them all
+// See https://rspack.rs/config/module-rules#rulesas
+function createTextImportRule(): RuleSetRule {
+  // Docusaurus bundler configs are typed with Webpack types
+  return {
+    with: {type: 'text'},
+    as: '[resource-path].text',
+  } satisfies RspackRuleSetRule as RuleSetRule;
+}
+
 export const clientDir = path.join(__dirname, '..', 'client');
 
 // The RealContentHashPlugin replaces every occurrence of a provisional chunk
@@ -179,8 +195,6 @@ export async function createBaseConfig({
     };
   }
 
-  const notTextImport: RuleSetRule['with'] = {type: {not: 'text'}};
-
   return {
     mode,
     name,
@@ -290,17 +304,18 @@ export async function createBaseConfig({
         },
       },
       rules: [
+        ...(props.currentBundler.name === 'rspack'
+          ? [createTextImportRule()]
+          : []),
         assetRuleUtils.rules.assets(),
         {
           test: /\.[jt]sx?$/i,
           exclude: excludeJS,
-          with: notTextImport,
           use: [createJsLoader({isServer})],
         },
         {
           test: CSS_REGEX,
           exclude: CSS_MODULE_REGEX,
-          with: notTextImport,
           use: configureWebpackUtils.getStyleLoaders(isServer, {
             importLoaders: 1,
             sourceMap: !isProd,
@@ -310,7 +325,6 @@ export async function createBaseConfig({
         // using the extension .module.css
         {
           test: CSS_MODULE_REGEX,
-          with: notTextImport,
           use: configureWebpackUtils.getStyleLoaders(isServer, {
             modules: {
               // Using the same CSS Module class pattern in dev/prod on purpose

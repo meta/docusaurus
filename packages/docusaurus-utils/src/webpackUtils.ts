@@ -115,7 +115,6 @@ function createAssetRuleUtils({isServer}: {isServer: boolean}): AssetRuleUtils {
 
   const rules: AssetRuleUtils['rules'] = {
     assets: () => ({
-      with: {type: {not: 'text'}},
       oneOf: [
         // Requests created with createAssetRequest() come first on purpose
         // They must not be handled by other asset rules (ideal-image, SVGR...)
