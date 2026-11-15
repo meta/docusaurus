@@ -62,11 +62,21 @@ export default function DropdownNavbarItemDesktop({
         href={props.to ? undefined : '#'}
         className={clsx('navbar__link', className)}
         {...props}
-        onClick={props.to ? undefined : (e) => e.preventDefault()}
+        onClick={
+          props.to
+            ? undefined
+            : (e) => {
+                e.preventDefault();
+                setShowDropdown((s) => !s);
+              }
+        }
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            setShowDropdown(!showDropdown);
+            setShowDropdown((s) => !s);
+          }
+          if (e.key === 'Escape') {
+            setShowDropdown(false);
           }
         }}>
         {props.children ?? props.label}
