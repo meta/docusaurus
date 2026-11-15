@@ -7,40 +7,14 @@
 
 import {useState, type ReactNode, type ComponentProps} from 'react';
 import clsx from 'clsx';
-import {
-  isRegexpStringMatch,
-  useCollapsible,
-  Collapsible,
-} from '@docusaurus/theme-common';
+import {useCollapsible, Collapsible} from '@docusaurus/theme-common';
 import {isSamePath, useLocalPathname} from '@docusaurus/theme-common/internal';
 import {translate} from '@docusaurus/Translate';
 import NavbarNavLink from '@theme/NavbarItem/NavbarNavLink';
-import NavbarItem, {type LinkLikeNavbarItemProps} from '@theme/NavbarItem';
+import NavbarItem from '@theme/NavbarItem';
 import type {Props} from '@theme/NavbarItem/DropdownNavbarItem/Mobile';
 import styles from './styles.module.css';
-
-function isItemActive(
-  item: LinkLikeNavbarItemProps,
-  localPathname: string,
-): boolean {
-  if (isSamePath(item.to, localPathname)) {
-    return true;
-  }
-  if (isRegexpStringMatch(item.activeBaseRegex, localPathname)) {
-    return true;
-  }
-  if (item.activeBasePath && localPathname.startsWith(item.activeBasePath)) {
-    return true;
-  }
-  return false;
-}
-
-function containsActiveItems(
-  items: readonly LinkLikeNavbarItemProps[],
-  localPathname: string,
-): boolean {
-  return items.some((item) => isItemActive(item, localPathname));
-}
+import {containsActiveItems} from '../utils';
 
 function CollapseButton({
   collapsed,
@@ -122,7 +96,8 @@ export default function DropdownNavbarItemMobile({
       })}>
       <div
         className={clsx('menu__list-item-collapsible', {
-          'menu__list-item-collapsible--active': isActive,
+          'menu__list-item-collapsible--active':
+            isActive || (containsActive && collapsed),
         })}>
         <NavbarNavLink
           role="button"
