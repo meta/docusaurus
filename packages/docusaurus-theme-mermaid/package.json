@@ -38,7 +38,6 @@
     "@docusaurus/theme-common": "workspace:*",
     "@docusaurus/types": "workspace:*",
     "@docusaurus/utils-validation": "workspace:*",
-    "d3-selection": "catalog:",
     "d3-transition": "catalog:",
     "mermaid": "catalog:",
     "tslib": "catalog:"
@@ -48,7 +47,8 @@
   },
   "peerDependencies": {
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "d3-selection": "catalog:"
   },
   "engines": {
     "node": ">=26.13"
