@@ -182,6 +182,7 @@ catalogs:
     '@types/babel__traverse': ^7.28.0
     '@types/color': ^3.0.7
     '@types/cross-spawn': ^6.0.6
+    '@types/d3-selection': ^3.0.11
     '@types/escape-html': ^1.0.4
     '@types/estree': ^1.0.9
     '@types/hast': ^3.0.5
