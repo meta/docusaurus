@@ -19,6 +19,7 @@ export default function TOCCollapsibleCollapseButton({
   return (
     <button
       type="button"
+      aria-expanded={!collapsed}
       {...props}
       className={clsx(
         'clean-btn',

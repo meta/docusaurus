@@ -33,7 +33,13 @@ const ListComponent: BlogSidebarContentProps['ListComponent'] = ({items}) => {
 function BlogSidebarDesktop({sidebar}: Props) {
   const items = useVisibleBlogSidebarItems(sidebar.items);
   return (
-    <aside className="col col--3">
+    <aside
+      className="col col--3"
+      aria-label={translate({
+        id: 'theme.blog.sidebar.containerAriaLabel',
+        message: 'Blog sidebar',
+        description: 'The ARIA label for the blog sidebar container',
+      })}>
       <nav
         className={clsx(styles.sidebar, 'thin-scrollbar')}
         aria-label={translate({

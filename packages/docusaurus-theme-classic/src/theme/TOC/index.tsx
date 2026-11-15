@@ -7,6 +7,7 @@
 
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
+import {translate} from '@docusaurus/Translate';
 import TOCItems from '@theme/TOCItems';
 import type {Props} from '@theme/TOC';
 
@@ -19,12 +20,18 @@ const LINK_ACTIVE_CLASS_NAME = 'table-of-contents__link--active';
 
 export default function TOC({className, ...props}: Props): ReactNode {
   return (
-    <div className={clsx(styles.tableOfContents, 'thin-scrollbar', className)}>
+    <nav
+      aria-label={translate({
+        id: 'theme.TOC.navAriaLabel',
+        message: 'On this page',
+        description: 'The ARIA label for the table of contents navigation',
+      })}
+      className={clsx(styles.tableOfContents, 'thin-scrollbar', className)}>
       <TOCItems
         {...props}
         linkClassName={LINK_CLASS_NAME}
         linkActiveClassName={LINK_ACTIVE_CLASS_NAME}
       />
-    </div>
+    </nav>
   );
 }

@@ -7,6 +7,7 @@
 
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
+import {translate} from '@docusaurus/Translate';
 import {ThemeClassNames} from '@docusaurus/theme-common';
 import type {Props} from '@theme/Footer/Layout';
 
@@ -18,6 +19,11 @@ export default function FooterLayout({
 }: Props): ReactNode {
   return (
     <footer
+      aria-label={translate({
+        id: 'theme.footer.ariaLabel',
+        message: 'Site footer',
+        description: 'The ARIA label for the footer landmark',
+      })}
       className={clsx(ThemeClassNames.layout.footer.container, 'footer', {
         'footer--dark': style === 'dark',
       })}>
