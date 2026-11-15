@@ -570,6 +570,9 @@ catalogs:
     '@types/cross-spawn':
       specifier: ^6.0.6
       version: 6.0.6
+    '@types/d3-selection':
+      specifier: ^3.0.11
+      version: 3.0.11
     '@types/escape-html':
       specifier: ^1.0.4
       version: 1.0.4
@@ -2525,6 +2528,10 @@ importers:
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
+    devDependencies:
+      '@types/d3-selection':
+        specifier: 'catalog:dev'
+        version: 3.0.11
 
   packages/docusaurus-theme-search-algolia:
     dependencies:
