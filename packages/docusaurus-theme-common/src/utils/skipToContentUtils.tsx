@@ -90,10 +90,7 @@ export function SkipToContentLink(props: SkipToContentLinkProps): ReactNode {
   const linkLabel = props.children ?? DefaultSkipToContentLabel;
   const {containerRef, onClick} = useSkipToContent();
   return (
-    <div
-      ref={containerRef}
-      role="region"
-      aria-label={DefaultSkipToContentLabel}>
+    <div ref={containerRef}>
       {/* eslint-disable-next-line @docusaurus/no-html-links */}
       <a
         {...props}
