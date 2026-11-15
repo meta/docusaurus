@@ -74,9 +74,8 @@ describe('shortName', () => {
       字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字:
         {
           apfs: '字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字',
-          // This is pretty bad (a character clipped in half), but I doubt if it
-          // ever happens
-          xfs: '字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字�',
+          // The character that doesn't fit whole is left out
+          xfs: '字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字',
         },
     };
     const oldProcessPlatform = process.platform;
@@ -115,6 +114,19 @@ describe('shortName', () => {
     const truncatedPathNonLatin = shortName(VERY_LONG_PATH_NON_LATIN);
     expect(truncatedPathLatin.length).toBeLessThanOrEqual(255);
     expect(truncatedPathNonLatin.length).toBeLessThanOrEqual(255);
+  });
+
+  it('does not cut a character in half', () => {
+    const oldProcessPlatform = process.platform;
+    Object.defineProperty(process, 'platform', {value: 'darwin'});
+    const emojiName = shortName(`a${'😀'.repeat(200)}`);
+    Object.defineProperty(process, 'platform', {value: 'android'});
+    const hanName = shortName('字'.repeat(100));
+    Object.defineProperty(process, 'platform', {value: oldProcessPlatform});
+    expect(emojiName).toBe(`a${'😀'.repeat(121)}`);
+    expect(emojiName).not.toContain('\uFFFD');
+    expect(hanName).toBe('字'.repeat(81));
+    expect(hanName).not.toContain('\uFFFD');
   });
 
   it('does not truncate short paths', () => {
