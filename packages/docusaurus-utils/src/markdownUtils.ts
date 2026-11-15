@@ -51,6 +51,59 @@ const MDXEscapingUtils = (function () {
   return {escapeMDX, unescapeMDX};
 })();
 
+// Comment syntaxes that must never reach the excerpt: authors use them for
+// notes addressed to editors rather than readers. Both forms can span multiple
+// lines, and both can contain the ">" that the tag-stripping regexes in
+// createExcerpt() key on, so neither can be matched by a per-line tag regex.
+const COMMENT_DELIMITERS = [
+  {open: '<!--', close: '-->'},
+  {open: '{/*', close: '*/}'},
+] as const;
+
+/**
+ * Removes comment spans from a line, carrying the "still inside a comment"
+ * state forward so a comment can span lines. Each excerpt gets its own
+ * stripper: the state belongs to one document, not to the module.
+ */
+function createCommentStripper() {
+  let openComment: (typeof COMMENT_DELIMITERS)[number] | undefined;
+
+  return function stripComments(line: string): string {
+    let remaining = line;
+    let result = '';
+    while (remaining) {
+      if (openComment) {
+        const end = remaining.indexOf(openComment.close);
+        // Unterminated: the rest of the line is comment, and so is the next.
+        if (end === -1) {
+          return result;
+        }
+        remaining = remaining.slice(end + openComment.close.length);
+        openComment = undefined;
+      } else {
+        // Open whichever delimiter comes first, so "{/*" inside an HTML
+        // comment doesn't hijack the span that is already open.
+        let opener: (typeof COMMENT_DELIMITERS)[number] | undefined;
+        let openerIndex = -1;
+        for (const delimiter of COMMENT_DELIMITERS) {
+          const index = remaining.indexOf(delimiter.open);
+          if (index !== -1 && (openerIndex === -1 || index < openerIndex)) {
+            openerIndex = index;
+            opener = delimiter;
+          }
+        }
+        if (!opener) {
+          return result + remaining;
+        }
+        result += remaining.slice(0, openerIndex);
+        remaining = remaining.slice(openerIndex + opener.open.length);
+        openComment = opener;
+      }
+    }
+    return result;
+  };
+}
+
 /**
  * Hacky temporary escape hatch for Crowdin bad MDX support
  * See https://docusaurus.io/docs/i18n/crowdin#mdx
@@ -129,6 +182,7 @@ export function createExcerpt(fileString: string): string | undefined {
   let inImport = false;
   let inHTML = false;
   let lastCodeFence = '';
+  const stripComments = createCommentStripper();
 
   for (const fileLine of fileLines) {
     // An empty line marks the end of imports
@@ -196,7 +250,7 @@ export function createExcerpt(fileString: string): string | undefined {
       return MDXEscapingUtils.unescapeMDX(str);
     }
 
-    const cleanedLine = preprocessLine(fileLine)
+    const cleanedLine = stripComments(preprocessLine(fileLine))
       // Remove HTML tags.
       .replace(/<[^>]*>/g, '')
       // Remove Title headers

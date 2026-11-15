@@ -303,6 +303,76 @@ describe('createExcerpt', () => {
       expect(createExcerpt('\u{FFFE}\u{FFFF}')).toBeUndefined();
     });
   });
+
+  describe('comments', () => {
+    // The excerpt becomes the page description, so anything left behind here
+    // is published in <meta name="description">, Open Graph tags and the blog
+    // feed. Comments are exactly the syntax authors use for text addressed to
+    // editors rather than readers, so a leak is worse than a cosmetic bug.
+
+    it('creates excerpt ignoring a multiline HTML comment', () => {
+      expect(
+        createExcerpt(dedent`
+          <!--
+            Copyright (c) Meta Platforms, Inc.
+          -->
+
+          # Guide
+
+          How to configure the sidebar.
+        `),
+      ).toBe('How to configure the sidebar.');
+    });
+
+    it('creates excerpt ignoring an HTML comment containing a closing bracket', () => {
+      expect(createExcerpt('<!-- a > b -->\n\nSome content.')).toBe(
+        'Some content.',
+      );
+    });
+
+    it('creates excerpt from the text following a comment', () => {
+      expect(createExcerpt('<!-- note\nmore --> Real text.')).toBe(
+        'Real text.',
+      );
+    });
+
+    it('creates excerpt ignoring an MDX comment', () => {
+      expect(createExcerpt('{/* note */}\n\nSome content.')).toBe(
+        'Some content.',
+      );
+    });
+
+    it('creates excerpt ignoring a multiline MDX comment', () => {
+      expect(createExcerpt('{/* note\nmore */}\n\nSome content.')).toBe(
+        'Some content.',
+      );
+    });
+
+    it('creates no excerpt for a document containing only a comment', () => {
+      expect(createExcerpt('<!-- only a comment -->')).toBeUndefined();
+    });
+
+    it('creates excerpt preserving comment syntax inside inline code', () => {
+      expect(createExcerpt('Write `<!-- note -->` to hide text.')).toBe(
+        'Write <!-- note --> to hide text.',
+      );
+      expect(createExcerpt('Write `{/* note */}` to hide text.')).toBe(
+        'Write {/* note */} to hide text.',
+      );
+    });
+
+    it('creates excerpt keeping comment syntax inside code blocks out of the way', () => {
+      expect(
+        createExcerpt(dedent`
+          \`\`\`html
+          <!-- an example comment
+          \`\`\`
+
+          Some content.
+        `),
+      ).toBe('Some content.');
+    });
+  });
 });
 
 describe('parseMarkdownContentTitle', () => {
