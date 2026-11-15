@@ -110,6 +110,10 @@ export async function createCLIProgram({
       '--no-minify',
       'build website without minimizing JS bundles (default: false)',
     )
+    .option(
+      '--keep-locale-path',
+      'keep path-based locale localization when building a single locale',
+    )
     .action(build);
 
   cli

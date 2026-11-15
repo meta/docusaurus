@@ -327,10 +327,15 @@ describe('CLI', () => {
         '--locale',
         'de',
         '--no-minify',
+        '--keep-locale-path',
       ]);
       expect(buildCommand.build).toHaveBeenCalledWith(
         'website',
-        expect.objectContaining({locale: ['en', 'fr', 'de'], minify: false}),
+        expect.objectContaining({
+          locale: ['en', 'fr', 'de'],
+          minify: false,
+          keepLocalePath: true,
+        }),
         expect.any(Command),
       );
     });
