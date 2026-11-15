@@ -7,10 +7,10 @@ exports[`createRedirectPageContent > encodes uri special chars 1`] = `
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="0; url=https://docusaurus.io/gr/%CF%83%CE%B5%CE%BB%CE%B9%CE%B4%CE%B1%CF%82/">
     <link rel="canonical" href="https://docusaurus.io/gr/%CF%83%CE%B5%CE%BB%CE%B9%CE%B4%CE%B1%CF%82/" />
+    <script>
+      window.location.replace('https://docusaurus.io/gr/%CF%83%CE%B5%CE%BB%CE%B9%CE%B4%CE%B1%CF%82/' + window.location.search + window.location.hash);
+    </script>
   </head>
-  <script>
-    window.location.href = 'https://docusaurus.io/gr/%CF%83%CE%B5%CE%BB%CE%B9%CE%B4%CE%B1%CF%82/' + window.location.search + window.location.hash;
-  </script>
 </html>"
 `;
 
@@ -21,9 +21,9 @@ exports[`createRedirectPageContent > works 1`] = `
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="0; url=https://docusaurus.io/">
     <link rel="canonical" href="https://docusaurus.io/" />
+    <script>
+      window.location.replace('https://docusaurus.io/' + window.location.search + window.location.hash);
+    </script>
   </head>
-  <script>
-    window.location.href = 'https://docusaurus.io/' + window.location.search + window.location.hash;
-  </script>
 </html>"
 `;
