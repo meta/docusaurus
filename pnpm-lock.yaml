@@ -2510,9 +2510,6 @@ importers:
       '@docusaurus/utils-validation':
         specifier: workspace:*
         version: link:../docusaurus-utils-validation
-      d3-selection:
-        specifier: 'catalog:'
-        version: 3.0.0
       d3-transition:
         specifier: 'catalog:'
         version: 3.0.1(d3-selection@3.0.0)
