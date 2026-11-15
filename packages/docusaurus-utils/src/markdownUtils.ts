@@ -217,8 +217,10 @@ export function createExcerpt(fileString: string): string | undefined {
       .replace(/^\s{0,3}>\s?/g, '')
       // Remove admonition definition.
       .replace(/:::.*/, '')
-      // Remove Emoji names within colons include preceding whitespace.
-      .replace(/\s?:(?:::|[^:\n])+:/g, '')
+      // Remove Emoji shortcodes (e.g. :smile:) include preceding whitespace.
+      // Same shortcode syntax as remark-emoji, so that regular text between
+      // two colons (e.g. "10:30 to 11:45") is kept.
+      .replace(/\s?:(?:\+1|[\w-]+):/g, '')
       // Remove custom Markdown heading id.
       .replace(/\{#*[\w-]+\}/, '')
       // Collapse whitespace left behind by the removals above.

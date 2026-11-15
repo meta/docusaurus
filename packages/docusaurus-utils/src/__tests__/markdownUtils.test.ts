@@ -194,6 +194,24 @@ describe('createExcerpt', () => {
     );
   });
 
+  it('creates excerpt without emoji shortcodes', () => {
+    expect(
+      createExcerpt('Thumbs up :+1:, down :-1: and done :white_check_mark:.'),
+    ).toBe('Thumbs up, down and done.');
+  });
+
+  it('creates excerpt keeping text between colons that are not emoji shortcodes', () => {
+    expect(createExcerpt('Meeting runs 10:30 to 11:45 daily.')).toBe(
+      'Meeting runs 10:30 to 11:45 daily.',
+    );
+    expect(createExcerpt('Note: install first. Tip: run the build.')).toBe(
+      'Note: install first. Tip: run the build.',
+    );
+    expect(
+      createExcerpt('Download it from https://nodejs.org. Then run: npm ci'),
+    ).toBe('Download it from https://nodejs.org. Then run: npm ci');
+  });
+
   it('creates excerpt for heading specified with anchor-id syntax', () => {
     expect(
       createExcerpt(dedent`
