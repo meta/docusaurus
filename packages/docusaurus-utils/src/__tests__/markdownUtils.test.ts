@@ -480,6 +480,17 @@ Lorem Ipsum
     });
   });
 
+  it('handles heading consisting only of hashes', () => {
+    expect(parseMarkdownContentTitle('# #\n\nLorem Ipsum')).toEqual({
+      content: '# #\n\nLorem Ipsum',
+      contentTitle: '',
+    });
+    expect(parseMarkdownContentTitle('# ###\n\nLorem Ipsum')).toEqual({
+      content: '# ###\n\nLorem Ipsum',
+      contentTitle: '',
+    });
+  });
+
   it('parses markdown h1 title at the top followed by h2 title', () => {
     const markdown = dedent`
 
