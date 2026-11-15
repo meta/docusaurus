@@ -118,6 +118,29 @@ function addHeadingId(
   return `${headingHashes}${headingContent} ${headingIdSuffix}`;
 }
 
+function checkCodeFence(
+  line: string,
+  currentFence: {char: string; length: number} | null,
+): {char: string; length: number} | null {
+  if (currentFence === null) {
+    const match = line.match(/^ {0,3}(`{3,}|~{3,})/);
+    if (match && match[1]) {
+      return {char: match[1][0]!, length: match[1].length};
+    }
+    return null;
+  }
+  const closeMatch = line.match(/^ {0,3}(`{3,}|~{3,})\s*$/);
+  if (
+    closeMatch &&
+    closeMatch[1] &&
+    closeMatch[1][0] === currentFence.char &&
+    closeMatch[1].length >= currentFence.length
+  ) {
+    return null;
+  }
+  return currentFence;
+}
+
 export type WriteHeadingIDOptions = SluggerOptions & {
   /** The target syntax to use for heading IDs. */
   syntax?: HeadingIdSyntax;
@@ -166,7 +189,15 @@ export function writeMarkdownHeadingId(
   // If we can't overwrite existing slugs, make sure other headings don't
   // generate colliding slugs by first marking these slugs as occupied
   if (!overwrite) {
+    let currentFence: {char: string; length: number} | null = null;
     lines.forEach((line) => {
+      const wasInCode = currentFence !== null;
+      const nextFence = checkCodeFence(line, currentFence);
+      if (wasInCode || nextFence !== null) {
+        currentFence = nextFence;
+        return;
+      }
+      currentFence = nextFence;
       const parsedHeading = parseHeadingIdAnySyntax(line);
       if (parsedHeading.id) {
         slugger.slug(parsedHeading.id);
@@ -174,15 +205,18 @@ export function writeMarkdownHeadingId(
     });
   }
 
-  let inCode = false;
+  let currentFence: {char: string; length: number} | null = null;
   return lines
     .map((line) => {
-      if (line.startsWith('```')) {
-        inCode = !inCode;
+      const wasInCode = currentFence !== null;
+      const nextFence = checkCodeFence(line, currentFence);
+      if (wasInCode || nextFence !== null) {
+        currentFence = nextFence;
         return line;
       }
+      currentFence = nextFence;
       // Ignore h1 headings, as we don't create anchor links for those
-      if (inCode || !line.startsWith('##')) {
+      if (!line.startsWith('##')) {
         return line;
       }
       const parsedHeading = parseHeadingIdAnySyntax(line);
