@@ -17,7 +17,8 @@
 .buttonGroup button {
   display: flex;
   align-items: center;
-  background: var(--prism-background-color);
+  /* Use opaque background so buttons remain visible and don't blend with code text */
+  background: var(--ifm-background-surface-color);
   color: var(--prism-color);
   border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: var(--ifm-global-radius);
@@ -33,5 +34,5 @@
 }
 
 :global(.theme-code-block:hover) .buttonGroup button {
-  opacity: 0.4;
+  opacity: 1;
 }
