@@ -21,7 +21,8 @@ export default function DocRootLayoutMain({
     <main
       className={clsx(
         styles.docMainContainer,
-        (hiddenSidebarContainer || !sidebar) && styles.docMainContainerEnhanced,
+        !sidebar && styles.docMainContainerNoSidebar,
+        sidebar && hiddenSidebarContainer && styles.docMainContainerEnhanced,
       )}>
       <div
         className={clsx(
