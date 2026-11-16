@@ -8,7 +8,9 @@
 
 import {describe, expect, it, vi} from 'vitest';
 import type {ReactNode} from 'react';
-import {render as renderRTL} from '@testing-library/react';
+import {renderToString} from 'react-dom/server';
+import {hydrateRoot} from 'react-dom/client';
+import {render as renderRTL, act} from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 import {fromPartial} from '@total-typescript/shoehorn';
 import {MemoryRouter, StaticRouter} from 'react-router-dom';
@@ -417,6 +419,80 @@ describe('<Link>', () => {
         baseElement.remove();
         targetElement.remove();
         window.location.hash = '';
+      }
+    });
+
+    it("handles links to malformed percent sequences like id='100%' without throwing", () => {
+      const baseElement = document.createElement('base');
+      baseElement.setAttribute('href', 'https://example.com/original-page');
+      document.head.appendChild(baseElement);
+
+      const targetElement = document.createElement('div');
+      targetElement.id = '100%';
+      const scrollIntoViewMock = vi.fn();
+      targetElement.scrollIntoView = scrollIntoViewMock;
+      document.body.appendChild(targetElement);
+
+      try {
+        const {container} = render(<Link to="#100%" />);
+        const link = container.firstElementChild as HTMLAnchorElement;
+
+        const clickEvent = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          button: 0,
+        });
+        link.dispatchEvent(clickEvent);
+
+        expect(clickEvent.defaultPrevented).toBe(true);
+        expect(scrollIntoViewMock).toHaveBeenCalledTimes(1);
+        expect(window.location.hash).toBe('#100%');
+      } finally {
+        baseElement.remove();
+        targetElement.remove();
+        window.location.hash = '';
+      }
+    });
+
+    it('preserves server-rendered fragment href on initial hydration then updates post-hydration', async () => {
+      const baseElement = document.createElement('base');
+      baseElement.setAttribute('href', 'https://example.com/original-page');
+      document.head.appendChild(baseElement);
+
+      const container = document.createElement('div');
+      document.body.appendChild(container);
+
+      const docusaurusContext = createDocusaurusContext({router: 'browser'});
+      const appJsx = (
+        <StaticRouter location={defaultOptions.currentLocation} context={{}}>
+          <Context value={docusaurusContext}>
+            <Link to="#anchor" />
+          </Context>
+        </StaticRouter>
+      );
+
+      try {
+        const serverHtml = renderToString(appJsx);
+        expect(serverHtml).toContain('href="#anchor"');
+        container.innerHTML = serverHtml;
+
+        const initialLink = container.firstElementChild as HTMLAnchorElement;
+        expect(initialLink.getAttribute('href')).toBe('#anchor');
+
+        let root: ReturnType<typeof hydrateRoot>;
+        await act(async () => {
+          root = hydrateRoot(container, appJsx);
+        });
+
+        const hydratedLink = container.firstElementChild as HTMLAnchorElement;
+        expect(hydratedLink.getAttribute('href')).toBe(
+          `${window.location.href.split('#')[0]}#anchor`,
+        );
+
+        root!.unmount();
+      } finally {
+        baseElement.remove();
+        container.remove();
       }
     });
   });

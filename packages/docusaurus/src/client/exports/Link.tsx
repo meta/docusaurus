@@ -20,6 +20,7 @@ import isInternalUrl from './isInternalUrl';
 import ExecutionEnvironment from './ExecutionEnvironment';
 import useBrokenLinks from './useBrokenLinks';
 import {useBaseUrlUtils} from './useBaseUrl';
+import useIsBrowser from './useIsBrowser';
 import type {Props} from '@docusaurus/Link';
 
 // TODO all this wouldn't be necessary if we used ReactRouter basename feature
@@ -193,8 +194,11 @@ function Link({
   // Google Translate proxy), relative hash links like '#anchor' resolve to
   // the base URL instead of the current page. We rewrite href on the client
   // and intercept clicks to preserve current page scrolling.
+  // We preserve the server-rendered fragment href on initial hydration to avoid
+  // hydration mismatch warnings, and apply the rewritten href post-hydration.
   // See https://github.com/facebook/docusaurus/issues/11386
-  const baseTagPresent = hasBaseTag();
+  const isBrowser = useIsBrowser();
+  const baseTagPresent = isBrowser && hasBaseTag();
   const renderedHref =
     isAnchorLink && baseTagPresent
       ? `${window.location.href.split('#')[0]}${targetLink}`
@@ -215,7 +219,12 @@ function Link({
         if (hasBaseTag()) {
           event.preventDefault();
           const hash = targetLink!;
-          const id = decodeURIComponent(hash.substring(1));
+          let id = hash.substring(1);
+          try {
+            id = decodeURIComponent(id);
+          } catch {
+            // Malformed percent sequences (e.g. #100%) fallback to undecoded fragment
+          }
           if (id) {
             const element = document.getElementById(id);
             element?.scrollIntoView();
