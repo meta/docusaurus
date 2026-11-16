@@ -380,4 +380,44 @@ describe('<Link>', () => {
       `);
     });
   });
+
+  describe('when document has a <base> tag (e.g. Google Translate proxy)', () => {
+    const render = createLinkRenderer({router: 'browser'});
+
+    it("renders full URL for '#anchor' and scrolls on click without navigating to base URL", () => {
+      const baseElement = document.createElement('base');
+      baseElement.setAttribute('href', 'https://example.com/original-page');
+      document.head.appendChild(baseElement);
+
+      const targetElement = document.createElement('div');
+      targetElement.id = 'anchor';
+      const scrollIntoViewMock = vi.fn();
+      targetElement.scrollIntoView = scrollIntoViewMock;
+      document.body.appendChild(targetElement);
+
+      try {
+        const {container} = render(<Link to="#anchor" />);
+        const link = container.firstElementChild as HTMLAnchorElement;
+
+        expect(link.getAttribute('href')).toBe(
+          `${window.location.href.split('#')[0]}#anchor`,
+        );
+
+        const clickEvent = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          button: 0,
+        });
+        link.dispatchEvent(clickEvent);
+
+        expect(clickEvent.defaultPrevented).toBe(true);
+        expect(scrollIntoViewMock).toHaveBeenCalledTimes(1);
+        expect(window.location.hash).toBe('#anchor');
+      } finally {
+        baseElement.remove();
+        targetElement.remove();
+        window.location.hash = '';
+      }
+    });
+  });
 });

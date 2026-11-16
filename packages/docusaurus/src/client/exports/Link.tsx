@@ -29,6 +29,13 @@ import type {Props} from '@docusaurus/Link';
 // like "introduction" to "/baseUrl/introduction" => bad behavior to fix
 const shouldAddBaseUrlAutomatically = (to: string) => to.startsWith('/');
 
+function hasBaseTag(): boolean {
+  return (
+    ExecutionEnvironment.canUseDOM &&
+    Boolean(document.querySelector('base[href]'))
+  );
+}
+
 function Link({
   isNavLink,
   to,
@@ -182,14 +189,55 @@ function Link({
       ? {'data-test-link-type': isRegularHtmlLink ? 'regular' : 'react-router'}
       : {};
 
+  // When a <base> tag is present in the document (such as one injected by
+  // Google Translate proxy), relative hash links like '#anchor' resolve to
+  // the base URL instead of the current page. We rewrite href on the client
+  // and intercept clicks to preserve current page scrolling.
+  // See https://github.com/facebook/docusaurus/issues/11386
+  const baseTagPresent = hasBaseTag();
+  const renderedHref =
+    isAnchorLink && baseTagPresent
+      ? `${window.location.href.split('#')[0]}${targetLink}`
+      : targetLink;
+
+  const handleAnchorClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      props.onClick?.(event);
+      if (
+        !event.defaultPrevented &&
+        event.button === 0 &&
+        hasInternalTarget &&
+        !event.metaKey &&
+        !event.altKey &&
+        !event.ctrlKey &&
+        !event.shiftKey
+      ) {
+        if (hasBaseTag()) {
+          event.preventDefault();
+          const hash = targetLink!;
+          const id = decodeURIComponent(hash.substring(1));
+          if (id) {
+            const element = document.getElementById(id);
+            element?.scrollIntoView();
+          } else {
+            window.scrollTo(0, 0);
+          }
+          window.location.hash = hash;
+        }
+      }
+    },
+    [props, hasInternalTarget, targetLink],
+  );
+
   return isRegularHtmlLink ? (
     // eslint-disable-next-line jsx-a11y/anchor-has-content, @docusaurus/no-html-links
     <a
       ref={innerRef}
-      href={targetLink}
+      href={renderedHref}
       {...(targetLinkUnprefixed &&
         !isInternal && {target: '_blank', rel: 'noopener noreferrer'})}
       {...props}
+      {...(isAnchorLink && {onClick: handleAnchorClick})}
       {...testOnlyProps}
     />
   ) : (
