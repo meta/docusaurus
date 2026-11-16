@@ -259,4 +259,62 @@ describe('toSidebarsProp', () => {
       }
     `);
   });
+
+  it('records the doc id when a category links to a doc', () => {
+    const params: Params = {
+      docs: [
+        fromPartial({
+          id: 'intro',
+          permalink: '/docs/intro',
+          title: 'Intro',
+          description: 'How the docs are organized.',
+          frontMatter: {},
+        }),
+      ],
+      sidebars: {
+        mySidebar: [
+          {
+            type: 'category',
+            label: 'Docs',
+            collapsible: true,
+            collapsed: true,
+            link: {type: 'doc', id: 'intro'},
+            items: [
+              {
+                type: 'doc',
+                id: 'intro',
+              },
+            ],
+          },
+          {
+            type: 'category',
+            label: 'Generated',
+            collapsible: true,
+            collapsed: true,
+            link: {
+              type: 'generated-index',
+              slug: '/generated',
+              permalink: '/docs/category/generated',
+            },
+            items: [],
+          },
+        ],
+      },
+    };
+
+    const [linkedCategory, generatedCategory] =
+      toSidebarsProp(params).mySidebar;
+
+    expect(linkedCategory).toMatchObject({
+      type: 'category',
+      label: 'Docs',
+      href: '/docs/intro',
+      docId: 'intro',
+    });
+    expect(generatedCategory).toMatchObject({
+      type: 'category',
+      href: '/docs/category/generated',
+    });
+    expect(generatedCategory).not.toHaveProperty('docId');
+  });
 });
