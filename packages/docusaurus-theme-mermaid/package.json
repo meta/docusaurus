@@ -40,15 +40,15 @@
     "@docusaurus/utils-validation": "workspace:*",
     "d3-transition": "catalog:",
     "mermaid": "catalog:",
-    "tslib": "catalog:"
+    "tslib": "catalog:",
+    "d3-selection": "catalog:"
   },
   "devDependencies": {
     "@types/d3-selection": "catalog:dev"
   },
   "peerDependencies": {
     "react": "catalog:",
-    "react-dom": "catalog:",
-    "d3-selection": "catalog:"
+    "react-dom": "catalog:"
   },
   "engines": {
     "node": ">=26.13"
