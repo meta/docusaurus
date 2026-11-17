@@ -28,9 +28,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Set up pnpm, Node.js and dependencies
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
           #  ⚠️ Do not use any cache on purpose
           # It increases the chance of a compromised release being publish
@@ -47,4 +49,4 @@ jobs:
 
       - name: Release
         # --pnpm: use pnpm pack, which replaces the catalog: protocol with versions
-        run: pnpm pkg-pr-new publish './packages/*' --template './template/*' --compact --comment=off --pnpm
+        run: pnpm pkg-pr-new publish './packages/*' --template './template/*' --compact --comment=off --pnpm # zizmor: ignore[use-trusted-publishing] pkg.pr.new authenticates the workflow run

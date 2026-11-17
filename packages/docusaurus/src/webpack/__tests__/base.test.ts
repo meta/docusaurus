@@ -161,7 +161,7 @@ describe('base webpack config', () => {
       vi.unstubAllEnvs();
     });
 
-    async function getCacheVersion({
+    async function getCache({
       isServer = false,
       siteMetadata = props.siteMetadata,
     }: {
@@ -174,7 +174,15 @@ describe('base webpack config', () => {
         minify: true,
         configureWebpackUtils: await createTestConfigureWebpackUtils(),
       });
-      return (config.cache as {version: string}).version;
+      // Docusaurus bundler configs are typed with Webpack types
+      return config.cache as unknown as {
+        version: string;
+        buildDependencies: string[];
+      };
+    }
+
+    async function getCacheVersion(params?: Parameters<typeof getCache>[0]) {
+      return (await getCache(params)).version;
     }
 
     // Browserslist reads this env variable before any config file
@@ -230,6 +238,34 @@ describe('base webpack config', () => {
       stubServerNodeTarget('24.11.2');
       const newNodeVersion = await getCacheVersion({isServer: true});
       expect(oldNodeVersion).not.toBe(newNodeVersion);
+    });
+
+    // A warm client cache with a cold server cache hangs the build
+    // See https://github.com/meta/docusaurus/pull/13035
+    describe('evicts the client and server caches together', () => {
+      it('evicts the client cache when the server Node.js target changes', async () => {
+        stubServerNodeTarget('24.11.1');
+        const oldNodeVersion = await getCacheVersion({isServer: false});
+        stubServerNodeTarget('24.11.2');
+        const newNodeVersion = await getCacheVersion({isServer: false});
+        expect(oldNodeVersion).not.toBe(newNodeVersion);
+      });
+
+      it('evicts the server cache when the client browsers change', async () => {
+        stubBrowserslistQuery('chrome 90');
+        const oldBrowsersVersion = await getCacheVersion({isServer: true});
+        stubBrowserslistQuery('baseline widely available');
+        const baselineVersion = await getCacheVersion({isServer: true});
+        expect(oldBrowsersVersion).not.toBe(baselineVersion);
+      });
+
+      it('uses the same build dependencies for the client and server caches', async () => {
+        const clientCache = await getCache({isServer: false});
+        const serverCache = await getCache({isServer: true});
+        expect(clientCache.buildDependencies).toEqual(
+          serverCache.buildDependencies,
+        );
+      });
     });
 
     it('is evicted when a plugin package version changes', async () => {

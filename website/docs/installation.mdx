@@ -24,6 +24,13 @@ Use **[docusaurus.new](https://docusaurus.new)** to test Docusaurus immediately 
 - [Node.js](https://nodejs.org/en/download/) version 26.13 or above (which can be checked by running `node -v`). You can use [nvm](https://github.com/nvm-sh/nvm) to manage multiple Node.js versions on a single machine.
   - When installing Node.js, it is recommended to check all checkboxes related to dependencies.
 
+Docusaurus can also run with [Bun](https://bun.com/) version 1.4.3 or above, instead of Node.js. Pass the `--bun` flag, otherwise Bun runs the Docusaurus CLI with Node.js:
+
+```bash
+bun --bun run start
+bun --bun run build
+```
+
 ## Scaffold project website {/* #scaffold-project-website */}
 
 The easiest way to install Docusaurus is to use the [`create-docusaurus`](./api/misc/create-docusaurus.mdx) command line tool that helps you scaffold a skeleton Docusaurus website. You can run this command anywhere in a new empty repository or within an existing repository, it will create a new directory containing the scaffolded files.

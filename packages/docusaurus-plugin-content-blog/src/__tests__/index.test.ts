@@ -455,6 +455,19 @@ describe('blog plugin', () => {
     });
   });
 
+  it('loads the blog posts of a folder named like a Markdown file', async () => {
+    const siteDir = path.join(
+      __dirname,
+      '__fixtures__',
+      'website-with-folder-named-like-post',
+    );
+    const blogPosts = await getBlogPosts(siteDir);
+
+    expect(blogPosts.map((post) => post.metadata.source).sort()).toEqual([
+      '@site/blog/folder.md/post.md',
+    ]);
+  });
+
   it('handles edit URL with editLocalizedBlogs: true', async () => {
     const siteDir = path.join(__dirname, '__fixtures__', 'website');
     const blogPosts = await getBlogPosts(siteDir, {editLocalizedFiles: true});

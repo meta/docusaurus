@@ -14,14 +14,13 @@ import {eject, wrap} from '../actions';
 import {ThemePath, Components, createTempSiteDir} from './testUtils';
 import type {SwizzleAction} from '@docusaurus/types';
 
-// Use relative paths and sort files for tests
-function stableCreatedFiles(
+function relativeCreatedFiles(
   siteThemePath: string,
   createdFiles: string[],
 ): string[] {
-  return createdFiles
-    .map((file) => posixPath(path.relative(siteThemePath, file)))
-    .sort();
+  return createdFiles.map((file) =>
+    posixPath(path.relative(siteThemePath, file)),
+  );
 }
 
 describe('eject', () => {
@@ -41,7 +40,7 @@ describe('eject', () => {
     return {
       siteDir,
       siteThemePath,
-      createdFiles: stableCreatedFiles(siteThemePath, result.createdFiles),
+      createdFiles: relativeCreatedFiles(siteThemePath, result.createdFiles),
       tree: tree(siteThemePath),
     };
   }
@@ -153,7 +152,7 @@ describe('wrap', () => {
     return {
       siteDir,
       siteThemePath,
-      createdFiles: stableCreatedFiles(siteThemePath, result.createdFiles),
+      createdFiles: relativeCreatedFiles(siteThemePath, result.createdFiles),
       firstFileContent: () => fs.readFile(result.createdFiles[0]!, 'utf8'),
       tree: tree(siteThemePath),
     };

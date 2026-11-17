@@ -197,6 +197,58 @@ Some React components, such as the header and the sidebar, implement different J
 
 :::
 
+## CSS Cascade Layers {/* #css-cascade-layers */}
+
+`@docusaurus/preset-classic` puts the CSS that Docusaurus provides in [CSS Cascade Layers](https://css-tricks.com/css-cascade-layers/), with the [`@docusaurus/plugin-css-cascade-layers`](./api/plugins/plugin-css-cascade-layers.mdx) plugin. Each package gets its own sub-layer of the `docusaurus` layer, such as `docusaurus.infima` for [Infima](#styling-your-site-with-infima) or `docusaurus.theme-classic` for the classic theme:
+
+```css
+@layer docusaurus.infima {
+  h1 {
+    /* Infima CSS rules */
+  }
+}
+```
+
+Un-layered CSS always takes precedence over layered CSS, whatever its specificity and insertion order. Your own CSS (`custom.css`, CSS modules, swizzled components) is un-layered, so it overrides the Docusaurus CSS without specificity tricks.
+
+:::warning `!important` declarations
+
+`!important` declarations work the other way around: a layered `!important` declaration wins over an un-layered one. See how [the cascade sorts important declarations](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Cascade_layers#review_of_the_cascade_concept).
+
+:::
+
+### Reverting layers {/* #reverting-layers */}
+
+Some built-in CSS rules are global and target plain HTML elements (`h1`, `table`, `code`...). They can conflict with content that must look the same as outside Docusaurus, such as playgrounds, demos and embedded widgets.
+
+The [`revert-layer`](https://developer.mozilla.org/en-US/docs/Web/CSS/revert-layer) keyword lets you isolate an HTML subtree from the CSS of a layer. For example, this class reverts the Infima CSS:
+
+```css title="/src/css/custom.css"
+.isolated:not(#\#) {
+  &,
+  * {
+    @layer docusaurus.infima {
+      all: revert-layer;
+    }
+  }
+}
+```
+
+The Infima CSS doesn't apply anymore to elements with the `isolated` class and their descendants:
+
+<IframeWindow url="/tests/pages/style-isolation?docusaurus-data-navbar=false" />
+
+<details>
+
+<summary>Things to keep in mind when reverting layers</summary>
+
+- `:not(#\#)` is only a trick to increase the specificity of the rule, so that `all: revert-layer` wins over the other rules of the layer. It adds the specificity of an id without filtering anything: no element has a `#` id, so it matches all elements. Repeat it (`:not(#\#):not(#\#)`) to win over rules that use ids.
+- Reverting a layer doesn't revert its sub-layers: revert each layer you want to isolate from, one by one.
+- The isolated subtree still inherits the properties set on its ancestors, such as the `color` and `font` that Infima sets on `html`. Set them on the isolated element if needed, for example `color: initial`.
+- Your own global CSS can conflict with that content too. To isolate from it, put it in a layer, such as `@layer website {...}`, and revert that layer the same way.
+
+</details>
+
 ## CSS modules {/* #css-modules */}
 
 To style your components using [CSS Modules](https://github.com/css-modules/css-modules), name your stylesheet files with the `.module.css` suffix (e.g. `welcome.module.css`). Webpack will load such CSS files as CSS modules and you have to reference the class names as properties of the imported CSS module (as opposed to using plain strings). This is similar to the convention used in [Create React App](https://facebook.github.io/create-react-app/docs/adding-a-css-modules-stylesheet).

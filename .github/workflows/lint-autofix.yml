@@ -10,29 +10,38 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
+# Explicitly no token permissions by default, instead of the repository default ones
+# See https://docs.zizmor.sh/audits/#excessive-permissions
+permissions: {}
+
 jobs:
+  # Runs npm dependencies with a read-only token, and outputs the fixes as a patch
   lint-autofix:
     name: Lint AutoFix
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write
+      contents: read
+
+    outputs:
+      has-changes: ${{ steps.diff.outputs.has-changes }}
 
     # ⚠️ No GitHub Actions cache on purpose, enforced by GitHub for every step
-    # This job can push commits to the repository
+    # The fixes of this job are pushed to the repository
     # See https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax#cache-mode
     cache-mode: none
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.head_ref }}
 
       - name: Set up pnpm, Node.js and dependencies
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
-          # Security: prevents cache poisoning, as this job can push commits to the repository
+          # Security: prevents cache poisoning, as the fixes of this job are pushed to the repository
           cache: false
 
       - name: AutoFix Duplicated deps
@@ -54,9 +63,58 @@ jobs:
         run: pnpm lint:syncpack:fix
 
       - name: Print Diff
-        run: git diff
+        id: diff
+        run: |
+          git diff
+          # Stage the new files too, git-auto-commit-action commits them
+          git add --all
+          git diff --cached --binary > "$RUNNER_TEMP/lint-autofix.patch"
+          if [ -s "$RUNNER_TEMP/lint-autofix.patch" ]; then
+            echo "has-changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload AutoFix patch
+        if: steps.diff.outputs.has-changes == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lint-autofix-patch
+          path: ${{ runner.temp }}/lint-autofix.patch
+          if-no-files-found: error
+
+  # Pushes the patch without running project code
+  push:
+    name: Push Lint AutoFix
+    needs: lint-autofix
+    if: |
+      needs.lint-autofix.outputs.has-changes == 'true' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # for stefanzweifel/git-auto-commit-action to push the fixes
+
+    # ⚠️ No GitHub Actions cache on purpose, enforced by GitHub for every step
+    # This job can push commits to the repository
+    # See https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax#cache-mode
+    cache-mode: none
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Needed by git-auto-commit-action to push
+          persist-credentials: true
+          ref: ${{ github.head_ref }}
+
+      - name: Download AutoFix patch
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: lint-autofix-patch
+          path: ${{ runner.temp }}
+
+      # Skips the workflow changes, which the GITHUB_TOKEN can't push
+      - name: Apply AutoFix patch
+        run: git apply --exclude='.github/**' "$RUNNER_TEMP/lint-autofix.patch"
 
       - uses: stefanzweifel/git-auto-commit-action@d0b01107b5db882071f96de5dd4b54961ea93f4c # v7.2.1
-        if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           commit_message: 'refactor: apply lint autofix'

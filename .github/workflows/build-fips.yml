@@ -1,0 +1,147 @@
+name: Build FIPS
+
+on:
+  # Saves the FIPS provider cache on main, which PRs can restore
+  push:
+    branches: [main]
+    paths:
+      - packages/**
+      - .github/workflows/build-fips.yml
+      - .github/actions/**
+  pull_request:
+    branches:
+      - main
+      - docusaurus-v**
+    paths:
+      - packages/**
+      - .github/workflows/build-fips.yml
+      - .github/actions/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build FIPS
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up pnpm, Node.js and dependencies
+        uses: $/.github/actions/setup
+        with:
+          cache: true
+      - name: Generate test-website project
+        # Generated in the workspace to use the current packages instead of the npm ones
+        run: node ./packages/create-docusaurus/bin/index.js test-website-in-workspace classic --javascript --skip-install
+      - name: Add the PWA plugin to test-website project
+        working-directory: test-website-in-workspace
+        run: |
+          version=$(node -p "require('./package.json').dependencies['@docusaurus/core']")
+          npm pkg set "dependencies.@docusaurus/plugin-pwa=$version"
+
+          mv docusaurus.config.js docusaurus.config.base.js
+          cat > docusaurus.config.js <<'EOF'
+          import config from './docusaurus.config.base.js';
+          export default {...config, plugins: ['@docusaurus/plugin-pwa']};
+          EOF
+      - name: Install test-website project
+        run: pnpm install --no-frozen-lockfile --ignore-scripts
+        working-directory: test-website-in-workspace
+
+      - name: Get the OpenSSL version of Node.js
+        id: openssl
+        run: echo "version=$(node -p process.versions.openssl)" >> "$GITHUB_OUTPUT"
+      - name: Cache the OpenSSL FIPS provider
+        id: fips-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/openssl-fips
+          key: openssl-fips-${{ runner.os }}-${{ runner.arch }}-${{ steps.openssl.outputs.version }}
+
+      # Official Node.js binaries don't ship the OpenSSL FIPS provider
+      # See https://nodejs.org/api/crypto.html#fips-mode
+      - name: Install the OpenSSL FIPS provider
+        if: steps.fips-cache.outputs.cache-hit != 'true'
+        working-directory: ${{ runner.temp }}
+        run: |
+          version=$(node -p process.versions.openssl)
+          url="https://github.com/openssl/openssl/releases/download/openssl-$version/openssl-$version.tar.gz"
+          curl -fsSL -o "openssl-$version.tar.gz" "$url"
+          curl -fsSL -o "openssl-$version.tar.gz.sha256" "$url.sha256"
+          sha256sum --check "openssl-$version.tar.gz.sha256"
+
+          tar xzf "openssl-$version.tar.gz"
+          cd "openssl-$version"
+          fips_dir="$RUNNER_TEMP/openssl-fips"
+          ./Configure enable-fips no-tests no-docs --prefix="$fips_dir" --openssldir="$fips_dir" --libdir=lib
+          make -j"$(nproc)" > /dev/null
+          make install_fips
+
+      - name: Configure Node.js to load the OpenSSL FIPS provider
+        run: |
+          fips_dir="$RUNNER_TEMP/openssl-fips"
+          cat > "$fips_dir/nodejs.cnf" <<EOF
+          nodejs_conf = nodejs_init
+          .include $fips_dir/fipsmodule.cnf
+          [nodejs_init]
+          providers = provider_sect
+          [provider_sect]
+          default = default_sect
+          fips = fips_sect
+          [default_sect]
+          activate = 1
+          EOF
+
+          {
+            echo "OPENSSL_CONF=$fips_dir/nodejs.cnf"
+            echo "OPENSSL_MODULES=$fips_dir/lib/ossl-modules"
+          } >> "$GITHUB_ENV"
+
+      # GitHub forbids setting NODE_OPTIONS through $GITHUB_ENV
+      - name: Check that FIPS mode rejects MD5
+        env:
+          NODE_OPTIONS: --enable-fips
+        run: |
+          node -e "
+            const crypto = require('node:crypto');
+            console.log('FIPS mode:', crypto.getFips());
+            console.log('SHA-256:', crypto.hash('sha256', 'docusaurus'));
+            try {
+              crypto.hash('md5', 'docusaurus');
+            } catch (error) {
+              console.log('MD5 rejected:', error.code);
+              process.exit(0);
+            }
+            throw new Error('FIPS mode is not enforced: MD5 should be rejected');
+          "
+
+      # Run the Docusaurus CLI with Node.js directly: pnpm doesn't need to support FIPS mode
+      - name: Start test-website project
+        run: node node_modules/@docusaurus/core/bin/docusaurus.mjs start --no-open
+        working-directory: test-website-in-workspace
+        env:
+          NODE_OPTIONS: --enable-fips
+          E2E_TEST: true
+      - name: Build test-website project
+        run: node node_modules/@docusaurus/core/bin/docusaurus.mjs build
+        working-directory: test-website-in-workspace
+        env:
+          NODE_OPTIONS: --enable-fips
+      # Workbox doesn't fail without MD5: it only warns and precaches nothing
+      - name: Check the PWA precache manifest
+        working-directory: test-website-in-workspace
+        run: |
+          count=$(grep -oE '"revision":"[0-9a-f]{64}"' build/sw.js | wc -l)
+          echo "Precached files hashed with SHA-256: $count"
+          if [ "$count" -eq 0 ]; then
+            echo "The service worker precaches no file"
+            exit 1
+          fi

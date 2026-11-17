@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
 
 # ⚠️ No GitHub Actions cache on purpose, enforced by GitHub for every step
 # This workflow can write to the repository (GitHub Pages deployment)
@@ -32,8 +32,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up pnpm, Node.js and dependencies
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
           # Security: prevents cache poisoning, as this workflow can write to the repository (GitHub Pages deployment)
           cache: false
@@ -58,9 +60,24 @@ jobs:
       #  with:
       #    path: website/build
 
+  # Separate job: npm dependencies never run with the write token
+  deploy:
+    name: Deploy Hash Router
+    if: ${{ github.event_name != 'pull_request' && github.ref_name == 'main' }}
+    needs: build
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # for peaceiris/actions-gh-pages to push to the gh-pages branch
+    steps:
+      - name: Download Website artifact
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: website-hash-router-archive
+          path: website/build
+
       # Deploy to https://meta.github.io/docusaurus/
       - name: Deploy to GitHub Pages
-        if: ${{ github.event_name != 'pull_request' && github.ref_name == 'main' }}
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

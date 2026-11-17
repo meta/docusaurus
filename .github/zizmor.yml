@@ -1,0 +1,7 @@
+# Prefer inline "# zizmor: ignore[rule]" comments, unsupported in multiline run blocks
+# See https://docs.zizmor.sh/configuration/
+rules:
+  adhoc-packages:
+    ignore:
+      # Tests various TypeScript versions, in jobs without secrets
+      - tests-e2e.yml

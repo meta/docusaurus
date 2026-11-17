@@ -10,6 +10,10 @@ updates:
     open-pull-requests-limit: 99
     labels:
       - 'pr: dependencies'
+    # Leaves time to detect compromised releases, security updates ignore it
+    # See https://docs.zizmor.sh/audits/#dependabot-cooldown
+    cooldown:
+      default-days: 7
     groups:
       codeql-action:
         patterns:

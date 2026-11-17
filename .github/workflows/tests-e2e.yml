@@ -44,10 +44,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       # No pnpm cache on Windows on purpose: restoring it takes 20-80s,
       # more than it saves on "pnpm install"
       - name: Set up pnpm, Node.js and dependencies
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
       - name: Generate test-website project against main branch
         # Not using test-release.sh => no verdaccio docker image on Windows
         # We have to generate the test website in workspace so that it uses
@@ -92,8 +94,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up pnpm, Node.js ${{ matrix.node }} and dependencies
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
           node-version: ${{ matrix.node }}
           cache: true
@@ -131,8 +135,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up pnpm, Node.js and dependencies
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
           cache: true
       - name: Generate test-website project with ${{ matrix.variant }} against main branch
@@ -207,8 +213,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up pnpm, Node.js and dependencies
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
           cache: true
       - name: Generate test-website project against main branch
@@ -244,8 +252,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up pnpm, Node.js and dependencies
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
           cache: true
       - name: Generate test-website project against main branch
@@ -271,5 +281,54 @@ jobs:
           # Our website should build even with limited memory
           # See https://github.com/meta/docusaurus/pull/10590
           NODE_OPTIONS: '--max-old-space-size=200'
+          DOCUSAURUS_PERF_LOGGER: 'true'
+        working-directory: ../test-website
+
+  bun:
+    name: E2E — Bun ${{ matrix.bun }}
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Older versions hang or leak memory when building
+        # See https://github.com/meta/docusaurus/pull/13044
+        bun: ['1.4.3', 'latest']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up pnpm, Node.js and dependencies
+        uses: $/.github/actions/setup
+        with:
+          cache: true
+      - name: Set up Bun ${{ matrix.bun }}
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: ${{ matrix.bun }}
+      - name: Generate test-website project against main branch
+        run: pnpm test:build:website -st
+      - name: Install test-website project with Bun
+        run: bun install
+        working-directory: ../test-website
+        env:
+          BUN_CONFIG_REGISTRY: http://localhost:4873
+      - name: TypeCheck website
+        working-directory: ../test-website
+        run: bun run typecheck
+      # --bun runs the Docusaurus CLI with the Bun runtime instead of Node.js
+      - name: Start test-website project
+        run: bun --bun run start --no-open
+        working-directory: ../test-website
+        env:
+          E2E_TEST: true
+      - name: Build test-website project
+        # We build 2 locales to ensure a localized site doesn't leak memory
+        # See https://github.com/meta/docusaurus/issues/10944
+        # Bun ignores --max-old-space-size: we limit the whole process memory
+        # See https://github.com/meta/docusaurus/pull/13044
+        run: systemd-run --user --scope --quiet -p MemoryMax=550M -p MemorySwapMax=0 bun --bun run build --locale en --locale fr
+        env:
           DOCUSAURUS_PERF_LOGGER: 'true'
         working-directory: ../test-website

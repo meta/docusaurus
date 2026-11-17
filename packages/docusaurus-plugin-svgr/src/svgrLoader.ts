@@ -44,6 +44,9 @@ function createDefaultSVGOConfig({siteDir}: {siteDir: string}): SVGOConfig {
           overrides: {
             removeTitle: false,
             removeViewBox: false,
+            mergePaths: {
+              noSpaceAfterFlags: true,
+            },
           },
         },
       },
@@ -58,6 +61,15 @@ function createDefaultSVGOConfig({siteDir}: {siteDir: string}): SVGOConfig {
           prefixClassNames: false,
         },
       },
+      // These plugins are only safe for SVGs inlined in HTML, where browsers
+      // ignore XML namespaces. See https://github.com/meta/docusaurus/pull/13005
+      {
+        name: 'removeXlink',
+        params: {
+          includeLegacy: true,
+        },
+      },
+      'removeXMLNS',
     ],
   };
 }

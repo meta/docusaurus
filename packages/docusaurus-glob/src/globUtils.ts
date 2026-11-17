@@ -8,6 +8,8 @@
 // Tinyglobby/Picomatch are the 2 libs we use in Docusaurus consistently
 
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {fs} from '@docusaurus/fs';
 import Picomatch from 'picomatch';
 import * as Tinyglobby from 'tinyglobby';
 
@@ -17,16 +19,56 @@ import * as Tinyglobby from 'tinyglobby';
  */
 export type GlobOptions = Pick<
   Tinyglobby.GlobOptions,
-  'cwd' | 'ignore' | 'absolute'
+  'cwd' | 'ignore' | 'absolute' | 'expandDirectories'
 >;
 
-/** Finds the files matching the given glob patterns. */
+/**
+ * Finds the files matching the given glob patterns, in a stable order. A
+ * pattern that is the path of an existing directory matches all the files of
+ * that directory.
+ */
 export async function glob(
   patterns: string | string[],
   options?: GlobOptions,
 ): Promise<string[]> {
-  // Other lib options are still forwarded at runtime for retro-compatibility
-  return Tinyglobby.glob(patterns, {...options});
+  const cwd = options?.cwd ?? process.cwd();
+  const cwdPath = cwd instanceof URL ? fileURLToPath(cwd) : cwd;
+  const expandedPatterns = await Promise.all(
+    [patterns]
+      .flat()
+      .map((pattern) => expandDirectoryPattern(pattern, cwdPath)),
+  );
+  const files = await Tinyglobby.glob(expandedPatterns, {
+    // Tinyglobby appends `/**` to all patterns, even `**/*.md`, unlike globby
+    // See https://github.com/meta/docusaurus/pull/13037
+    expandDirectories: false,
+    // Other lib options are still forwarded at runtime for retro-compatibility
+    ...options,
+  });
+  // Tinyglobby reads folders concurrently: their files come in a random order
+  // See https://github.com/meta/docusaurus/pull/13031
+  return files.sort();
+}
+
+// Like globby, only expand the patterns of existing directories
+// See https://github.com/sindresorhus/globby/blob/v16.2.4/index.js#L91-L111
+// Doing it ourselves eases a later migration to Node.js `fs.glob`, which never
+// expands directories
+async function expandDirectoryPattern(
+  pattern: string,
+  cwd: string,
+): Promise<string> {
+  if (pattern.startsWith('!')) {
+    return pattern;
+  }
+  const isDirectory = await fs.stat(path.resolve(cwd, pattern)).then(
+    (stats) => stats.isDirectory(),
+    () => false,
+  );
+  // The directory path is literal: `[old]` or `(copy)` are not glob syntax
+  return isDirectory
+    ? path.posix.join(Tinyglobby.escapePath(pattern), '**')
+    : pattern;
 }
 
 /**

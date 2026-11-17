@@ -1,0 +1,49 @@
+name: GitHub Actions Security
+
+on:
+  push:
+    branches:
+      - main
+      - docusaurus-v**
+    paths:
+      - .github/**
+  pull_request:
+    branches:
+      - main
+      - docusaurus-v**
+    paths:
+      - .github/**
+  # Reports the new advisories of hash-pinned actions, which Dependabot doesn't alert about
+  schedule:
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+# Explicitly no token permissions by default, instead of the repository default ones
+# See https://docs.zizmor.sh/audits/#excessive-permissions
+permissions: {}
+
+jobs:
+  zizmor:
+    name: zizmor
+    if: github.repository == 'meta/docusaurus'
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Fails the job on findings instead of uploading SARIF, which fork PRs can't do
+      # See https://github.com/zizmorcore/zizmor-action
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@45d7276c9ca790aabd705e31ca99c6185c3e76dd # v0.8.1
+        with:
+          version: 1.31.1
+          advanced-security: false
+          annotations: true

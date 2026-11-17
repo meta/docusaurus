@@ -62,9 +62,10 @@ async function findPackageManagerFromLockFile(
   rootDir: string,
 ): Promise<PackageManager | undefined> {
   for (const packageManager of PackageManagers) {
-    const lockFilePath = path.join(rootDir, LockfileNames[packageManager]);
-    if (await pathExists(lockFilePath)) {
-      return packageManager;
+    for (const lockFileName of LockfileNames[packageManager]) {
+      if (await pathExists(path.join(rootDir, lockFileName))) {
+        return packageManager;
+      }
     }
   }
   return undefined;

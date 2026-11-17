@@ -24,6 +24,17 @@ on:
           - latest
           - v3-stable
 
+# Explicitly no token permissions by default, instead of the repository default ones
+# See https://docs.zizmor.sh/audits/#excessive-permissions
+permissions: {}
+
+# Queues releases, without cancelling the one in progress or the pending ones
+# See https://docs.zizmor.sh/audits/#concurrency-limits
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+  queue: max
+
 # ⚠️ No GitHub Actions cache on purpose, enforced by GitHub for every step
 # A poisoned cache increases the chance of a compromised release being published
 # See https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax#cache-mode
@@ -46,6 +57,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0 # Needed to get the commit number with "git rev-list --count HEAD"
       - name: Check for unpublished canary changes
         id: canary-check
@@ -66,7 +78,7 @@ jobs:
           fi
       - name: Set up pnpm, Node.js and dependencies
         if: steps.canary-check.outputs.skip != 'true'
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
           #  ⚠️ Do not use any cache on purpose
           # It increases the chance of a compromised release being publish
@@ -102,9 +114,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
       - name: Set up pnpm, Node.js and dependencies
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
           #  ⚠️ Do not use any cache on purpose
           # It increases the chance of a compromised release being publish
@@ -115,16 +128,31 @@ jobs:
           git config --global user.name "Docusaurus"
           git config --global user.email "github@docusaurus.io"
 
+      # Inputs are passed through env vars to prevent shell injection
+      # See https://docs.zizmor.sh/audits/#template-injection
       - name: Publish NPM release
+        env:
+          NPM_VERSION: ${{ github.event.inputs.npm_version }}
+          NPM_TAG: ${{ github.event.inputs.npm_tag }}
         run: |
-          pnpm lerna version "${{ github.event.inputs.npm_version }}" \
+          pnpm lerna version "$NPM_VERSION" \
             --force-publish \
             --exact \
             --loglevel verbose \
             --yes \
             --no-push
-          pnpm --recursive publish --tag "${{ github.event.inputs.npm_tag }}" --no-git-checks
-          git push origin v"${{ github.event.inputs.npm_version }}"
+          pnpm --recursive publish --tag "$NPM_TAG" --no-git-checks
+
+      # Only this step gets the token, from env to keep it out of the process list
+      - name: Push Git tag
+        env:
+          NPM_VERSION: ${{ github.event.inputs.npm_version }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          # The empty helper resets the configured ones
+          git -c credential.helper= \
+            -c credential.helper='!f() { echo username=x-access-token; echo "password=$GITHUB_TOKEN"; }; f' \
+            push origin "v$NPM_VERSION"
 
         # TODO should we push the package version local updates to Git?
         #  "main" is currently protected, even GitHub Actions can't push to it

@@ -6,14 +6,14 @@
  */
 
 import path from 'node:path';
-import {hash} from 'node:crypto';
 import {fs, pathExists, outputFile} from '@docusaurus/fs';
 import {findAsyncSequential} from './jsUtils';
+import {hashString} from './hashUtils';
 
 const fileHash = new Map<string, string>();
 
 const hashContent = (content: string): string => {
-  return hash('md5', content);
+  return hashString(content);
 };
 
 /**

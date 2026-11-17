@@ -14,23 +14,26 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Builds and audits the site with a read-only token
   lighthouse-report:
-    permissions:
-      pull-requests: write # for marocchino/sticky-pull-request-comment
     # ⚠️ No GitHub Actions cache on purpose, enforced by GitHub for every step
-    # This job can write to pull requests
+    # This job generates the PR comment
     # See https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax#cache-mode
     cache-mode: none
     name: Lighthouse Report
     runs-on: ubuntu-latest
+    outputs:
+      comment: ${{ steps.format_lighthouse_score.outputs.comment }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Set up pnpm, Node.js and dependencies
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
-          # Security: prevents cache poisoning, as this job can write to pull requests
+          # Security: prevents cache poisoning, as this job generates the PR comment
           cache: false
 
       - name: Build website fast
@@ -54,22 +57,35 @@ jobs:
 
       - name: Format lighthouse score
         id: format_lighthouse_score
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # 9.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        # Outputs are passed through env vars to prevent code injection
+        # See https://docs.zizmor.sh/audits/#template-injection
+        env:
+          LIGHTHOUSE_MANIFEST: ${{ steps.lighthouse_audit.outputs.manifest }}
+          LIGHTHOUSE_LINKS: ${{ steps.lighthouse_audit.outputs.links }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const results = ${{ steps.lighthouse_audit.outputs.manifest }}
-            const links = ${{ steps.lighthouse_audit.outputs.links }}
+            const results = JSON.parse(process.env.LIGHTHOUSE_MANIFEST);
+            const links = JSON.parse(process.env.LIGHTHOUSE_LINKS);
             const createLighthouseReport = (await import(`${process.env.GITHUB_WORKSPACE}/admin/scripts/formatLighthouseReport.js`)).default;
             const comment = createLighthouseReport({ results, links });
             core.setOutput("comment", comment);
 
+  # Separate job: npm dependencies never run with the write token
+  comment:
+    name: Lighthouse Report Comment
+    needs: lighthouse-report
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      pull-requests: write # for marocchino/sticky-pull-request-comment
+    runs-on: ubuntu-latest
+    steps:
       - name: Add Lighthouse stats as comment
         id: comment_to_pr
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # 3.0.5
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ github.event.pull_request.number }}
           header: lighthouse
-          message: ${{ steps.format_lighthouse_score.outputs.comment }}
+          message: ${{ needs.lighthouse-report.outputs.comment }}

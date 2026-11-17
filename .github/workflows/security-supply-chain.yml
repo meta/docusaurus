@@ -29,13 +29,16 @@ jobs:
   # Check our monorepo for new supply chain compromissions
   supply-chain-monorepo:
     name: Supply Chain - Monorepo
+    if: github.repository == 'meta/docusaurus'
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up pnpm and Node.js
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
           # No cache on purpose! We want SFW to fetch packages
           cache: false
@@ -43,7 +46,7 @@ jobs:
 
       # See https://socket.dev/blog/introducing-socket-firewall
       - name: Install Socket Firewall Free
-        run: npm install -g sfw@2.0.6
+        run: npm install -g sfw@2.0.6 # zizmor: ignore[adhoc-packages] exact version, this job has no secrets
 
       # Ensure our monorepo gets scanned by SFW
       - name: Install monorepo dependencies with SFW
@@ -54,6 +57,7 @@ jobs:
   # See why https://github.com/meta/docusaurus/pull/12448
   supply-chain-site-template:
     name: Supply Chain - Site Template @${{ matrix.npm_dist_tag }}
+    if: github.repository == 'meta/docusaurus'
     timeout-minutes: 30
     runs-on: ubuntu-latest
 
@@ -66,9 +70,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Set up pnpm and Node.js
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
           # No cache on purpose! We want SFW to fetch packages
           cache: false
@@ -76,7 +82,7 @@ jobs:
 
       # See https://socket.dev/blog/introducing-socket-firewall
       - name: Install Socket Firewall Free
-        run: npm install -g sfw@2.0.6
+        run: npm install -g sfw@2.0.6 # zizmor: ignore[adhoc-packages] exact version, this job has no secrets
 
       # Generate the init template from a given npm dist tag
       - name: Generate published template

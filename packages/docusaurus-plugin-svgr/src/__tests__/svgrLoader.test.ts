@@ -132,6 +132,46 @@ describe('createSVGRConfig', () => {
     expect(code).toContain('<title id={titleId}>');
   });
 
+  it('removes the xmlns attribute', async () => {
+    const code = await transformSvg({
+      svg: gradientSvg('red'),
+      filePath: 'src/gradient.svg',
+    });
+    expect(code).not.toContain('xmlns');
+  });
+
+  it('replaces xlink:href with href, including on legacy elements', async () => {
+    const code = await transformSvg({
+      svg: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10">
+  <defs>
+    <rect id="square" width="5" height="5" />
+  </defs>
+  <use xlink:href="#square" />
+  <use xlink:href="#square" x="5" y="5" />
+  <filter id="blur"><feGaussianBlur stdDeviation="1" /></filter>
+  <filter id="blur-copy" xlink:href="#blur" />
+  <rect width="10" height="10" filter="url(#blur-copy)" />
+</svg>`,
+      filePath: 'src/links.svg',
+    });
+    expect(code).not.toMatch(/xlink/i);
+    expect(code).toMatch(/<use href="#svg-[\da-f]{6}-a" \/>/);
+    expect(code).toMatch(
+      /<filter id="svg-[\da-f]{6}-c" href="#svg-[\da-f]{6}-b" \/>/,
+    );
+  });
+
+  it('removes the spaces after arc flags of merged paths', async () => {
+    const code = await transformSvg({
+      svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <path d="M10 10 a5 5 0 0 1 10 0" fill="red" />
+  <path d="M60 60 a5 5 0 0 1 10 0" fill="red" />
+</svg>`,
+      filePath: 'src/arcs.svg',
+    });
+    expect(code).toContain('d="M10 10a5 5 0 0110 0M60 60a5 5 0 0110 0"');
+  });
+
   it('can restore the Docusaurus v3 SVGO config', async () => {
     const code = await transformSvg({
       svg: gradientSvg('red'),

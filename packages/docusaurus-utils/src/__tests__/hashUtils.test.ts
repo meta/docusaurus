@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {describe, expect, it} from 'vitest';
-import {simpleHash, docuHash} from '../hashUtils';
+import {afterEach, describe, expect, it, vi} from 'vitest';
+import {hashString, simpleHash, docuHash} from '../hashUtils';
 
 describe('hashUtils', () => {
   it('simpleHash', () => {
@@ -74,5 +74,29 @@ describe('docuHash', () => {
     expect(docuHash('/foo/bar')).toBe('foo-bar-1df');
     expect(docuHash('/foo/bar', {hashExtra: ''})).toBe('foo-bar-1df');
     expect(docuHash('/foo/bar', {hashExtra: 'some-extra'})).toBe('foo-bar-7d4');
+  });
+});
+
+describe('hashString', () => {
+  afterEach(() => {
+    vi.doUnmock('node:crypto');
+    vi.resetModules();
+  });
+
+  it('uses MD5', () => {
+    expect(hashString('/foo/bar')).toBe('1df481b1ec67d4d8bec721f521d4937d');
+  });
+
+  it('uses SHA-256 when MD5 is not available, like in FIPS mode', async () => {
+    vi.doMock('node:crypto', async (importOriginal) => ({
+      ...(await importOriginal<typeof import('node:crypto')>()),
+      getHashes: () => ['sha256'],
+    }));
+    vi.resetModules();
+    const fipsHashUtils = await import('../hashUtils');
+
+    expect(fipsHashUtils.hashString('/foo/bar')).toBe(
+      'a05d96ad6bf8f3eaa59689160625f69dd411591f9dbdc728baad8c1c75af9ad6',
+    );
   });
 });

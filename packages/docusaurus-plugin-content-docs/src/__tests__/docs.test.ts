@@ -7,6 +7,7 @@
 
 import {describe, expect, it, vi} from 'vitest';
 import * as path from 'node:path';
+import {fromPartial} from '@total-typescript/shoehorn';
 import {loadContext} from '@docusaurus/core/src/server/site';
 import {
   createSlugger,
@@ -249,32 +250,30 @@ describe('simple site', () => {
   it('readVersionDocs', async () => {
     const {options, currentVersion} = await loadSite();
     const docs = await readVersionDocs(currentVersion, options);
-    expect(docs.map((doc) => doc.source).sort()).toEqual(
-      [
-        'hello.md',
-        'ipsum.md',
-        'lorem.md',
-        'rootAbsoluteSlug.md',
-        'rootRelativeSlug.md',
-        'rootResolvedSlug.md',
-        'rootTryToEscapeSlug.md',
-        'headingAsTitle.md',
-        'doc with space.md',
-        'doc-draft.md',
-        'doc-unlisted.md',
-        'customLastUpdate.md',
-        'lastUpdateAuthorOnly.md',
-        'lastUpdateDateOnly.md',
-        'foo/bar.md',
-        'foo/baz.md',
-        'slugs/absoluteSlug.md',
-        'slugs/relativeSlug.md',
-        'slugs/resolvedSlug.md',
-        'slugs/tryToEscapeSlug.md',
-        'unlisted-category/index.md',
-        'unlisted-category/unlisted-category-doc.md',
-      ].sort(),
-    );
+    expect(docs.map((doc) => doc.source)).toEqual([
+      'customLastUpdate.md',
+      'doc with space.md',
+      'doc-draft.md',
+      'doc-unlisted.md',
+      'foo/bar.md',
+      'foo/baz.md',
+      'headingAsTitle.md',
+      'hello.md',
+      'ipsum.md',
+      'lastUpdateAuthorOnly.md',
+      'lastUpdateDateOnly.md',
+      'lorem.md',
+      'rootAbsoluteSlug.md',
+      'rootRelativeSlug.md',
+      'rootResolvedSlug.md',
+      'rootTryToEscapeSlug.md',
+      'slugs/absoluteSlug.md',
+      'slugs/relativeSlug.md',
+      'slugs/resolvedSlug.md',
+      'slugs/tryToEscapeSlug.md',
+      'unlisted-category/index.md',
+      'unlisted-category/unlisted-category-doc.md',
+    ]);
   });
 
   it('normal docs', async () => {
@@ -1525,5 +1524,21 @@ describe('isConventionalDocIndex', () => {
         extension: '',
       }),
     ).toBe(false);
+  });
+});
+
+describe('readVersionDocs', () => {
+  it('reads the docs of a folder named like a Markdown file', async () => {
+    const contentPath = path.join(
+      __dirname,
+      '__fixtures__',
+      'site-with-folder-named-like-doc',
+      'docs',
+    );
+    const docs = await readVersionDocs(
+      fromPartial({contentPath}),
+      DEFAULT_OPTIONS,
+    );
+    expect(docs.map((doc) => doc.source)).toEqual(['folder.md/doc.md']);
   });
 });

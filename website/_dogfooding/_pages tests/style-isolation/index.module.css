@@ -9,7 +9,7 @@
   border: solid thin;
 }
 
-.isolated:not(#a#b) {
+.isolated:not(#\#) {
   &,
   * {
     @layer docusaurus {

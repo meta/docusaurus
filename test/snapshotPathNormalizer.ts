@@ -15,7 +15,8 @@ import fs from 'node:fs';
 import {stripVTControlCharacters} from 'node:util';
 import _ from 'lodash';
 import {version} from '../packages/docusaurus/package.json';
-import {posixPath} from '../packages/docusaurus-utils/src';
+// Not the package index: its p-queue breaks jsdom tests, see https://github.com/sindresorhus/p-queue/issues/257
+import {posixPath} from '../packages/docusaurus-utils/src/pathUtils';
 
 /*
 This weird thing is to normalize paths on our Windows GitHub Actions runners

@@ -5,12 +5,87 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, onTestFinished} from 'vitest';
+import os from 'node:os';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 import {
+  glob,
+  safeGlob,
   GlobExcludeDefault,
   createMatcher,
   createAbsoluteFilePathMatcher,
 } from '../globUtils';
+
+describe('glob', () => {
+  async function createFiles(files: string[]): Promise<string> {
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'glob-test-'));
+    onTestFinished(() => fs.rm(dir, {recursive: true, force: true}));
+    for (const file of files) {
+      await fs.mkdir(path.dirname(path.join(dir, file)), {recursive: true});
+      await fs.writeFile(path.join(dir, file), '');
+    }
+    return dir;
+  }
+
+  it('sorts the files of folders read concurrently', async () => {
+    const sortedFiles = Array.from(
+      {length: 30},
+      (_, i) => `post-${String(i).padStart(2, '0')}/index.md`,
+    );
+    const dir = await createFiles(sortedFiles);
+    await expect(glob('**/*.md', {cwd: dir})).resolves.toEqual(sortedFiles);
+  });
+
+  it('sorts absolute file paths', async () => {
+    const dir = await createFiles(['b/a.md', 'b.md', 'a.md']);
+    const files = await glob('**/*.md', {cwd: dir, absolute: true});
+    expect(files.map((file) => path.relative(dir, file))).toEqual([
+      'a.md',
+      'b.md',
+      path.join('b', 'a.md'),
+    ]);
+  });
+
+  describe('with a folder named like a file', () => {
+    const cwd = path.join(__dirname, '__fixtures__', 'folder-named-like-file');
+
+    it('does not match the files of a folder named like the pattern', async () => {
+      await expect(glob(['**/*.md'], {cwd})).resolves.toEqual([
+        'doc.md',
+        'folder.md/doc.md',
+      ]);
+    });
+
+    it('matches all the files of a directory pattern', async () => {
+      await expect(glob(['folder.md'], {cwd})).resolves.toEqual([
+        'folder.md/doc.md',
+        'folder.md/notes.txt',
+      ]);
+    });
+
+    it('matches all the files of a directory pattern with a trailing slash', async () => {
+      await expect(glob(['folder.md/'], {cwd})).resolves.toEqual([
+        'folder.md/doc.md',
+        'folder.md/notes.txt',
+      ]);
+    });
+
+    it('ignores all the files of a directory', async () => {
+      await expect(
+        glob(['**/*'], {cwd, ignore: ['folder.md']}),
+      ).resolves.toEqual(['doc.md']);
+    });
+  });
+
+  it('matches all the files of a directory named with glob characters', async () => {
+    await expect(
+      glob(['folder (copy) [old]'], {
+        cwd: path.join(__dirname, '__fixtures__', 'glob-characters'),
+      }),
+    ).resolves.toEqual(['folder (copy) [old]/doc.md']);
+  });
+});
 
 describe('createMatcher', () => {
   it('match default exclude MD/MDX partials correctly', () => {
@@ -132,5 +207,21 @@ describe('createAbsoluteFilePathMatcher', () => {
     expect(
       overlapMatcher('/root/versioned_docs/version-2.0.0/no-partial.mdx'),
     ).toBe(false);
+  });
+});
+
+describe('safeGlob', () => {
+  it('matches all the files of an absolute directory path', async () => {
+    const dirPath = path.join(
+      __dirname,
+      '__fixtures__',
+      'folder-named-like-file',
+      'folder.md',
+    );
+    const files = await safeGlob([dirPath], {absolute: true});
+    expect(files.map((file) => path.relative(dirPath, file))).toEqual([
+      'doc.md',
+      'notes.txt',
+    ]);
   });
 });

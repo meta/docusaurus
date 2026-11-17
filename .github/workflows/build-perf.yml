@@ -47,15 +47,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up pnpm and Node.js
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
           # Security: prevents cache poisoning, as this job can write to pull requests, issues and checks
           cache: false
           # compressed-size-action installs the dependencies of each branch
           install: false
       - name: Track build size changes
-        uses: preactjs/compressed-size-action@f322c295dde06a1cb7ccaef105732dd8a726d1d9 # v2.10.0
+        uses: preactjs/compressed-size-action@f322c295dde06a1cb7ccaef105732dd8a726d1d9 # 2.10.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           # Always rebuild packages, including for the base branch
@@ -87,8 +89,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up pnpm, Node.js and dependencies
-        uses: ./.github/actions/setup
+        uses: $/.github/actions/setup
         with:
           cache: true
 
