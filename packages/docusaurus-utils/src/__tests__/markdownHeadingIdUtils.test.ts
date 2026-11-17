@@ -394,6 +394,13 @@ describe('writeMarkdownHeadingId', () => {
       expect(write(write('## 🎉'))).toBe('## 🎉');
     });
 
+    it('keeps the existing id when overwriting a heading without slug characters', () => {
+      expect(write('## 🎉 {#party}', {overwrite: true})).toBe('## 🎉 {#party}');
+      expect(write('## 🎉 {/* #party */}', {overwrite: true})).toBe(
+        '## 🎉 {/* #party */}',
+      );
+    });
+
     it('respects existing heading', () => {
       expect(write('## New heading {#old-heading}')).toBe(
         '## New heading {#old-heading}',
@@ -605,6 +612,13 @@ describe('writeMarkdownHeadingId', () => {
       expect(write('### ???')).toBe('### ???');
       // Running it again must not change the heading either
       expect(write(write('## 🎉'))).toBe('## 🎉');
+    });
+
+    it('keeps the existing id when overwriting a heading without slug characters', () => {
+      expect(write('## 🎉 {#party}', {overwrite: true})).toBe('## 🎉 {#party}');
+      expect(write('## 🎉 {/* #party */}', {overwrite: true})).toBe(
+        '## 🎉 {/* #party */}',
+      );
     });
 
     it('respects existing heading', () => {

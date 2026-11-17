@@ -85,7 +85,7 @@ function addHeadingId(
   maintainCase: boolean,
   syntax: HeadingIdSyntax,
   headingId: string | undefined,
-): string {
+): string | undefined {
   let headingLevel = 0;
   while (line.charAt(headingLevel) === '#') {
     headingLevel += 1;
@@ -115,8 +115,9 @@ function addHeadingId(
   // A heading whose text has nothing to slugify (e.g. only emoji or
   // punctuation) gets an empty slug. Writing it would produce `{#}`, which is
   // not recognized as a heading ID, so the next run would append another one.
+  // Return undefined so that the caller keeps the original line unchanged.
   if (!id) {
-    return line;
+    return undefined;
   }
 
   const headingIdSuffix =
@@ -204,12 +205,14 @@ export function writeMarkdownHeadingId(
           ? parsedHeading.id
           : undefined;
 
-      return addHeadingId(
-        parsedHeading.text,
-        slugger,
-        maintainCase,
-        syntax,
-        headingId,
+      return (
+        addHeadingId(
+          parsedHeading.text,
+          slugger,
+          maintainCase,
+          syntax,
+          headingId,
+        ) ?? line
       );
     })
     .join('\n');
