@@ -30,3 +30,11 @@ export {
   BlogAuthorsListViewAllLabel,
   BlogAuthorNoPostsLabel,
 } from './blogTranslations';
+
+export {
+  getBlogPostBreadcrumbs,
+  type BlogBreadcrumbItem,
+  type BlogPostBreadcrumbsOptions,
+  type BlogPostBreadcrumbsParams,
+} from './breadcrumbUtils';
+
