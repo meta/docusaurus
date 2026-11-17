@@ -110,10 +110,17 @@ function addHeadingId(
     });
   }
 
+  const id = getHeadingId();
+
+  // A heading whose text has nothing to slugify (e.g. only emoji or
+  // punctuation) gets an empty slug. Writing it would produce `{#}`, which is
+  // not recognized as a heading ID, so the next run would append another one.
+  if (!id) {
+    return line;
+  }
+
   const headingIdSuffix =
-    syntax === 'mdx-comment'
-      ? `{/* #${getHeadingId()} */}`
-      : `{#${getHeadingId()}}`;
+    syntax === 'mdx-comment' ? `{/* #${id} */}` : `{#${id}}`;
 
   return `${headingHashes}${headingContent} ${headingIdSuffix}`;
 }
