@@ -155,5 +155,30 @@ describe('inlineScripts', () => {
         }),
       ).toBe('false');
     });
+
+    it('escapes less-than characters to prevent script tag injection', () => {
+      const script = getAnnouncementBarInlineScript({
+        siteStorage: {type: 'localStorage', namespace: ''},
+        announcementBar: {
+          id: 'release-</script><script>alert(1)</script>',
+          content: 'Hello',
+          backgroundColor: '#fff',
+          textColor: '#000',
+          isCloseable: true,
+        },
+      });
+
+      expect(script).not.toContain('</script>');
+      expect(script).toContain('\\u003c/script>');
+
+      // Verifies correct execution when matching stored id
+      expect(
+        runInlineScript(script, {
+          'docusaurus.announcement.id':
+            'release-</script><script>alert(1)</script>',
+          'docusaurus.announcement.dismiss': 'true',
+        }),
+      ).toBe('true');
+    });
   });
 });

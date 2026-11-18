@@ -90,13 +90,17 @@ export function getAnnouncementBarInlineScript({
   const AnnouncementBarDismissDataAttribute =
     'data-announcement-bar-initially-dismissed';
 
+  const serializedId = announcementBar?.id
+    ? JSON.stringify(announcementBar.id).replace(/</g, '\\u003c')
+    : 'null';
+
   /* language=js */
   return `(function() {
   function isDismissed() {
     try {
-      if (${announcementBar?.id ? JSON.stringify(announcementBar.id) : 'null'}) {
+      if (${serializedId}) {
         var closedId = localStorage.getItem('${AnnouncementBarIdStorageKey}');
-        if (closedId !== ${JSON.stringify(announcementBar?.id)}) {
+        if (closedId !== ${serializedId}) {
           return false;
         }
       }
