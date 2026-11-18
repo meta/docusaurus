@@ -103,4 +103,4 @@ The `removeXlink` and `removeXMLNS` plugins remove the XML namespaces (`xmlns`, 
 
 `runtimeConfig: false` disables discovery of [SVGR configuration files](https://react-svgr.com/docs/configuration-files/) (for example `svgr.config.js`) in the site directory and ancestor directories. Configure SVGR through the `svgrConfig` option.
 
-Providing `svgoConfig` replaces the default [SVGO](https://svgo.dev/) config entirely. Use `svgoConfig: undefined` to read your own [`svgo.config.js` file](https://svgo.dev/docs/introduction/#configuration) instead.
+Providing `svgoConfig` replaces the default [SVGO](https://svgo.dev/) config entirely. Use `{runtimeConfig: true, svgoConfig: undefined}` to read your own [`svgo.config.js` file](https://svgo.dev/docs/introduction/#configuration) instead. SVGR only searches for SVGO config files when `runtimeConfig` is enabled, which also re-enables SVGR config file discovery.
