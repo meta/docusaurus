@@ -23,4 +23,5 @@ TODO merge this logic back in Infima?
   line-clamp: 2;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  padding-bottom: 1px;
 }
