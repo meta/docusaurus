@@ -131,6 +131,10 @@ Task-specific instructions live in skills, following the [Agent Skills](https://
 
 ## Conventions
 
+### TypeScript
+
+- Unless asked otherwise, write new code in TypeScript, not in JS with or without JSDoc types. Existing JS code can stay as it is.
+
 ### Typechecking
 
 - Package builds typecheck their sources (`tsc` or `tsc --build`): `pnpm --filter <package-name> build`
@@ -173,6 +177,8 @@ They can create pull-requests. Before creating, updating, checking the CI of, or
 Never use auto-merge (`gh pr merge --auto`), and never merge a PR before its CI checks are finished and green. The skill documents the only known exception.
 
 Their commits and PRs already disclose the usage of AI with the agent's co-author trailer and PR footer: don't add `(AI-assisted)` to them. Disclose it in the comments you post on their behalf (reviews, replies, issue comments…).
+
+When they correct you with a new agent rule while you work on a task, add it in a separate session and PR, never in the task's PR. Write it in general terms: the task only illustrates the wrong behavior. Several agent rules can share one PR.
 
 ### For all others (non-maintainers)
 
