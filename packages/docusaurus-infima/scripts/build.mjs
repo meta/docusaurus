@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-// Inlines the upstream postcss-preset-infima and the transformStyles gulp task
+// Inlines the upstream postcss-preset-infima and the gulp styles and rtl tasks
 // See https://github.com/facebookincubator/infima/blob/87bc1dbfde5dfb2a70b5ff105b5f2f5ee130c2ab/packages/postcss-preset-infima/index.js
 
 import fs from 'node:fs/promises';
@@ -21,16 +21,19 @@ import postcssNested from 'postcss-nested';
 import postcssNestedAncestors from 'postcss-nested-ancestors';
 import postcssPresetEnv from 'postcss-preset-env-v7';
 import postcssSortMediaQueries from 'postcss-sort-media-queries';
+import rtlcss from 'rtlcss';
 
 const packageDir = path.dirname(import.meta.dirname);
 const entryFile = path.join(packageDir, 'styles/themes/default/default.pcss');
 const outputFile = path.join(packageDir, 'dist/infima.css');
+const rtlOutputFile = path.join(packageDir, 'dist/infima-rtl.css');
 
 async function main() {
   const source = await fs.readFile(entryFile, 'utf8');
   const css = await compileInfima(source, entryFile);
   await fs.mkdir(path.dirname(outputFile), {recursive: true});
   await fs.writeFile(outputFile, css);
+  await fs.writeFile(rtlOutputFile, rtlcss.process(css));
 }
 
 async function compileInfima(source, from) {

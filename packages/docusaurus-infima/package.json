@@ -7,6 +7,7 @@
   ],
   "exports": {
     "./infima.css": "./dist/infima.css",
+    "./infima-rtl.css": "./dist/infima-rtl.css",
     "./package.json": "./package.json"
   },
   "files": [
@@ -35,7 +36,8 @@
     "postcss-nested": "catalog:dev",
     "postcss-nested-ancestors": "catalog:dev",
     "postcss-preset-env-v7": "catalog:dev",
-    "postcss-sort-media-queries": "catalog:dev"
+    "postcss-sort-media-queries": "catalog:dev",
+    "rtlcss": "catalog:"
   },
   "engines": {
     "node": ">=26.13"

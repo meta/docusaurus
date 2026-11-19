@@ -1475,6 +1475,9 @@ importers:
       postcss-sort-media-queries:
         specifier: catalog:dev
         version: 4.4.1(postcss@8.5.28)
+      rtlcss:
+        specifier: 'catalog:'
+        version: 4.3.0
 
   packages/docusaurus-logger:
     dependencies:
