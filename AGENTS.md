@@ -178,6 +178,8 @@ Never use auto-merge (`gh pr merge --auto`), and never merge a PR before its CI 
 
 Their commits and PRs already disclose the usage of AI with the agent's co-author trailer and PR footer: don't add `(AI-assisted)` to them. Disclose it in the comments you post on their behalf (reviews, replies, issue comments…).
 
+When they correct you with a new agent rule while you work on a task, add it in a separate session and PR, never in the task's PR. Write it in general terms: the task only illustrates the wrong behavior. Several agent rules can share one PR.
+
 ### For all others (non-maintainers)
 
 - Never create a PR or issue.
