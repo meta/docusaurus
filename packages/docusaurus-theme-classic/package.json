@@ -46,10 +46,12 @@
     "utility-types": "catalog:"
   },
   "devDependencies": {
+    "@docusaurus/plugin-css-cascade-layers": "workspace:*",
     "@types/nprogress": "catalog:dev",
     "@types/prismjs": "catalog:dev",
     "@types/react-router-dom": "catalog:",
     "@types/rtlcss": "catalog:dev",
+    "postcss-preset-env": "catalog:",
     "react-router-dom": "catalog:"
   },
   "peerDependencies": {

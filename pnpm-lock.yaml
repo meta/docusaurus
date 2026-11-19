@@ -1409,11 +1409,7 @@ importers:
         specifier: catalog:dev
         version: 4.0.3
 
-  packages/docusaurus-infima:
-    devDependencies:
-      rtlcss:
-        specifier: 'catalog:'
-        version: 4.3.0
+  packages/docusaurus-infima: {}
 
   packages/docusaurus-logger:
     dependencies:
@@ -2373,6 +2369,9 @@ importers:
         specifier: 'catalog:'
         version: 3.11.0
     devDependencies:
+      '@docusaurus/plugin-css-cascade-layers':
+        specifier: workspace:*
+        version: link:../docusaurus-plugin-css-cascade-layers
       '@types/nprogress':
         specifier: catalog:dev
         version: 0.2.3
@@ -2385,6 +2384,9 @@ importers:
       '@types/rtlcss':
         specifier: catalog:dev
         version: 3.5.4
+      postcss-preset-env:
+        specifier: 'catalog:'
+        version: 11.5.2(postcss@8.5.28)
       react-router-dom:
         specifier: 'catalog:'
         version: 5.3.4(react@19.3.0)
