@@ -83,7 +83,8 @@ export default async function pluginContentDocs(
   context: LoadContext,
   options: PluginOptions,
 ): Promise<Plugin<LoadedContent>> {
-  const {siteDir, generatedFilesDir, baseUrl, siteConfig} = context;
+  const {siteDir, generatedFilesDir, baseUrl, siteConfig, siteMarkdownLinks} =
+    context;
   // Mutate options to resolve sidebar path according to siteDir
   options.sidebarPath = resolveSidebarPathOption(siteDir, options.sidebarPath);
 
@@ -169,6 +170,7 @@ export default async function pluginContentDocs(
             contentPaths: version,
           });
         },
+        resolveSiteMarkdownLink: siteMarkdownLinks.resolveMarkdownLink,
       },
     });
   }

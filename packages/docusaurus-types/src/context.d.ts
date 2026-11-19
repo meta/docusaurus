@@ -50,6 +50,41 @@ export type SiteStorage = {
 
 export type GlobalData = {[pluginName: string]: {[pluginId: string]: unknown}};
 
+/**
+ * A site-wide registry of the Markdown files of all the content plugins.
+ *
+ * Content plugins own a registry of their own Markdown files, and use it to
+ * resolve the Markdown links found in their own content. This site-wide
+ * registry is the fallback used when a Markdown link can't be resolved within
+ * the plugin owning the source file, and permits cross-plugin Markdown links.
+ *
+ * See https://github.com/facebook/docusaurus/issues/9117
+ */
+export type SiteMarkdownLinks = {
+  /**
+   * Aliased source file path (`@site/docs/intro.mdx`) to permalink (`/docs/
+   * intro`) of all the Markdown files of the site, whatever plugin owns them.
+   *
+   * /!\ This map is mutable: it is emptied and refilled on each site reload.
+   * The identity of the `SiteMarkdownLinks` object holding it remains stable
+   * for the whole dev server lifetime, because the MDX loader receives it
+   * through `configureWebpack()`, which only runs once.
+   */
+  sourceToPermalink: Map<string, string>;
+
+  /**
+   * Resolves a Markdown link pathname against `sourceToPermalink`, looking at
+   * the Markdown files of the whole site. Returns `null` when the link can't
+   * be resolved to any Markdown file of the site.
+   */
+  resolveMarkdownLink: (params: {
+    /** Absolute path of the source file containing the Markdown link. */
+    sourceFilePath: string;
+    /** The link pathname to resolve, such as `./intro.mdx`. */
+    linkPathname: string;
+  }) => string | null;
+};
+
 export type LoadContext = {
   siteDir: string;
   siteVersion: string | undefined;
@@ -81,6 +116,12 @@ export type LoadContext = {
    * The bundler used to build the site (Webpack or Rspack)
    */
   currentBundler: CurrentBundler;
+
+  /**
+   * Site-wide Markdown files registry, used by content plugins as a fallback
+   * to resolve Markdown links pointing to files owned by other plugins.
+   */
+  siteMarkdownLinks: SiteMarkdownLinks;
 };
 
 export type Props = LoadContext & {

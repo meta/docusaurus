@@ -1,0 +1,18 @@
+---
+title: Cross-plugin Markdown links
+date: 2025-01-01
+---
+
+Markdown links can also target files owned by another plugin, see [#9117](https://github.com/facebook/docusaurus/issues/9117)
+
+{/* truncate */}
+
+[../\_docs tests/tests/links/target.mdx](<../_docs tests/tests/links/target.mdx>)
+
+[../\_pages tests/linking/page-a.md](<../_pages tests/linking/page-a.md>)
+
+[../../docs/introduction.mdx](../../docs/introduction.mdx)
+
+[/docs/introduction.mdx](/docs/introduction.mdx)
+
+[@site/\_docs tests/tests/links/target.mdx](<@site/_dogfooding/_docs tests/tests/links/target.mdx>)

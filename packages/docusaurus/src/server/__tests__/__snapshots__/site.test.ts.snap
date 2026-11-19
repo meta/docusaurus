@@ -157,6 +157,10 @@ exports[`loadSite > custom-i18n-site > loads site 1`] = `
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/custom-i18n-site/docusaurus.config.js",
   "siteDir": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/custom-i18n-site",
+  "siteMarkdownLinks": {
+    "resolveMarkdownLink": [Function],
+    "sourceToPermalink": Map {},
+  },
   "siteMetadata": {
     "docusaurusVersion": "<CURRENT_VERSION>",
     "pluginVersions": {},
@@ -308,6 +312,10 @@ exports[`loadSite > simple-site-with-baseUrl > loads site - custom config 1`] = 
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl/docusaurus.config.custom.js",
   "siteDir": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl",
+  "siteMarkdownLinks": {
+    "resolveMarkdownLink": [Function],
+    "sourceToPermalink": Map {},
+  },
   "siteMetadata": {
     "docusaurusVersion": "<CURRENT_VERSION>",
     "pluginVersions": {},
@@ -459,6 +467,10 @@ exports[`loadSite > simple-site-with-baseUrl > loads site - custom outDir 1`] = 
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl/docusaurus.config.js",
   "siteDir": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl",
+  "siteMarkdownLinks": {
+    "resolveMarkdownLink": [Function],
+    "sourceToPermalink": Map {},
+  },
   "siteMetadata": {
     "docusaurusVersion": "<CURRENT_VERSION>",
     "pluginVersions": {},
@@ -610,6 +622,10 @@ exports[`loadSite > simple-site-with-baseUrl > loads site 1`] = `
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl/docusaurus.config.js",
   "siteDir": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl",
+  "siteMarkdownLinks": {
+    "resolveMarkdownLink": [Function],
+    "sourceToPermalink": Map {},
+  },
   "siteMetadata": {
     "docusaurusVersion": "<CURRENT_VERSION>",
     "pluginVersions": {},
@@ -827,6 +843,10 @@ exports[`loadSite > simple-site-with-baseUrl-i18n > loads site -  locale fr + cu
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n/docusaurus.config.js",
   "siteDir": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n",
+  "siteMarkdownLinks": {
+    "resolveMarkdownLink": [Function],
+    "sourceToPermalink": Map {},
+  },
   "siteMetadata": {
     "docusaurusVersion": "<CURRENT_VERSION>",
     "pluginVersions": {},
@@ -1044,6 +1064,10 @@ exports[`loadSite > simple-site-with-baseUrl-i18n > loads site - custom outDir 1
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n/docusaurus.config.js",
   "siteDir": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n",
+  "siteMarkdownLinks": {
+    "resolveMarkdownLink": [Function],
+    "sourceToPermalink": Map {},
+  },
   "siteMetadata": {
     "docusaurusVersion": "<CURRENT_VERSION>",
     "pluginVersions": {},
@@ -1261,6 +1285,10 @@ exports[`loadSite > simple-site-with-baseUrl-i18n > loads site - locale de 1`] =
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n/docusaurus.config.js",
   "siteDir": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n",
+  "siteMarkdownLinks": {
+    "resolveMarkdownLink": [Function],
+    "sourceToPermalink": Map {},
+  },
   "siteMetadata": {
     "docusaurusVersion": "<CURRENT_VERSION>",
     "pluginVersions": {},
@@ -1478,6 +1506,10 @@ exports[`loadSite > simple-site-with-baseUrl-i18n > loads site - locale en 1`] =
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n/docusaurus.config.js",
   "siteDir": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n",
+  "siteMarkdownLinks": {
+    "resolveMarkdownLink": [Function],
+    "sourceToPermalink": Map {},
+  },
   "siteMetadata": {
     "docusaurusVersion": "<CURRENT_VERSION>",
     "pluginVersions": {},
@@ -1695,6 +1727,10 @@ exports[`loadSite > simple-site-with-baseUrl-i18n > loads site - locale es 1`] =
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n/docusaurus.config.js",
   "siteDir": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n",
+  "siteMarkdownLinks": {
+    "resolveMarkdownLink": [Function],
+    "sourceToPermalink": Map {},
+  },
   "siteMetadata": {
     "docusaurusVersion": "<CURRENT_VERSION>",
     "pluginVersions": {},
@@ -1912,6 +1948,10 @@ exports[`loadSite > simple-site-with-baseUrl-i18n > loads site - locale fr 1`] =
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n/docusaurus.config.js",
   "siteDir": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n",
+  "siteMarkdownLinks": {
+    "resolveMarkdownLink": [Function],
+    "sourceToPermalink": Map {},
+  },
   "siteMetadata": {
     "docusaurusVersion": "<CURRENT_VERSION>",
     "pluginVersions": {},
@@ -2129,6 +2169,10 @@ exports[`loadSite > simple-site-with-baseUrl-i18n > loads site - locale it 1`] =
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n/docusaurus.config.js",
   "siteDir": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n",
+  "siteMarkdownLinks": {
+    "resolveMarkdownLink": [Function],
+    "sourceToPermalink": Map {},
+  },
   "siteMetadata": {
     "docusaurusVersion": "<CURRENT_VERSION>",
     "pluginVersions": {},
@@ -2346,6 +2390,10 @@ exports[`loadSite > simple-site-with-baseUrl-i18n > loads site 1`] = `
   },
   "siteConfigPath": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n/docusaurus.config.js",
   "siteDir": "<PROJECT_ROOT>/packages/docusaurus/src/server/__tests__/__fixtures__/loadSiteFixtures/simple-site-with-baseUrl-i18n",
+  "siteMarkdownLinks": {
+    "resolveMarkdownLink": [Function],
+    "sourceToPermalink": Map {},
+  },
   "siteMetadata": {
     "docusaurusVersion": "<CURRENT_VERSION>",
     "pluginVersions": {},

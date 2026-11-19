@@ -38,6 +38,7 @@ export {
   GlobalData,
   LoadContext,
   SiteStorage,
+  SiteMarkdownLinks,
   Props,
 } from './context';
 
