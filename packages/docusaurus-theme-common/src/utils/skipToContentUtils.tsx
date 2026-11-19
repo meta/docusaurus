@@ -10,6 +10,7 @@ import {useCallback, useRef, type ComponentProps, type ReactNode} from 'react';
 import {useHistory} from '@docusaurus/router';
 import {translate} from '@docusaurus/Translate';
 import {useLocationChange} from './useLocationChange';
+import {useTitleFormatter} from './titleFormatterUtils';
 
 /**
  * The id of the element that should become focused on a page
@@ -42,7 +43,7 @@ function programmaticFocus(el: HTMLElement) {
 }
 
 /** This hook wires the logic for a skip-to-content link. */
-function useSkipToContent(): {
+function useSkipToContent(title?: string): {
   /**
    * The ref to the container. On page transition, the container will be focused
    * so that keyboard navigators can instantly interact with the link and jump
@@ -57,6 +58,8 @@ function useSkipToContent(): {
 } {
   const containerRef = useRef<HTMLDivElement>(null);
   const {action} = useHistory();
+  const titleFormatter = useTitleFormatter();
+  const formattedTitle = title ? titleFormatter.format(title) : '';
 
   const onClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -70,6 +73,12 @@ function useSkipToContent(): {
   // See https://github.com/meta/docusaurus/pull/8204#issuecomment-1276547558
   useLocationChange(({location}) => {
     if (containerRef.current && !location.hash && action === 'PUSH') {
+      // Announce the page title when navigating, so screen reader users know
+      // which page they landed on. The container's aria-label is restored to
+      // the skip link label on the next render.
+      if (formattedTitle) {
+        containerRef.current.setAttribute('aria-label', formattedTitle);
+      }
       programmaticFocus(containerRef.current);
     }
   });
@@ -84,11 +93,17 @@ const DefaultSkipToContentLabel = translate({
   message: 'Skip to main content',
 });
 
-type SkipToContentLinkProps = Omit<ComponentProps<'a'>, 'href' | 'onClick'>;
+type SkipToContentLinkProps = Omit<ComponentProps<'a'>, 'href' | 'onClick'> & {
+  /**
+   * The page title, announced by screen readers when navigating to a new page.
+   */
+  title?: string;
+};
 
 export function SkipToContentLink(props: SkipToContentLinkProps): ReactNode {
-  const linkLabel = props.children ?? DefaultSkipToContentLabel;
-  const {containerRef, onClick} = useSkipToContent();
+  const {title, ...linkProps} = props;
+  const linkLabel = linkProps.children ?? DefaultSkipToContentLabel;
+  const {containerRef, onClick} = useSkipToContent(title);
   return (
     <div
       ref={containerRef}
@@ -96,7 +111,7 @@ export function SkipToContentLink(props: SkipToContentLinkProps): ReactNode {
       aria-label={DefaultSkipToContentLabel}>
       {/* eslint-disable-next-line @docusaurus/no-html-links */}
       <a
-        {...props}
+        {...linkProps}
         // Note this is a fallback href in case JS is disabled
         // It has limitations, see https://github.com/meta/docusaurus/issues/6411#issuecomment-1284136069
         href={`#${SkipToContentFallbackId}`}
