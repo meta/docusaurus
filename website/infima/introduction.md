@@ -1,5 +1,7 @@
 ---
 slug: /
+sidebar_label: Infima
+sidebar_position: 0
 ---
 
 # Introduction
