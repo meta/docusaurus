@@ -131,6 +131,10 @@ Task-specific instructions live in skills, following the [Agent Skills](https://
 
 ## Conventions
 
+### TypeScript
+
+- Unless asked otherwise, write new code in TypeScript, not in JS with or without JSDoc types. Existing JS code can stay as it is.
+
 ### Typechecking
 
 - Package builds typecheck their sources (`tsc` or `tsc --build`): `pnpm --filter <package-name> build`
