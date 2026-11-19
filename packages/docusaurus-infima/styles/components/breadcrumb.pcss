@@ -1,0 +1,87 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-breadcrumb-border-radius: 1.5rem;
+  --ifm-breadcrumb-spacing: 0.5rem;
+  --ifm-breadcrumb-color-active: var(--ifm-color-primary);
+  --ifm-breadcrumb-item-background-active: var(--ifm-hover-overlay);
+  --ifm-breadcrumb-padding-horizontal: 0.8rem;
+  --ifm-breadcrumb-padding-vertical: 0.4rem;
+  --ifm-breadcrumb-size-multiplier: 1;
+  --ifm-breadcrumb-separator: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 256 256"><g><g><polygon points="79.093,0 48.907,30.187 146.72,128 48.907,225.813 79.093,256 207.093,128"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>');
+  --ifm-breadcrumb-separator-filter: none;
+  --ifm-breadcrumb-separator-size: 0.5rem;
+  --ifm-breadcrumb-separator-size-multiplier: 1.25;
+}
+
+.breadcrumbs {
+  margin-bottom: 0;
+  padding-left: 0;
+
+  &__item {
+    display: inline-block;
+
+    &:not(:last-child):after {
+      background: var(--ifm-breadcrumb-separator) center;
+      content: ' ';
+      display: inline-block;
+      filter: var(--ifm-breadcrumb-separator-filter);
+      height: calc(
+        var(--ifm-breadcrumb-separator-size) *
+          var(--ifm-breadcrumb-size-multiplier) *
+          var(--ifm-breadcrumb-separator-size-multiplier)
+      );
+      margin: 0 var(--ifm-breadcrumb-spacing);
+      opacity: 0.5;
+      width: calc(
+        var(--ifm-breadcrumb-separator-size) *
+          var(--ifm-breadcrumb-size-multiplier) *
+          var(--ifm-breadcrumb-separator-size-multiplier)
+      );
+      /*rtl:raw:
+      transform: rotate(180deg);
+      */
+    }
+
+    &--active {
+      & ^^&__link {
+        background: var(--ifm-breadcrumb-item-background-active);
+        color: var(--ifm-breadcrumb-color-active);
+      }
+    }
+  }
+
+  &__link {
+    border-radius: var(--ifm-breadcrumb-border-radius);
+    color: var(--ifm-font-color-base);
+    display: inline-block;
+    font-size: calc(1rem * var(--ifm-breadcrumb-size-multiplier));
+    padding: calc(
+        var(--ifm-breadcrumb-padding-vertical) *
+          var(--ifm-breadcrumb-size-multiplier)
+      )
+      calc(
+        var(--ifm-breadcrumb-padding-horizontal) *
+          var(--ifm-breadcrumb-size-multiplier)
+      );
+    @mixin transition background color;
+
+    &:any-link:hover {
+      background: var(--ifm-breadcrumb-item-background-active);
+      text-decoration: none;
+    }
+  }
+
+  &--sm {
+    --ifm-breadcrumb-size-multiplier: 0.8;
+  }
+
+  &--lg {
+    --ifm-breadcrumb-size-multiplier: 1.2;
+  }
+}

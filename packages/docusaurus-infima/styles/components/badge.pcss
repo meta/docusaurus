@@ -1,0 +1,39 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-badge-background-color: inherit; /* Set a default which will be overridden later. */
+  --ifm-badge-border-color: inherit; /* Set a default which will be overridden later. */
+  --ifm-badge-border-radius: var(--ifm-global-radius);
+  --ifm-badge-border-width: var(--ifm-global-border-width);
+  --ifm-badge-color: var(--ifm-color-white);
+  --ifm-badge-padding-horizontal: calc(var(--ifm-spacing-horizontal) * 0.5);
+  --ifm-badge-padding-vertical: calc(var(--ifm-spacing-vertical) * 0.25);
+}
+
+.badge {
+  background-color: var(--ifm-badge-background-color);
+  border: var(--ifm-badge-border-width) solid var(--ifm-badge-border-color);
+  border-radius: var(--ifm-badge-border-radius);
+  color: var(--ifm-badge-color);
+  display: inline-block;
+  font-size: 75%;
+  font-weight: var(--ifm-font-weight-bold);
+  line-height: 1;
+  padding: var(--ifm-badge-padding-vertical) var(--ifm-badge-padding-horizontal);
+
+  @each $color in (primary, secondary, success, info, warning, danger) {
+    &--$(color) {
+      --ifm-badge-background-color: var(--ifm-color-$(color));
+      --ifm-badge-border-color: var(--ifm-badge-background-color);
+    }
+  }
+
+  &--secondary {
+    color: var(--ifm-color-black);
+  }
+}

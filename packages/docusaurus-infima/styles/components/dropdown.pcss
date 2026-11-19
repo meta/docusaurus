@@ -1,0 +1,95 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-dropdown-background-color: var(--ifm-background-surface-color);
+  --ifm-dropdown-font-weight: var(--ifm-font-weight-semibold);
+  --ifm-dropdown-link-color: var(--ifm-font-color-base);
+  --ifm-dropdown-hover-background-color: var(--ifm-hover-overlay);
+}
+
+.dropdown {
+  display: inline-flex;
+  font-weight: var(--ifm-dropdown-font-weight);
+  position: relative;
+  vertical-align: top;
+
+  &--hoverable:hover,
+  &--show {
+    ^&__menu {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(-1px);
+      visibility: visible;
+    }
+  }
+
+  &--right {
+    ^&__menu {
+      left: inherit;
+      right: 0;
+    }
+  }
+
+  &--nocaret .navbar__link:after {
+    content: none !important;
+  }
+
+  &__menu {
+    background-color: var(--ifm-dropdown-background-color);
+    border-radius: var(--ifm-global-radius);
+    box-shadow: var(--ifm-global-shadow-md);
+    left: 0;
+    list-style: none;
+    max-height: 80vh;
+    min-width: 10rem;
+    opacity: 0;
+    overflow-y: auto;
+    padding: 0.5rem;
+    pointer-events: none;
+    position: absolute;
+    top: calc(100% - var(--ifm-navbar-item-padding-vertical) + 0.3rem);
+    transform: translateY(-0.625rem);
+    visibility: hidden;
+    z-index: var(--ifm-z-index-dropdown);
+    @mixin transition opacity transform visibility;
+  }
+
+  &__link {
+    border-radius: 0.25rem;
+    color: var(--ifm-dropdown-link-color);
+    display: block;
+    font-size: 0.875rem;
+    margin-top: 0.2rem;
+    padding: 0.25rem 0.5rem;
+    white-space: nowrap;
+
+    &:hover,
+    &--active {
+      background-color: var(--ifm-dropdown-hover-background-color);
+      color: var(--ifm-dropdown-link-color);
+      text-decoration: none;
+    }
+
+    &--active,
+    &--active:hover {
+      --ifm-dropdown-link-color: var(--ifm-link-color);
+    }
+  }
+
+  & > .navbar__link:after {
+    border-color: currentColor transparent;
+    border-style: solid;
+    border-width: 0.4em 0.4em 0;
+    content: '';
+    display: inline-block;
+    margin-left: 0.3em;
+    position: relative;
+    top: 2px;
+    transform: translateY(-50%);
+  }
+}

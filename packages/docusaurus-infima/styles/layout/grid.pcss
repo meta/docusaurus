@@ -1,0 +1,96 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-container-width: 1140px;
+  --ifm-container-width-xl: 1320px;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: var(--ifm-container-width);
+  padding: 0 var(--ifm-spacing-horizontal);
+  width: 100%;
+
+  &--fluid {
+    max-width: inherit;
+  }
+
+  @media (min-width: 1440px) {
+    & {
+      max-width: var(--ifm-container-width-xl);
+    }
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 calc(var(--ifm-spacing-horizontal) * -1);
+
+  &--no-gutters {
+    margin-left: 0;
+    margin-right: 0;
+
+    & > .col {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  &--align-top {
+    align-items: flex-start;
+  }
+
+  &--align-bottom {
+    align-items: flex-end;
+  }
+
+  &--align-center {
+    align-items: center;
+  }
+
+  &--align-stretch {
+    align-items: stretch;
+  }
+
+  &--align-baseline {
+    align-items: baseline;
+  }
+}
+
+.col {
+  --ifm-col-width: 100%;
+
+  flex: 1 0;
+  margin-left: 0;
+  max-width: var(--ifm-col-width);
+  padding: 0 var(--ifm-spacing-horizontal);
+  width: 100%;
+
+  &[class*='col--'] {
+    flex: 0 0 var(--ifm-col-width);
+  }
+
+  @media (--ifm-narrow-window) {
+    & {
+      --ifm-col-width: 100%;
+      flex-basis: var(--ifm-col-width);
+      margin-left: 0;
+    }
+  }
+
+  @for $column from 1 to 12 {
+    &--$(column) {
+      --ifm-col-width: calc($(column) / 12 * 100%);
+    }
+
+    &--offset-$(column) {
+      margin-left: calc($(column) / 12 * 100%);
+    }
+  }
+}

@@ -21,6 +21,7 @@ atrule
 autogenerating
 autohide
 Autolinks
+autoprefixer
 backgrounded
 Bartosz
 beforeinstallprompt

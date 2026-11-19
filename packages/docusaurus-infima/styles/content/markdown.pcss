@@ -1,0 +1,106 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  /* Leading is the distance between two baselines */
+  /* TODO: add appropriate mobile leading */
+  --ifm-leading-desktop: 1.25;
+  --ifm-leading: calc(var(--ifm-leading-desktop) * 1rem);
+}
+
+.markdown {
+  --ifm-h1-vertical-rhythm-top: 3;
+  --ifm-h2-vertical-rhythm-top: 2;
+  --ifm-h3-vertical-rhythm-top: 1.5;
+  --ifm-heading-vertical-rhythm-top: 1.25;
+
+  --ifm-h1-vertical-rhythm-bottom: 1.25;
+  --ifm-heading-vertical-rhythm-bottom: 1;
+
+  &:before {
+    content: '';
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+    content: '';
+    display: table;
+  }
+
+  & > *:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  & h1:first-child {
+    --ifm-h1-font-size: 3rem;
+
+    margin-bottom: calc(
+      var(--ifm-h1-vertical-rhythm-bottom) * var(--ifm-leading)
+    );
+  }
+
+  & > h2 {
+    --ifm-h2-font-size: 2rem;
+
+    margin-bottom: calc(
+      var(--ifm-heading-vertical-rhythm-bottom) * var(--ifm-leading)
+    );
+    margin-top: calc(var(--ifm-h2-vertical-rhythm-top) * var(--ifm-leading));
+  }
+
+  & > h3 {
+    --ifm-h3-font-size: 1.5rem;
+
+    margin-bottom: calc(
+      var(--ifm-heading-vertical-rhythm-bottom) * var(--ifm-leading)
+    );
+    margin-top: calc(var(--ifm-h3-vertical-rhythm-top) * var(--ifm-leading));
+  }
+
+  & > h4,
+  & > h5,
+  & > h6 {
+    margin-bottom: calc(
+      var(--ifm-heading-vertical-rhythm-bottom) * var(--ifm-leading)
+    );
+    margin-top: calc(
+      var(--ifm-heading-vertical-rhythm-top) * var(--ifm-leading)
+    );
+  }
+
+  /* Consistent spacing between content paragraphs. */
+  & > pre,
+  & > ul,
+  & > p {
+    margin-bottom: var(--ifm-leading);
+  }
+
+  li {
+    overflow-wrap: break-word;
+
+    & > p {
+      margin-top: var(--ifm-list-paragraph-margin);
+    }
+
+    & + li {
+      margin-top: var(--ifm-list-item-margin);
+    }
+  }
+
+  @media (max-width: 576px) {
+    & h1:first-child {
+      --ifm-h1-font-size: 2rem;
+    }
+    & > h2 {
+      --ifm-h2-font-size: 1.5rem;
+    }
+    & > h3 {
+      --ifm-h3-font-size: 1.25rem;
+    }
+  }
+}

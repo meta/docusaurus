@@ -1,0 +1,294 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-navbar-background-color: var(--ifm-background-surface-color);
+  --ifm-navbar-height: 3.75rem;
+  --ifm-navbar-item-padding-horizontal: 0.75rem;
+  --ifm-navbar-item-padding-vertical: 0.25rem;
+  --ifm-navbar-link-color: var(--ifm-font-color-base);
+  --ifm-navbar-link-hover-color: var(--ifm-color-primary);
+  --ifm-navbar-link-active-color: var(--ifm-link-color);
+  --ifm-navbar-padding-horizontal: var(--ifm-spacing-horizontal);
+  --ifm-navbar-padding-vertical: calc(var(--ifm-spacing-vertical) * 0.5);
+  --ifm-navbar-shadow: var(--ifm-global-shadow-lw);
+  --ifm-navbar-search-input-background-color: var(--ifm-color-emphasis-200);
+  --ifm-navbar-search-input-color: var(--ifm-color-emphasis-800);
+  --ifm-navbar-search-input-placeholder-color: var(--ifm-color-emphasis-500);
+  --ifm-navbar-search-input-icon: url('data:image/svg+xml;utf8,<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16px" width="16px"><path d="M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z" /></svg>');
+  --ifm-navbar-sidebar-width: 83vw;
+}
+
+html[data-theme='dark'],
+.navbar--dark {
+  --ifm-menu-link-sublist-icon-filter: invert(100%) sepia(94%) saturate(17%)
+    hue-rotate(223deg) brightness(104%) contrast(98%);
+}
+
+.navbar {
+  background-color: var(--ifm-navbar-background-color);
+  box-shadow: var(--ifm-navbar-shadow);
+  display: flex;
+  height: var(--ifm-navbar-height);
+  padding: var(--ifm-navbar-padding-vertical)
+    var(--ifm-navbar-padding-horizontal);
+
+  @media print {
+    display: none;
+  }
+
+  & > .container,
+  & > .container-fluid {
+    display: flex;
+
+    @media (--ifm-narrow-window) {
+      padding: 0;
+    }
+  }
+
+  &--fixed-top {
+    position: sticky;
+    top: 0;
+    z-index: var(--ifm-z-index-fixed);
+  }
+
+  &__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__brand {
+    align-items: center;
+    color: var(--ifm-navbar-link-color);
+    display: flex;
+    margin-right: 1rem;
+    min-width: 0;
+
+    &:hover {
+      color: var(--ifm-navbar-link-hover-color);
+      text-decoration: none;
+    }
+  }
+
+  &__title {
+    flex: 1 1 auto;
+  }
+
+  &__toggle {
+    display: none;
+    margin-right: 0.5rem;
+
+    @media (--ifm-narrow-window) {
+      display: inherit;
+    }
+  }
+
+  &__logo {
+    flex: 0 0 auto;
+    height: 2rem;
+    margin-right: 0.5rem;
+
+    img {
+      height: 100%;
+    }
+  }
+
+  &__items {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    min-width: 0;
+
+    &--center {
+      flex: 0 0 auto;
+
+      ^^&__brand {
+        margin: 0;
+      }
+
+      + ^&--right {
+        flex: 1;
+      }
+    }
+
+    &--right {
+      flex: 0 0 auto;
+      justify-content: flex-end;
+
+      > :last-child {
+        padding-right: 0;
+      }
+    }
+  }
+
+  &__item {
+    display: inline-block;
+    padding: var(--ifm-navbar-item-padding-vertical)
+      var(--ifm-navbar-item-padding-horizontal);
+
+    &.dropdown {
+      ^^&__link:not([href]) {
+        pointer-events: none;
+      }
+    }
+
+    @media (--ifm-narrow-window) {
+      display: none;
+    }
+  }
+
+  &__link {
+    color: var(--ifm-navbar-link-color);
+    font-weight: var(--ifm-font-weight-semibold);
+
+    &:hover,
+    &--active {
+      color: var(--ifm-navbar-link-hover-color);
+      text-decoration: none;
+    }
+  }
+
+  &--dark,
+  &--primary {
+    --ifm-menu-color: var(--ifm-color-gray-300);
+    --ifm-navbar-link-color: var(--ifm-color-gray-100);
+    --ifm-navbar-search-input-background-color: rgba(255, 255, 255, 0.1);
+    --ifm-navbar-search-input-placeholder-color: rgba(255, 255, 255, 0.5);
+
+    color: var(--ifm-color-white);
+  }
+
+  &--dark {
+    --ifm-navbar-background-color: #242526;
+    --ifm-navbar-link-hover-color: var(--ifm-color-primary);
+    --ifm-menu-color-background-active: rgba(255, 255, 255, 0.05);
+    --ifm-navbar-search-input-color: var(--ifm-color-white);
+  }
+
+  &--primary {
+    --ifm-navbar-background-color: var(--ifm-color-primary);
+    --ifm-navbar-link-hover-color: var(--ifm-color-white);
+    --ifm-menu-color-active: var(--ifm-color-white);
+    --ifm-navbar-search-input-color: var(--ifm-color-emphasis-500);
+  }
+
+  &__search {
+    &-input {
+      appearance: none; /* Algolia will add type="search" to the input in Safari and Safari's styling will override the styling here. */
+      background: var(--ifm-navbar-search-input-background-color)
+        var(--ifm-navbar-search-input-icon) no-repeat 0.75rem center / 1rem 1rem;
+      border: none;
+      border-radius: 2rem;
+      color: var(--ifm-navbar-search-input-color);
+      cursor: text;
+      display: inline-block;
+      font-size: 1rem;
+      height: 2rem;
+      padding: 0 0.5rem 0 2.25rem;
+      width: 12.5rem;
+
+      &::placeholder {
+        color: var(--ifm-navbar-search-input-placeholder-color);
+      }
+
+      @media (--ifm-narrow-window) {
+        width: 9rem;
+      }
+    }
+  }
+
+  &-sidebar {
+    background-color: var(--ifm-navbar-background-color);
+    bottom: 0;
+    box-shadow: var(--ifm-global-shadow-md);
+    left: 0;
+    opacity: 0;
+    overflow-x: hidden;
+    position: fixed;
+    top: 0;
+    transform: translate3d(-100%, 0, 0);
+    visibility: hidden;
+    width: var(--ifm-navbar-sidebar-width);
+    @mixin transition opacity visibility transform, var(--ifm-transition-fast),
+      ease-in-out;
+
+    &--show {
+      ^&,
+      ^&__backdrop {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      ^& {
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    &__backdrop {
+      background-color: rgba(0, 0, 0, 0.6);
+      bottom: 0;
+      left: 0;
+      opacity: 0;
+      position: fixed;
+      right: 0;
+      top: 0;
+      visibility: hidden;
+      @mixin transition opacity visibility, var(--ifm-transition-fast),
+        ease-in-out;
+    }
+
+    &__brand {
+      align-items: center;
+      box-shadow: var(--ifm-navbar-shadow);
+      display: flex;
+      flex: 1;
+      height: var(--ifm-navbar-height);
+      padding: var(--ifm-navbar-padding-vertical)
+        var(--ifm-navbar-padding-horizontal);
+    }
+
+    &__items {
+      display: flex;
+      height: calc(100% - var(--ifm-navbar-height));
+      transform: translateZ(0);
+      transition: transform var(--ifm-transition-fast) ease-in-out;
+
+      &--show-secondary {
+        transform: translate3d(
+          calc((var(--ifm-navbar-sidebar-width)) * -1),
+          0,
+          0
+        );
+      }
+    }
+
+    &__item {
+      flex-shrink: 0;
+      padding: 0.5rem;
+      width: calc(var(--ifm-navbar-sidebar-width));
+    }
+
+    &__back {
+      background: var(--ifm-menu-color-background-active);
+      font-size: 15px;
+      font-weight: var(--ifm-button-font-weight);
+      margin: 0 0 0.2rem -0.5rem;
+      padding: 0.6rem 1.5rem;
+      position: relative;
+      text-align: left;
+      top: -0.5rem;
+      width: calc(100% + 1rem);
+    }
+
+    &__close {
+      display: flex;
+      margin-left: auto;
+    }
+  }
+}

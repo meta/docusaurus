@@ -1,0 +1,90 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-alert-background-color: inherit; /* Set a default which will be overridden later. */
+  --ifm-alert-border-color: inherit; /* Set a default which will be overridden later. */
+  --ifm-alert-border-radius: var(--ifm-global-radius);
+  --ifm-alert-border-width: 0px; /* For users that want to easily add a border */
+  --ifm-alert-border-left-width: 5px;
+  --ifm-alert-color: var(--ifm-font-color-base);
+  --ifm-alert-padding-horizontal: var(--ifm-spacing-horizontal);
+  --ifm-alert-padding-vertical: var(--ifm-spacing-vertical);
+  --ifm-alert-shadow: var(--ifm-global-shadow-lw);
+}
+
+.alert {
+  @each $color in (primary, secondary, success, info, warning, danger) {
+    &--$(color) {
+      --ifm-alert-background-color: var(
+        --ifm-color-$(color)-contrast-background
+      );
+      --ifm-alert-background-color-highlight: color-mod(
+        var(--ifm-color-$(color)) alpha(15%)
+      );
+      --ifm-alert-foreground-color: var(
+        --ifm-color-$(color)-contrast-foreground
+      );
+      --ifm-alert-border-color: var(--ifm-color-$(color)-dark);
+    }
+  }
+
+  --ifm-code-background: var(--ifm-alert-background-color-highlight);
+  --ifm-link-color: var(--ifm-alert-foreground-color);
+  --ifm-link-hover-color: var(--ifm-alert-foreground-color);
+  --ifm-link-decoration: underline;
+  --ifm-tabs-color: var(--ifm-alert-foreground-color);
+  --ifm-tabs-color-active: var(--ifm-alert-foreground-color);
+  --ifm-tabs-color-active-border: var(--ifm-alert-border-color);
+
+  background-color: var(--ifm-alert-background-color);
+  border: var(--ifm-alert-border-width) solid var(--ifm-alert-border-color);
+  border-left-width: var(--ifm-alert-border-left-width);
+  border-radius: var(--ifm-alert-border-radius);
+  box-shadow: var(--ifm-alert-shadow);
+  color: var(--ifm-alert-foreground-color);
+  padding: var(--ifm-alert-padding-vertical) var(--ifm-alert-padding-horizontal);
+
+  &__heading {
+    align-items: center;
+    display: flex;
+    font: bold var(--ifm-h5-font-size) / var(--ifm-heading-line-height)
+      var(--ifm-heading-font-family);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  &__icon {
+    display: inline-flex;
+    margin-right: 0.4em;
+
+    svg {
+      fill: var(--ifm-alert-foreground-color);
+      stroke: var(--ifm-alert-foreground-color);
+      stroke-width: 0;
+    }
+  }
+
+  .close {
+    color: var(--ifm-alert-foreground-color);
+    margin: calc(var(--ifm-alert-padding-vertical) * -1)
+      calc(var(--ifm-alert-padding-horizontal) * -1) 0 0;
+
+    opacity: 0.75;
+    &:hover,
+    &:focus {
+      opacity: 1;
+    }
+  }
+
+  a {
+    text-decoration-color: var(--ifm-alert-border-color);
+    &:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
+}
