@@ -21,9 +21,7 @@ import type {Plugin as PostCssPlugin} from 'postcss';
 import type {PluginOptions} from '@docusaurus/theme-classic';
 
 function getInfimaCSSFile(direction: string) {
-  return `infima/dist/css/default/default${
-    direction === 'rtl' ? '-rtl' : ''
-  }.css`;
+  return `@docusaurus/infima/infima${direction === 'rtl' ? '-rtl' : ''}.css`;
 }
 
 export default function themeClassic(

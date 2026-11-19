@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@docusaurus/core": "workspace:*",
+    "@docusaurus/infima": "workspace:*",
     "@docusaurus/mdx-loader": "workspace:*",
     "@docusaurus/module-type-aliases": "workspace:*",
     "@docusaurus/plugin-content-blog": "workspace:*",
@@ -35,7 +36,6 @@
     "@mdx-js/react": "catalog:",
     "clsx": "catalog:",
     "copy-text-to-clipboard": "catalog:",
-    "infima": "catalog:",
     "lodash": "catalog:",
     "nprogress": "catalog:",
     "postcss": "catalog:",

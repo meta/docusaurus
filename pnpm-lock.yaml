@@ -293,9 +293,6 @@ catalogs:
     image-size:
       specifier: ^2.0.4
       version: 2.0.4
-    infima:
-      specifier: 0.2.0-alpha.45
-      version: 0.2.0-alpha.45
     jimp:
       specifier: ^1.6.1
       version: 1.6.1
@@ -2361,6 +2358,9 @@ importers:
       '@docusaurus/core':
         specifier: workspace:*
         version: link:../docusaurus
+      '@docusaurus/infima':
+        specifier: workspace:*
+        version: link:../docusaurus-infima
       '@docusaurus/mdx-loader':
         specifier: workspace:*
         version: link:../docusaurus-mdx-loader
@@ -2403,9 +2403,6 @@ importers:
       copy-text-to-clipboard:
         specifier: 'catalog:'
         version: 3.2.2
-      infima:
-        specifier: 'catalog:'
-        version: 0.2.0-alpha.45
       lodash:
         specifier: 'catalog:'
         version: 4.18.1
@@ -9909,10 +9906,6 @@ packages:
 
   infer-owner@1.0.4:
     resolution: {integrity: sha512-IClj+Xz94+d7irH5qRyfJonOdfTzuDaifE6ZPWfx0N0+/ATZCbuTPq2prFl526urkQd90WyUKIh1DfBQ2hMz9A==}
-
-  infima@0.2.0-alpha.45:
-    resolution: {integrity: sha512-uyH0zfr1erU1OohLk0fT4Rrb94AOhguWNOcD9uGrSpRvNB+6gZXUoJX5J0NtvzBO10YZ9PgvA4NFgt+fYg8ojw==}
-    engines: {node: '>=12'}
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
@@ -21859,8 +21852,6 @@ snapshots:
   indexes-of@1.0.1: {}
 
   infer-owner@1.0.4: {}
-
-  infima@0.2.0-alpha.45: {}
 
   inflight@1.0.6:
     dependencies:

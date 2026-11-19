@@ -29,7 +29,10 @@ function layerFor(...params: string[]) {
 
 // Object order matters, it defines the layer order
 const DEFAULT_LAYERS: PluginOptions['layers'] = {
-  'docusaurus.infima': layerFor('node_modules/infima/dist'),
+  'docusaurus.infima': layerFor(
+    'packages/docusaurus-infima/dist',
+    'node_modules/@docusaurus/infima/dist',
+  ),
   'docusaurus.theme-common': layerFor(
     'packages/docusaurus-theme-common/lib',
     'node_modules/@docusaurus/theme-common/lib',

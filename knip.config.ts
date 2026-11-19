@@ -163,8 +163,8 @@ const config: KnipConfig = ({
     'packages/docusaurus-theme-classic': themePackageConfig({
       entry: ['src/nprogress.ts!', 'src/prism-include-languages.ts!'],
       ignoreDependencies: [
-        // Resolved with require.resolve(`infima/...`)
-        'infima',
+        // Resolved with require.resolve(`@docusaurus/infima/...`)
+        '@docusaurus/infima',
         // Knip doesn't detect imports in "declare module" blocks
         '@docusaurus/mdx-loader',
         'utility-types',
