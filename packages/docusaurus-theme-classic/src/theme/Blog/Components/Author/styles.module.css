@@ -7,10 +7,32 @@
 
 .authorImage {
   --ifm-avatar-photo-size: 3.6rem;
+  background: var(--ifm-color-emphasis-200);
 }
 
 .author-as-h1 .authorImage {
   --ifm-avatar-photo-size: 7rem;
+}
+
+.authorGeneratedImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--ifm-color-emphasis-0);
+  font-size: 2rem;
+  background: linear-gradient(
+    135deg,
+    var(--ifm-color-emphasis-700) 0%,
+    var(--ifm-color-emphasis-1000) 100%
+  );
+}
+
+[data-theme='dark'] .authorGeneratedImage {
+  background: linear-gradient(
+    135deg,
+    var(--ifm-color-emphasis-800) 0%,
+    var(--ifm-color-emphasis-200) 100%
+  );
 }
 
 .author-as-h2 .authorImage {

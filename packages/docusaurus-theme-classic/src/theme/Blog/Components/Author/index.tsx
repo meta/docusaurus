@@ -11,6 +11,7 @@ import Link, {type Props as LinkProps} from '@docusaurus/Link';
 import AuthorSocials from '@theme/Blog/Components/Author/Socials';
 import type {Props} from '@theme/Blog/Components/Author';
 import Heading from '@theme/Heading';
+import GeneratedImage from '@theme/Blog/Components/Author/GeneratedImage';
 import styles from './styles.module.css';
 
 function MaybeLink(props: LinkProps): ReactNode {
@@ -69,12 +70,20 @@ export default function BlogAuthor({
         className,
         styles[`author-as-${as}`],
       )}>
-      {imageURL && (
+      {imageURL ? (
         <MaybeLink href={link} className="avatar__photo-link">
           <img
             className={clsx('avatar__photo', styles.authorImage)}
             src={imageURL}
             alt={name}
+          />
+        </MaybeLink>
+      ) : (
+        <MaybeLink href={link} className="avatar__photo-link">
+          <GeneratedImage
+            name={name!}
+            link={link}
+            className={clsx(styles.authorImage, styles.authorGeneratedImage)}
           />
         </MaybeLink>
       )}
