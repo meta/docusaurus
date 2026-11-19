@@ -13,7 +13,7 @@ import path from 'node:path';
 
 // TODO try to remove these third-party dependencies if possible
 import {logger} from '@docusaurus/logger';
-import prompts, {type Choice} from 'prompts';
+import {type Choice} from 'prompts';
 import {fs, pathExists} from '@docusaurus/fs';
 import {
   LockfileNames,
@@ -35,7 +35,7 @@ import {
   updatePkg,
   printPackageManagerHelp,
 } from './utils.js';
-import {askPreferredLanguage} from './prompts.js';
+import {askPreferredLanguage, prompt} from './prompts.js';
 
 type LanguagesOptions = {
   javascript?: boolean;
@@ -90,7 +90,7 @@ async function askForPackageManagerChoice(): Promise<PackageManager> {
   const choices = packageManagers.map((p) => ({title: p, value: p}));
   return (
     (
-      (await prompts(
+      (await prompt(
         {
           type: 'select',
           name: 'packageManager',
@@ -101,6 +101,7 @@ async function askForPackageManagerChoice(): Promise<PackageManager> {
           onCancel() {
             logger.info`Falling back to name=${DefaultPackageManager}`;
           },
+          answerHint: 'the --package-manager option',
         },
       )) as {packageManager?: PackageManager}
     ).packageManager ?? DefaultPackageManager
@@ -222,7 +223,7 @@ async function askTemplateChoice({
   return cliOptions.gitStrategy
     ? 'Git repository'
     : (
-        (await prompts(
+        (await prompt(
           {
             type: 'select',
             name: 'template',
@@ -234,6 +235,7 @@ async function askTemplateChoice({
               logger.error('A choice is required.');
               process.exit(1);
             },
+            answerHint: 'the [template] argument',
           },
         )) as {template: Template | 'Git repository' | 'Local template'}
       ).template;
@@ -267,7 +269,7 @@ async function getSiteName(
     }
     return reqName;
   }
-  const {siteName} = (await prompts(
+  const {siteName} = (await prompt(
     {
       type: 'text',
       name: 'siteName',
@@ -280,6 +282,7 @@ async function getSiteName(
         logger.error('A website name is required.');
         process.exit(1);
       },
+      answerHint: 'the [siteName] argument',
     },
   )) as {siteName: string};
   return siteName;
@@ -365,7 +368,7 @@ async function askGitRepositorySource({
 }: {
   cliOptions: CLIOptions;
 }): Promise<Source> {
-  const {gitRepoUrl} = (await prompts(
+  const {gitRepoUrl} = (await prompt(
     {
       type: 'text',
       name: 'gitRepoUrl',
@@ -383,11 +386,12 @@ async function askGitRepositorySource({
         logger.error('A git repo URL is required.');
         process.exit(1);
       },
+      answerHint: 'the [template] argument',
     },
   )) as {gitRepoUrl: string};
   let strategy = cliOptions.gitStrategy;
   if (!strategy) {
-    ({strategy} = (await prompts(
+    ({strategy} = (await prompt(
       {
         type: 'select',
         name: 'strategy',
@@ -409,6 +413,7 @@ async function askGitRepositorySource({
         onCancel() {
           logger.info`Falling back to name=${'deep'}`;
         },
+        answerHint: 'the --git-strategy option',
       },
     )) as {strategy?: GitCloneStrategy});
   }
@@ -420,7 +425,7 @@ async function askGitRepositorySource({
 }
 
 async function askLocalSource(): Promise<Source> {
-  const {templateDir} = (await prompts(
+  const {templateDir} = (await prompt(
     {
       type: 'text',
       name: 'templateDir',
@@ -444,6 +449,7 @@ async function askLocalSource(): Promise<Source> {
         logger.error('A file path is required.');
         process.exit(1);
       },
+      answerHint: 'the [template] argument',
     },
   )) as {templateDir: string};
   return {
