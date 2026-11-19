@@ -10,6 +10,7 @@
 import {describe, expect, it} from 'vitest';
 import {remark} from 'remark';
 import mdx from 'remark-mdx';
+import remarkComment from '@slorber/remark-comment';
 import {u} from 'unist-builder';
 import {visit} from 'unist-util-visit';
 import {escapeMarkdownHeadingIds} from '@docusaurus/utils';
@@ -357,6 +358,149 @@ describe('headings remark plugin', () => {
         await expect(
           headingIdFor('# {#text-after} custom ID', format),
         ).resolves.toEqual('text-after-custom-id');
+
+        await expect(
+          process(
+            '## Heading {#legacy}<!-- note -->',
+            [[remarkComment, {ast: true}]],
+            {},
+            format,
+          ),
+        ).resolves.toEqual(
+          u('root', [
+            u(
+              'heading',
+              {
+                depth: 2,
+                data: {
+                  hProperties: {id: 'legacy'},
+                  id: 'legacy',
+                },
+              },
+              [
+                u('text', 'Heading'),
+                {
+                  type: 'comment',
+                  value: '',
+                  commentValue: ' note ',
+                },
+              ],
+            ),
+          ]),
+        );
+
+        await expect(
+          process(
+            '## Heading *with emphasis {#nested-legacy}*',
+            [],
+            {},
+            format,
+          ),
+        ).resolves.toEqual(
+          u('root', [
+            u(
+              'heading',
+              {
+                depth: 2,
+                data: {
+                  hProperties: {id: 'nested-legacy'},
+                  id: 'nested-legacy',
+                },
+              },
+              [
+                u('text', 'Heading '),
+                u('emphasis', [u('text', 'with emphasis')]),
+              ],
+            ),
+          ]),
+        );
+
+        await expect(
+          process(
+            '## Heading {#custom-id}',
+            [
+              function splitTextPlugin() {
+                return (root) => {
+                  const heading = (root as Parent).children[0] as Heading;
+                  heading.children = [
+                    u('text', 'Heading '),
+                    u('text', '{#custom'),
+                    u('text', '-id}'),
+                  ];
+                };
+              },
+            ],
+            {},
+            format,
+          ),
+        ).resolves.toEqual(
+          u('root', [
+            u(
+              'heading',
+              {
+                depth: 2,
+                data: {
+                  hProperties: {id: 'custom-id'},
+                  id: 'custom-id',
+                },
+              },
+              [u('text', 'Heading')],
+            ),
+          ]),
+        );
+
+        await expect(
+          process('## Title `code` {#custom-id}', [], {}, format),
+        ).resolves.toEqual(
+          u('root', [
+            u(
+              'heading',
+              {
+                depth: 2,
+                data: {
+                  hProperties: {id: 'custom-id'},
+                  id: 'custom-id',
+                },
+              },
+              [u('text', 'Title '), u('inlineCode', 'code')],
+            ),
+          ]),
+        );
+
+        await expect(
+          process(
+            '## Title {#`custom`}',
+            [
+              function inlineCodeIdPlugin() {
+                return (root) => {
+                  const heading = (root as Parent).children[0] as Heading;
+                  heading.children = [
+                    u('text', 'Title '),
+                    u('text', '{#'),
+                    u('inlineCode', 'custom'),
+                    u('text', '}'),
+                  ];
+                };
+              },
+            ],
+            {},
+            format,
+          ),
+        ).resolves.toEqual(
+          u('root', [
+            u(
+              'heading',
+              {
+                depth: 2,
+                data: {
+                  hProperties: {id: 'custom'},
+                  id: 'custom',
+                },
+              },
+              [u('text', 'Title')],
+            ),
+          ]),
+        );
       }
       it('works for format CommonMark', async () => {
         await testHeadingIds('md');
@@ -432,6 +576,17 @@ describe('headings remark plugin', () => {
         it('removes the comment node when it is the only heading content', async () => {
           const heading = await processHeading('## <!-- #id-only -->', 'md');
           expect(heading).toEqual(h(null, 2, 'id-only'));
+        });
+
+        it('supports HTML comment syntax when remark-comment is enabled', async () => {
+          const result = await process(
+            '## Heading <!-- #my-id -->',
+            [[remarkComment, {ast: true}]],
+            {},
+            'md',
+          );
+          const heading = result.children[0] as Heading;
+          expect(heading).toEqual(h('Heading', 2, 'my-id'));
         });
 
         it('does NOT support MDX comment syntax {/* #id */} in CommonMark', async () => {
