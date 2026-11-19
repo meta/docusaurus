@@ -254,6 +254,29 @@ export async function isGitInsideWorktree(cwd: string): Promise<boolean> {
   }
 }
 
+// Git Bash / MSYS on Windows reports paths as POSIX "mount" paths such as
+// `/c/Users/foo` instead of `C:\Users\foo`. Node's path APIs treat the
+// leading `/c` as a directory under the current drive root (resolving to
+// `C:\c\Users\foo`), which then fails with ENOENT. Convert such a path back
+// to a real Windows path. Exported for testing.
+export function fromGitBashPath(gitPath: string): string {
+  // Match `/c`, `/c/`, or `/c/sub/path`. The subpath is optional so a
+  // repository located at a drive root (reported by Git Bash as `/c`) maps to
+  // `C:\` instead of being left unchanged.
+  const match = /^\/(?<drive>[a-z])(?:\/(?<subpath>.*))?$/i.exec(gitPath);
+  if (!match) {
+    return gitPath;
+  }
+  const subpath = match.groups!.subpath ?? '';
+  return `${match.groups!.drive!.toUpperCase()}:\\${subpath.replaceAll('/', '\\')}`;
+}
+
+// Normalize a path returned by Git before handing it to the filesystem. Only
+// needed on Windows, where Git Bash may return MSYS mount paths (see above).
+function normalizeGitPath(gitPath: string): string {
+  return process.platform === 'win32' ? fromGitBashPath(gitPath) : gitPath;
+}
+
 export async function getGitRepoRoot(cwd: string): Promise<string> {
   const result = await execa('git', ['rev-parse', '--show-toplevel'], {
     cwd,
@@ -269,7 +292,7 @@ The command executed throws an error: ${error.message}`,
     );
   });
 
-  return fs.realpath(result.stdout.trim());
+  return fs.realpath(normalizeGitPath(result.stdout.trim()));
 }
 
 // A Git "superproject" is a Git repository that contains submodules
@@ -300,7 +323,7 @@ The command executed throws an error: ${error.message}`,
   // this command only works when inside submodules
   // otherwise it doesn't return anything when we are inside the main repo
   if (output) {
-    return fs.realpath(output);
+    return fs.realpath(normalizeGitPath(output));
   }
   return getGitRepoRoot(cwd);
 }
