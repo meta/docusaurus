@@ -5,9 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-.shadows-demo .item {
-  background-color: var(--ifm-color-emphasis-alpha-05);
-  border-radius: 8px;
-  padding: 16px;
-  text-align: center;
+.plugin-id-infima {
+  .shadows-demo .item {
+    background-color: var(--ifm-color-emphasis-alpha-05);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
 }

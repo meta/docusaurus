@@ -5,12 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-.color-swatch {
-  border-radius: 8px;
-  display: inline-block;
-  height: 3rem;
-  margin-right: 0.5rem;
-  padding: 16px;
-  text-align: center;
-  width: 3rem;
+.plugin-id-infima {
+  .color-swatch {
+    border-radius: 8px;
+    display: inline-block;
+    height: 3rem;
+    margin-right: 0.5rem;
+    padding: 16px;
+    text-align: center;
+    width: 3rem;
+  }
 }
