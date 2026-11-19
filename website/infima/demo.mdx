@@ -34,7 +34,7 @@ All the Infima components on a single page. The component pages show their HTML 
         </button>
         <a class="navbar__brand" href="#">
           <div class="navbar__logo">
-            <img src="/img/docusaurus.svg" />
+            <img alt="" src="/img/docusaurus.svg" />
           </div>
           <span class="navbar__title text--truncate">Infima</span>
         </a>
@@ -77,7 +77,7 @@ All the Infima components on a single page. The component pages show their HTML 
         </div>
         <div
           class="navbar__item dropdown dropdown--hoverable dropdown--nocaret thin-scrollbar">
-          <a class="navbar__link" href="#url">
+          <a class="navbar__link" href="#url" aria-label="Languages">
             <i class="fas fa-language fa-2x"></i>
           </a>
           <ul class="dropdown__menu">
@@ -101,7 +101,7 @@ All the Infima components on a single page. The component pages show their HTML 
       <div class="navbar__items navbar__items--right">
         <div
           class="navbar__item dropdown dropdown--hoverable dropdown--right dropdown--nocaret thin-scrollbar">
-          <a class="navbar__link" href="#url">
+          <a class="navbar__link" href="#url" aria-label="Languages">
             <i class="fas fa-language fa-2x"></i>
           </a>
           <ul class="dropdown__menu">
@@ -121,7 +121,7 @@ All the Infima components on a single page. The component pages show their HTML 
             </li>
           </ul>
         </div>
-        <a class="navbar__item navbar__link" href="#url">
+        <a class="navbar__item navbar__link" href="#url" aria-label="GitHub">
           <i class="fab fa-github fa-lg"></i>
         </a>
         <form>
@@ -137,7 +137,7 @@ All the Infima components on a single page. The component pages show their HTML 
     <div class="navbar-sidebar__brand">
       <a class="navbar__brand" href="#" role="button">
         <div class="navbar__logo">
-          <img src="/img/docusaurus.svg" />
+          <img alt="" src="/img/docusaurus.svg" />
         </div>
         <span class="navbar__title text--truncate">
           Infima long long long long long long long long long
@@ -216,7 +216,10 @@ All the Infima components on a single page. The component pages show their HTML 
           <li class="menu__list-item">
             <div class="menu__list-item-collapsible">
               <a class="menu__link" href="#url">Category</a>
-              <button type="button" class="clean-btn menu__caret"></button>
+              <button
+                type="button"
+                class="clean-btn menu__caret"
+                aria-label="Toggle the Category category"></button>
             </div>
             <ul class="menu__list">
               <li class="menu__list-item">
@@ -371,7 +374,7 @@ All the Infima components on a single page. The component pages show their HTML 
         <div class="navbar__items navbar__items--right">
           <div
             class="navbar__item dropdown dropdown--hoverable dropdown--right dropdown--nocaret">
-            <a class="navbar__link" href="#url">
+            <a class="navbar__link" href="#url" aria-label="Languages">
               <i class="fas fa-language fa-2x"></i>
             </a>
             <ul class="dropdown__menu">
@@ -389,7 +392,7 @@ All the Infima components on a single page. The component pages show their HTML 
               </li>
             </ul>
           </div>
-          <a class="navbar__item navbar__link" href="#url">
+          <a class="navbar__item navbar__link" href="#url" aria-label="GitHub">
             <i class="fab fa-github fa-lg"></i>
           </a>
           <form>
@@ -657,7 +660,10 @@ All the Infima components on a single page. The component pages show their HTML 
         <li class="menu__list-item">
           <div class="menu__list-item-collapsible">
             <a class="menu__link" href="#url">Category</a>
-            <button type="button" class="clean-btn menu__caret"></button>
+            <button
+              type="button"
+              class="clean-btn menu__caret"
+              aria-label="Toggle the Category category"></button>
           </div>
           <ul class="menu__list">
             <li class="menu__list-item">
@@ -678,7 +684,10 @@ All the Infima components on a single page. The component pages show their HTML 
             <a class="menu__link" href="#url">
               A Very Very Very Very Very Long Category
             </a>
-            <button type="button" class="clean-btn menu__caret"></button>
+            <button
+              type="button"
+              class="clean-btn menu__caret"
+              aria-label="Toggle the A Very Very Very Very Very Long Category category"></button>
           </div>
 
           <ul class="menu__list">
@@ -709,7 +718,10 @@ All the Infima components on a single page. The component pages show their HTML 
             <a class="menu__link menu__link--sublist" href="#url">
               Category with link
             </a>
-            <button type="button" class="clean-btn menu__caret"></button>
+            <button
+              type="button"
+              class="clean-btn menu__caret"
+              aria-label="Toggle the Category with link category"></button>
           </div>
           <ul class="menu__list">
             <li class="menu__list-item">
@@ -2089,6 +2101,7 @@ const myFun = (x, y) =&gt; {
   <div class="col">
     <div class="avatar">
       <img
+        alt=""
         class="avatar__photo avatar__photo--lg"
         src="https://avatars2.githubusercontent.com/u/197597?s=460" />
       <div class="avatar__intro">
@@ -2100,6 +2113,7 @@ const myFun = (x, y) =&gt; {
   <div class="col">
     <div class="avatar">
       <img
+        alt=""
         class="avatar__photo"
         src="https://avatars1.githubusercontent.com/u/977348?s=460&v=4" />
       <div class="avatar__intro">
@@ -2115,6 +2129,7 @@ const myFun = (x, y) =&gt; {
   <div class="col">
     <div class="avatar">
       <img
+        alt=""
         class="avatar__photo avatar__photo--sm"
         src="https://avatars3.githubusercontent.com/u/13352?s=400&v=4" />
       <div class="avatar__intro">
@@ -2128,6 +2143,7 @@ const myFun = (x, y) =&gt; {
   <div class="col">
     <div class="avatar avatar--vertical">
       <img
+        alt=""
         class="avatar__photo avatar__photo--xl"
         src="https://avatars1.githubusercontent.com/u/165856?s=460&v=4" />
       <div class="avatar__intro">
@@ -2139,6 +2155,7 @@ const myFun = (x, y) =&gt; {
   <div class="col">
     <div class="avatar avatar--vertical">
       <img
+        alt=""
         class="avatar__photo avatar__photo--lg"
         src="https://avatars0.githubusercontent.com/u/3757713?s=460&v=4" />
       <div class="avatar__intro">
@@ -2152,6 +2169,7 @@ const myFun = (x, y) =&gt; {
   <div class="col">
     <div class="avatar avatar--vertical">
       <img
+        alt=""
         class="avatar__photo"
         src="https://avatars1.githubusercontent.com/u/1315101?s=460&v=4" />
       <div class="avatar__intro">
@@ -2163,6 +2181,7 @@ const myFun = (x, y) =&gt; {
   <div class="col">
     <div class="avatar avatar--vertical">
       <img
+        alt=""
         class="avatar__photo avatar__photo--sm"
         src="https://avatars1.githubusercontent.com/u/17883920?s=460&v=4" />
       <div class="avatar__intro">
@@ -2199,6 +2218,7 @@ const myFun = (x, y) =&gt; {
       <div class="card__header">
         <div class="avatar">
           <img
+            alt=""
             class="avatar__photo"
             src="https://avatars1.githubusercontent.com/u/4060187?s=460&v=4" />
           <div class="avatar__intro">
@@ -2270,6 +2290,7 @@ const myFun = (x, y) =&gt; {
       <div class="card__header">
         <div class="avatar">
           <img
+            alt=""
             class="avatar__photo"
             src="https://avatars1.githubusercontent.com/u/4060187?s=460&v=4" />
           <div class="avatar__intro">
