@@ -6,6 +6,9 @@
  */
 
 import {visit} from 'unist-util-visit';
+import type {Transformer} from 'unified';
+import type {Root} from 'mdast';
+import type {MdxJsxAttribute, MdxJsxFlowElement} from 'mdast-util-mdx';
 
 const containerClassNameRegex =
   /containerClassName=(?<quote>["'])(?<containerClassName>.*?)\1/;
@@ -16,15 +19,14 @@ const previewOnlyRegex = /\bpreviewOnly\b/;
  * Use "```html containerClassName="my-class"" to style the preview container
  * Use "```html previewOnly" to replace the code block by its preview
  */
-export default function plugin() {
-  /** @type {import("unified").Transformer} */
-  const transformer = (root) => {
+export default function plugin(): Transformer<Root> {
+  return (root) => {
     visit(root, 'code', (node, index, parent) => {
-      if (node.lang !== 'html') {
+      if (node.lang !== 'html' || index === undefined || !parent) {
         return undefined;
       }
       const containerClassName = node.meta?.match(containerClassNameRegex)
-        ?.groups.containerClassName;
+        ?.groups?.containerClassName;
       const previewOnly = previewOnlyRegex.test(node.meta ?? '');
 
       const previewNode = createPreviewNode({
@@ -40,11 +42,16 @@ export default function plugin() {
       return index + newNodes.length;
     });
   };
-  return transformer;
 }
 
 // <div className={containerClassName} dangerouslySetInnerHTML={{__html}} />
-function createPreviewNode({html, containerClassName}) {
+function createPreviewNode({
+  html,
+  containerClassName,
+}: {
+  html: string;
+  containerClassName: string | undefined;
+}): MdxJsxFlowElement {
   const classNameAttributes = containerClassName
     ? [createStringAttribute('className', containerClassName)]
     : [];
@@ -56,7 +63,7 @@ function createPreviewNode({html, containerClassName}) {
   };
 }
 
-function createLineBreakNode() {
+function createLineBreakNode(): MdxJsxFlowElement {
   return {
     type: 'mdxJsxFlowElement',
     name: 'br',
@@ -65,32 +72,45 @@ function createLineBreakNode() {
   };
 }
 
-function createStringAttribute(name, value) {
+function createStringAttribute(name: string, value: string): MdxJsxAttribute {
   return {type: 'mdxJsxAttribute', name, value};
 }
 
-function createInnerHTMLAttribute(html) {
-  const objectExpression = {
-    type: 'ObjectExpression',
-    properties: [
-      {
-        type: 'Property',
-        kind: 'init',
-        key: {type: 'Identifier', name: '__html'},
-        value: {type: 'Literal', value: html, raw: JSON.stringify(html)},
-      },
-    ],
-  };
+function createInnerHTMLAttribute(html: string): MdxJsxAttribute {
   return {
     type: 'mdxJsxAttribute',
     name: 'dangerouslySetInnerHTML',
     value: {
       type: 'mdxJsxAttributeValueExpression',
+      // MDX only compiles the estree, the source code is not needed
+      value: '',
       data: {
         estree: {
           type: 'Program',
-          body: [{type: 'ExpressionStatement', expression: objectExpression}],
           sourceType: 'module',
+          body: [
+            {
+              type: 'ExpressionStatement',
+              expression: {
+                type: 'ObjectExpression',
+                properties: [
+                  {
+                    type: 'Property',
+                    kind: 'init',
+                    method: false,
+                    shorthand: false,
+                    computed: false,
+                    key: {type: 'Identifier', name: '__html'},
+                    value: {
+                      type: 'Literal',
+                      value: html,
+                      raw: JSON.stringify(html),
+                    },
+                  },
+                ],
+              },
+            },
+          ],
         },
       },
     },
