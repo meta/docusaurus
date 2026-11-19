@@ -77,42 +77,51 @@ export function createServeRequestHandler({
     // serve-handler can't serve these pages: cleanUrls would redirect them
     req.url = (await getHtmlPathPageFileUrl(outDir, req.url)) ?? req.url;
 
-    await serveHandler(req, res, {
-      // cleanUrls serves /file with file.html, but also redirects /file.html
-      // to /file, even when the file exists, and drops the baseUrl
-      // We already did our clean URL redirects: only existing .html files and
-      // paths with an encoded ".html" or "/index" get there
-      // See https://github.com/meta/docusaurus/pull/12916
-      cleanUrls: !hasCleanUrlSuffix(req.url),
-      public: outDir,
-      // We do the trailing slash redirects: serve-handler would decode
-      // encoded slashes, merge them and drop the baseUrl
-      trailingSlash: undefined,
-      directoryListing: false,
-      // serve-handler only answers 304 to an ETag revalidation, and the ETag
-      // stays the same when a rebuild doesn't change the file content
-      etag: true,
-      headers: [
-        // The default value has the file name, which crashes Node.js when it
-        // has Latin-1 characters like "café.html"
-        // See https://github.com/vercel/serve-handler/issues/205
-        {
-          source: '**',
-          headers: [{key: 'Content-Disposition', value: 'inline'}],
-        },
-        // The bundler adds a content hash to the names of these files
-        // Overrides the Cache-Control set above, only for existing files
-        {
-          source: 'assets/**',
-          headers: [
-            {
-              key: 'Cache-Control',
-              value: 'public, max-age=31536000, immutable',
-            },
-          ],
-        },
-      ],
-    });
+    await serveHandler(
+      req,
+      res,
+      {
+        // cleanUrls serves /file with file.html, but also redirects /file.html
+        // to /file, even when the file exists, and drops the baseUrl
+        // We already did our clean URL redirects: only existing .html files and
+        // paths with an encoded ".html" or "/index" get there
+        // See https://github.com/meta/docusaurus/pull/12916
+        cleanUrls: !hasCleanUrlSuffix(req.url),
+        public: outDir,
+        // We do the trailing slash redirects: serve-handler would decode
+        // encoded slashes, merge them and drop the baseUrl
+        trailingSlash: undefined,
+        directoryListing: false,
+        // serve-handler only answers 304 to an ETag revalidation, and the ETag
+        // stays the same when a rebuild doesn't change the file content
+        etag: true,
+        headers: [
+          // The default value has the file name, which crashes Node.js when it
+          // has Latin-1 characters like "café.html"
+          // See https://github.com/vercel/serve-handler/issues/205
+          {
+            source: '**',
+            headers: [{key: 'Content-Disposition', value: 'inline'}],
+          },
+          // The bundler adds a content hash to the names of these files
+          // Overrides the Cache-Control set above, only for existing files
+          {
+            source: 'assets/**',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'public, max-age=31536000, immutable',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        // serve-handler only calls it for 404 errors
+        sendError: (absolutePath) =>
+          sendNotFoundPage(res, outDir, absolutePath!),
+      },
+    );
   };
 }
 
@@ -282,6 +291,42 @@ function getCleanPathname(pathname: string, baseUrl: string): string {
   const cleanPathname = pathname.replace(/(?:\.html|\/index)$/, '');
   // Like serve-handler, /index redirects to /
   return cleanPathname === baseUrl.slice(0, -1) ? baseUrl : cleanPathname;
+}
+
+// Serves the nearest 404.html, like Cloudflare Pages: "/fr/missing" gets the
+// 404 page of the "fr" locale build, "fr/404.html"
+// See https://developers.cloudflare.com/pages/configuration/serving-pages/#not-found-behavior
+async function sendNotFoundPage(
+  res: http.ServerResponse,
+  outDir: string,
+  absolutePath: string,
+) {
+  const page = await readNearestNotFoundPage(outDir, absolutePath);
+  if (page === undefined) {
+    res.writeHead(404);
+    res.end('Not Found');
+    return;
+  }
+  res.writeHead(404, {'Content-Type': 'text/html; charset=utf-8'});
+  res.end(page);
+}
+
+async function readNearestNotFoundPage(
+  outDir: string,
+  absolutePath: string,
+): Promise<Buffer | undefined> {
+  const folders = path
+    .relative(outDir, absolutePath)
+    .split(path.sep)
+    .slice(0, -1);
+  for (let depth = folders.length; depth >= 0; depth -= 1) {
+    const pagePath = path.join(outDir, ...folders.slice(0, depth), '404.html');
+    const page = await fs.readFile(pagePath).catch(() => undefined);
+    if (page !== undefined) {
+      return page;
+    }
+  }
+  return undefined;
 }
 
 function redirect(

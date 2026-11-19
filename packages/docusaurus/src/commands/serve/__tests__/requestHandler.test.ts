@@ -62,6 +62,10 @@ const RequestPaths = [
   '/missing',
   '/missing/',
   '/missing.html',
+  // A locale build, with its own 404 page
+  '/fr/missing',
+  '/fr/missing/',
+  '/fr/folder/missing',
   // Client redirect files, for redirects from a .html path
   // plugin-client-redirects writes a folder, or a file with trailingSlash false
   '/redirect-folder.html',
@@ -155,6 +159,9 @@ describe('createServeRequestHandler', () => {
         /missing                    404 404.html
         /missing/                   404 404.html
         /missing.html               301 /missing → 404 404.html
+        /fr/missing                 404 fr/404.html
+        /fr/missing/                404 fr/404.html
+        /fr/folder/missing          404 fr/404.html
         /redirect-folder.html       200 redirect-folder.html/index.html
         /redirect-folder.html/      200 redirect-folder.html/index.html
         /redirect-file.html         200 redirect-file.html.html
@@ -219,6 +226,9 @@ describe('createServeRequestHandler', () => {
         /missing                    301 /missing/ → 404 404.html
         /missing/                   404 404.html
         /missing.html               301 /missing → 301 /missing/ → 404 404.html
+        /fr/missing                 301 /fr/missing/ → 404 fr/404.html
+        /fr/missing/                404 fr/404.html
+        /fr/folder/missing          301 /fr/folder/missing/ → 404 fr/404.html
         /redirect-folder.html       301 /redirect-folder.html/ → 200 redirect-folder.html/index.html
         /redirect-folder.html/      200 redirect-folder.html/index.html
         /redirect-file.html         301 /redirect-file.html/ → 200 redirect-file.html.html
@@ -283,6 +293,9 @@ describe('createServeRequestHandler', () => {
         /missing                    404 404.html
         /missing/                   301 /missing → 404 404.html
         /missing.html               301 /missing → 404 404.html
+        /fr/missing                 404 fr/404.html
+        /fr/missing/                301 /fr/missing → 404 fr/404.html
+        /fr/folder/missing          404 fr/404.html
         /redirect-folder.html       200 redirect-folder.html/index.html
         /redirect-folder.html/      301 /redirect-folder.html → 200 redirect-folder.html/index.html
         /redirect-file.html         200 redirect-file.html.html
@@ -349,6 +362,9 @@ describe('createServeRequestHandler', () => {
         /base/missing                    404 404.html
         /base/missing/                   404 404.html
         /base/missing.html               301 /base/missing → 404 404.html
+        /base/fr/missing                 404 fr/404.html
+        /base/fr/missing/                404 fr/404.html
+        /base/fr/folder/missing          404 fr/404.html
         /base/redirect-folder.html       200 redirect-folder.html/index.html
         /base/redirect-folder.html/      200 redirect-folder.html/index.html
         /base/redirect-file.html         200 redirect-file.html.html
@@ -413,6 +429,9 @@ describe('createServeRequestHandler', () => {
         /base/missing                    301 /base/missing/ → 404 404.html
         /base/missing/                   404 404.html
         /base/missing.html               301 /base/missing → 301 /base/missing/ → 404 404.html
+        /base/fr/missing                 301 /base/fr/missing/ → 404 fr/404.html
+        /base/fr/missing/                404 fr/404.html
+        /base/fr/folder/missing          301 /base/fr/folder/missing/ → 404 fr/404.html
         /base/redirect-folder.html       301 /base/redirect-folder.html/ → 200 redirect-folder.html/index.html
         /base/redirect-folder.html/      200 redirect-folder.html/index.html
         /base/redirect-file.html         301 /base/redirect-file.html/ → 200 redirect-file.html.html
@@ -477,6 +496,9 @@ describe('createServeRequestHandler', () => {
         /base/missing                    404 404.html
         /base/missing/                   301 /base/missing → 404 404.html
         /base/missing.html               301 /base/missing → 404 404.html
+        /base/fr/missing                 404 fr/404.html
+        /base/fr/missing/                301 /base/fr/missing → 404 fr/404.html
+        /base/fr/folder/missing          404 fr/404.html
         /base/redirect-folder.html       200 redirect-folder.html/index.html
         /base/redirect-folder.html/      301 /base/redirect-folder.html → 200 redirect-folder.html/index.html
         /base/redirect-file.html         200 redirect-file.html.html
@@ -961,9 +983,9 @@ describe('createServeRequestHandler', () => {
         /site.webmanifest          200 no-cache + ETag
         /assets/css/styles.css     200 public, max-age=31536000, immutable + ETag
         /assets/images/photo.jpeg  200 public, max-age=31536000, immutable + ETag
-        /assets/                   404 no-cache + ETag
-        /assets/missing.js         404 no-cache + ETag
-        /missing/                  404 no-cache + ETag
+        /assets/                   404 no-cache
+        /assets/missing.js         404 no-cache
+        /missing/                  404 no-cache
         /%E0%A4%A/                 400 no-cache"
       `);
     });
@@ -989,8 +1011,8 @@ describe('createServeRequestHandler', () => {
         /base/file                   301 no-cache
         /base/file.html              200 no-cache + ETag
         /base/assets/css/styles.css  200 public, max-age=31536000, immutable + ETag
-        /base/assets/missing.js      404 no-cache + ETag
-        /base/missing/               404 no-cache + ETag"
+        /base/assets/missing.js      404 no-cache
+        /base/missing/               404 no-cache"
       `);
     });
 
