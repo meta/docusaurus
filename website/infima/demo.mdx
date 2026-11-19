@@ -124,7 +124,15 @@ All the Infima components on a single page. The component pages show their HTML 
           <div
             class="navbar__item dropdown dropdown--hoverable dropdown--right dropdown--nocaret">
             <a class="navbar__link" href="#url" aria-label="Languages">
-              <i class="fas fa-language fa-2x"></i>
+              <svg
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z" />
+              </svg>
             </a>
             <ul class="dropdown__menu">
               <li>
@@ -141,9 +149,10 @@ All the Infima components on a single page. The component pages show their HTML 
               </li>
             </ul>
           </div>
-          <a class="navbar__item navbar__link" href="#url" aria-label="GitHub">
-            <i class="fab fa-github fa-lg"></i>
-          </a>
+          <a
+            class="navbar__item navbar__link header-github-link"
+            href="#url"
+            aria-label="GitHub"></a>
           <form>
             <div class="navbar__search">
               <input class="navbar__search-input" placeholder="Search" />
@@ -1344,8 +1353,7 @@ const myFun = (x, y) =&gt; {
         </div>
         <div class="dropdown dropdown--right">
           <button class="button button--info" data-toggle="dropdown">
-            Right-Aligned Long Children&nbsp;&nbsp;
-            <i class="fas fa-caret-down"></i>
+            Right-Aligned Long Children
           </button>
           <ul class="dropdown__menu">
             <li>
@@ -1981,7 +1989,7 @@ const myFun = (x, y) =&gt; {
       <div class="card__image">
         <img
           src="https://images.unsplash.com/photo-1501619951397-5ba40d0f75da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1655&q=80"
-          alt="Image alt text"
+          alt=""
           title="Logo Title Text 1" />
       </div>
       <div class="card__footer">
@@ -1998,7 +2006,7 @@ const myFun = (x, y) =&gt; {
       <div class="card__image">
         <img
           src="https://images.unsplash.com/photo-1506624183912-c602f4a21ca7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
-          alt="Image alt text"
+          alt=""
           title="Logo Title Text 1" />
       </div>
       <div class="card__body">
@@ -2053,7 +2061,7 @@ const myFun = (x, y) =&gt; {
       <div class="card__image">
         <img
           src="https://images.unsplash.com/photo-1501619951397-5ba40d0f75da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1655&q=80"
-          alt="Image alt text"
+          alt=""
           title="Logo Title Text 1" />
       </div>
       <div class="card__footer">
@@ -2070,7 +2078,7 @@ const myFun = (x, y) =&gt; {
       <div class="card__image">
         <img
           src="https://images.unsplash.com/photo-1506624183912-c602f4a21ca7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
-          alt="Image alt text"
+          alt=""
           title="Logo Title Text 1" />
       </div>
       <div class="card__body">
@@ -2403,7 +2411,7 @@ let myFun = (x, y) =&gt; {
     <h2>Images</h2>
     <img
       src="https://images.unsplash.com/photo-1523612192437-66de9804ac3c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=59310f54610ead00fcc3d07732d5d473&auto=format&fit=crop&w=1350&q=80"
-      alt="Image alt text"
+      alt=""
       title="Logo Title Text 1"
       style="max-width: 100%" />
     <p>
