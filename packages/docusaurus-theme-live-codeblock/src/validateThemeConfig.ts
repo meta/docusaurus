@@ -6,10 +6,8 @@
  */
 
 import {Joi} from '@docusaurus/utils-validation';
-import type {
-  ThemeConfig,
-  ThemeConfigValidationContext,
-} from '@docusaurus/types';
+import type {ThemeConfig} from '@docusaurus/theme-live-codeblock';
+import type {ThemeConfigValidationContext} from '@docusaurus/types';
 
 export const DEFAULT_CONFIG = {
   playgroundPosition: 'bottom',

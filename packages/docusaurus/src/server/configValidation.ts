@@ -27,6 +27,7 @@ import type {
   MarkdownConfig,
   MarkdownHooks,
   StorageConfig,
+  ThemeConfig,
   VcsConfig,
   VcsPreset,
   WebpackConfig,
@@ -142,7 +143,8 @@ export const DEFAULT_CONFIG: Pick<
   scripts: [],
   clientModules: [],
   customFields: {},
-  themeConfig: {},
+  // Themes add their own fields when validating the theme config
+  themeConfig: {} as ThemeConfig,
   titleDelimiter: '|',
   noIndex: false,
   tagline: '',
