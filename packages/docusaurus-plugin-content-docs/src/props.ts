@@ -97,6 +97,12 @@ Available document ids are:
     return false;
   }
 
+  function getCategoryLinkDocId(
+    link: SidebarItemCategoryLink | undefined,
+  ): string | undefined {
+    return link?.type === 'doc' ? link.id : undefined;
+  }
+
   function getCategoryLinkCustomProps(
     link: SidebarItemCategoryLink | undefined,
   ) {
@@ -113,6 +119,7 @@ Available document ids are:
     const href = getCategoryLinkHref(link);
     const linkUnlisted = getCategoryLinkUnlisted(link);
     const customProps = item.customProps ?? getCategoryLinkCustomProps(link);
+    const docId = getCategoryLinkDocId(link);
 
     return {
       ...rest,
@@ -120,6 +127,7 @@ Available document ids are:
       ...(href && {href}),
       ...(linkUnlisted && {linkUnlisted}),
       ...(customProps && {customProps}),
+      ...(docId && {docId}),
     };
   }
 

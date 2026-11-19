@@ -187,6 +187,11 @@ export type PropSidebarItemCategory = Expand<
   SidebarItemCategoryBase & {
     items: PropSidebarItem[];
     href?: string;
+    /**
+     * Set when the category link points at a doc. The theme uses it so a
+     * generated-index card can fall back to that doc's description.
+     */
+    docId?: string;
 
     // Weird name => it would have been more convenient to have link.unlisted
     // Note it is the category link that is unlisted, not the category itself

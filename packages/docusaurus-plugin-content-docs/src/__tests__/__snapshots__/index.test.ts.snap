@@ -877,6 +877,7 @@ exports[`simple website > content > data 1`] = `
             {
               "collapsed": true,
               "collapsible": true,
+              "docId": "unlisted-category/unlisted-category-index",
               "href": "/docs/unlisted-category/",
               "items": [
                 {
