@@ -231,7 +231,7 @@ catalogs:
     postcss-nested: ^5.0.6
     postcss-nested-ancestors: ^3.0.0
     # Infima needs v7: newer versions change its CSS output
-    # See https://github.com/meta/docusaurus/pull/TODO_PR_NUMBER
+    # See https://github.com/meta/docusaurus/pull/13082
     postcss-preset-env-v7: npm:postcss-preset-env@^7.8.3
     postcss-sort-media-queries: ^4.4.1
     rehype-stringify: ^10.0.1
