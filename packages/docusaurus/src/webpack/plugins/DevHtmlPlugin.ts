@@ -9,6 +9,10 @@ import type {Compilation, Compiler} from 'webpack';
 
 const PluginName = 'Docusaurus-DevHtmlPlugin';
 
+// Internal dev HTML shell filename. Avoids colliding with user's static/index.html
+// See https://github.com/facebook/docusaurus/issues/10198
+export const DevHtmlFilename = '__docusaurus.html';
+
 export type DevHtmlAssets = {
   // Public URLs of the entrypoint JS files, in load order
   scripts: string[];
@@ -17,7 +21,7 @@ export type DevHtmlAssets = {
 };
 
 export type DevHtmlPluginOptions = {
-  filename: string;
+  filename?: string;
   render: (assets: DevHtmlAssets) => string;
 };
 
@@ -75,10 +79,13 @@ function getEntrypointAssets(compilation: Compilation): DevHtmlAssets {
  * and this works the same way with Webpack and Rspack.
  */
 export default class DevHtmlPlugin {
-  readonly options: DevHtmlPluginOptions;
+  readonly options: Required<DevHtmlPluginOptions>;
 
   constructor(options: DevHtmlPluginOptions) {
-    this.options = options;
+    this.options = {
+      filename: DevHtmlFilename,
+      ...options,
+    };
   }
 
   apply(compiler: Compiler): void {
