@@ -1,0 +1,140 @@
+# Navbar
+
+## Standard
+
+```html
+<nav class="navbar">
+  <div class="navbar__inner">
+    <div class="navbar__items">
+      <a class="navbar__brand">Infima</a>
+      <a class="navbar__item navbar__link" href="#url">Docs</a>
+      <a class="navbar__item navbar__link" href="#url">Tutorial</a>
+      <div class="navbar__item dropdown dropdown--hoverable">
+        <a class="navbar__link" href="#url">v2.0</a>
+        <ul class="dropdown__menu">
+          <li>
+            <a class="dropdown__link" href="#url">v1.8.0</a>
+          </li>
+          <li>
+            <a class="dropdown__link" href="#url">v1.7.0</a>
+          </li>
+          <li>
+            <a class="dropdown__link" href="#url">v1.6.0</a>
+          </li>
+          <li>
+            <a class="dropdown__link" href="#url">All Versions</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="navbar__items navbar__items--right">
+      <form>
+        <div class="navbar__search">
+          <input class="navbar__search-input" placeholder="Search" />
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+```
+
+## Dark
+
+```html
+<nav class="navbar navbar--dark">
+  <div class="navbar__inner">
+    <div class="navbar__items">
+      <a class="navbar__brand">Infima</a>
+      <div class="navbar__item dropdown dropdown--hoverable">
+        <a class="navbar__item navbar__link" href="#url">v2.0</a>
+        <ul class="dropdown__menu">
+          <li>
+            <a class="dropdown__link" href="#url">v1.8.0</a>
+          </li>
+          <li>
+            <a class="dropdown__link" href="#url">v1.7.0</a>
+          </li>
+          <li>
+            <a class="dropdown__link" href="#url">v1.6.0</a>
+          </li>
+          <li>
+            <a class="dropdown__link" href="#url">All Versions</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="navbar__items navbar__items--right">
+      <a class="navbar__item navbar__link" href="#url">Docs</a>
+      <a class="navbar__item navbar__link" href="#url">Tutorial</a>
+      <form>
+        <div class="navbar__search">
+          <input class="navbar__search-input" placeholder="Search" />
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+```
+
+## With Dropdown Menu
+
+```html
+<nav class="navbar navbar--primary">
+  <div class="navbar__inner">
+    <div class="navbar__items">
+      <a class="navbar__item navbar__link" href="#url">Docs</a>
+      <a class="navbar__item navbar__link" href="#url">Tutorial</a>
+      <div class="navbar__item dropdown dropdown--hoverable">
+        <a class="navbar__link" href="#url">v2.0</a>
+        <ul class="dropdown__menu">
+          <li>
+            <a class="dropdown__link" href="#url">v1.8.0</a>
+          </li>
+          <li>
+            <a class="dropdown__link" href="#url">v1.7.0</a>
+          </li>
+          <li>
+            <a class="dropdown__link" href="#url">v1.6.0</a>
+          </li>
+          <li>
+            <a class="dropdown__link" href="#url">All Versions</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="navbar__items navbar__items--center">
+      <a class="navbar__brand">Infima</a>
+    </div>
+    <div class="navbar__items navbar__items--right">
+      <div class="navbar__item dropdown dropdown--hoverable dropdown--right">
+        <a class="navbar__link" href="#url">
+          Languages
+          <i class="fas fa-language fa-2x"></i>
+        </a>
+        <ul class="dropdown__menu">
+          <li>
+            <a class="dropdown__link" href="#url">简体中文</a>
+          </li>
+          <li>
+            <a class="dropdown__link" href="#url">日本語</a>
+          </li>
+          <li>
+            <a class="dropdown__link" href="#url">Français</a>
+          </li>
+          <li>
+            <a class="dropdown__link" href="#url">Español</a>
+          </li>
+        </ul>
+      </div>
+      <a class="navbar__item navbar__link" href="#url">
+        <i class="fab fa-github fa-lg"></i>
+      </a>
+      <form>
+        <div class="navbar__search">
+          <input class="navbar__search-input" placeholder="Search" />
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+```

@@ -7,6 +7,7 @@
 
 import path from 'node:path';
 import RecmaMDXDisplayName from 'recma-mdx-displayname';
+import htmlPlayground from '../src/remark/htmlPlayground';
 import {isArgosBuild} from './argosBuild';
 import type {PluginConfig, Plugin} from '@docusaurus/types';
 import type {Options as DocsOptions} from '@docusaurus/plugin-content-docs';
@@ -78,6 +79,22 @@ export const dogfoodingPluginInstances: PluginConfig[] = [
           },
         });
       },
+    } satisfies DocsOptions,
+  ],
+
+  [
+    'content-docs',
+    {
+      id: 'infima',
+      path: 'infima',
+      routeBasePath: '/infima',
+      editUrl: 'https://github.com/meta/docusaurus/edit/main/website/',
+      versions: {
+        current: {
+          noIndex: !isArgosBuild,
+        },
+      },
+      remarkPlugins: [htmlPlayground],
     } satisfies DocsOptions,
   ],
 

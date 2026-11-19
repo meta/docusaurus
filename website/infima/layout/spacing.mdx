@@ -1,0 +1,66 @@
+# Spacing
+
+## Margin and Padding
+
+Assign `margin` or `padding` values to an element or a subset of its sides with shorthand classes. Includes support for individual properties, all properties, and vertical and horizontal properties.
+
+## Notation
+
+The classes are named using the format `{property}--{size}` and `{property}-{side}--{size}`.
+
+`property` is one of:
+
+- `margin`
+
+- `padding`
+
+`side` is one of:
+
+- `top` - for classes that set `margin-top` or `padding-top`
+
+- `left` - for classes that set `margin-left` or `padding-left`
+
+- `bottom` - for classes that set `margin-bottom` or `padding-bottom`
+
+- `right`- for classes that set `margin-right` or `padding-right`
+
+- `vert` - for classes that set both `*-top` and `*-bottom`
+
+- `horiz` - for classes that set both `*-left` and `*-right`
+
+`size` is one of:
+
+- `none` - for classes that eliminate `margin` or `padding` by setting it to `0`
+
+- `xs` - for classes that set the `margin` or `padding` to `0.25rem`
+
+- `sm` - for classes that set the `margin` or `padding` to `0.5rem`
+
+- `md` - for classes that set the `margin` or `padding` to `1rem`
+
+- `lg` - for classes that set the `margin` or `padding` to `2rem`
+
+- `xl` - for classes that set the `margin` or `padding` to `5rem`
+
+## Examples
+
+Here are some representative examples of these classes:
+
+```css
+.margin-top--none {
+  margin-top: 0 !important;
+}
+
+.margin-left--xs {
+  margin-left: 0.25rem !important;
+}
+
+.padding-vert--md {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.padding--lg {
+  padding: 2rem !important;
+}
+```

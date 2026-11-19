@@ -1,0 +1,72 @@
+# Pagination Nav
+
+## Standard
+
+```html
+<nav class="pagination-nav">
+  <div class="pagination-nav__item">
+    <a class="pagination-nav__link" href="#url">
+      <div class="pagination-nav__sublabel">Previous</div>
+      <div class="pagination-nav__label">Installation</div>
+    </a>
+  </div>
+  <div class="pagination-nav__item pagination-nav__item--next">
+    <a class="pagination-nav__link" href="#url">
+      <div class="pagination-nav__sublabel">Next</div>
+      <div class="pagination-nav__label">Getting Started</div>
+    </a>
+  </div>
+</nav>
+```
+
+Extremely long titles wrap on to the next line.
+
+```html
+<nav class="pagination-nav">
+  <div class="pagination-nav__item">
+    <a class="pagination-nav__link" href="#url">
+      <div class="pagination-nav__sublabel">Previous</div>
+      <div class="pagination-nav__label">
+        Some Extremely Long Long Long Long Title
+      </div>
+    </a>
+  </div>
+  <div class="pagination-nav__item pagination-nav__item--next">
+    <a class="pagination-nav__link" href="#url">
+      <div class="pagination-nav__sublabel">Next</div>
+      <div class="pagination-nav__label">
+        AnotherExtremelyLongTitleWithoutBreaksProbablyAComponent
+      </div>
+    </a>
+  </div>
+</nav>
+```
+
+## Only Previous
+
+```html
+<nav class="pagination-nav">
+  <div class="pagination-nav__item">
+    <a class="pagination-nav__link" href="#url">
+      <div class="pagination-nav__sublabel">Previous</div>
+      <div class="pagination-nav__label">Installation</div>
+    </a>
+  </div>
+</nav>
+```
+
+## Only Next
+
+```html
+<nav class="pagination-nav">
+  <div class="pagination-nav__item"></div>
+  <div class="pagination-nav__item pagination-nav__item--next">
+    <a class="pagination-nav__link" href="#url">
+      <div class="pagination-nav__sublabel">Next</div>
+      <div class="pagination-nav__label">
+        AnotherExtremelyLongTitleWithoutBreaksProbablyAComponent
+      </div>
+    </a>
+  </div>
+</nav>
+```

@@ -1,0 +1,127 @@
+# Menu
+
+## Basic
+
+```html
+<nav class="menu">
+  <li class="menu__list-item">
+    <a class="menu__link" href="#url">First Level Item</a>
+  </li>
+  <li class="menu__list-item">
+    <a class="menu__link menu__link--active" href="#url">Active Item</a>
+  </li>
+  <li class="menu__list-item">
+    <a class="menu__link" href="#url">Third Level Item</a>
+  </li>
+</nav>
+```
+
+## With Sublist
+
+```html
+<nav class="menu">
+  <li class="menu__list-item">
+    <a class="menu__link menu__link--sublist" href="#url">Category</a>
+    <nav class="menu__list">
+      <li class="menu__list-item">
+        <a class="menu__link" href="#url">Nested Item</a>
+      </li>
+      <li class="menu__list-item">
+        <a class="menu__link" href="#url">Another Item</a>
+      </li>
+    </nav>
+  </li>
+</nav>
+```
+
+## With Caret
+
+```html
+<nav class="menu">
+  <li class="menu__list-item">
+    <div class="menu__list-item-collapsible">
+      <a class="menu__link menu__link--sublist-caret" href="#url">
+        With Caret
+      </a>
+    </div>
+    <nav class="menu__list">
+      <li class="menu__list-item">
+        <a class="menu__link" href="#url">First Item</a>
+      </li>
+      <li class="menu__list-item">
+        <a class="menu__link" href="#url">Second Item</a>
+      </li>
+    </nav>
+  </li>
+</nav>
+```
+
+## With Custom Caret Button
+
+```html
+<nav class="menu">
+  <li class="menu__list-item">
+    <div class="menu__list-item-collapsible">
+      <a class="menu__link" href="#url">Category</a>
+      <button type="button" class="clean-btn menu__caret"></button>
+    </div>
+    <nav class="menu__list">
+      <li class="menu__list-item">
+        <a class="menu__link" href="#url">First Item</a>
+      </li>
+      <li class="menu__list-item">
+        <a class="menu__link" href="#url">Second Item</a>
+      </li>
+    </nav>
+  </li>
+</nav>
+```
+
+## Nested Levels
+
+```html
+<nav class="menu">
+  <li class="menu__list-item">
+    <div class="menu__list-item-collapsible">
+      <a class="menu__link menu__link--active" href="#url">First Level</a>
+      <button type="button" class="clean-btn menu__caret"></button>
+    </div>
+    <nav class="menu__list">
+      <li class="menu__list-item">
+        <div class="menu__list-item-collapsible">
+          <a class="menu__link" href="#url">Second Level</a>
+          <button type="button" class="clean-btn menu__caret"></button>
+        </div>
+        <nav class="menu__list">
+          <li class="menu__list-item">
+            <a class="menu__link" href="#url">Third Level Item</a>
+          </li>
+          <li class="menu__list-item">
+            <a class="menu__link" href="#url">Another Item</a>
+          </li>
+        </nav>
+      </li>
+    </nav>
+  </li>
+</nav>
+```
+
+## Collapsed State
+
+Add the `menu__list-item--collapsed` class to collapse a menu section:
+
+```html
+<nav class="menu">
+  <li class="menu__list-item menu__list-item--collapsed">
+    <div class="menu__list-item-collapsible">
+      <a class="menu__link" href="#url">Collapsed Section</a>
+      <button type="button" class="clean-btn menu__caret"></button>
+    </div>
+    <nav class="menu__list">
+      <li class="menu__list-item">
+        <a class="menu__link" href="#url">Hidden Item</a>
+      </li>
+    </nav>
+  </li>
+</nav>
+```

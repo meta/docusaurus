@@ -1,0 +1,29 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+.grid-demo [class^='col'] .col-demo {
+  background-color: var(--ifm-color-emphasis-200);
+  padding: 1rem;
+  text-align: center;
+}
+
+.grid-demo .row {
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.grid-demo .row:first-child {
+  margin-top: 0;
+}
+
+.grid-demo .row:last-child {
+  margin-bottom: 0;
+}
+
+.grid-demo .row--no-gutters .col-demo {
+  border: 1px solid var(--ifm-color-emphasis-300);
+}

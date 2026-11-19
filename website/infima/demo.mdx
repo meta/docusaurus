@@ -1,0 +1,2734 @@
+---
+sidebar_position: 5
+---
+
+# Demo
+
+import './demo.styles.css';
+
+All the Infima components on a single page. The component pages show their HTML code.
+
+## Page Navbar
+
+```html previewOnly
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar__inner">
+      <div class="navbar__items">
+        <button class="navbar__toggle clean-btn" type="button">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="30"
+            height="30"
+            viewBox="0 0 30 30"
+            role="img"
+            focusable="false">
+            <title>Menu</title>
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-miterlimit="10"
+              stroke-width="2"
+              d="M4 7h22M4 15h22M4 23h22"></path>
+          </svg>
+        </button>
+        <a class="navbar__brand" href="#">
+          <div class="navbar__logo">
+            <img src="/img/docusaurus.svg" />
+          </div>
+          <span class="navbar__title text--truncate">Infima</span>
+        </a>
+        <a class="navbar__item navbar__link" href="#url">Docs</a>
+        <a class="navbar__item navbar__link" href="#url">Tutorial</a>
+        <div class="navbar__item dropdown dropdown--hoverable thin-scrollbar">
+          <a class="navbar__link" href="#url">v2.0</a>
+          <ul class="dropdown__menu">
+            <li>
+              <a class="dropdown__link" href="#url">v1.8.0</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">v1.7.0</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">v1.6.0</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">v1.5.0</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">v1.4.0</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">v1.3.0</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">v1.2.0</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">v1.1.0</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">v1.0.0</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">All Versions</a>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="navbar__item dropdown dropdown--hoverable dropdown--nocaret thin-scrollbar">
+          <a class="navbar__link" href="#url">
+            <i class="fas fa-language fa-2x"></i>
+          </a>
+          <ul class="dropdown__menu">
+            <li>
+              <a class="dropdown__link" href="#url">简体中文</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">日本語</a>
+            </li>
+            <li>
+              <a class="dropdown__link dropdown__link--active" href="#url">
+                Français
+              </a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">Español</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="navbar__items navbar__items--right">
+        <div
+          class="navbar__item dropdown dropdown--hoverable dropdown--right dropdown--nocaret thin-scrollbar">
+          <a class="navbar__link" href="#url">
+            <i class="fas fa-language fa-2x"></i>
+          </a>
+          <ul class="dropdown__menu">
+            <li>
+              <a class="dropdown__link" href="#url">简体中文</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">日本語</a>
+            </li>
+            <li>
+              <a class="dropdown__link dropdown__link--active" href="#url">
+                Français
+              </a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">Español</a>
+            </li>
+          </ul>
+        </div>
+        <a class="navbar__item navbar__link" href="#url">
+          <i class="fab fa-github fa-lg"></i>
+        </a>
+        <form>
+          <div class="navbar__search">
+            <input class="navbar__search-input" placeholder="Search" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div role="presentation" class="navbar-sidebar__backdrop"></div>
+  <div class="navbar-sidebar">
+    <div class="navbar-sidebar__brand">
+      <a class="navbar__brand" href="#" role="button">
+        <div class="navbar__logo">
+          <img src="/img/docusaurus.svg" />
+        </div>
+        <span class="navbar__title text--truncate">
+          Infima long long long long long long long long long
+        </span>
+      </a>
+      <button type="button" class="clean-btn navbar-sidebar__close">
+        <svg viewBox="0 0 413.348 413.348" width="20" height="20">
+          <path
+            fill="currentColor"
+            d="m413.348 24.354-24.354-24.354-182.32 182.32-182.32-182.32-24.354 24.354 182.32 182.32-182.32 182.32 24.354 24.354 182.32-182.32 182.32 182.32 24.354-24.354-182.32-182.32z" />
+        </svg>
+      </button>
+    </div>
+    <div class="navbar-sidebar__items navbar-sidebar__items--show-secondary">
+      <div class="navbar-sidebar__item menu">
+        <ul class="menu__list">
+          <li class="menu__list-item">
+            <a class="menu__link" href="#url">Docs</a>
+          </li>
+          <li class="menu__list-item">
+            <a class="menu__link" href="#url">Tutorial</a>
+          </li>
+          <li class="menu__list-item">
+            <a
+              class="menu__link menu__link--sublist menu__link--sublist-caret"
+              href="#url"
+              >v2.0</a
+            >
+            <ul class="menu__list">
+              <li class="menu__list-item">
+                <a class="menu__link" href="#url">v1.8.0</a>
+              </li>
+              <li class="menu__list-item">
+                <a class="menu__link" href="#url">v1.7.0</a>
+              </li>
+              <li class="menu__list-item">
+                <a class="menu__link" href="#url">v1.6.0</a>
+              </li>
+              <li class="menu__list-item">
+                <a class="menu__link" href="#url">All Versions</a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu__list-item">
+            <a
+              class="menu__link menu__link--sublist menu__link--sublist-caret"
+              href="#url"
+              >Community
+              <svg
+                class="svg-icon"
+                style="width: 2em; height: 1em"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M861.2 103.2H369.7c-33 0-52.7 8.8-52.7 42v105h42v-103h516v379.1h-80v42h84c33 0 42-21.7 42-54.9V145.2c0.1-33.2-26.8-42-59.8-42zM429 586.4c22.8-0.5 41-19.1 41-41.9s-18.2-41.4-41-41.9c-23.1 0-41.9 18.8-41.9 41.9 0 23.2 18.7 41.9 41.9 41.9z m168 0c22.8-0.5 41-19.1 41-41.9 0-22.8-18.2-41.4-41-41.9-22.8 0.5-41 19.1-41 41.9s18.3 41.4 41 41.9z m113-294.2H145.9c-28.3 0-42 13.5-42 42.1v420.1c0 28.5 13.7 42 42 42h106v126L386.6 796l323.4 0.4c28.3 0 42-13.5 42-42V334.3c-0.5-28.2-14-42.1-42-42.1z m-2 461.2H357l-63 64v-64H147V335.3h561v418.1z m-447.1-167c23.1 0 41.9-18.8 41.9-41.9 0-23.1-18.8-41.9-41.9-41.9-23.1 0-41.9 18.8-41.9 41.9 0 23.2 18.7 41.9 41.9 41.9z m0 0"
+                  fill="#282828" /></svg
+            ></a>
+            <ul class="menu__list">
+              <li class="menu__list-item">
+                <a class="menu__link" href="#url">Facebook</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="navbar-sidebar__item menu">
+        <button type="button" class="clean-btn navbar-sidebar__back">
+          ← Back to main menu
+        </button>
+        <ul class="menu__list">
+          <li class="menu__list-item">
+            <a class="menu__link" href="#url">First Level</a>
+          </li>
+          <li class="menu__list-item">
+            <div class="menu__list-item-collapsible">
+              <a class="menu__link" href="#url">Category</a>
+              <button type="button" class="clean-btn menu__caret"></button>
+            </div>
+            <ul class="menu__list">
+              <li class="menu__list-item">
+                <a class="menu__link menu__link--active" href="#url">
+                  Second Level
+                </a>
+              </li>
+              <li class="menu__list-item">
+                <a class="menu__link" href="#url">Another Second Level</a>
+              </li>
+              <li class="menu__list-item">
+                <a class="menu__link" href="#url">Another Second Level</a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu__list-item">
+            <a class="menu__link" href="#url">And The List</a>
+          </li>
+          <li class="menu__list-item">
+            <a class="menu__link" href="#url">Goes On</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+```
+
+## Page Hero
+
+```html previewOnly
+<div class="hero hero--primary text--center">
+  <div class="container">
+    <h1 class="hero__title">Infima</h1>
+    <p class="hero__subtitle">A UI framework for content-centric websites.</p>
+  </div>
+</div>
+```
+
+## Navbars
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col">
+    <nav class="navbar">
+      <div class="navbar__inner">
+        <div class="navbar__items">
+          <a class="navbar__brand" href="#url">Infima</a>
+          <a class="navbar__item navbar__link" href="#url">Docs</a>
+          <a class="navbar__item navbar__link" href="#url"> Tutorial </a>
+          <div class="navbar__item dropdown dropdown--hoverable thin-scrollbar">
+            <a class="navbar__link" href="#url">v2.0</a>
+            <ul class="dropdown__menu">
+              <li>
+                <a class="dropdown__link dropdown__link--active" href="#url">
+                  v1.8.0
+                </a>
+              </li>
+              <li>
+                <a class="dropdown__link" href="#url">v1.7.0</a>
+              </li>
+              <li>
+                <a class="dropdown__link" href="#url">v1.6.0</a>
+              </li>
+              <li>
+                <a class="dropdown__link" href="#url">All Versions</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="navbar__items navbar__items--right">
+          <form>
+            <div class="navbar__search">
+              <input class="navbar__search-input" placeholder="Search" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <nav class="navbar navbar--dark">
+      <div class="navbar__inner">
+        <div class="navbar__items">
+          <a class="navbar__brand" href="#url">
+            <span class="navbar__title text--truncate">
+              Infima long long long long long long long long long long long long
+              long long long long long
+            </span>
+          </a>
+          <div class="navbar__item dropdown dropdown--hoverable">
+            <a class="navbar__item navbar__link" href="#url">v2.0</a>
+            <ul class="dropdown__menu">
+              <li>
+                <a class="dropdown__link" href="#url">v1.8.0</a>
+              </li>
+              <li>
+                <a class="dropdown__link" href="#url">v1.7.0</a>
+              </li>
+              <li>
+                <a class="dropdown__link" href="#url">v1.6.0</a>
+              </li>
+              <li>
+                <a class="dropdown__link" href="#url">All Versions</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="navbar__items navbar__items--right">
+          <a class="navbar__item navbar__link" href="#url">Docs</a>
+          <a class="navbar__item navbar__link" href="#url"> Tutorial </a>
+          <form>
+            <div class="navbar__search">
+              <input class="navbar__search-input" placeholder="Search" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <nav class="navbar navbar--primary">
+      <div class="navbar__inner">
+        <div class="navbar__items">
+          <a class="navbar__item navbar__link" href="#url">Docs</a>
+          <a class="navbar__item navbar__link" href="#url"> Tutorial </a>
+          <div class="navbar__item dropdown dropdown--hoverable thin-scrollbar">
+            <a class="navbar__link" href="#url">v2.0</a>
+            <ul class="dropdown__menu">
+              <li>
+                <a class="dropdown__link" href="#url">v1.8.0</a>
+              </li>
+              <li>
+                <a class="dropdown__link" href="#url">v1.7.0</a>
+              </li>
+              <li>
+                <a class="dropdown__link" href="#url">v1.6.0</a>
+              </li>
+              <li>
+                <a class="dropdown__link" href="#url">All Versions</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="navbar__items navbar__items--center">
+          <a class="navbar__brand" href="#url">Infima</a>
+        </div>
+        <div class="navbar__items navbar__items--right">
+          <div
+            class="navbar__item dropdown dropdown--hoverable dropdown--right dropdown--nocaret">
+            <a class="navbar__link" href="#url">
+              <i class="fas fa-language fa-2x"></i>
+            </a>
+            <ul class="dropdown__menu">
+              <li>
+                <a class="dropdown__link" href="#url">简体中文</a>
+              </li>
+              <li>
+                <a class="dropdown__link" href="#url">日本語</a>
+              </li>
+              <li>
+                <a class="dropdown__link" href="#url">Français</a>
+              </li>
+              <li>
+                <a class="dropdown__link" href="#url">Español</a>
+              </li>
+            </ul>
+          </div>
+          <a class="navbar__item navbar__link" href="#url">
+            <i class="fab fa-github fa-lg"></i>
+          </a>
+          <form>
+            <div class="navbar__search">
+              <input class="navbar__search-input" placeholder="Search" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+```
+
+## Hero
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col">
+    <div class="hero shadow--lw">
+      <div class="container">
+        <h1 class="hero__title">Hero Title</h1>
+        <p class="hero__subtitle">Not all heroes wear capes</p>
+        <div>
+          <button class="button button--primary button--lg">Get Started</button>
+          <button class="button button--secondary button--outline button--lg">
+            Try It Out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="hero hero--dark">
+      <div class="container">
+        <h1 class="hero__title">Hero Title</h1>
+        <p class="hero__subtitle">Not all heroes wear capes</p>
+        <div>
+          <button class="button button--primary button--lg">Get Started</button>
+          <button class="button button--secondary button--lg">
+            Try It Out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="hero hero--primary" style="height: 25rem">
+      <div class="container">
+        <h1 class="hero__title">Hero Title</h1>
+        <p class="hero__subtitle">Not all heroes wear capes</p>
+        <div>
+          <button class="button button--secondary button--lg">
+            Get Started
+          </button>
+          <button class="button button--secondary button--outline button--lg">
+            Try It Out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+## Footer
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col">
+    <footer class="footer">
+      <div class="container container--fluid">
+        <div class="footer__links">
+          <a class="footer__link-item" href="#url">Documentation</a>
+          <span class="footer__link-separator">&middot;</span>
+          <a class="footer__link-item" href="#url">GitHub</a>
+          <span class="footer__link-separator">&middot;</span>
+          <a class="footer__link-item" href="#url">Blog</a>
+          <span class="footer__link-separator">&middot;</span>
+          <a class="footer__link-item" href="#url">Contribute</a>
+        </div>
+        <div>Copyright © 2022 Meta Platforms, Inc.</div>
+      </div>
+    </footer>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <footer class="footer">
+      <div class="container container--fluid">
+        <div class="row footer__links">
+          <div class="col col--3 footer__col">
+            <div class="footer__title">Docs</div>
+            <ul class="footer__items clean-list">
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url"> Getting Started </a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">API</a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">FAQ</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col col--3 footer__col">
+            <div class="footer__title">Community</div>
+            <ul class="footer__items clean-list">
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">Users</a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url"> Contribute </a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url"> Stack Overflow </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col col--3 footer__col">
+            <div class="footer__title">Social</div>
+            <ul class="footer__items clean-list">
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">GitHub</a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">Facebook</a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">Twitter</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col col--3 footer__col">
+            <div class="footer__title">More</div>
+            <ul class="footer__items clean-list">
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">Tutorial</a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">Blog</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="text--center">
+          <div class="margin-bottom--sm">
+            <img
+              class="footer__logo"
+              alt="Meta Open Source Logo"
+              src="/img/meta_opensource_logo.svg" />
+          </div>
+          Copyright © 2022 Meta Platforms, Inc.
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <footer class="footer footer--dark">
+      <div class="container container--fluid">
+        <div class="footer__links">
+          <a class="footer__link-item" href="#url">Documentation</a>
+          <span class="footer__link-separator">&middot;</span>
+          <a class="footer__link-item" href="#url">GitHub</a>
+          <span class="footer__link-separator">&middot;</span>
+          <a class="footer__link-item" href="#url">Blog</a>
+          <span class="footer__link-separator">&middot;</span>
+          <a class="footer__link-item" href="#url">Contribute</a>
+        </div>
+        <div>Copyright © 2022 Meta Platforms, Inc.</div>
+      </div>
+    </footer>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <footer class="footer footer--dark">
+      <div class="container container--fluid">
+        <div class="row footer__links">
+          <div class="col footer__col">
+            <h4 class="footer__title">Docs</h4>
+            <ul class="footer__items clean-list">
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url"> Getting Started </a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">API</a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">FAQ</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col footer__col">
+            <h4 class="footer__title">Community</h4>
+            <ul class="footer__items clean-list">
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">Users</a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url"> Contribute </a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url"> Stack Overflow </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col footer__col">
+            <h4 class="footer__title">Social</h4>
+            <ul class="footer__items clean-list">
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">GitHub</a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">Facebook</a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">Twitter</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col footer__col">
+            <h4 class="footer__title">More</h4>
+            <ul class="footer__items clean-list">
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">Tutorial</a>
+              </li>
+              <li class="footer__item">
+                <a class="footer__link-item" href="#url">Blog</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="text--center">
+          <div class="margin-bottom--sm">
+            <img
+              class="footer__logo"
+              alt="Meta Open Source Logo"
+              src="/img/meta_opensource_logo_negative.svg" />
+          </div>
+          Copyright © 2022 Meta Platforms, Inc.
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+```
+
+## Menu and Contents
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col col--3">
+    <div class="menu thin-scrollbar">
+      <ul class="menu__list">
+        <li class="menu__list-item">
+          <a class="menu__link" href="#url">First Level</a>
+        </li>
+        <li class="menu__list-item">
+          <div class="menu__list-item-collapsible">
+            <a class="menu__link" href="#url">Category</a>
+            <button type="button" class="clean-btn menu__caret"></button>
+          </div>
+          <ul class="menu__list">
+            <li class="menu__list-item">
+              <a class="menu__link menu__link--active" href="#url">
+                Second Level
+              </a>
+            </li>
+            <li class="menu__list-item">
+              <a class="menu__link" href="#url"> Another Second Level </a>
+            </li>
+            <li class="menu__list-item">
+              <a class="menu__link" href="#url"> Another Second Level </a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu__list-item menu__list-item--collapsed">
+          <div class="menu__list-item-collapsible">
+            <a class="menu__link" href="#url">
+              A Very Very Very Very Very Long Category
+            </a>
+            <button type="button" class="clean-btn menu__caret"></button>
+          </div>
+
+          <ul class="menu__list">
+            <li class="menu__list-item">
+              <a class="menu__link" href="#url">Second Level</a>
+            </li>
+            <li class="menu__list-item menu__list-item--collapsed">
+              <a
+                class="menu__link menu__link--sublist menu__link--sublist-caret"
+                href="#url">
+                A Very Very Very Very Very Very Very Very Very Very Very Very
+                Long Subcategory
+              </a>
+              <ul class="menu__list">
+                <li class="menu__list-item">
+                  <a class="menu__link" href="#url">Third Level</a>
+                </li>
+                <li class="menu__list-item">
+                  <a class="menu__link" href="#url"> Another Third Level </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu__list-item menu__list-item--collapsed">
+          <div class="menu__list-item-collapsible">
+            <a class="menu__link menu__link--sublist" href="#url">
+              Category with link
+            </a>
+            <button type="button" class="clean-btn menu__caret"></button>
+          </div>
+          <ul class="menu__list">
+            <li class="menu__list-item">
+              <a class="menu__link" href="#url">Second Level</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu__list-item menu__list-item--collapsed">
+          <a
+            class="menu__link menu__link--sublist menu__link--sublist-caret"
+            href="#url">
+            Category without Link
+          </a>
+          <ul class="menu__list">
+            <li class="menu__list-item">
+              <a class="menu__link" href="#url">Second Level</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu__list-item">
+          <a class="menu__link" href="#url">And The List</a>
+        </li>
+        <li class="menu__list-item">
+          <a class="menu__link" href="#url">
+            Goes On
+            <svg
+              width="13.5"
+              height="13.5"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              class="iconExternalLink_wwR_">
+              <path
+                fill="currentColor"
+                d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col col--6">
+    <div class="markdown">
+      <h1>Installation</h1>
+      <p>
+        Lorem ipsum dolor sit amet,
+        <code>consectetur</code>
+        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Quis ipsum suspendisse ultrices gravida. Fringilla
+        phasellus faucibus scelerisque eleifend donec pretium.
+      </p>
+      <h2>Installing Infima</h2>
+      <p>
+        Ut lectus arcu bibendum at. Quam adipiscing vitae proin sagittis nisl
+        rhoncus mattis rhoncus urna. Lacus laoreet non curabitur gravida.
+        <code>Neque viverra justo</code> nec ultrices dui sapien eget mi. Et
+        pharetra pharetra massa massa ultricies mi. Nulla aliquet enim tortor
+        at. Euismod nisi porta lorem mollis aliquam.
+      </p>
+      <p>
+        <code>Ut lectus arcu bibendum</code> at. Quam adipiscing vitae proin
+        sagittis nisl rhoncus mattis rhoncus urna. Lacus laoreet non curabitur
+        gravida. Neque viverra justo nec ultrices dui sapien eget mi. Et
+        pharetra pharetra massa massa ultricies mi. Nulla aliquet enim tortor
+        at. Euismod nisi porta lorem mollis aliquam.
+      </p>
+      <h2>Verifying <code>Installation</code></h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
+        suspendisse ultrices gravida. Fringilla phasellus faucibus scelerisque
+        eleifend donec pretium.
+      </p>
+      <pre>
+const myFun = (x, y) =&gt; {
+  const doubleX = x + x;
+  const doubleY = y + y;
+  return doubleX + doubleY
+};</pre>
+      <p>
+        Morbi tincidunt ornare massa eget. Dictumst vestibulum rhoncus est
+        pellentesque elit ullamcorper dignissim cras. Sem fringilla ut morbi
+        tincidunt augue interdum velit euismod in. Volutpat maecenas volutpat
+        blandit aliquam etiam erat. Fames ac turpis egestas maecenas. Odio ut
+        sem nulla pharetra diam sit. Gravida rutrum quisque non tellus orci ac
+        auctor.
+      </p>
+      <h3>Running Examples</h3>
+      <p>
+        At elementum eu facilisis sed odio morbi quis. Metus vulputate eu
+        scelerisque felis. Vitae semper quis lectus nulla at volutpat diam ut
+        venenatis. Pellentesque diam volutpat commodo sed egestas egestas
+        fringilla. Cursus in hac habitasse platea dictumst quisque sagittis
+        purus. Odio ut enim blandit volutpat maecenas volutpat blandit.
+      </p>
+      <h3>Why this is good</h3>
+      <ul>
+        <li>Foo</li>
+        <li>Bar</li>
+        <li>
+          Baz
+          <ul>
+            <li>Foo</li>
+            <li>Bar</li>
+            <li>Baz</li>
+          </ul>
+        </li>
+      </ul>
+      <p>
+        At elementum eu facilisis sed odio morbi quis. Metus vulputate eu
+        scelerisque felis. Vitae semper quis lectus nulla at volutpat diam ut
+        venenatis. Pellentesque diam volutpat commodo sed egestas egestas
+        fringilla. Cursus in hac habitasse platea dictumst quisque sagittis
+        purus. Odio ut enim blandit volutpat maecenas volutpat blandit.
+      </p>
+    </div>
+  </div>
+  <div class="col col--3">
+    <ul class="table-of-contents table-of-contents__left-border thin-scrollbar">
+      <li>
+        <a class="table-of-contents__link" href="#url"> Installing Infima </a>
+      </li>
+      <li>
+        <a class="table-of-contents__link" href="#url">
+          Verifying Installation
+        </a>
+        <ul>
+          <li>
+            <a
+              class="table-of-contents__link table-of-contents__link--active"
+              href="#url">
+              Running examples
+            </a>
+          </li>
+          <li>
+            <a class="table-of-contents__link" href="#url"> Troubleshooting </a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="table-of-contents__link" href="#url"> Updating Infima </a>
+      </li>
+    </ul>
+  </div>
+</div>
+```
+
+## Grid
+
+```html previewOnly containerClassName="demo-section demo-grid"
+<h3>Twelve Column Layout</h3>
+<div class="row">
+  <div class="col col--6">
+    <div class="col-inner">col--6</div>
+  </div>
+  <div class="col col--6">
+    <div class="col-inner">col--6</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col col--4">
+    <div class="col-inner">col--4</div>
+  </div>
+  <div class="col col--4">
+    <div class="col-inner">col--4</div>
+  </div>
+  <div class="col col--4">
+    <div class="col-inner">col--4</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col col--3">
+    <div class="col-inner">col--3</div>
+  </div>
+  <div class="col col--3">
+    <div class="col-inner">col--3</div>
+  </div>
+  <div class="col col--3">
+    <div class="col-inner">col--3</div>
+  </div>
+  <div class="col col--3">
+    <div class="col-inner">col--3</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col col--2">
+    <div class="col-inner">col--2</div>
+  </div>
+  <div class="col col--2">
+    <div class="col-inner">col--2</div>
+  </div>
+  <div class="col col--2">
+    <div class="col-inner">col--2</div>
+  </div>
+  <div class="col col--2">
+    <div class="col-inner">col--2</div>
+  </div>
+  <div class="col col--2">
+    <div class="col-inner">col--2</div>
+  </div>
+  <div class="col col--2">
+    <div class="col-inner">col--2</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+</div>
+<h3>Equal-width</h3>
+<div class="row">
+  <div class="col">
+    <div class="col-inner">col</div>
+  </div>
+  <div class="col">
+    <div class="col-inner">col</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="col-inner">col</div>
+  </div>
+  <div class="col">
+    <div class="col-inner">col</div>
+  </div>
+  <div class="col">
+    <div class="col-inner">col</div>
+  </div>
+</div>
+<h3>Auto-width</h3>
+<div class="row">
+  <div class="col col--3">
+    <div class="col-inner">col--3</div>
+  </div>
+  <div class="col">
+    <div class="col-inner">col</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col col--4">
+    <div class="col-inner">col--4</div>
+  </div>
+  <div class="col">
+    <div class="col-inner">col</div>
+  </div>
+  <div class="col col--2">
+    <div class="col-inner">col--2</div>
+  </div>
+</div>
+<h3>Column Offsets</h3>
+<div class="row">
+  <div class="col col--1">
+    <div class="col-inner">col--1</div>
+  </div>
+  <div class="col col--2 col--offset-1">
+    <div class="col-inner">col--2 col--offset-1</div>
+  </div>
+  <div class="col col--3 col--offset-2">
+    <div class="col-inner">col--3 col--offset-2</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col col--2">
+    <div class="col-inner">col--2</div>
+  </div>
+  <div class="col col--2 col--offset-2">
+    <div class="col-inner">col--2 col--offset-2</div>
+  </div>
+  <div class="col col--4 col--offset-2">
+    <div class="col-inner">col--4 col--offset-2</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col col--3">
+    <div class="col-inner">col--3</div>
+  </div>
+  <div class="col col--6 col--offset-3">
+    <div class="col-inner">col--6 col--offset-3</div>
+  </div>
+</div>
+<h3>No Gutters</h3>
+<div class="row row--no-gutters">
+  <div class="col"><div class="col-inner">col</div></div>
+  <div class="col"><div class="col-inner">col</div></div>
+</div>
+<div class="row row--no-gutters">
+  <div class="col"><div class="col-inner">col</div></div>
+  <div class="col"><div class="col-inner">col</div></div>
+  <div class="col"><div class="col-inner">col</div></div>
+</div>
+<div class="row row--no-gutters">
+  <div class="col col--3"><div class="col-inner">col--3</div></div>
+  <div class="col col--4"><div class="col-inner">col--4</div></div>
+  <div class="col col--5"><div class="col-inner">col--5</div></div>
+</div>
+```
+
+## Colors
+
+```html previewOnly containerClassName="demo-section"
+<div class="row margin-vert--md">
+  <div class="col col--3">
+    <span class="text--bold">Primary</span>
+  </div>
+  <div class="col">
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-primary-lightest);
+      "></div>
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-primary-lighter);
+      "></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-primary-light)"></div>
+    <div class="color" style="background-color: var(--ifm-color-primary)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-primary-dark)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-primary-darker)"></div>
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-primary-darkest);
+      "></div>
+    <div class="color-contrast">
+      <div
+        class="color"
+        style="
+          background-color: var(
+            --ifm-color-primary-contrast-background
+          );
+        "></div>
+      <div
+        class="color"
+        style="
+          background-color: var(
+            --ifm-color-primary-contrast-emphasis
+          );
+        "></div>
+    </div>
+  </div>
+</div>
+<div class="row margin-vert--md">
+  <div class="col col--3">
+    <span class="text--bold">Secondary</span>
+  </div>
+  <div class="col">
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-secondary-lightest);
+      "></div>
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-secondary-lighter);
+      "></div>
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-secondary-light);
+      "></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-secondary)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-secondary-dark)"></div>
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-secondary-darker);
+      "></div>
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-secondary-darkest);
+      "></div>
+    <div class="color-contrast">
+      <div
+        class="color"
+        style="
+          background-color: var(
+            --ifm-color-secondary-contrast-background
+          );
+        "></div>
+      <div
+        class="color"
+        style="
+          background-color: var(
+            --ifm-color-secondary-contrast-emphasis
+          );
+        "></div>
+    </div>
+  </div>
+</div>
+<div class="row margin-vert--md">
+  <div class="col col--3">
+    <span class="text--bold">Success</span>
+  </div>
+  <div class="col">
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-success-lightest);
+      "></div>
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-success-lighter);
+      "></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-success-light)"></div>
+    <div class="color" style="background-color: var(--ifm-color-success)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-success-dark)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-success-darker)"></div>
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-success-darkest);
+      "></div>
+    <div class="color-contrast">
+      <div
+        class="color"
+        style="
+          background-color: var(
+            --ifm-color-success-contrast-background
+          );
+        "></div>
+      <div
+        class="color"
+        style="
+          background-color: var(
+            --ifm-color-success-contrast-emphasis
+          );
+        "></div>
+    </div>
+  </div>
+</div>
+<div class="row margin-vert--md">
+  <div class="col col--3">
+    <span class="text--bold">Info</span>
+  </div>
+  <div class="col">
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-info-lightest)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-info-lighter)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-info-light)"></div>
+    <div class="color" style="background-color: var(--ifm-color-info)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-info-dark)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-info-darker)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-info-darkest)"></div>
+    <div class="color-contrast">
+      <div
+        class="color"
+        style="
+          background-color: var(--ifm-color-info-contrast-background);
+        "></div>
+      <div
+        class="color"
+        style="
+          background-color: var(--ifm-color-info-contrast-emphasis);
+        "></div>
+    </div>
+  </div>
+</div>
+<div class="row margin-vert--md">
+  <div class="col col--3">
+    <span class="text--bold">Warning</span>
+  </div>
+  <div class="col">
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-warning-lightest);
+      "></div>
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-warning-lighter);
+      "></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-warning-light)"></div>
+    <div class="color" style="background-color: var(--ifm-color-warning)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-warning-dark)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-warning-darker)"></div>
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-warning-darkest);
+      "></div>
+    <div class="color-contrast">
+      <div
+        class="color"
+        style="
+          background-color: var(
+            --ifm-color-warning-contrast-background
+          );
+        "></div>
+      <div
+        class="color"
+        style="
+          background-color: var(
+            --ifm-color-warning-contrast-emphasis
+          );
+        "></div>
+    </div>
+  </div>
+</div>
+<div class="row margin-vert--md">
+  <div class="col col--3">
+    <span class="text--bold">Danger</span>
+  </div>
+  <div class="col">
+    <div
+      class="color"
+      style="
+        background-color: var(--ifm-color-danger-lightest);
+      "></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-danger-lighter)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-danger-light)"></div>
+    <div class="color" style="background-color: var(--ifm-color-danger)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-danger-dark)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-danger-darker)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-danger-darkest)"></div>
+    <div class="color-contrast">
+      <div
+        class="color"
+        style="
+          background-color: var(
+            --ifm-color-danger-contrast-background
+          );
+        "></div>
+      <div
+        class="color"
+        style="
+          background-color: var(--ifm-color-danger-contrast-emphasis);
+        "></div>
+    </div>
+  </div>
+</div>
+<div class="row margin-vert--md">
+  <div class="col col--3">
+    <span class="text--bold">Gray</span>
+  </div>
+  <div class="col">
+    <div class="color" style="background-color: var(--ifm-color-white)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-gray-100)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-gray-200)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-gray-300)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-gray-400)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-gray-500)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-gray-600)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-gray-700)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-gray-800)"></div>
+    <div
+      class="color"
+      style="background-color: var(--ifm-color-gray-900)"></div>
+    <div class="color" style="background-color: var(--ifm-color-black)"></div>
+  </div>
+</div>
+```
+
+## Buttons
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col col--8">
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <button class="button button--primary">Primary</button>
+        <button class="button button--secondary">Secondary</button>
+        <button class="button button--success">Success</button>
+        <button class="button button--info">Info</button>
+        <button class="button button--warning">Warning</button>
+        <button class="button button--danger">Danger</button>
+        <button class="button button--link">Link</button>
+      </div>
+    </div>
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <button class="button disabled button--primary">Primary</button>
+        <button class="button disabled button--secondary">Secondary</button>
+        <button class="button disabled button--success">Success</button>
+        <button class="button disabled button--info">Info</button>
+        <button class="button disabled button--warning">Warning</button>
+        <button class="button disabled button--danger">Danger</button>
+        <button class="button disabled button--link">Link</button>
+      </div>
+    </div>
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <button class="button button--outline button--primary">Primary</button>
+        <button class="button button--outline button--secondary">
+          Secondary
+        </button>
+        <button class="button button--outline button--success">Success</button>
+        <button class="button button--outline button--info">Info</button>
+        <button class="button button--outline button--warning">Warning</button>
+        <button class="button button--outline button--danger">Danger</button>
+        <button class="button button--outline button--link">Link</button>
+      </div>
+    </div>
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <button class="button button--active button--primary">Primary</button>
+        <button class="button button--active button--secondary">
+          Secondary
+        </button>
+        <button class="button button--active button--success">Success</button>
+        <button class="button button--active button--info">Info</button>
+        <button class="button button--active button--warning">Warning</button>
+        <button class="button button--active button--danger">Danger</button>
+        <button class="button button--active button--link">Link</button>
+      </div>
+    </div>
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <a class="button button--primary" href="#url">Primary</a>
+        <a class="button button--secondary" href="#url">Secondary</a>
+        <a class="button button--success" href="#url">Success</a>
+        <a class="button button--info" href="#url">Info</a>
+        <a class="button button--warning" href="#url">Warning</a>
+        <a class="button button--danger" href="#url">Danger</a>
+        <a class="button button--link" href="#url">Link</a>
+      </div>
+    </div>
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <button class="button button--sm button--primary">Small Button</button>
+        <button class="button button--primary">Default Button</button>
+        <button class="button button--lg button--primary">Large Button</button>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <button class="button button--block button--primary">
+          Block Button
+        </button>
+      </div>
+    </div>
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <div class="button-group">
+          <button class="button button--primary button--active">Alpha</button>
+          <button class="button button--primary">Beta</button>
+          <button class="button button--primary">Gamma</button>
+        </div>
+      </div>
+    </div>
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <div class="button-group">
+          <button class="button button--secondary button--active">Alpha</button>
+          <button class="button button--secondary">Beta</button>
+          <button class="button button--secondary">Gamma</button>
+        </div>
+      </div>
+    </div>
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <div class="button-group">
+          <button class="button button--sm button--success">Alpha</button>
+          <button class="button button--sm button--success button--active">
+            Beta
+          </button>
+          <button class="button button--sm button--success">Gamma</button>
+        </div>
+      </div>
+    </div>
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <div class="button-group">
+          <button class="button button--lg button--outline button--info">
+            Alpha
+          </button>
+          <button
+            class="button button--lg button--outline button--info button--active">
+            Beta
+          </button>
+          <button class="button button--lg button--outline button--info">
+            Gamma
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <div class="button-group button-group--block">
+          <button class="button button--warning">Alpha</button>
+          <button class="button button--warning">Beta</button>
+          <button class="button button--warning button--active">Gamma</button>
+        </div>
+      </div>
+    </div>
+    <div class="row margin-bottom--sm">
+      <div class="col">
+        <div class="button-group button-group--block">
+          <button class="button button--sm button--outline button--danger">
+            Alpha
+          </button>
+          <button class="button button--sm button--outline button--danger">
+            Beta
+          </button>
+          <button
+            class="button button--sm button--outline button--danger button--active">
+            Gamma
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+## Dropdown
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col">
+    <div class="row">
+      <div class="col">
+        <div class="dropdown dropdown--hoverable thin-scrollbar">
+          <button class="button button--primary">Hover Me</button>
+          <ul class="dropdown__menu">
+            <li>
+              <a class="dropdown__link" href="#url">Home</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">Profile</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">Settings</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">Help</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">Logout</a>
+            </li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <button class="button button--secondary" data-toggle="dropdown">
+            Click Me
+          </button>
+          <ul class="dropdown__menu">
+            <li>
+              <a class="dropdown__link" href="#url">Home</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">Profile</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">Settings</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">Help</a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">Logout</a>
+            </li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <button class="button button--success" data-toggle="dropdown">
+            Long Children
+          </button>
+          <ul class="dropdown__menu">
+            <li>
+              <a class="dropdown__link" href="#url"> This is a long item </a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url"> And so is this item </a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">
+                Who are you kidding, I'm the longest!
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="dropdown dropdown--right">
+          <button class="button button--info" data-toggle="dropdown">
+            Right-Aligned Long Children&nbsp;&nbsp;
+            <i class="fas fa-caret-down"></i>
+          </button>
+          <ul class="dropdown__menu">
+            <li>
+              <a class="dropdown__link" href="#url">
+                This is a very long item
+              </a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url"> And so is this item </a>
+            </li>
+            <li>
+              <a class="dropdown__link" href="#url">
+                Who are you kidding, I'm the longessssssssst!
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+## Alerts
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col">
+    <div class="alert alert--primary" role="alert">
+      <button class="clean-btn close">&times;</button>
+      This is a
+      <strong>primary</strong>
+      alert. You should probably pay attention to it. Here's a
+      <a href="#">
+        link to
+        <code>somewhere</code>
+        else
+      </a>
+      .
+    </div>
+  </div>
+  <div class="col">
+    <div class="alert alert--secondary" role="alert">
+      <button class="clean-btn close">&times;</button>
+      <div class="alert__heading">
+        <span class="alert__icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 14 16">
+            <path
+              fill-rule="evenodd"
+              d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path>
+          </svg>
+        </span>
+        optional title
+      </div>
+      This is a
+      <strong>secondary</strong>
+      alert. It's not too important, you may ignore it. Here's a
+      <a href="#">
+        link to
+        <code>somewhere</code>
+        else
+      </a>
+      . And this
+      <code>some code</code>
+      for example.
+    </div>
+  </div>
+  <div class="col">
+    <div class="alert alert--success" role="alert">
+      <button class="clean-btn close">&times;</button>
+      This is a
+      <strong>success</strong>
+      alert. Something good must have happened! Here's a
+      <a href="#">
+        link to
+        <code>somewhere</code>
+        else
+      </a>
+      .
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="alert alert--info" role="alert">
+      <button class="clean-btn close">&times;</button>
+      This is an
+      <strong>info</strong>
+      alert. For your information only. Here's a
+      <a href="#">
+        link to
+        <code>somewhere</code>
+        else
+      </a>
+      .
+    </div>
+  </div>
+  <div class="col">
+    <div class="alert alert--warning" role="alert">
+      <button class="clean-btn close">&times;</button>
+      This is a
+      <strong>warning</strong>
+      alert. Be warned, you should pay attention! Here's a
+      <a href="#">
+        link to
+        <code>somewhere</code>
+        else
+      </a>
+      .
+    </div>
+  </div>
+  <div class="col">
+    <div class="alert alert--danger" role="alert">
+      <button class="clean-btn close">&times;</button>
+      This is a
+      <strong>danger</strong>
+      alert. Something has gone wrong, please investigate! Here's a
+      <a href="#">
+        link to
+        <code>somewhere</code>
+        else
+      </a>
+      .
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="alert alert--info" role="alert">
+      Alert with tabs:
+      <ul class="tabs">
+        <li class="tabs__item tabs__item--active">Timeline</li>
+        <li class="tabs__item">About</li>
+      </ul>
+    </div>
+  </div>
+  <div class="col">
+    <div class="alert alert--warning" role="alert">
+      Alert with tabs:
+      <ul class="tabs">
+        <li class="tabs__item tabs__item--active">Timeline</li>
+        <li class="tabs__item">About</li>
+      </ul>
+    </div>
+  </div>
+  <div class="col">
+    <div class="alert alert--danger" role="alert">
+      Alert with tabs:
+      <ul class="tabs">
+        <li class="tabs__item tabs__item--active">Timeline</li>
+        <li class="tabs__item">About</li>
+      </ul>
+    </div>
+  </div>
+</div>
+```
+
+## Badges
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col">
+    <span class="badge badge--primary">Primary</span>
+    <span class="badge badge--secondary">Secondary</span>
+    <span class="badge badge--success">Success</span>
+    <span class="badge badge--info">Info</span>
+    <span class="badge badge--warning">Warning</span>
+    <span class="badge badge--danger">Danger</span>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <h1>
+      This is Something New
+      <span class="badge badge--primary">Primary</span>
+    </h1>
+    <h2>
+      This is Something New
+      <span class="badge badge--primary">Primary</span>
+    </h2>
+    <h3>
+      This is Something New
+      <span class="badge badge--primary">Primary</span>
+    </h3>
+    <h4>
+      This is Something New
+      <span class="badge badge--primary">Primary</span>
+    </h4>
+    <h5>
+      This is Something New
+      <span class="badge badge--primary">Primary</span>
+    </h5>
+    <h6>
+      This is Something New
+      <span class="badge badge--primary">Primary</span>
+    </h6>
+  </div>
+</div>
+```
+
+## Pills and Tabs
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col">
+    <h1>Pills</h1>
+    <h3>Standard Pills</h3>
+    <div class="row margin-bottom--lg">
+      <div class="col">
+        <ul class="pills">
+          <li class="pills__item pills__item--active">Alpha</li>
+          <li class="pills__item">Beta</li>
+          <li class="pills__item">Gamma</li>
+          <li class="pills__item">Zeta</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Full-width Pills</h3>
+    <div class="row">
+      <div class="col">
+        <ul class="pills pills--block">
+          <li class="pills__item pills__item--active">Alpha</li>
+          <li class="pills__item">Beta</li>
+          <li class="pills__item">Gamma</li>
+          <li class="pills__item">Zeta</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <h1>Tabs</h1>
+    <h3>Standard Tabs</h3>
+    <div class="row margin-bottom--lg">
+      <div class="col">
+        <ul class="tabs">
+          <li class="tabs__item tabs__item--active">Timeline</li>
+          <li class="tabs__item">About</li>
+          <li class="tabs__item">Friends</li>
+          <li class="tabs__item">Photos</li>
+          <li class="tabs__item">Videos</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Full-Width Tabs</h3>
+    <div class="row">
+      <div class="col">
+        <ul class="tabs tabs--block">
+          <li class="tabs__item tabs__item--active">Timeline</li>
+          <li class="tabs__item">About</li>
+          <li class="tabs__item">Friends</li>
+          <li class="tabs__item">Photos</li>
+          <li class="tabs__item">Videos</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+## Pagination
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col col--4">
+    <ul class="pagination">
+      <li class="pagination__item pagination__item--disabled">
+        <a class="pagination__link" href="#url">&laquo;</a>
+      </li>
+      <li class="pagination__item">
+        <a class="pagination__link" href="#url">1</a>
+      </li>
+      <li class="pagination__item pagination__item--active">
+        <a class="pagination__link" href="#url">2</a>
+      </li>
+      <li class="pagination__item">
+        <a class="pagination__link" href="#url">3</a>
+      </li>
+      <li class="pagination__item">
+        <span>...</span>
+      </li>
+      <li class="pagination__item">
+        <a class="pagination__link" href="#url">&raquo;</a>
+      </li>
+    </ul>
+  </div>
+  <div class="col col--3">
+    <ul class="pagination pagination--sm">
+      <li class="pagination__item">
+        <a class="pagination__link" href="#url">&laquo;</a>
+      </li>
+      <li class="pagination__item">
+        <span>...</span>
+      </li>
+      <li class="pagination__item">
+        <a class="pagination__link" href="#url">5</a>
+      </li>
+      <li class="pagination__item pagination__item--active">
+        <a class="pagination__link" href="#url">6</a>
+      </li>
+      <li class="pagination__item">
+        <a class="pagination__link" href="#url">7</a>
+      </li>
+      <li class="pagination__item">
+        <span>...</span>
+      </li>
+      <li class="pagination__item">
+        <a class="pagination__link" href="#url">&raquo;</a>
+      </li>
+    </ul>
+  </div>
+  <div class="col col--5">
+    <ul class="pagination pagination--lg">
+      <li class="pagination__item">
+        <a class="pagination__link" href="#url">&laquo;</a>
+      </li>
+      <li class="pagination__item">
+        <span>...</span>
+      </li>
+      <li class="pagination__item">
+        <a class="pagination__link" href="#url">7</a>
+      </li>
+      <li class="pagination__item">
+        <a class="pagination__link" href="#url">8</a>
+      </li>
+      <li class="pagination__item pagination__item--active">
+        <a class="pagination__link" href="#url">9</a>
+      </li>
+      <li class="pagination__item pagination__item--disabled">
+        <a class="pagination__link" href="#url">&raquo;</a>
+      </li>
+    </ul>
+  </div>
+</div>
+```
+
+## Pagination Nav
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col col--5">
+    <nav class="pagination-nav">
+      <a class="pagination-nav__link pagination-nav__link--prev" href="#url">
+        <div class="pagination-nav__sublabel">Previous</div>
+        <div class="pagination-nav__label">Installation</div>
+      </a>
+      <a class="pagination-nav__link pagination-nav__link--next" href="#url">
+        <div class="pagination-nav__sublabel">Next</div>
+        <div class="pagination-nav__label">Getting Started</div>
+      </a>
+    </nav>
+  </div>
+  <div class="col col--6 col--offset-1">
+    <nav class="pagination-nav">
+      <a class="pagination-nav__link pagination-nav__link--prev" href="#url">
+        <div class="pagination-nav__sublabel">Previous</div>
+        <div class="pagination-nav__label">
+          Some Extremely Long Long Long Long Title
+        </div>
+      </a>
+      <a class="pagination-nav__link pagination-nav__link--next" href="#url">
+        <h5 class="pagination-nav__sublabel">Next</h5>
+        <h4 class="pagination-nav__label">
+          AnotherExtremelyLongTitleWithoutBreaksProbablyAComponent
+        </h4>
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="row">
+  <div class="col col--5">
+    <nav class="pagination-nav">
+      <a class="pagination-nav__link pagination-nav__link--prev" href="#url">
+        <div class="pagination-nav__sublabel">Previous</div>
+        <div class="pagination-nav__label">Installation</div>
+      </a>
+    </nav>
+  </div>
+  <div class="col col--6 col--offset-1">
+    <nav class="pagination-nav">
+      <a class="pagination-nav__link pagination-nav__link--next" href="#url">
+        <div class="pagination-nav__sublabel">Next</div>
+        <div class="pagination-nav__label">
+          AnotherExtremelyLongTitleWithoutBreaksProbablyAComponent
+        </div>
+      </a>
+    </nav>
+  </div>
+</div>
+```
+
+## Breadcrumbs
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col">
+    <nav aria-label="breadcrumbs">
+      <ul class="breadcrumbs">
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#url">Infima</a>
+        </li>
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#url">Docs</a>
+        </li>
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#url">Component</a>
+        </li>
+        <li class="breadcrumbs__item breadcrumbs__item--active">
+          <a class="breadcrumbs__link" href="#url">Breadcrumb</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <nav aria-label="breadcrumbs">
+      <ul class="breadcrumbs breadcrumbs--sm">
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#url">Infima</a>
+        </li>
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#url">Docs</a>
+        </li>
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#url">Component</a>
+        </li>
+        <li class="breadcrumbs__item breadcrumbs__item--active">
+          <a class="breadcrumbs__link" href="#url">Breadcrumb</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <nav aria-label="breadcrumbs">
+      <ul class="breadcrumbs breadcrumbs--lg">
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#url">Infima</a>
+        </li>
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#url">Docs</a>
+        </li>
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#url">Component</a>
+        </li>
+        <li class="breadcrumbs__item breadcrumbs__item--active">
+          <a class="breadcrumbs__link" href="#url">Breadcrumb</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <nav aria-label="breadcrumbs">
+      <ul class="breadcrumbs breadcrumbs--lg">
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#url">Breadcrumbs</a>
+        </li>
+        <li class="breadcrumbs__item">
+          <span class="breadcrumbs__link">Span Item (no link)</span>
+        </li>
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#url">Link Item</a>
+        </li>
+        <li class="breadcrumbs__item breadcrumbs__item--active">
+          <a class="breadcrumbs__link" href="#url">Link Item active</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+```
+
+## Avatar
+
+```html previewOnly containerClassName="demo-section"
+<h3>Horizontal Avatars</h3>
+<div class="row">
+  <div class="col">
+    <div class="avatar">
+      <a href="https://twitter.com/dan_abramov">
+        <img
+          class="avatar__photo avatar__photo--xl"
+          alt="Dan Abramov Profile"
+          src="https://avatars1.githubusercontent.com/u/810438?s=460" />
+      </a>
+      <div class="avatar__intro">
+        <div class="avatar__name">Dan Abramov</div>
+        <small class="avatar__subtitle">
+          Working on @reactjs. Co-author of Redux and Create React App.
+        </small>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="avatar">
+      <img
+        class="avatar__photo avatar__photo--lg"
+        src="https://avatars2.githubusercontent.com/u/197597?s=460" />
+      <div class="avatar__intro">
+        <div class="avatar__name">Christopher Chedeau</div>
+        <small class="avatar__subtitle"> Frenchy Front End Engineer </small>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="avatar">
+      <img
+        class="avatar__photo"
+        src="https://avatars1.githubusercontent.com/u/977348?s=460&v=4" />
+      <div class="avatar__intro">
+        <div class="avatar__name">Jordan Walke</div>
+        <small class="avatar__subtitle">
+          Maker of things: ReactJS. Working on:
+          <a href="https://twitter.com/reasonml">@reasonml</a>
+          . At: Facebook Engineering.
+        </small>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="avatar">
+      <img
+        class="avatar__photo avatar__photo--sm"
+        src="https://avatars3.githubusercontent.com/u/13352?s=400&v=4" />
+      <div class="avatar__intro">
+        <div class="avatar__name">Christoph Pojer</div>
+      </div>
+    </div>
+  </div>
+</div>
+<h3>Vertical Avatars</h3>
+<div class="row">
+  <div class="col">
+    <div class="avatar avatar--vertical">
+      <img
+        class="avatar__photo avatar__photo--xl"
+        src="https://avatars1.githubusercontent.com/u/165856?s=460&v=4" />
+      <div class="avatar__intro">
+        <div class="avatar__name">Hector Ramos</div>
+        <small class="avatar__subtitle">React Native @facebook</small>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="avatar avatar--vertical">
+      <img
+        class="avatar__photo avatar__photo--lg"
+        src="https://avatars0.githubusercontent.com/u/3757713?s=460&v=4" />
+      <div class="avatar__intro">
+        <div class="avatar__name">Joel Marcey</div>
+        <small class="avatar__subtitle">
+          Developer Advocate at Facebook, co-creator of Docusaurus
+        </small>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="avatar avatar--vertical">
+      <img
+        class="avatar__photo"
+        src="https://avatars1.githubusercontent.com/u/1315101?s=460&v=4" />
+      <div class="avatar__intro">
+        <div class="avatar__name">Yangshun Tay</div>
+        <small class="avatar__subtitle">Creator of Infima</small>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="avatar avatar--vertical">
+      <img
+        class="avatar__photo avatar__photo--sm"
+        src="https://avatars1.githubusercontent.com/u/17883920?s=460&v=4" />
+      <div class="avatar__intro">
+        <div class="avatar__name">Endilie Yacop Sucipto</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+## Cards
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card__header">
+        <h3>Lorem Ipsum</h3>
+      </div>
+      <div class="card__body">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
+          suspendisse ultrices gravida.
+        </p>
+      </div>
+      <div class="card__footer">
+        <button class="button button--secondary button--block">See All</button>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+      <div class="card__header">
+        <div class="avatar">
+          <img
+            class="avatar__photo"
+            src="https://avatars1.githubusercontent.com/u/4060187?s=460&v=4" />
+          <div class="avatar__intro">
+            <div class="avatar__name">Jared Palmer</div>
+            <small class="avatar__subtitle">
+              Consultant, Speaker, Lead Engineer
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="card__image">
+        <img
+          src="https://images.unsplash.com/photo-1501619951397-5ba40d0f75da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1655&q=80"
+          alt="Image alt text"
+          title="Logo Title Text 1" />
+      </div>
+      <div class="card__footer">
+        <div class="button-group button-group--block">
+          <button class="button button--secondary">Like</button>
+          <button class="button button--secondary">Comment</button>
+          <button class="button button--secondary">Share</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src="https://images.unsplash.com/photo-1506624183912-c602f4a21ca7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
+          alt="Image alt text"
+          title="Logo Title Text 1" />
+      </div>
+      <div class="card__body">
+        <h4>Quaco Lighthouse</h4>
+        <small>
+          The Quaco Head Lighthouse is a well maintained lighthouse close to St.
+          Martins. It is a short, beautiful walk to the lighthouse along the
+          seashore.
+        </small>
+      </div>
+      <div class="card__footer">
+        <button class="button button--primary button--block">Visit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<h3>Full-Height Cards</h3>
+<div class="row">
+  <div class="col">
+    <div class="card card--full-height">
+      <div class="card__header">
+        <h3>Lorem Ipsum</h3>
+      </div>
+      <div class="card__body">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
+          suspendisse ultrices gravida.
+        </p>
+      </div>
+      <div class="card__footer">
+        <button class="button button--secondary button--block">See All</button>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card card--full-height">
+      <div class="card__header">
+        <div class="avatar">
+          <img
+            class="avatar__photo"
+            src="https://avatars1.githubusercontent.com/u/4060187?s=460&v=4" />
+          <div class="avatar__intro">
+            <div class="avatar__name">Jared Palmer</div>
+            <small class="avatar__subtitle">
+              Consultant, Speaker, Lead Engineer
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="card__image">
+        <img
+          src="https://images.unsplash.com/photo-1501619951397-5ba40d0f75da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1655&q=80"
+          alt="Image alt text"
+          title="Logo Title Text 1" />
+      </div>
+      <div class="card__footer">
+        <div class="button-group button-group--block">
+          <button class="button button--secondary">Like</button>
+          <button class="button button--secondary">Comment</button>
+          <button class="button button--secondary">Share</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card card--full-height">
+      <div class="card__image">
+        <img
+          src="https://images.unsplash.com/photo-1506624183912-c602f4a21ca7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
+          alt="Image alt text"
+          title="Logo Title Text 1" />
+      </div>
+      <div class="card__body">
+        <h4>Quaco Lighthouse</h4>
+        <small>
+          The Quaco Head Lighthouse is a well maintained lighthouse close to St.
+          Martins. It is a short, beautiful walk to the lighthouse along the
+          seashore.
+        </small>
+      </div>
+      <div class="card__footer">
+        <button class="button button--primary button--block">Visit</button>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+## Typography
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col">
+    <h1>Heading 1</h1>
+    <h2>Heading 2</h2>
+    <h3>Heading 3</h3>
+    <h4>Heading 4</h4>
+    <h5>Heading 5</h5>
+    <h6>Heading 6</h6>
+  </div>
+  <div class="col">
+    <h2>Emphasis</h2>
+    <p>
+      Emphasis, aka italics, with
+      <em>asterisks</em>
+      or
+      <em>underscores</em>
+      .
+    </p>
+    <p>
+      Strong emphasis, aka bold, with
+      <strong>asterisks</strong>
+      or
+      <strong>underscores</strong>
+      .
+    </p>
+    <p>
+      Combined emphasis with
+      <strong>
+        asterisks and
+        <em>underscores</em>
+      </strong>
+      .
+    </p>
+    <p>
+      Strikethrough uses two tildes.
+      <del>Scratch this.</del>
+    </p>
+    <p class="text--primary">This is primary text.</p>
+    <p class="text--secondary">This is secondary text.</p>
+    <p class="text--success">This is success text.</p>
+    <p class="text--info">This is info text.</p>
+    <p class="text--warning">This is warning text.</p>
+    <p class="text--danger">This is danger text.</p>
+  </div>
+  <div class="col">
+    <h2>Blockquotes</h2>
+    <blockquote>
+      <p>
+        Blockquotes are very handy in email to emulate reply text. This line is
+        part of the same quote.
+      </p>
+    </blockquote>
+    <p>Quote break.</p>
+    <blockquote>
+      <p>
+        This is a very long line that will still be quoted properly when it
+        wraps. Oh boy let's keep writing to make sure this is long enough to
+        actually wrap for everyone. Oh, you can
+        <em>put</em>
+        <strong>Markdown</strong>
+        into a blockquote.
+      </p>
+      <blockquote>
+        <p>Some nested quote</p>
+      </blockquote>
+      <p>
+        Here's a
+        <a href="#">
+          link to
+          <code>somewhere</code>
+          else
+        </a>
+        and an
+        <code>inline code block</code>
+      </p>
+    </blockquote>
+  </div>
+</div>
+<h2>Horizontal rule</h2>
+<hr />
+```
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col">
+    <h2>Lists</h2>
+    <ol>
+      <li>First ordered list item</li>
+      <li>Second item</li>
+      <li>Third item</li>
+    </ol>
+    <ul>
+      <li>First unordered list item</li>
+      <li>Second item</li>
+      <li>Third item</li>
+    </ul>
+    <ol>
+      <li>
+        Lists in a list item:
+        <ul>
+          <li>
+            Indented four spaces.
+            <ul>
+              <li>indented eight spaces.</li>
+            </ul>
+          </li>
+          <li>Four spaces again.</li>
+        </ul>
+      </li>
+      <li>
+        <p>
+          Multiple paragraphs in a list items: It's best to indent the
+          paragraphs four spaces You can get away with three, but it can get
+          confusing when you nest other things. Stick to four.
+        </p>
+        <p>
+          We indented the first line an extra space to align it with these
+          paragraphs. In real use, we might do that to the entire list so that
+          all items line up.
+        </p>
+        <p>
+          This paragraph is still part of the list item, but it looks messy to
+          humans. So it's a good idea to wrap your nested paragraphs manually,
+          as we did with the first two.
+        </p>
+      </li>
+      <li>
+        <p>Blockquotes in a list item:</p>
+        <blockquote>
+          <p>Skip a line and indent the &gt;'s four spaces.</p>
+        </blockquote>
+      </li>
+      <li>
+        <p>Preformatted text in a list item:</p>
+        <pre><code>Skip a line and indent eight spaces.
+      That's four spaces for the list
+      and four to trigger the code block.
+      </code></pre>
+      </li>
+    </ol>
+  </div>
+  <div class="col col--4 col--offset-1">
+    <h2>Tables</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Tables</th>
+          <th align="center">Are</th>
+          <th align="right">Cool</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>col 3 is</td>
+          <td align="center"><code>right-aligned</code></td>
+          <td align="right">$1600</td>
+        </tr>
+        <tr>
+          <td>col 2 is</td>
+          <td align="center"><code>centered</code></td>
+          <td align="right">$12</td>
+        </tr>
+        <tr>
+          <td>zebra stripes</td>
+          <td align="center">are neat</td>
+          <td align="right">$1</td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <thead>
+        <tr>
+          <th>Markdown</th>
+          <th>Less</th>
+          <th>Pretty</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><em>Still</em></td>
+          <td><code>renders</code></td>
+          <td><strong>nicely</strong></td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="alert alert--info" role="alert">
+      Table inside alert:
+      <table>
+        <thead>
+          <tr>
+            <th>Markdown</th>
+            <th>Less</th>
+            <th>Pretty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><em>Still</em></td>
+            <td><code>renders</code></td>
+            <td><strong>nicely</strong></td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+```
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col">
+    <h2>Inline HTML</h2>
+    <p>
+      To reboot your computer,
+      <a href="https://www.lmgtfy.com">search it up on Google</a>
+      or press
+      <kbd>ctrl</kbd>
+      +
+      <kbd>alt</kbd>
+      +
+      <kbd>del</kbd>
+      .
+    </p>
+    <h2>Horizontal Rules</h2>
+    <p>Three or more...</p>
+    <hr />
+    <p>Hyphens</p>
+    <hr />
+    <p>Asterisks</p>
+    <hr />
+    <p>Underscores</p>
+  </div>
+  <div class="col col--6 col--offset-1">
+    <h2>Code and Syntax Highlighting</h2>
+    <p>
+      Inline
+      <code>code</code>
+      has
+      <code>back-ticks around</code>
+      it.
+    </p>
+    <pre lang="no-highlight"><code>function foo() {
+  console.log('foo!');
+}</code></pre>
+    <h3>
+      You can use
+      <code>code</code>
+      in your headers.
+    </h3>
+    <blockquote>
+      As well as type
+      <code>code</code>
+      in your blockquotes.
+    </blockquote>
+    <p>
+      <a href="#">
+        And you can use
+        <code>code</code>
+        inside links
+      </a>
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>JavaScript</th>
+          <th>Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <pre>
+const myFun = (x, y) =&gt; {
+  const doubleX = x + x;
+  const doubleY = y + y;
+  return doubleX + doubleY
+};</pre>
+          </td>
+          <td>
+            <pre>
+let myFun = (x, y) =&gt; {
+  let doubleX = x + x;
+  let doubleY = y + y;
+  doubleX + doubleY
+};</pre>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+```
+
+## Media
+
+```html previewOnly containerClassName="demo-section"
+<div class="row">
+  <div class="col col--6">
+    <h2>Images</h2>
+    <img
+      src="https://images.unsplash.com/photo-1523612192437-66de9804ac3c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=59310f54610ead00fcc3d07732d5d473&auto=format&fit=crop&w=1350&q=80"
+      alt="Image alt text"
+      title="Logo Title Text 1"
+      style="max-width: 100%" />
+    <p>
+      Photo credits:
+      <a href="https://unsplash.com/photos/sKn-Yy4BRtY"> Ashim D'Silva </a>
+    </p>
+  </div>
+</div>
+```
+
+## Shadows
+
+```html previewOnly containerClassName="demo-section demo-grid"
+<div class="row">
+  <div class="col">
+    <div class="col-inner shadow--lw">Low elevation</div>
+  </div>
+  <div class="col">
+    <div class="col-inner shadow--md">Medium elevation</div>
+  </div>
+  <div class="col">
+    <div class="col-inner shadow--tl">High elevation</div>
+  </div>
+</div>
+```
+
+## Page Footer
+
+```html previewOnly
+<footer class="footer">
+  <div class="container">
+    <div class="row footer__links">
+      <div class="col footer__col">
+        <h4 class="footer__title">Docs</h4>
+        <ul class="footer__items clean-list">
+          <li class="footer__item">
+            <a class="footer__link-item" href="#url">Getting Started</a>
+          </li>
+          <li class="footer__item">
+            <a class="footer__link-item" href="#url">API</a>
+          </li>
+          <li class="footer__item">
+            <a class="footer__link-item" href="#url">FAQ</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col footer__col">
+        <h4 class="footer__title">Community</h4>
+        <ul class="footer__items clean-list">
+          <li class="footer__item">
+            <a class="footer__link-item" href="#url">Users</a>
+          </li>
+          <li class="footer__item">
+            <a class="footer__link-item" href="#url">Contribute</a>
+          </li>
+          <li class="footer__item">
+            <a class="footer__link-item" href="#url">Stack Overflow</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col footer__col">
+        <h4 class="footer__title">Social</h4>
+        <ul class="footer__items clean-list">
+          <li class="footer__item">
+            <a class="footer__link-item" href="#url">GitHub</a>
+          </li>
+          <li class="footer__item">
+            <a class="footer__link-item" href="#url">Facebook</a>
+          </li>
+          <li class="footer__item">
+            <a class="footer__link-item" href="#url">Twitter</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col footer__col">
+        <h4 class="footer__title">More</h4>
+        <ul class="footer__items clean-list">
+          <li class="footer__item">
+            <a class="footer__link-item" href="#url">Tutorial</a>
+          </li>
+          <li class="footer__item">
+            <a class="footer__link-item" href="#url">Blog</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="text--center">
+      <div class="margin-bottom--sm">
+        <img
+          class="footer__logo"
+          alt="Facebook Open Source Logo"
+          src="/img/meta_opensource_logo_negative.svg" />
+      </div>
+      Copyright © 2022 Meta Platforms, Inc.
+    </div>
+  </div>
+</footer>
+```
