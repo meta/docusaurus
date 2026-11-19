@@ -73,6 +73,16 @@ const TestMDXComponents = {
       React.createElement('header', null, title ?? 'Default title'),
       children,
     ),
+  // Like react-helmet-async, Head only handles its element children
+  // Rendered separately, otherwise React hoists <title> and <meta> out of it
+  Head: ({children}: {children?: ReactNode}) =>
+    React.createElement('test-head', {
+      dangerouslySetInnerHTML: {
+        __html: renderToStaticMarkup(
+          React.Children.toArray(children).filter(React.isValidElement),
+        ),
+      },
+    }),
 };
 
 async function renderContent(content: string, options: Options) {
@@ -261,6 +271,41 @@ Body
       );
       expect(html).toBe(
         '<aside data-type="note"><header>Title</header><p>Body</p></aside>',
+      );
+    });
+  });
+
+  describe('head', () => {
+    describe.each(['md', 'mdx'] as const)('%s format', (format) => {
+      it('renders head metadata', async () => {
+        const html = await renderContent(
+          `<head>
+  <title>Custom title</title>
+  <meta name="keywords" content="cooking, blog" />
+</head>
+
+Body`,
+          createOptions({markdownConfig: {format}}),
+        );
+        expect(html).toBe(
+          '<test-head><title>Custom title</title><meta name="keywords" content="cooking, blog"/></test-head>\n<p>Body</p>',
+        );
+      });
+    });
+
+    it('renders structured data with the md format', async () => {
+      const html = await renderContent(
+        `<head>
+  <script type="application/ld+json">
+    {"@context": "https://schema.org", "@type": "Organization"}
+  </script>
+</head>`,
+        createOptions({markdownConfig: {format: 'md'}}),
+      );
+      expect(html).toBe(
+        `<test-head><script type="application/ld+json">
+    {"@context": "https://schema.org", "@type": "Organization"}
+  </script></test-head>`,
       );
     });
   });
