@@ -11,7 +11,7 @@ import _ from 'lodash';
 import {posixPath} from '@docusaurus/utils';
 import {getCurrentBundler} from '@docusaurus/bundler';
 import {excludeJS, clientDir, createBaseConfig} from '../base';
-import {BundlerNames, createTestConfigureWebpackUtils} from './testUtils';
+import {createTestConfigureWebpackUtils} from './testUtils';
 import {DEFAULT_FUTURE_CONFIG} from '../../server/configValidation';
 import type {CurrentBundler, Props, SiteMetadata} from '@docusaurus/types';
 
@@ -117,28 +117,19 @@ describe('base webpack config', () => {
     };
   }
 
-  // Rspack and webpack have a default rule giving the 'asset/source' type to
-  // modules imported with `with {type: 'text'}`, but the loaders of all other
-  // matching rules still apply (JS transpilation, MDX compilation, SVGR...)
-  // Our rules must exclude text imports to return the raw file content
-  // See https://rspack.rs/config/module-rules#ruleswith
-  it.each(BundlerNames)(
-    'excludes text import attributes from all core rules - %s',
-    async (bundlerName) => {
-      const config = await createBaseConfig({
-        props: await createProps(bundlerName),
-        isServer: false,
-        minify: true,
-        configureWebpackUtils:
-          await createTestConfigureWebpackUtils(bundlerName),
-      });
-      const rules = config.module?.rules ?? [];
-      expect(rules.length).toBeGreaterThan(0);
-      rules.forEach((rule) => {
-        expect(rule).toMatchObject({with: {type: {not: 'text'}}});
-      });
-    },
-  );
+  // The website dogfood tests check that text imports skip all loaders
+  it('makes text imports skip all subsequent rules - rspack', async () => {
+    const config = await createBaseConfig({
+      props: await createProps('rspack'),
+      isServer: false,
+      minify: true,
+      configureWebpackUtils: await createTestConfigureWebpackUtils('rspack'),
+    });
+    expect(config.module?.rules?.[0]).toEqual({
+      with: {type: 'text'},
+      as: '[resource-path].text',
+    });
+  });
 
   it('creates webpack aliases', async () => {
     const aliases = ((
