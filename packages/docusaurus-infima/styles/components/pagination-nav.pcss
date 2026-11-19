@@ -1,0 +1,62 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-pagination-nav-border-radius: var(--ifm-global-radius);
+  --ifm-pagination-nav-color-hover: var(--ifm-color-primary);
+}
+
+.pagination-nav {
+  display: grid;
+  gap: var(--ifm-spacing-horizontal);
+  grid-template-columns: repeat(2, 1fr);
+
+  @media print {
+    display: none;
+  }
+
+  &__link {
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: var(--ifm-pagination-nav-border-radius);
+    display: block;
+    height: 100%;
+    line-height: var(--ifm-heading-line-height);
+    padding: var(--ifm-global-spacing);
+    @mixin transition border-color;
+
+    &:hover {
+      border-color: var(--ifm-pagination-nav-color-hover);
+      text-decoration: none;
+    }
+
+    &--next {
+      grid-column: 2/3;
+      text-align: right;
+    }
+  }
+
+  &__label {
+    font-size: var(--ifm-h4-font-size);
+    font-weight: var(--ifm-heading-font-weight);
+    word-break: break-word;
+
+    ^&__link--prev &::before {
+      content: '« ';
+    }
+
+    ^&__link--next &::after {
+      content: ' »';
+    }
+  }
+
+  &__sublabel {
+    color: var(--ifm-color-content-secondary);
+    font-size: var(--ifm-h5-font-size);
+    font-weight: var(--ifm-font-weight-semibold);
+    margin-bottom: 0.25rem;
+  }
+}

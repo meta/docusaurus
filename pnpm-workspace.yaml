@@ -222,6 +222,18 @@ catalogs:
     lint-staged: ^17.5.0
     npm-run-all2: ^9.0.3
     pkg-pr-new: ^0.0.93
+    postcss-color-mod-function: ^3.0.3
+    postcss-combine-duplicated-selectors: ^10.0.3
+    postcss-each: ^0.10.0
+    postcss-for: ^2.1.1
+    postcss-import: ^14.1.0
+    postcss-mixins: ^9.0.4
+    postcss-nested: ^5.0.6
+    postcss-nested-ancestors: ^3.0.0
+    # Infima needs v7: newer versions change its CSS output
+    # See https://github.com/meta/docusaurus/pull/13082
+    postcss-preset-env-v7: npm:postcss-preset-env@^7.8.3
+    postcss-sort-media-queries: ^4.4.1
     rehype-stringify: ^10.0.1
     remark: ^15.0.1
     remark-rehype: ^11.1.2
@@ -243,6 +255,9 @@ overrides:
   # This version doesn't use a postinstall script
   # See https://sharp.pixelplumbing.com/changelog/v0.35.0/
   sharp: ^0.35.1
+  # Fix CVEs of the postcss 5 to 7 versions used by the Infima build plugins
+  # See https://github.com/meta/docusaurus/pull/13082
+  postcss: ^8.5.28
 
 minimumReleaseAge: 10080 # 7 days in minutes
 minimumReleaseAgeStrict: true

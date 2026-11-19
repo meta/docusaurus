@@ -8,7 +8,7 @@ This workspace can be run manually, but is generally run through the [Argos GitH
 
 This workflow runs for `main` and PR branches, and add a commit status to each PR with a visual diff that we can easily inspect.
 
-The workflow execute the 2 main steps below:
+The workflow execute the 3 main steps below:
 
 ### Screenshots
 
@@ -21,6 +21,10 @@ The workflow execute the 2 main steps below:
 
 - Rebuild - this time with HTML unminified/formatted.
 - Upload [HTML/CSS/JS files, blog feeds (RSS/Atom/JSON) and the sitemap to also diff them on Argos](https://argos-ci.com/docs/learn/how-to-guides/visual-coverage/compare-non-image-files) using `pnpm argos:upload:text-snapshots`
+
+### Infima CSS
+
+- Upload the CSS files compiled by [`@docusaurus/infima`](../packages/docusaurus-infima) (LTR and RTL) to diff them on Argos, in a separate `infima` build, using `pnpm argos:upload:infima`
 
 ## Run manually
 
@@ -43,6 +47,12 @@ To run the text-snapshots step manually:
 pnpm argos:build:text-snapshots
 pnpm argos:format:text-snapshots
 pnpm argos:upload:text-snapshots
+```
+
+To run the Infima CSS step manually (`pnpm install` already builds the files):
+
+```bash
+pnpm argos:upload:infima
 ```
 
 ## How to modify

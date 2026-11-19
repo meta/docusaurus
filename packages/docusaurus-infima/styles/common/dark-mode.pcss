@@ -1,0 +1,54 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+html[data-theme='dark'] {
+  --ifm-color-scheme: dark;
+
+  --ifm-color-emphasis-0: var(--ifm-color-gray-1000);
+  --ifm-color-emphasis-100: var(--ifm-color-gray-900);
+  --ifm-color-emphasis-200: var(--ifm-color-gray-800);
+  --ifm-color-emphasis-300: var(--ifm-color-gray-700);
+  --ifm-color-emphasis-400: var(--ifm-color-gray-600);
+  --ifm-color-emphasis-500: var(--ifm-color-gray-500);
+  --ifm-color-emphasis-600: var(--ifm-color-gray-400);
+  --ifm-color-emphasis-700: var(--ifm-color-gray-300);
+  --ifm-color-emphasis-800: var(--ifm-color-gray-200);
+  --ifm-color-emphasis-900: var(--ifm-color-gray-100);
+  --ifm-color-emphasis-1000: var(--ifm-color-gray-0);
+
+  --ifm-background-color: #1b1b1d;
+  --ifm-background-surface-color: #242526;
+
+  --ifm-hover-overlay: rgba(255, 255, 255, 0.05);
+
+  --ifm-color-content: #e3e3e3;
+  --ifm-color-content-secondary: rgba(255, 255, 255, 1);
+
+  --ifm-breadcrumb-separator-filter: invert(64%) sepia(11%) saturate(0%)
+    hue-rotate(149deg) brightness(99%) contrast(95%);
+
+  --ifm-code-background: rgba(255, 255, 255, 0.1);
+
+  --ifm-scrollbar-track-background-color: #444444;
+  --ifm-scrollbar-thumb-background-color: #686868;
+  --ifm-scrollbar-thumb-hover-background-color: #7a7a7a;
+
+  --ifm-table-stripe-background: rgba(255, 255, 255, 0.07);
+
+  --ifm-toc-border-color: var(--ifm-color-emphasis-200);
+
+  @each $color in (primary, secondary, success, info, warning, danger) {
+    --ifm-color-$(color)-contrast-background: color-mod(
+      var(--ifm-color-$(color)),
+      shade(var(--ifm-contrast-background-dark-value))
+    );
+    --ifm-color-$(color)-contrast-foreground: color-mod(
+      var(--ifm-color-$(color)),
+      tint(var(--ifm-contrast-foreground-dark-value))
+    );
+  }
+}

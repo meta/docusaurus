@@ -1,0 +1,34 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-scrollbar-size: 7px;
+  --ifm-scrollbar-track-background-color: #f1f1f1;
+  --ifm-scrollbar-thumb-background-color: #c0c0c0;
+  --ifm-scrollbar-thumb-hover-background-color: #a7a7a7;
+}
+
+@media (pointer: fine) {
+  .thin-scrollbar {
+    scrollbar-width: thin;
+  }
+  .thin-scrollbar::-webkit-scrollbar {
+    height: var(--ifm-scrollbar-size);
+    width: var(--ifm-scrollbar-size);
+  }
+  .thin-scrollbar::-webkit-scrollbar-track {
+    background: var(--ifm-scrollbar-track-background-color);
+    border-radius: 10px;
+  }
+  .thin-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--ifm-scrollbar-thumb-background-color);
+    border-radius: 10px;
+  }
+  .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--ifm-scrollbar-thumb-hover-background-color);
+  }
+}

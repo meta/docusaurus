@@ -1,0 +1,75 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-pagination-border-radius: var(--ifm-global-radius);
+  --ifm-pagination-color-active: var(--ifm-color-primary);
+  --ifm-pagination-font-size: 1rem;
+  --ifm-pagination-item-active-background: var(--ifm-hover-overlay);
+  --ifm-pagination-page-spacing: 0.2em;
+  --ifm-pagination-padding-horizontal: calc(var(--ifm-spacing-horizontal) * 1);
+  --ifm-pagination-padding-vertical: calc(var(--ifm-spacing-vertical) * 0.25);
+}
+
+.pagination {
+  column-gap: var(--ifm-pagination-page-spacing);
+  display: flex;
+  font-size: var(--ifm-pagination-font-size);
+  padding-left: 0;
+
+  &--sm {
+    --ifm-pagination-font-size: 0.8rem;
+    --ifm-pagination-padding-horizontal: 0.8rem;
+    --ifm-pagination-padding-vertical: 0.2rem;
+  }
+
+  &--lg {
+    --ifm-pagination-font-size: 1.2rem;
+    --ifm-pagination-padding-horizontal: 1.2rem;
+    --ifm-pagination-padding-vertical: 0.3rem;
+  }
+
+  &__item {
+    display: inline-flex;
+
+    & > span {
+      padding: var(--ifm-pagination-padding-vertical);
+    }
+
+    &--active {
+      & ^^&__link {
+        background: var(--ifm-pagination-item-active-background);
+        color: var(--ifm-pagination-color-active);
+      }
+    }
+
+    &:not(&--active):hover {
+      & ^^&__link {
+        background: var(--ifm-pagination-item-active-background);
+      }
+    }
+
+    &--disabled,
+    &[disabled] {
+      opacity: 0.25;
+      pointer-events: none;
+    }
+  }
+
+  &__link {
+    border-radius: var(--ifm-pagination-border-radius);
+    color: var(--ifm-font-color-base);
+    display: inline-block;
+    padding: var(--ifm-pagination-padding-vertical)
+      var(--ifm-pagination-padding-horizontal);
+    @mixin transition background;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
