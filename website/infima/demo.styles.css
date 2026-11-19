@@ -29,6 +29,14 @@
   border: 1px solid var(--ifm-color-emphasis-300);
 }
 
+/* The docs column is narrower than the infima.dev demo page: buttons wrap */
+.demo-section .col:has(> .button) {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .demo-section .color {
   border-radius: 8px;
   display: inline-block;
