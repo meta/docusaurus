@@ -1,0 +1,107 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  /* Leading is the distance between two baselines */
+  /* TODO: add appropriate mobile leading */
+  --ifm-leading-desktop: 1.25;
+  --ifm-leading: calc(var(--ifm-leading-desktop) * 1rem);
+}
+
+.markdown {
+  --ifm-h1-vertical-rhythm-top: 3;
+  --ifm-h2-vertical-rhythm-top: 2;
+  --ifm-h3-vertical-rhythm-top: 1.5;
+  --ifm-heading-vertical-rhythm-top: 1.25;
+
+  --ifm-h1-vertical-rhythm-bottom: 1.25;
+  --ifm-heading-vertical-rhythm-bottom: 1;
+}
+
+.markdown::before {
+  content: '';
+  display: table;
+}
+
+.markdown::after {
+  clear: both;
+  content: '';
+  display: table;
+}
+
+.markdown > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown h1:first-child {
+  --ifm-h1-font-size: 3rem;
+
+  margin-bottom: calc(
+    var(--ifm-h1-vertical-rhythm-bottom) * var(--ifm-leading)
+  );
+}
+
+.markdown > h2 {
+  --ifm-h2-font-size: 2rem;
+
+  margin-bottom: calc(
+    var(--ifm-heading-vertical-rhythm-bottom) * var(--ifm-leading)
+  );
+  margin-top: calc(var(--ifm-h2-vertical-rhythm-top) * var(--ifm-leading));
+}
+
+.markdown > h3 {
+  --ifm-h3-font-size: 1.5rem;
+
+  margin-bottom: calc(
+    var(--ifm-heading-vertical-rhythm-bottom) * var(--ifm-leading)
+  );
+  margin-top: calc(var(--ifm-h3-vertical-rhythm-top) * var(--ifm-leading));
+}
+
+.markdown > h4,
+.markdown > h5,
+.markdown > h6 {
+  margin-bottom: calc(
+    var(--ifm-heading-vertical-rhythm-bottom) * var(--ifm-leading)
+  );
+  margin-top: calc(var(--ifm-heading-vertical-rhythm-top) * var(--ifm-leading));
+}
+
+/* Consistent spacing between content paragraphs. */
+
+.markdown > pre,
+.markdown > ul,
+.markdown > p {
+  margin-bottom: var(--ifm-leading);
+}
+
+.markdown li {
+  overflow-wrap: break-word;
+}
+
+.markdown li > p {
+  margin-top: var(--ifm-list-paragraph-margin);
+}
+
+.markdown li + li {
+  margin-top: var(--ifm-list-item-margin);
+}
+
+@media (max-width: 576px) {
+  .markdown h1:first-child {
+    --ifm-h1-font-size: 2rem;
+  }
+
+  .markdown > h2 {
+    --ifm-h2-font-size: 1.5rem;
+  }
+
+  .markdown > h3 {
+    --ifm-h3-font-size: 1.25rem;
+  }
+}

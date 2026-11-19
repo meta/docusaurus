@@ -1,0 +1,119 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-alert-background-color: inherit; /* Set a default which will be overridden later. */
+  --ifm-alert-border-color: inherit; /* Set a default which will be overridden later. */
+  --ifm-alert-border-radius: var(--ifm-global-radius);
+  --ifm-alert-border-width: 0px; /* For users that want to easily add a border */
+  --ifm-alert-border-left-width: 5px;
+  --ifm-alert-color: var(--ifm-font-color-base);
+  --ifm-alert-padding-horizontal: var(--ifm-spacing-horizontal);
+  --ifm-alert-padding-vertical: var(--ifm-spacing-vertical);
+  --ifm-alert-shadow: var(--ifm-global-shadow-lw);
+}
+
+.alert--primary {
+  --ifm-alert-background-color: var(--ifm-color-primary-contrast-background);
+  --ifm-alert-background-color-highlight: rgb(53 120 229 / 15%);
+  --ifm-alert-foreground-color: var(--ifm-color-primary-contrast-foreground);
+  --ifm-alert-border-color: var(--ifm-color-primary-dark);
+}
+
+.alert--secondary {
+  --ifm-alert-background-color: var(--ifm-color-secondary-contrast-background);
+  --ifm-alert-background-color-highlight: rgb(235 237 240 / 15%);
+  --ifm-alert-foreground-color: var(--ifm-color-secondary-contrast-foreground);
+  --ifm-alert-border-color: var(--ifm-color-secondary-dark);
+}
+
+.alert--success {
+  --ifm-alert-background-color: var(--ifm-color-success-contrast-background);
+  --ifm-alert-background-color-highlight: rgb(0 164 0 / 15%);
+  --ifm-alert-foreground-color: var(--ifm-color-success-contrast-foreground);
+  --ifm-alert-border-color: var(--ifm-color-success-dark);
+}
+
+.alert--info {
+  --ifm-alert-background-color: var(--ifm-color-info-contrast-background);
+  --ifm-alert-background-color-highlight: rgb(84 199 236 / 15%);
+  --ifm-alert-foreground-color: var(--ifm-color-info-contrast-foreground);
+  --ifm-alert-border-color: var(--ifm-color-info-dark);
+}
+
+.alert--warning {
+  --ifm-alert-background-color: var(--ifm-color-warning-contrast-background);
+  --ifm-alert-background-color-highlight: rgb(255 186 0 / 15%);
+  --ifm-alert-foreground-color: var(--ifm-color-warning-contrast-foreground);
+  --ifm-alert-border-color: var(--ifm-color-warning-dark);
+}
+
+.alert--danger {
+  --ifm-alert-background-color: var(--ifm-color-danger-contrast-background);
+  --ifm-alert-background-color-highlight: rgb(250 56 62 / 15%);
+  --ifm-alert-foreground-color: var(--ifm-color-danger-contrast-foreground);
+  --ifm-alert-border-color: var(--ifm-color-danger-dark);
+}
+
+.alert {
+  --ifm-code-background: var(--ifm-alert-background-color-highlight);
+  --ifm-link-color: var(--ifm-alert-foreground-color);
+  --ifm-link-hover-color: var(--ifm-alert-foreground-color);
+  --ifm-link-decoration: underline;
+  --ifm-tabs-color: var(--ifm-alert-foreground-color);
+  --ifm-tabs-color-active: var(--ifm-alert-foreground-color);
+  --ifm-tabs-color-active-border: var(--ifm-alert-border-color);
+
+  background-color: var(--ifm-alert-background-color);
+  border: var(--ifm-alert-border-width) solid var(--ifm-alert-border-color);
+  border-left-width: var(--ifm-alert-border-left-width);
+  border-radius: var(--ifm-alert-border-radius);
+  box-shadow: var(--ifm-alert-shadow);
+  color: var(--ifm-alert-foreground-color);
+  padding: var(--ifm-alert-padding-vertical) var(--ifm-alert-padding-horizontal);
+}
+
+.alert__heading {
+  align-items: center;
+  display: flex;
+  font: bold var(--ifm-h5-font-size) / var(--ifm-heading-line-height)
+    var(--ifm-heading-font-family);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.alert__icon {
+  display: inline-flex;
+  margin-right: 0.4em;
+}
+
+.alert__icon svg {
+  fill: var(--ifm-alert-foreground-color);
+  stroke: var(--ifm-alert-foreground-color);
+  stroke-width: 0;
+}
+
+.alert .close {
+  color: var(--ifm-alert-foreground-color);
+  margin: calc(var(--ifm-alert-padding-vertical) * -1)
+    calc(var(--ifm-alert-padding-horizontal) * -1) 0 0;
+
+  opacity: 0.75;
+}
+
+.alert .close:hover,
+.alert .close:focus {
+  opacity: 1;
+}
+
+.alert a {
+  text-decoration-color: var(--ifm-alert-border-color);
+}
+
+.alert a:hover {
+  text-decoration-thickness: 2px;
+}

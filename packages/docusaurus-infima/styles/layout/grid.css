@@ -1,0 +1,183 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-container-width: 1140px;
+  --ifm-container-width-xl: 1320px;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: var(--ifm-container-width);
+  padding: 0 var(--ifm-spacing-horizontal);
+  width: 100%;
+}
+
+.container--fluid {
+  max-width: inherit;
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: var(--ifm-container-width-xl);
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 calc(var(--ifm-spacing-horizontal) * -1);
+}
+
+.row--no-gutters {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.row--no-gutters > .col {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.row--align-top {
+  align-items: flex-start;
+}
+
+.row--align-bottom {
+  align-items: flex-end;
+}
+
+.row--align-center {
+  align-items: center;
+}
+
+.row--align-stretch {
+  align-items: stretch;
+}
+
+.row--align-baseline {
+  align-items: baseline;
+}
+
+.col {
+  --ifm-col-width: 100%;
+
+  flex: 1 0;
+  margin-left: 0;
+  max-width: var(--ifm-col-width);
+  padding: 0 var(--ifm-spacing-horizontal);
+  width: 100%;
+}
+
+.col[class*='col--'] {
+  flex: 0 0 var(--ifm-col-width);
+}
+
+.col--1 {
+  --ifm-col-width: calc(1 / 12 * 100%);
+}
+
+.col--2 {
+  --ifm-col-width: calc(2 / 12 * 100%);
+}
+
+.col--3 {
+  --ifm-col-width: calc(3 / 12 * 100%);
+}
+
+.col--4 {
+  --ifm-col-width: calc(4 / 12 * 100%);
+}
+
+.col--5 {
+  --ifm-col-width: calc(5 / 12 * 100%);
+}
+
+.col--6 {
+  --ifm-col-width: calc(6 / 12 * 100%);
+}
+
+.col--7 {
+  --ifm-col-width: calc(7 / 12 * 100%);
+}
+
+.col--8 {
+  --ifm-col-width: calc(8 / 12 * 100%);
+}
+
+.col--9 {
+  --ifm-col-width: calc(9 / 12 * 100%);
+}
+
+.col--10 {
+  --ifm-col-width: calc(10 / 12 * 100%);
+}
+
+.col--11 {
+  --ifm-col-width: calc(11 / 12 * 100%);
+}
+
+.col--12 {
+  --ifm-col-width: calc(12 / 12 * 100%);
+}
+
+.col--offset-1 {
+  margin-left: calc(1 / 12 * 100%);
+}
+
+.col--offset-2 {
+  margin-left: calc(2 / 12 * 100%);
+}
+
+.col--offset-3 {
+  margin-left: calc(3 / 12 * 100%);
+}
+
+.col--offset-4 {
+  margin-left: calc(4 / 12 * 100%);
+}
+
+.col--offset-5 {
+  margin-left: calc(5 / 12 * 100%);
+}
+
+.col--offset-6 {
+  margin-left: calc(6 / 12 * 100%);
+}
+
+.col--offset-7 {
+  margin-left: calc(7 / 12 * 100%);
+}
+
+.col--offset-8 {
+  margin-left: calc(8 / 12 * 100%);
+}
+
+.col--offset-9 {
+  margin-left: calc(9 / 12 * 100%);
+}
+
+.col--offset-10 {
+  margin-left: calc(10 / 12 * 100%);
+}
+
+.col--offset-11 {
+  margin-left: calc(11 / 12 * 100%);
+}
+
+.col--offset-12 {
+  margin-left: calc(12 / 12 * 100%);
+}
+
+/* After the .col--* rules, to stack the columns on narrow screens */
+@media (max-width: 996px) {
+  .col {
+    --ifm-col-width: 100%;
+    flex-basis: var(--ifm-col-width);
+    margin-left: 0;
+  }
+}

@@ -26,17 +26,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "postcss": "catalog:",
-    "postcss-color-mod-function": "catalog:dev",
-    "postcss-combine-duplicated-selectors": "catalog:dev",
-    "postcss-each": "catalog:dev",
-    "postcss-for": "catalog:dev",
-    "postcss-import": "catalog:dev",
-    "postcss-mixins": "catalog:dev",
-    "postcss-nested": "catalog:dev",
-    "postcss-nested-ancestors": "catalog:dev",
-    "postcss-preset-env-v7": "catalog:dev",
-    "postcss-sort-media-queries": "catalog:dev",
     "rtlcss": "catalog:"
   },
   "engines": {
