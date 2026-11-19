@@ -120,6 +120,7 @@ IANAD
 Infima
 infima
 infimum
+Inlines
 inlines
 interactiveness
 Interpolatable
