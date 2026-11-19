@@ -25,6 +25,7 @@ backgrounded
 Bartosz
 beforeinstallprompt
 Bhatt
+Blockquotes
 blockquotes
 Bokmål
 bunfig
@@ -109,6 +110,7 @@ hasura
 Heavener
 Hideable
 hideable
+Hoverable
 hoverable
 Husain
 Héctor
@@ -292,6 +294,7 @@ structurizr
 styl
 sublabel
 sublicensable
+Sublist
 sublist
 subsubcategory
 subsubfolder
