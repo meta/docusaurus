@@ -9,6 +9,13 @@ import {findLayer} from './layers';
 import type {Root, PluginCreator} from 'postcss';
 import type {PluginOptions} from './options';
 
+// The layer order is the order of first appearance in the CSS bundle
+// Declaring it in each file makes it independent of the bundler CSS order
+// See https://github.com/meta/docusaurus/pull/13032
+function prependLayersDeclaration(root: Root, layerNames: string[]): void {
+  root.prepend({type: 'atrule', name: 'layer', params: layerNames.join(', ')});
+}
+
 function wrapCssRootInLayer(root: Root, layer: string): void {
   const rootBefore = root.clone();
   root.removeAll();
@@ -27,6 +34,7 @@ export const PostCssPluginWrapInLayer: PluginCreator<{
     throw new Error('PostCssPluginWrapInLayer options are mandatory');
   }
   const layers = Object.entries(options.layers);
+  const layerNames = Object.keys(options.layers);
   return {
     postcssPlugin: 'postcss-wrap-in-layer',
     Once(root) {
@@ -37,6 +45,7 @@ export const PostCssPluginWrapInLayer: PluginCreator<{
       const layer = findLayer(filePath, layers);
       if (layer) {
         wrapCssRootInLayer(root, layer);
+        prependLayersDeclaration(root, layerNames);
       }
     },
   };

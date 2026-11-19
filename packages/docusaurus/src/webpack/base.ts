@@ -10,6 +10,7 @@ import {
   createJsLoaderFactory,
   getCSSExtractPlugin,
   getMinimizers,
+  getNativeStyleLoaders,
   getTargets,
 } from '@docusaurus/bundler';
 import {
@@ -179,7 +180,100 @@ export async function createBaseConfig({
     };
   }
 
+  function cssFilename() {
+    return isProd ? `assets/css/[name].${contentHash}.css` : '[name].css';
+  }
+
   const notTextImport: RuleSetRule['with'] = {type: {not: 'text'}};
+
+  function getCssRules(): RuleSetRule[] {
+    if (props.currentBundler.name === 'rspack') {
+      return getNativeCssRules();
+    }
+    return getCssLoaderRules();
+  }
+
+  // Rspack parses, bundles and emits CSS natively, without css-loader
+  // See https://rspack.rs/guide/tech/css
+  function getNativeCssRules(): RuleSetRule[] {
+    return [
+      {
+        test: CSS_REGEX,
+        exclude: CSS_MODULE_REGEX,
+        with: notTextImport,
+        // On the server, the null loader turns CSS files into empty JS modules
+        type: isServer ? undefined : 'css',
+        use: getNativeStyleLoaders({isServer, isCssModule: false}),
+      },
+      {
+        test: CSS_MODULE_REGEX,
+        with: notTextImport,
+        type: 'css/module',
+        use: getNativeStyleLoaders({isServer, isCssModule: true}),
+        parser: {
+          // Docusaurus code imports CSS modules with a default import
+          namedExports: false,
+          // Only rename class names and @keyframes, like css-loader
+          dashedIdents: false,
+          container: false,
+          customIdents: false,
+          grid: false,
+          function: false,
+        },
+        generator: {
+          // [contenthash] differs between the client and server compilers
+          localIdentName: '[local]_[hash]',
+          localIdentHashDigest: 'base64url',
+          localIdentHashDigestLength: 4,
+          exportsOnly: isServer,
+          exportsConvention: 'as-is',
+        },
+      },
+    ];
+  }
+
+  function getCssLoaderRules(): RuleSetRule[] {
+    return [
+      {
+        test: CSS_REGEX,
+        exclude: CSS_MODULE_REGEX,
+        with: notTextImport,
+        use: configureWebpackUtils.getStyleLoaders(isServer, {
+          importLoaders: 1,
+          sourceMap: !isProd,
+        }),
+      },
+      // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
+      // using the extension .module.css
+      {
+        test: CSS_MODULE_REGEX,
+        with: notTextImport,
+        use: configureWebpackUtils.getStyleLoaders(isServer, {
+          modules: {
+            // Using the same CSS Module class pattern in dev/prod on purpose
+            // See https://github.com/meta/docusaurus/pull/10423
+            localIdentName: `[local]_[contenthash:base64:4]`,
+            exportOnlyLocals: isServer,
+            // Export CSS module class names compatible with css-loader v6
+            // export ".themedComponent--dark" instead of .themedComponentDark
+            // See https://github.com/webpack/css-loader/releases/tag/v7.0.0
+            exportLocalsConvention: 'as-is',
+          },
+          importLoaders: 1,
+          sourceMap: !isProd,
+        }),
+      },
+    ];
+  }
+
+  // Same as CSSExtractPlugin "ignoreOrder", which native CSS doesn't have
+  // See https://github.com/webpack-contrib/mini-css-extract-plugin/pull/422
+  function getIgnoreWarnings(): Configuration['ignoreWarnings'] {
+    if (props.currentBundler.name === 'rspack') {
+      return [/Conflicting order/];
+    }
+    return undefined;
+  }
 
   return {
     mode,
@@ -192,10 +286,13 @@ export async function createBaseConfig({
       chunkFilename: isProd
         ? `assets/js/[name].${contentHash}.js`
         : '[name].js',
+      cssFilename: cssFilename(),
+      cssChunkFilename: cssFilename(),
       publicPath:
         siteConfig.future.experimental_router === 'hash' ? 'auto' : baseUrl,
       hashFunction: 'xxhash64',
     },
+    ignoreWarnings: getIgnoreWarnings(),
     // Don't throw warning when asset created is over 250kb
     performance: {
       hints: false,
@@ -270,7 +367,9 @@ export async function createBaseConfig({
               // See https://github.com/meta/docusaurus/issues/2006
               styles: {
                 name: 'styles',
-                type: 'css/mini-extract',
+                // "css/mini-extract" for CSSExtractPlugin, "css" and
+                // "css/module" for Rspack native CSS
+                type: /^css(?:\/|$)/,
                 chunks: `all`,
                 enforce: true,
                 priority: 50,
@@ -297,45 +396,13 @@ export async function createBaseConfig({
           with: notTextImport,
           use: [createJsLoader({isServer})],
         },
-        {
-          test: CSS_REGEX,
-          exclude: CSS_MODULE_REGEX,
-          with: notTextImport,
-          use: configureWebpackUtils.getStyleLoaders(isServer, {
-            importLoaders: 1,
-            sourceMap: !isProd,
-          }),
-        },
-        // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
-        // using the extension .module.css
-        {
-          test: CSS_MODULE_REGEX,
-          with: notTextImport,
-          use: configureWebpackUtils.getStyleLoaders(isServer, {
-            modules: {
-              // Using the same CSS Module class pattern in dev/prod on purpose
-              // See https://github.com/meta/docusaurus/pull/10423
-              localIdentName: `[local]_[contenthash:base64:4]`,
-              exportOnlyLocals: isServer,
-              // Export CSS module class names compatible with css-loader v6
-              // export ".themedComponent--dark" instead of .themedComponentDark
-              // See https://github.com/webpack/css-loader/releases/tag/v7.0.0
-              exportLocalsConvention: 'as-is',
-            },
-            importLoaders: 1,
-            sourceMap: !isProd,
-          }),
-        },
+        ...getCssRules(),
       ],
     },
     plugins: [
       new CSSExtractPlugin({
-        filename: isProd
-          ? `assets/css/[name].${contentHash}.css`
-          : '[name].css',
-        chunkFilename: isProd
-          ? `assets/css/[name].${contentHash}.css`
-          : '[name].css',
+        filename: cssFilename(),
+        chunkFilename: cssFilename(),
         // Remove css order warnings if css imports are not sorted
         // alphabetically. See https://github.com/webpack-contrib/mini-css-extract-plugin/pull/422
         // for more reasoning

@@ -228,6 +228,7 @@ html[data-theme='dark'] .topBannerTitleText {
 }
 
 /* Used to test CSS insertion order */
-.test-marker-site-index-page {
+/* Global: Rspack removes the unused CSS module classes */
+:global(.test-marker-site-index-page) {
   content: 'site-index-page';
 }

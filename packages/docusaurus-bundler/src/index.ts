@@ -19,5 +19,8 @@ export {getClientQueries, getTargets} from './browserslist';
 export {getMinimizers} from './minification';
 export {getHtmlMinifier, type HtmlMinifier} from './minifyHtml';
 export {createJsLoaderFactory} from './loaders/jsLoader';
-export {createStyleLoadersFactory} from './loaders/styleLoader';
+export {
+  createStyleLoadersFactory,
+  getNativeStyleLoaders,
+} from './loaders/styleLoader';
 export {RspackDevServer} from './rspack';
