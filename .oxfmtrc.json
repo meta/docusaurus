@@ -25,7 +25,6 @@
     "!packages/docusaurus-*/lib/theme/",
 
     "packages/create-docusaurus/templates/*/docusaurus.config.js",
-    "packages/docusaurus-infima/styles",
     "packages/eslint-plugin/lib/",
     "packages/stylelint-copyright/lib/",
     "__fixtures__",

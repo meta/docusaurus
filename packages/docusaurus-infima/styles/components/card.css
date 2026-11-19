@@ -1,0 +1,58 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-card-background-color: var(--ifm-background-surface-color);
+  --ifm-card-border-radius: calc(var(--ifm-global-radius) * 2);
+  --ifm-card-horizontal-spacing: var(--ifm-global-spacing);
+  --ifm-card-vertical-spacing: var(--ifm-global-spacing);
+}
+
+.card {
+  background-color: var(--ifm-card-background-color);
+  border-radius: var(--ifm-card-border-radius);
+  box-shadow: var(--ifm-global-shadow-lw);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Because of border-radius. */
+
+.card--full-height {
+  height: 100%;
+}
+
+.card__image {
+  padding-top: var(--ifm-card-vertical-spacing);
+}
+
+.card__image:first-child {
+  padding-top: 0;
+}
+
+.card__header,
+.card__body,
+.card__footer {
+  padding: var(--ifm-card-vertical-spacing) var(--ifm-card-horizontal-spacing);
+}
+
+.card__header:not(:last-child),
+.card__body:not(:last-child),
+.card__footer:not(:last-child) {
+  padding-bottom: 0;
+}
+
+.card__header > :last-child,
+.card__body > :last-child,
+.card__footer > :last-child {
+  margin-bottom: 0;
+}
+
+.card__footer {
+  margin-top: auto; /* Pushes the footer to the bottom of the card. */
+}

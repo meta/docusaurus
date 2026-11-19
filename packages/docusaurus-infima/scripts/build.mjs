@@ -5,83 +5,47 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-// Inlines the upstream postcss-preset-infima and the gulp styles and rtl tasks
-// See https://github.com/facebookincubator/infima/blob/87bc1dbfde5dfb2a70b5ff105b5f2f5ee130c2ab/packages/postcss-preset-infima/index.js
-
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import postcss from 'postcss';
-import postcssColorModFunction from 'postcss-color-mod-function';
-import postcssCombineDuplicatedSelectors from 'postcss-combine-duplicated-selectors';
-import postcssEach from 'postcss-each';
-import postcssFor from 'postcss-for';
-import postcssImport from 'postcss-import';
-import postcssMixins from 'postcss-mixins';
-import postcssNested from 'postcss-nested';
-import postcssNestedAncestors from 'postcss-nested-ancestors';
-import postcssPresetEnv from 'postcss-preset-env-v7';
-import postcssSortMediaQueries from 'postcss-sort-media-queries';
 import rtlcss from 'rtlcss';
 
 const packageDir = path.dirname(import.meta.dirname);
-const entryFile = path.join(packageDir, 'styles/themes/default/default.pcss');
+const entryFile = path.join(packageDir, 'styles/infima.css');
 const outputFile = path.join(packageDir, 'dist/infima.css');
 const rtlOutputFile = path.join(packageDir, 'dist/infima-rtl.css');
 
+// Matches the imports of the entry file, like @import url('common/base.css');
+const ImportRegExp = /^@import url\('(?<importPath>.+)'\);$/gm;
+
+// Only bundles the sources: the site bundler adds the vendor prefixes and the
+// fallbacks for its target browsers, and minifies
 async function main() {
-  const source = await fs.readFile(entryFile, 'utf8');
-  const css = await compileInfima(source, entryFile);
+  const css = await inlineImports(entryFile);
   await fs.mkdir(path.dirname(outputFile), {recursive: true});
   await fs.writeFile(outputFile, css);
   await fs.writeFile(rtlOutputFile, rtlcss.process(css));
 }
 
-async function compileInfima(source, from) {
-  const result = await postcss(getPlugins()).process(source, {from});
-  return result.css;
+async function inlineImports(file) {
+  const css = await fs.readFile(file, 'utf8');
+  const importedFiles = await readImportedFiles(file, css);
+  return css.replace(ImportRegExp, (_match, importPath) =>
+    importedFiles.get(importPath),
+  );
 }
 
-// The plugin order matters
-function getPlugins() {
-  return [
-    postcssImport,
-    // TODO postcss-each v1 doesn't seem to be compatible due to color-mod.
-    // Need to upgrade later
-    postcssEach,
-    postcssFor,
-    postcssMixins({mixins: {transition: transitionMixin}}),
-    postcssNestedAncestors,
-    postcssNested,
-    // color-mod has been removed from the spec, so it's not included in
-    // preset-env. Using a separate plugin instead. We probably would eventually
-    // get rid of color-mod
-    postcssColorModFunction({unresolved: 'ignore'}),
-    postcssPresetEnv({
-      stage: 1,
-      features: {
-        'custom-properties': false,
-      },
+async function readImportedFiles(file, css) {
+  const importPaths = Array.from(
+    css.matchAll(ImportRegExp),
+    (match) => match.groups.importPath,
+  );
+  const entries = await Promise.all(
+    importPaths.map(async (importPath) => {
+      const importedFile = path.resolve(path.dirname(file), importPath);
+      return [importPath, await fs.readFile(importedFile, 'utf8')];
     }),
-    postcssSortMediaQueries,
-    postcssCombineDuplicatedSelectors,
-  ];
-}
-
-// @mixin transition opacity visibility, var(--ifm-transition-fast), linear;
-function transitionMixin(
-  _mixin,
-  properties,
-  duration = 'var(--ifm-transition-fast)',
-  timing = 'var(--ifm-transition-timing-default)',
-) {
-  if (properties.includes(' ')) {
-    return {
-      'transition-property': properties.replace(/\s/g, ', '),
-      'transition-duration': duration,
-      'transition-timing-function': timing,
-    };
-  }
-  return {transition: [properties, duration, timing].join(' ')};
+  );
+  return new Map(entries);
 }
 
 await main();

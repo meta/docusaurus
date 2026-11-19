@@ -1,0 +1,94 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+.text--primary {
+  color: var(--ifm-color-primary);
+}
+
+.text--secondary {
+  color: var(--ifm-color-secondary);
+}
+
+.text--success {
+  color: var(--ifm-color-success);
+}
+
+.text--info {
+  color: var(--ifm-color-info);
+}
+
+.text--warning {
+  color: var(--ifm-color-warning);
+}
+
+.text--danger {
+  color: var(--ifm-color-danger);
+}
+
+.text--center {
+  text-align: center;
+}
+
+.text--left {
+  text-align: left;
+}
+
+.text--justify {
+  text-align: justify;
+}
+
+.text--right {
+  text-align: right;
+}
+
+.text--capitalize {
+  text-transform: capitalize;
+}
+
+.text--lowercase {
+  text-transform: lowercase;
+}
+
+.text--uppercase {
+  text-transform: uppercase;
+}
+
+.text--light {
+  font-weight: var(--ifm-font-weight-light);
+}
+
+.text--normal {
+  font-weight: var(--ifm-font-weight-normal);
+}
+
+.text--semibold {
+  font-weight: var(--ifm-font-weight-semibold);
+}
+
+.text--bold {
+  font-weight: var(--ifm-font-weight-bold);
+}
+
+.text--italic {
+  font-style: italic;
+}
+
+.text--truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text--break {
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+}
+
+.text--no-decoration,
+.text--no-decoration:hover {
+  text-decoration: none;
+}

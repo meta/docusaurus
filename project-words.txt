@@ -21,7 +21,6 @@ atrule
 autogenerating
 autohide
 Autolinks
-autoprefixer
 backgrounded
 Bartosz
 beforeinstallprompt
@@ -120,7 +119,6 @@ IANAD
 Infima
 infima
 infimum
-Inlines
 inlines
 interactiveness
 Interpolatable
