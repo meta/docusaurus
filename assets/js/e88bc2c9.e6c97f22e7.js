@@ -1,0 +1,1 @@
+"use strict";(globalThis.rspackChunkwebsite||=[]).push([[57150],{87605(s){s.exports=JSON.parse('{"blogBasePath":"/changelog","blogTitle":"Docusaurus changelog","authorsListPath":"/changelog/authors"}')}}]);
