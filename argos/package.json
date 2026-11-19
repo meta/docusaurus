@@ -8,6 +8,7 @@
     "screenshot": "playwright test",
     "upload": "pnpm exec -- argos upload ./screenshots/chromium",
     "upload-text-snapshots": "pnpm exec -- argos upload \"../website/build\" --build-name text-snapshots --files styles.css --files \"docs/**/*.html\" --files \"blog/**/*.html\" --files \"**/rss.xml\" --files \"**/atom.xml\" --files \"**/feed.json\" --files sitemap.xml",
+    "upload-infima": "pnpm exec -- argos upload ../packages/docusaurus-infima/dist --build-name infima --files \"*.css\"",
     "report": "playwright show-report"
   },
   "dependencies": {

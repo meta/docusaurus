@@ -68,3 +68,7 @@ jobs:
         run: pnpm argos:format:text-snapshots
       - name: Upload Argos text snapshots
         run: pnpm argos:upload:text-snapshots
+
+        # pnpm install builds the Infima CSS files
+      - name: Upload Argos Infima CSS snapshots
+        run: pnpm argos:upload:infima
