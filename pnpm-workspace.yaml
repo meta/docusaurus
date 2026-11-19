@@ -255,6 +255,9 @@ overrides:
   # This version doesn't use a postinstall script
   # See https://sharp.pixelplumbing.com/changelog/v0.35.0/
   sharp: ^0.35.1
+  # Fix CVEs of the postcss 5 to 7 versions used by the Infima build plugins
+  # See https://github.com/meta/docusaurus/pull/13082
+  postcss: ^8.5.28
 
 minimumReleaseAge: 10080 # 7 days in minutes
 minimumReleaseAgeStrict: true
