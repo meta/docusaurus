@@ -11,7 +11,6 @@ import {
   docuHash,
   aliasedSitePath,
   getContentPathList,
-  posixPath,
   addTrailingPathSeparator,
   resolveMarkdownLinkPathname,
   DEFAULT_PLUGIN_ID,
@@ -96,11 +95,6 @@ export default async function pluginContentDocs(
     'docusaurus-plugin-content-docs',
   );
   const dataDir = path.join(pluginDataDirRoot, pluginId);
-  // TODO Docusaurus v4 breaking change
-  //  module aliasing should be automatic
-  //  we should never find local absolute FS paths in the codegen registry
-  const aliasedSource = (source: string) =>
-    `~docs/${posixPath(path.relative(pluginDataDirRoot, source))}`;
 
   // TODO env should be injected into all plugins
   const env = process.env.NODE_ENV as DocEnv;
@@ -255,7 +249,6 @@ export default async function pluginContentDocs(
         versions,
         options,
         actions,
-        aliasedSource,
       });
 
       actions.setGlobalData({
@@ -273,11 +266,6 @@ export default async function pluginContentDocs(
             e.message.includes("Can't resolve") &&
             e.message.includes(VERSIONS_JSON_FILE),
         ],
-        resolve: {
-          alias: {
-            '~docs': pluginDataDirRoot,
-          },
-        },
         module: {
           rules: [docsMDXLoaderRule],
         },

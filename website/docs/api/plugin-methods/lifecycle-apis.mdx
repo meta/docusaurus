@@ -131,6 +131,8 @@ type Module =
   | string;
 ```
 
+A module is a path that the bundler can import, like `@theme/DocItem` or an absolute file path. Docusaurus rewrites absolute paths inside the site directory to `@site/...` or `@generated/...` aliases, so that the generated code doesn't contain paths specific to your machine.
+
 #### `createData(name: string, data: any): Promise<string>` {/* #createData */}
 
 A declarative callback to create static data (generally JSON or string) which can later be provided to your routes as props. Takes the file name and data to be stored, and returns the actual data file's path.

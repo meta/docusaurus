@@ -5,7 +5,7 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
   {
     "component": "@theme/BlogPostPage",
     "context": {
-      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+      "blogMetadata": "/data/blogMetadata-default.json",
     },
     "exact": true,
     "metadata": {
@@ -14,14 +14,14 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
     },
     "modules": {
       "content": "@site/blog/post1.md",
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog/post1",
   },
   {
     "component": "@theme/BlogPostPage",
     "context": {
-      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+      "blogMetadata": "/data/blogMetadata-default.json",
     },
     "exact": true,
     "metadata": {
@@ -30,14 +30,14 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
     },
     "modules": {
       "content": "@site/blog/post2.md",
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog/post2",
   },
   {
     "component": "@theme/BlogPostPage",
     "context": {
-      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+      "blogMetadata": "/data/blogMetadata-default.json",
     },
     "exact": true,
     "metadata": {
@@ -46,14 +46,14 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
     },
     "modules": {
       "content": "@site/blog/post3.md",
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog/post3",
   },
   {
     "component": "@theme/BlogPostPage",
     "context": {
-      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+      "blogMetadata": "/data/blogMetadata-default.json",
     },
     "exact": true,
     "metadata": {
@@ -62,14 +62,14 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
     },
     "modules": {
       "content": "@site/blog/post4.md",
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog/post4",
   },
   {
     "component": "@theme/BlogPostPage",
     "context": {
-      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+      "blogMetadata": "/data/blogMetadata-default.json",
     },
     "exact": true,
     "metadata": {
@@ -78,14 +78,14 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
     },
     "modules": {
       "content": "@site/blog/post5.md",
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog/post5",
   },
   {
     "component": "@theme/BlogPostPage",
     "context": {
-      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+      "blogMetadata": "/data/blogMetadata-default.json",
     },
     "exact": true,
     "metadata": {
@@ -94,7 +94,7 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
     },
     "modules": {
       "content": "@site/blog/post6.md",
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog/post6",
   },
@@ -122,7 +122,7 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
           },
         },
       ],
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog",
     "props": {
@@ -163,7 +163,7 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
           },
         },
       ],
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog/page/2",
     "props": {
@@ -195,7 +195,7 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
           },
         },
       ],
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog/page/3",
     "props": {
@@ -323,11 +323,11 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
   {
     "component": "@theme/Blog/Pages/BlogAuthorsListPage",
     "context": {
-      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+      "blogMetadata": "/data/blogMetadata-default.json",
     },
     "exact": true,
     "modules": {
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog/authors",
     "props": {
@@ -360,7 +360,7 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
   {
     "component": "@theme/Blog/Pages/BlogAuthorsPostsPage",
     "context": {
-      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+      "blogMetadata": "/data/blogMetadata-default.json",
     },
     "exact": true,
     "modules": {
@@ -384,7 +384,7 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
           },
         },
       ],
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog/authors/author1",
     "props": {
@@ -412,7 +412,7 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
   {
     "component": "@theme/Blog/Pages/BlogAuthorsPostsPage",
     "context": {
-      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+      "blogMetadata": "/data/blogMetadata-default.json",
     },
     "exact": true,
     "modules": {
@@ -427,7 +427,7 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
           },
         },
       ],
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog/authors/author1/page/2",
     "props": {
@@ -455,7 +455,7 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
   {
     "component": "@theme/Blog/Pages/BlogAuthorsPostsPage",
     "context": {
-      "blogMetadata": "@aliased/data/blogMetadata-default.json",
+      "blogMetadata": "/data/blogMetadata-default.json",
     },
     "exact": true,
     "modules": {
@@ -470,7 +470,7 @@ exports[`buildAllRoutes > works for realistic blog post 2`] = `
           },
         },
       ],
-      "sidebar": "@aliased/data/blog-post-list-prop-default.json",
+      "sidebar": "/data/blog-post-list-prop-default.json",
     },
     "path": "/blog/authors/author3",
     "props": {
