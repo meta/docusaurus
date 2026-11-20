@@ -116,5 +116,20 @@ describe('loadVersion', () => {
             ]
       `);
     });
+
+    it('rejects version with doc slug conflict', async () => {
+      await expect(() => loadTestVersion('with-slug-conflicts')).rejects
+        .toThrowErrorMatchingInlineSnapshot(`
+        [Error: The docs plugin found docs sharing the same slug:
+
+        - /demo/ found in 2 docs:
+          - versioned_docs/version-with-slug-conflicts/demo/demo.md
+          - versioned_docs/version-with-slug-conflicts/demo/index.md
+
+        Docs should have distinct slugs.
+        In case of conflict, you can use the \`slug\` front matter to assign an explicit distinct slug to each doc.
+            ]
+      `);
+    });
   });
 });

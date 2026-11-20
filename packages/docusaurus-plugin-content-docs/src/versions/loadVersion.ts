@@ -73,6 +73,38 @@ In case of conflict, you can rename the docs file, or use the ${logger.code(
   }
 }
 
+function ensureNoDuplicateSlug(docs: DocMetadataBase[]): void {
+  const duplicatesBySlug = _.chain(docs)
+    .groupBy((d) => d.slug)
+    .pickBy((group) => group.length > 1)
+    .value();
+
+  const duplicateSlugEntries = Object.entries(duplicatesBySlug);
+
+  if (duplicateSlugEntries.length) {
+    const slugMessages = duplicateSlugEntries
+      .map(([slug, duplicateDocs]) => {
+        return logger.interpolate`- url=${slug} found in number=${
+          duplicateDocs.length
+        } docs:
+  - ${duplicateDocs
+    .map((d) => aliasedSitePathToRelativePath(d.source))
+    .join('\n  - ')}`;
+      })
+      .join('\n\n');
+
+    const message = `The docs plugin found docs sharing the same slug:
+\n${slugMessages}\n
+Docs should have distinct slugs.
+In case of conflict, you can use the ${logger.code(
+      'slug',
+    )} front matter to assign an explicit distinct slug to each doc.
+    `;
+
+    throw new Error(message);
+  }
+}
+
 async function loadVersionDocsBase({
   tagsFile,
   context,
@@ -105,6 +137,7 @@ async function loadVersionDocsBase({
   }
   const docs = await Promise.all(docFiles.map(processVersionDoc));
   ensureNoDuplicateDocId(docs);
+  ensureNoDuplicateSlug(docs);
   return docs;
 }
 
