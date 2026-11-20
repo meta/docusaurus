@@ -16,12 +16,13 @@ export default function HtmlNavbarItem({
   mobile = false,
   isDropdownItem = false,
 }: Props): ReactNode {
-  const Comp = isDropdownItem ? 'li' : 'div';
+  const isInUl = mobile || isDropdownItem;
+  const Comp = isInUl ? 'li' : 'div';
   return (
     <Comp
       className={clsx(
         {
-          navbar__item: !mobile && !isDropdownItem,
+          navbar__item: !isInUl,
           'menu__list-item': mobile,
         },
         className,
