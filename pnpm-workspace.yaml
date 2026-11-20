@@ -139,7 +139,7 @@ catalog:
   semver: ^7.8.5
   serve-handler: ^6.1.8
   sharp: ^0.35.1
-  sitemap: ^9.0.1
+  sitemap: ^10.0.0
   srcset: ^5.0.3
   stylelint: ^17.15.0
   tinyglobby: ^0.2.17
