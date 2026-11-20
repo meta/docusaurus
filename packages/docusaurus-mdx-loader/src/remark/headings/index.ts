@@ -61,6 +61,15 @@ function getCommentHeadingId(heading: Heading): string | undefined {
     }
   }
 
+  // remark-comment AST node: <!-- my-id --> or <!-- #my-id -->
+  if (lastChild?.type === ('comment' as unknown)) {
+    const commentContent = (lastChild as unknown as {commentValue?: string})
+      .commentValue;
+    if (commentContent) {
+      return getCommentContentHeadingId(commentContent);
+    }
+  }
+
   return undefined;
 }
 
@@ -114,7 +123,7 @@ const plugin: Plugin<PluginOptions[], Root> = function plugin({
   return (root) => {
     function getHeadingText(heading: Heading) {
       const headingTextNodes = heading.children.filter(
-        ({type}) => !['html', 'jsx'].includes(type),
+        ({type}) => !['html', 'jsx', 'comment'].includes(type),
       );
       return toString(headingTextNodes.length > 0 ? headingTextNodes : heading);
     }
