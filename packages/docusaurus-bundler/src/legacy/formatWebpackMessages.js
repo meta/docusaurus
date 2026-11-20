@@ -123,11 +123,25 @@ function formatMessage(message) {
 }
 
 /**
+ * Adds source metadata after cleanup, which relies on diagnostic line positions.
+ * @param {import("webpack").StatsError} error
+ */
+function formatError(error) {
+  const message = formatMessage(error);
+  const source = error.moduleName ?? error.file;
+  if (!source) {
+    return message;
+  }
+  const sourceLocation = error.loc ? `${source}:${error.loc}` : source;
+  return `${sourceLocation}\n${message}`;
+}
+
+/**
  * @param {import("webpack").Stats.ToJsonOutput} json.
  * @returns {{ errors: string[], warnings: string[] }}
  */
 module.exports = function formatWebpackMessages(json) {
-  const formattedErrors = json.errors.map(formatMessage);
+  const formattedErrors = json.errors.map(formatError);
   const formattedWarnings = json.warnings.map(formatMessage);
   const result = {errors: formattedErrors, warnings: formattedWarnings};
   if (result.errors.some(isLikelyASyntaxError)) {
