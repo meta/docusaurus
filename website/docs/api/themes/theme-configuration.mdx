@@ -801,6 +801,18 @@ export default {
 };
 ```
 
+This item renders differently depending on where it appears: in the Top navbar (desktop), it is wrapped with the Infima `navbar__item` class, while in the collapsed mobile "Menu", it is wrapped with `menu__list-item` instead. These two classes are mutually exclusive, so writing CSS against only one of them means your item won't look consistent in both places.
+
+To style the item the same way regardless of where it renders, use the stable `theme-navbar-item-html` class, which Docusaurus always adds to this item's wrapper:
+
+```css title="src/css/custom.css"
+.theme-navbar-item-html {
+  /* Applies in both the Top navbar and the mobile Menu */
+  display: flex;
+  align-items: center;
+}
+```
+
 ### Auto-hide sticky navbar {/* #auto-hide-sticky-navbar */}
 
 You can enable this cool UI feature that automatically hides the navbar when a user starts scrolling down the page, and show it again when the user scrolls up.
