@@ -74,6 +74,20 @@ const ThemeConfigSampleSimpleFooter: ThemeConfig = {
   },
 };
 
+const ThemeConfigSampleWithVersionDropdown = {
+  ...ThemeConfigSample,
+  navbar: {
+    ...ThemeConfigSample.navbar,
+    items: [
+      {
+        type: 'docsVersionDropdown',
+        dropdownItemsBefore: [{label: 'Dropdown item before', to: '/before'}],
+        dropdownItemsAfter: [{label: 'Dropdown item after', to: '/after'}],
+      },
+    ],
+  },
+} as unknown as ThemeConfig;
+
 function getSampleTranslationFiles(themeConfig: ThemeConfig) {
   return getTranslationFiles({
     themeConfig,
@@ -118,6 +132,24 @@ describe('translateThemeConfig', () => {
       }),
     ).toMatchSnapshot();
   });
+
+  it('translates the items of dropdownItemsBefore and dropdownItemsAfter', () => {
+    const translatedThemeConfig = translateThemeConfig({
+      themeConfig: ThemeConfigSampleWithVersionDropdown,
+      translationFiles: getSampleTranslationFilesTranslated(
+        ThemeConfigSampleWithVersionDropdown,
+      ),
+    });
+
+    expect(translatedThemeConfig.navbar.items[0]).toMatchObject({
+      dropdownItemsBefore: [
+        {label: 'Dropdown item before (translated)', to: '/before'},
+      ],
+      dropdownItemsAfter: [
+        {label: 'Dropdown item after (translated)', to: '/after'},
+      ],
+    });
+  });
 });
 
 describe('getTranslationFiles and translateThemeConfig isomorphism', () => {
@@ -135,6 +167,10 @@ describe('getTranslationFiles and translateThemeConfig isomorphism', () => {
 
   it('is verified for sample with simple footer', () => {
     verifyIsomorphism(ThemeConfigSampleSimpleFooter);
+  });
+
+  it('is verified for sample with version dropdown items', () => {
+    verifyIsomorphism(ThemeConfigSampleWithVersionDropdown);
   });
 
   // Undefined footer should not make the translation code crash
