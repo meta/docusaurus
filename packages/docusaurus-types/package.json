@@ -22,6 +22,7 @@
     "mdast-util-directive": "catalog:",
     "utility-types": "catalog:",
     "webpack": "catalog:",
+    "webpack-dev-server": "catalog:",
     "webpack-merge": "catalog:"
   },
   "peerDependencies": {

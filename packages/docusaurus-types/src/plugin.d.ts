@@ -7,6 +7,8 @@
 
 import type {CodeTranslations, TranslationFile} from './i18n';
 import type {RuleSetRule, Configuration as WebpackConfiguration} from 'webpack';
+// Load the devServer augmentation of webpack.Configuration.
+import type {} from 'webpack-dev-server';
 import type {CustomizeRuleString} from 'webpack-merge/dist/types';
 import type {Command} from 'commander';
 import type Joi from 'joi';
