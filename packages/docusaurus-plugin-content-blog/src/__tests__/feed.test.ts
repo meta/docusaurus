@@ -389,7 +389,10 @@ describe.each(['atom', 'rss', 'json'] as const)('%s', (feedType) => {
       },
     );
 
-    expect(tree(path.join(outDir, 'blog'))).toMatchSnapshot('blog tree');
+    // Filesystems may return decomposed names; the snapshots use NFC.
+    expect(tree(path.join(outDir, 'blog')).normalize('NFC')).toMatchSnapshot(
+      'blog tree',
+    );
 
     expect(
       fsMock.mock.calls.map(([filePath, content]) => [filePath, content]),
@@ -441,7 +444,9 @@ describe.each(['atom', 'rss', 'json'] as const)('%s', (feedType) => {
       },
     );
 
-    expect(tree(path.join(outDir, 'blog'))).toMatchSnapshot('blog tree');
+    expect(tree(path.join(outDir, 'blog')).normalize('NFC')).toMatchSnapshot(
+      'blog tree',
+    );
 
     expect(
       fsMock.mock.calls.map(([filePath, content]) => [filePath, content]),
