@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {ReactNode} from 'react';
+import type {MouseEvent, ReactNode} from 'react';
+import clsx from 'clsx';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {useAlternatePageUtils} from '@docusaurus/theme-common/internal';
 import {translate} from '@docusaurus/Translate';
@@ -87,22 +88,29 @@ export default function LocaleDropdownNavbarItem({
     i18n: {currentLocale, locales},
   } = useDocusaurusContext();
   const localeItems = locales.map((locale): LinkLikeNavbarItemProps => {
+    const isDisabled =
+      process.env.NODE_ENV === 'development' && locale !== currentLocale;
+
     return {
       label: utils.getLabel(locale),
       lang: utils.getLang(locale),
-      to: utils.getURL(locale, {queryString}),
+      to: isDisabled ? undefined : utils.getURL(locale, {queryString}),
       target: '_self',
       autoAddBaseUrl: false,
-      className:
-        // eslint-disable-next-line no-nested-ternary
-        locale === currentLocale
-          ? // Similar idea as DefaultNavbarItem: select the right Infima active
-            // class name. This cannot be substituted with isActive, because the
-            // target URLs contain `pathname://` and therefore are not NavLinks!
-            mobile
-            ? 'menu__link--active'
-            : 'dropdown__link--active'
-          : '',
+      ...(isDisabled && {
+        role: 'link',
+        'aria-disabled': true,
+        tabIndex: -1,
+        onClick: (event: MouseEvent<HTMLAnchorElement>) =>
+          event.preventDefault(),
+      }),
+      className: clsx(
+        isDisabled && styles.localeDisabled,
+        // Select the Infima active class explicitly because pathname:// links
+        // do not use React Router's NavLink.
+        locale === currentLocale &&
+          (mobile ? 'menu__link--active' : 'dropdown__link--active'),
+      ),
     };
   });
 
