@@ -320,6 +320,7 @@ describe('createExcerpt', () => {
     expect(createExcerpt('Great job :+1: and no :-1: here :t-rex:!')).toBe(
       'Great job and no here!',
     );
+    expect(createExcerpt('Great :dog::+1:!')).toBe('Great!');
   });
 });
 
