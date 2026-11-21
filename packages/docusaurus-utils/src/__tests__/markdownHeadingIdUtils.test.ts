@@ -549,6 +549,40 @@ describe('writeMarkdownHeadingId', () => {
         ### def {/* #def */}
       `);
     });
+
+    it('does not modify headings inside tilde or longer fenced code blocks (#13061)', () => {
+      expect(
+        write(dedent`
+          # Document Title
+
+          ~~~md
+          ## Reusable API {#inside-code}
+          ~~~
+
+          \`\`\`\`markdown
+          \`\`\`md
+          ## Inner heading
+          \`\`\`
+          \`\`\`\`
+
+          ## Reusable API
+        `),
+      ).toEqual(dedent`
+          # Document Title
+
+          ~~~md
+          ## Reusable API {#inside-code}
+          ~~~
+
+          \`\`\`\`markdown
+          \`\`\`md
+          ## Inner heading
+          \`\`\`
+          \`\`\`\`
+
+          ## Reusable API {#reusable-api}
+      `);
+    });
   });
 
   describe('mdx-comment syntax', () => {
