@@ -75,8 +75,10 @@ export const DataAttributeQueryStringInlineJavaScript = `
 // shifts on React hydration. The theme can use CSS + the data attribute to hide
 // the announcement bar asap (before React hydration)
 export function getAnnouncementBarInlineScript({
+  announcementBar,
   siteStorage,
 }: {
+  announcementBar: NonNullable<ThemeConfig['announcementBar']>;
   siteStorage: SiteStorage;
 }): string {
   // Duplicated constant. Unfortunately we can't import it from theme-common, as
@@ -84,14 +86,22 @@ export function getAnnouncementBarInlineScript({
   // TODO: import from theme-common once we support Node.js with ESM support
   // + move all those announcementBar stuff there too
   const AnnouncementBarDismissStorageKey = `docusaurus.announcement.dismiss${siteStorage.namespace}`;
+  const AnnouncementBarIdStorageKey = `docusaurus.announcement.id${siteStorage.namespace}`;
   const AnnouncementBarDismissDataAttribute =
     'data-announcement-bar-initially-dismissed';
+  const announcementBarId = JSON.stringify(announcementBar.id).replace(
+    /</g,
+    '\\u003c',
+  );
 
   /* language=js */
   return `(function() {
   function isDismissed() {
     try {
-      return localStorage.getItem('${AnnouncementBarDismissStorageKey}') === 'true';
+      return (
+        localStorage.getItem('${AnnouncementBarDismissStorageKey}') === 'true' &&
+        localStorage.getItem('${AnnouncementBarIdStorageKey}') === ${announcementBarId}
+      );
     } catch (err) {}
     return false;
   }

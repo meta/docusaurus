@@ -132,7 +132,11 @@ export default function themeClassic(
             innerHTML: `
 ${getThemeInlineScript({colorMode, siteStorage})}
 ${DataAttributeQueryStringInlineJavaScript}
-${announcementBar ? getAnnouncementBarInlineScript({siteStorage}) : ''}
+${
+  announcementBar
+    ? getAnnouncementBarInlineScript({announcementBar, siteStorage})
+    : ''
+}
             `,
           },
         ],
