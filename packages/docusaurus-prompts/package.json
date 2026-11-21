@@ -1,0 +1,30 @@
+{
+  "name": "@docusaurus/prompts",
+  "version": "4.0.0",
+  "description": "Interactive prompts used by the Docusaurus CLIs.",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meta/docusaurus.git",
+    "directory": "packages/docusaurus-prompts"
+  },
+  "bugs": {
+    "url": "https://github.com/meta/docusaurus/issues"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@docusaurus/logger": "workspace:*",
+    "prompts": "catalog:",
+    "tslib": "catalog:"
+  },
+  "engines": {
+    "node": ">=26.13"
+  }
+}

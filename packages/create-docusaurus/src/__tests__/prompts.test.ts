@@ -5,82 +5,67 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {describe, expect, it, vi} from 'vitest';
-import {PassThrough} from 'node:stream';
-import prompts from 'prompts';
-import {askPreferredLanguage, prompt} from '../prompts';
+import {afterEach, describe, expect, it, vi} from 'vitest';
+import {injectAnswers, resetInjectedAnswers} from '@docusaurus/prompts';
+import {askForCustomGitCloneCommand, askPreferredLanguage} from '../prompts';
 
-function createQuestion() {
-  return {
-    type: 'text',
-    name: 'siteName',
-    message: 'What should we name this site?',
-    stdin: new PassThrough(),
-    stdout: new PassThrough(),
-  } as const;
-}
+const mockExit = () =>
+  vi.spyOn(process, 'exit').mockImplementation((() => {}) as () => never);
+const mockConsoleError = () =>
+  vi.spyOn(console, 'error').mockImplementation(() => {});
 
-const answerHint = 'the [siteName] argument';
-
-describe('prompt', () => {
-  it('returns the answers', async () => {
-    prompts.inject(['my-site']);
-    const onCancel = vi.fn();
-
-    await expect(
-      prompt(createQuestion(), {onCancel, answerHint}),
-    ).resolves.toEqual({siteName: 'my-site'});
-    expect(onCancel).not.toHaveBeenCalled();
+describe('create-docusaurus prompts', () => {
+  afterEach(() => {
+    resetInjectedAnswers();
   });
 
-  it('calls onCancel when the prompt is cancelled', async () => {
-    prompts.inject([new Error('cancelled')]);
-    const onCancel = vi.fn();
+  describe('askPreferredLanguage', () => {
+    it('returns the answer', async () => {
+      injectAnswers(['typescript']);
 
-    await expect(
-      prompt(createQuestion(), {onCancel, answerHint}),
-    ).resolves.toEqual({});
-    expect(onCancel).toHaveBeenCalledOnce();
+      await expect(askPreferredLanguage()).resolves.toBe('typescript');
+    });
+
+    it('exits with code 1 when there is no answer', async () => {
+      injectAnswers([new Error('cancelled')]);
+      using exit = mockExit();
+      using error = mockConsoleError();
+
+      await askPreferredLanguage();
+
+      expect(exit).toHaveBeenCalledExactlyOnceWith(1);
+      expect(error).toHaveBeenCalledExactlyOnceWith(
+        '[ERROR] Can\'t answer the prompt "Which language do you want to use?": cancelled. Answer it with the --javascript or --typescript option.',
+      );
+    });
   });
 
-  it('throws when stdin is closed before an answer', async () => {
-    const question = createQuestion();
-    const onCancel = vi.fn();
+  describe('askForCustomGitCloneCommand', () => {
+    it('returns the answer', async () => {
+      injectAnswers(['git clone --depth 10']);
 
-    const answers = prompt(question, {onCancel, answerHint});
-    question.stdin.end();
-    process.emit('beforeExit', 0);
+      await expect(askForCustomGitCloneCommand()).resolves.toBe(
+        'git clone --depth 10',
+      );
+    });
 
-    await expect(answers).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: Can't answer the prompt "What should we name this site?": stdin is closed. Answer it with the [siteName] argument.]`,
-    );
-    expect(onCancel).not.toHaveBeenCalled();
-  });
-});
+    it('falls back to git clone when the answer is empty', async () => {
+      injectAnswers(['']);
 
-describe('askPreferredLanguage', () => {
-  it('returns the answer', async () => {
-    prompts.inject(['typescript']);
+      await expect(askForCustomGitCloneCommand()).resolves.toBe('git clone');
+    });
 
-    await expect(askPreferredLanguage()).resolves.toBe('typescript');
-  });
+    it('exits with code 1 when there is no answer', async () => {
+      injectAnswers([new Error('cancelled')]);
+      using exit = mockExit();
+      using error = mockConsoleError();
 
-  it('exits with code 1 when the prompt is cancelled', async () => {
-    prompts.inject([new Error('cancelled')]);
-    using exit = vi
-      .spyOn(process, 'exit')
-      .mockImplementation((() => {}) as () => never);
-    using error = vi.spyOn(console, 'error').mockImplementation(() => {});
+      await askForCustomGitCloneCommand();
 
-    await askPreferredLanguage();
-
-    expect(exit).toHaveBeenCalledExactlyOnceWith(1);
-    expect(error.mock.calls).toMatchInlineSnapshot(`
-      [
-        [
-          "[ERROR] A language is required.",
-        ],
-      ]
-    `);
+      expect(exit).toHaveBeenCalledExactlyOnceWith(1);
+      expect(error).toHaveBeenCalledExactlyOnceWith(
+        '[ERROR] Can\'t answer the prompt "Write your own git clone command. The repository URL and destination directory will be supplied. E.g. "git clone --depth 10"": cancelled. Answer it with a --git-strategy option other than custom.',
+      );
+    });
   });
 });

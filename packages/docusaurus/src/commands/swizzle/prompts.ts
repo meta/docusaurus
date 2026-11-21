@@ -6,23 +6,23 @@
  */
 
 import logger from '@docusaurus/logger';
-import prompts, {type Choice} from 'prompts';
+import {askSelect, askSearch} from '@docusaurus/prompts';
 import {actionStatusSuffix, PartiallySafeHint} from './common';
 import type {ThemeComponents} from './components';
 import type {SwizzleAction, SwizzleComponentConfig} from '@docusaurus/types';
 
 const ExitTitle = logger.yellow('[Exit]');
+const ExitChoice = '[Exit]';
 
 export async function askThemeName(themeNames: string[]): Promise<string> {
-  const {themeName} = (await prompts({
-    type: 'select',
-    name: 'themeName',
+  const themeName = await askSelect<string>({
     message: 'Select a theme to swizzle:',
     choices: themeNames
-      .map((theme) => ({title: theme, value: theme}))
-      .concat({title: ExitTitle, value: '[Exit]'}),
-  })) as {themeName?: string};
-  if (!themeName || themeName === '[Exit]') {
+      .map((theme) => ({name: theme, value: theme}))
+      .concat({name: ExitTitle, value: ExitChoice}),
+    answerHint: 'the [theme] argument',
+  });
+  if (themeName === ExitChoice) {
     process.exit(0);
   }
   return themeName;
@@ -41,32 +41,22 @@ export async function askComponentName(
     })}`;
   }
 
-  const {componentName} = (await prompts({
-    type: 'autocomplete',
-    name: 'componentName',
+  const componentName = await askSearch<string>({
     message: `
 Select or type the component to swizzle.
 ${PartiallySafeHint} = not safe for all swizzle actions
 `,
-    // This doesn't work well in small-height terminals (like IDE)
-    // limit: 30,
-    // This does not work well and messes up with terminal scroll position
-    // limit: Number.POSITIVE_INFINITY,
     choices: themeComponents.all
       .map((compName) => ({
-        title: formatComponentName(compName),
+        name: formatComponentName(compName),
         value: compName,
       }))
-      .concat({title: ExitTitle, value: '[Exit]'}),
-    async suggest(input: string, choices) {
-      return choices.filter((choice) =>
-        choice.title.toLowerCase().includes(input.toLowerCase()),
-      );
-    },
-  })) as {componentName?: string};
+      .concat({name: ExitTitle, value: ExitChoice}),
+    answerHint: 'the [theme] [component] arguments',
+  });
   logger.newLine();
 
-  if (!componentName || componentName === '[Exit]') {
+  if (componentName === ExitChoice) {
     return process.exit(0);
   }
 
@@ -74,52 +64,49 @@ ${PartiallySafeHint} = not safe for all swizzle actions
 }
 
 export async function askSwizzleDangerousComponent(): Promise<boolean> {
-  const {switchToDanger} = (await prompts({
-    type: 'select',
-    name: 'switchToDanger',
+  const switchToDanger = await askSelect<boolean | typeof ExitChoice>({
     message: `Do you really want to swizzle this unsafe internal component?`,
     choices: [
-      {title: logger.green('NO: cancel and stay safe'), value: false},
+      {name: logger.green('NO: cancel and stay safe'), value: false},
       {
-        title: logger.red('YES: I know what I am doing!'),
+        name: logger.red('YES: I know what I am doing!'),
         value: true,
       },
-      {title: ExitTitle, value: '[Exit]'},
+      {name: ExitTitle, value: ExitChoice},
     ],
-  })) as {switchToDanger?: boolean | '[Exit]'};
+    answerHint: 'the --danger option',
+  });
 
-  if (typeof switchToDanger === 'undefined' || switchToDanger === '[Exit]') {
+  if (switchToDanger === ExitChoice) {
     return process.exit(0);
   }
 
-  return !!switchToDanger;
+  return switchToDanger;
 }
 
 export async function askSwizzleAction(
   componentConfig: SwizzleComponentConfig,
 ): Promise<SwizzleAction> {
-  const {action} = (await prompts({
-    type: 'select',
-    name: 'action',
+  const action = await askSelect<SwizzleAction | typeof ExitChoice>({
     message: `Which swizzle action do you want to do?`,
     choices: [
       {
-        title: `${logger.bold('Wrap')}${actionStatusSuffix(
+        name: `${logger.bold('Wrap')}${actionStatusSuffix(
           componentConfig.actions.wrap,
         )}`,
         value: 'wrap',
       },
       {
-        title: `${logger.bold('Eject')}${actionStatusSuffix(
+        name: `${logger.bold('Eject')}${actionStatusSuffix(
           componentConfig.actions.eject,
         )}`,
         value: 'eject',
       },
-      {title: ExitTitle, value: '[Exit]'},
+      {name: ExitTitle, value: ExitChoice},
     ],
-  })) as {action?: SwizzleAction | '[Exit]'};
+  });
 
-  if (typeof action === 'undefined' || action === '[Exit]') {
+  if (action === ExitChoice) {
     return process.exit(0);
   }
 
@@ -129,27 +116,19 @@ export async function askSwizzleAction(
 export async function askSwizzlePreferredLanguage(): Promise<
   'javascript' | 'typescript'
 > {
-  const choices: Choice[] = [
-    {title: logger.bold('JavaScript'), value: 'javascript'},
-    {title: logger.bold('TypeScript'), value: 'typescript'},
-    {title: logger.yellow('[Exit]'), value: '[Exit]'},
-  ];
+  const language = await askSelect<
+    'javascript' | 'typescript' | typeof ExitChoice
+  >({
+    message: 'Which language do you want to use?',
+    choices: [
+      {name: logger.bold('JavaScript'), value: 'javascript'},
+      {name: logger.bold('TypeScript'), value: 'typescript'},
+      {name: ExitTitle, value: ExitChoice},
+    ],
+    answerHint: 'the --javascript or --typescript option',
+  });
 
-  const {language} = await prompts(
-    {
-      type: 'select',
-      name: 'language',
-      message: 'Which language do you want to use?',
-      choices,
-    },
-    {
-      onCancel() {
-        process.exit(0);
-      },
-    },
-  );
-
-  if (typeof language === 'undefined' || language === '[Exit]') {
+  if (language === ExitChoice) {
     process.exit(0);
   }
 
