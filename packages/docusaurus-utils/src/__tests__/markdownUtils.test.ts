@@ -303,6 +303,24 @@ describe('createExcerpt', () => {
       expect(createExcerpt('\u{FFFE}\u{FFFF}')).toBeUndefined();
     });
   });
+
+  it('preserves text between colons that are not emoji shortcodes', () => {
+    expect(createExcerpt('Meeting runs 10:30 to 11:45 daily.')).toBe(
+      'Meeting runs 10:30 to 11:45 daily.',
+    );
+    expect(createExcerpt('Meeting runs at 10:30:00 daily.')).toBe(
+      'Meeting runs at 10:30:00 daily.',
+    );
+    expect(createExcerpt('Note: install first. Tip: run the build.')).toBe(
+      'Note: install first. Tip: run the build.',
+    );
+    expect(
+      createExcerpt('Download it from https://nodejs.org. Then run: npm ci'),
+    ).toBe('Download it from https://nodejs.org. Then run: npm ci');
+    expect(createExcerpt('Great job :+1: and no :-1: here :t-rex:!')).toBe(
+      'Great job and no here!',
+    );
+  });
 });
 
 describe('parseMarkdownContentTitle', () => {
