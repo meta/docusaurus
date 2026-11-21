@@ -480,6 +480,20 @@ Lorem Ipsum
     });
   });
 
+  it('preserves literal hash before custom ID', () => {
+    const markdown = dedent`
+
+          # Version # {#version}
+
+          Lorem Ipsum
+
+        `;
+    expect(parseMarkdownContentTitle(markdown)).toEqual({
+      content: markdown,
+      contentTitle: 'Version #',
+    });
+  });
+
   it('parses markdown h1 title at the top followed by h2 title', () => {
     const markdown = dedent`
 

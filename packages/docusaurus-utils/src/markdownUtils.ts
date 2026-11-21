@@ -333,8 +333,8 @@ export function parseMarkdownContentTitle(
     const cleanTitle = /^#+$/.test(rawTitle)
       ? ''
       : rawTitle
-          .replace(/\s*\{#*[\w-]+\}$/, '')
-          .replace(/\s+#+$/, '');
+          .replace(/\s+#+$/, '')
+          .replace(/\s*\{#*[\w-]+\}$/, '');
     return {
       content: newContent.trim(),
       contentTitle: toTextContentTitle(cleanTitle).trim(),
