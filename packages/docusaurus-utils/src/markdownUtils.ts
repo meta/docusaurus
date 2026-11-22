@@ -332,10 +332,7 @@ export function parseMarkdownContentTitle(
     let title = regularTitleMatch
       .groups!.title!.replace(/^[ \t]+|[ \t]+$/g, '')
       .replace(/(?:[ \t]+|^)#+$/, '');
-    const titleWithoutId = title.replace(/\s*\{#*[\w-]+\}$/, '');
-    if (titleWithoutId !== title) {
-      title = titleWithoutId.replace(/(?:[ \t]+|^)#+$/, '');
-    }
+    title = title.replace(/\s*\{#*[\w-]+\}$/, '');
     return {
       content: newContent.trim(),
       contentTitle: toTextContentTitle(title).replace(/^[ \t]+|[ \t]+$/g, ''),

@@ -543,6 +543,21 @@ Lorem Ipsum
         `,
       contentTitle: 'Title #',
     });
+
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # Part # {#id}
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # Part # {#id}
+
+          Lorem Ipsum
+        `,
+      contentTitle: 'Part #',
+    });
   });
 
   it('parses markdown h1 title at the top followed by h2 title', () => {
