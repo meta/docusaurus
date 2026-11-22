@@ -7,11 +7,18 @@
 
 import path from 'node:path';
 import _ from 'lodash';
-import {aliasedSitePathToRelativePath, createSlugger} from '@docusaurus/utils';
+import {
+  aliasedSitePathToRelativePath,
+  createSlugger,
+  normalizeUrl,
+  resolvePathname,
+} from '@docusaurus/utils';
 import {getTagsFile} from '@docusaurus/utils-validation';
 import logger from '@docusaurus/logger';
 import {
   createDocsByIdIndex,
+  isCategoryIndex,
+  toCategoryIndexMatcherParam,
   type DocEnv,
   processDocMetadata,
   readVersionDocs,
@@ -34,6 +41,116 @@ type LoadVersionParams = {
   versionMetadata: VersionMetadata;
   env: DocEnv;
 };
+
+/**
+ * When multiple files in the same directory are all recognized as "category
+ * indexes" (index.md, README.md, or <dirname>.md), they all get the same
+ * directory slug, making all but one inaccessible. We apply a priority order:
+ *   index > readme > <dirname>
+ * Lower-priority files that lose the conflict are reassigned a regular
+ * (non-category-index) slug so they remain accessible.
+ */
+function resolvePermalinkConflicts(
+  docs: DocMetadataBase[],
+  versionPath: string,
+): DocMetadataBase[] {
+  // Priority: 0 = index, 1 = readme, 2 = <dirname> (lowest)
+  function getCategoryIndexPriority(doc: DocMetadataBase): number {
+    const param = toCategoryIndexMatcherParam({
+      source: doc.source,
+      sourceDirName: doc.sourceDirName,
+    });
+    if (!isCategoryIndex(param)) {
+      return -1; // not a category index – shouldn't normally conflict this way
+    }
+    const name = param.fileName.toLowerCase();
+    if (name === 'index') {
+      return 0;
+    }
+    if (name === 'readme') {
+      return 1;
+    }
+    return 2; // dir-name match
+  }
+
+  const docsByPermalink = _.groupBy(docs, (d) => d.permalink);
+
+  const updates = new Map<DocMetadataBase, Partial<DocMetadataBase>>();
+
+  for (const group of Object.values(docsByPermalink)) {
+    if (group.length <= 1) {
+      continue;
+    }
+
+    // Sort by priority so the winner (lowest number) is first
+    const sorted = [...group].sort(
+      (a, b) => getCategoryIndexPriority(a) - getCategoryIndexPriority(b),
+    );
+
+    for (const loser of sorted.slice(1)) {
+      const priority = getCategoryIndexPriority(loser);
+      if (priority === 2) {
+        // Dir-name category index lost – give it a regular slug instead.
+        // Use the doc's baseID (last segment of id, with number prefix already
+        // stripped) to match what a non-category-index slug would look like.
+        const {fileName} = toCategoryIndexMatcherParam({
+          source: loser.source,
+          sourceDirName: loser.sourceDirName,
+        });
+        const baseID = loser.id.split('/').pop()!;
+        // e.g. /demo/ + demo -> /demo/demo
+        const newSlug = resolvePathname(baseID, loser.slug);
+        const newPermalink = normalizeUrl([versionPath, newSlug]);
+
+        logger.warn`Docs in path=${
+          loser.sourceDirName
+        } have conflicting slugs. File name=${fileName} is reassigned slug code=${newSlug} because a higher-priority index file (code=${'index'} or code=${'readme'}) exists in the same directory. To avoid this warning, add a slug front matter to one of the files.`;
+
+        updates.set(loser, {slug: newSlug, permalink: newPermalink});
+      }
+      // If priority < 2 there's still a real conflict (e.g. two index.md files
+      // with the same permalink) – caught by ensureNoDuplicatePermalink below.
+    }
+  }
+
+  if (updates.size === 0) {
+    return docs;
+  }
+
+  return docs.map((doc) => {
+    const update = updates.get(doc);
+    return update ? {...doc, ...update} : doc;
+  });
+}
+
+function ensureNoDuplicatePermalink(docs: DocMetadataBase[]): void {
+  const duplicatesByPermalink = _.chain(docs)
+    .groupBy((d) => d.permalink)
+    .pickBy((group) => group.length > 1)
+    .value();
+
+  const duplicateEntries = Object.entries(duplicatesByPermalink);
+  if (!duplicateEntries.length) {
+    return;
+  }
+
+  const messages = duplicateEntries
+    .map(([permalink, duplicateDocs]) => {
+      return logger.interpolate`- code=${permalink} found in number=${
+        duplicateDocs.length
+      } docs:
+  - ${duplicateDocs
+    .map((d) => aliasedSitePathToRelativePath(d.source))
+    .join('\n  - ')}`;
+    })
+    .join('\n\n');
+
+  throw new Error(
+    `The docs plugin found docs sharing the same permalink:\n\n${messages}\n\nDocs should have distinct slugs. In case of conflict, you can rename a docs file or use the ${logger.code(
+      'slug',
+    )} front matter to assign a custom explicit slug.`,
+  );
+}
 
 function ensureNoDuplicateDocId(docs: DocMetadataBase[]): void {
   const duplicatesById = _.chain(docs)
@@ -103,8 +220,10 @@ async function loadVersionDocsBase({
       tagsFile,
     });
   }
-  const docs = await Promise.all(docFiles.map(processVersionDoc));
-  ensureNoDuplicateDocId(docs);
+  const docsRaw = await Promise.all(docFiles.map(processVersionDoc));
+  ensureNoDuplicateDocId(docsRaw);
+  const docs = resolvePermalinkConflicts(docsRaw, versionMetadata.path);
+  ensureNoDuplicatePermalink(docs);
   return docs;
 }
 

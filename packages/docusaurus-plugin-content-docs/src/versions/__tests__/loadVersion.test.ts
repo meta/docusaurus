@@ -76,6 +76,65 @@ describe('loadVersion', () => {
     });
   });
 
+  describe('site with slug conflicts', () => {
+    it('index.md wins over <dirname>.md - dirname file gets reassigned slug', async () => {
+      const {options, context, versions} = await siteFixture(
+        'site-slug-conflicts',
+      );
+      const version = versions[0]!;
+      const loadedVersion = await loadVersion({
+        context,
+        options,
+        versionMetadata: version,
+        env: 'production',
+      });
+
+      // index.md keeps the directory slug /demo/
+      const indexDoc = loadedVersion.docs.find((d) =>
+        d.source.endsWith('demo/index.md'),
+      );
+      expect(indexDoc).toBeDefined();
+      expect(indexDoc!.slug).toBe('/demo/');
+
+      // demo.mdx is reassigned to /demo/demo (non-index slug)
+      const demoDoc = loadedVersion.docs.find((d) =>
+        d.source.endsWith('demo/demo.mdx'),
+      );
+      expect(demoDoc).toBeDefined();
+      expect(demoDoc!.slug).toBe('/demo/demo');
+
+      // Both docs have distinct permalinks
+      expect(indexDoc!.permalink).not.toBe(demoDoc!.permalink);
+    });
+
+    it('rEADME.md wins over <dirname>.md - dirname file gets reassigned slug', async () => {
+      const {options, context, versions} = await siteFixture(
+        'site-slug-conflicts',
+      );
+      const version = versions[0]!;
+      const loadedVersion = await loadVersion({
+        context,
+        options,
+        versionMetadata: version,
+        env: 'production',
+      });
+
+      // README.md keeps /readme-wins/
+      const readmeDoc = loadedVersion.docs.find((d) =>
+        d.source.endsWith('readme-wins/README.md'),
+      );
+      expect(readmeDoc).toBeDefined();
+      expect(readmeDoc!.slug).toBe('/readme-wins/');
+
+      // readme-wins.md gets /readme-wins/readme-wins
+      const dirNameDoc = loadedVersion.docs.find((d) =>
+        d.source.endsWith('readme-wins/readme-wins.md'),
+      );
+      expect(dirNameDoc).toBeDefined();
+      expect(dirNameDoc!.slug).toBe('/readme-wins/readme-wins');
+    });
+  });
+
   describe('site with broken versions', () => {
     async function loadTestVersion(versionName: string) {
       const {options, context, versions} = await siteFixture(
