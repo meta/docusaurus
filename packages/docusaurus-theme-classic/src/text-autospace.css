@@ -1,0 +1,37 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/*
+ * Better Chinese/Japanese typography (issue #11928):
+ * let the browser insert the proper automatic spacing between CJK characters
+ * and Latin letters/digits, e.g. "curlが", "5分".
+ *
+ * - Scoped to zh/ja only, to avoid any rendering cost for other languages.
+ * - Separate :lang(zh) and :lang(ja) selectors: the comma form
+ *   :lang(zh, ja) is not supported by all browsers yet.
+ * - :where() keeps specificity at 0 so that site authors can easily override.
+ */
+:where(:lang(zh), :lang(ja)) {
+  text-autospace: normal;
+}
+
+/* Never alter the spacing of code: it must stay exactly as written. */
+:where(:lang(zh), :lang(ja)) :where(pre, code, kbd, samp) {
+  text-autospace: no-autospace;
+}
+
+/* Other languages: back to the browser default. */
+:where(:not(:lang(zh), :lang(ja))) {
+  text-autospace: initial;
+}
