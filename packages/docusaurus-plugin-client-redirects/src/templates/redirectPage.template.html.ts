@@ -12,9 +12,9 @@ export default `
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="0; url=<%= it.toUrl %>">
     <link rel="canonical" href="<%= it.toUrl %>" />
+    <script>
+      window.location.replace('<%= it.toUrl %>'<%= it.searchAnchorForwarding ? ' + window.location.search + window.location.hash' : '' %>);
+    </script>
   </head>
-  <script>
-    window.location.href = '<%= it.toUrl %>'<%= it.searchAnchorForwarding ? ' + window.location.search + window.location.hash' : '' %>;
-  </script>
 </html>
 `;
