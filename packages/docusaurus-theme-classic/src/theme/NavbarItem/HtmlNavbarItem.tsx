@@ -16,7 +16,7 @@ export default function HtmlNavbarItem({
   mobile = false,
   isDropdownItem = false,
 }: Props): ReactNode {
-  const Comp = isDropdownItem ? 'li' : 'div';
+  const Comp = mobile || isDropdownItem ? 'li' : 'div';
   return (
     <Comp
       className={clsx(
