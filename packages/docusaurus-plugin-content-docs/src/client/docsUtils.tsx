@@ -234,17 +234,24 @@ function getSidebarBreadcrumbs({
 }): PropSidebarBreadcrumbsItem[] {
   const breadcrumbs: PropSidebarBreadcrumbsItem[] = [];
 
-  function extract(items: PropSidebarItem[]): boolean {
+  function extract(
+    items: PropSidebarItem[],
+    match: 'category' | 'doc',
+  ): boolean {
     for (const item of items) {
       // Extract category item
       if (item.type === 'category') {
-        if (isSamePath(item.href, pathname) || extract(item.items)) {
+        if (
+          (match === 'category' && isSamePath(item.href, pathname)) ||
+          extract(item.items, match)
+        ) {
           breadcrumbs.unshift(item);
           return true;
         }
       }
       // Extract doc item
       else if (
+        match === 'doc' &&
         item.type === 'link' &&
         item.docId &&
         isSamePath(item.href, pathname)
@@ -259,7 +266,10 @@ function getSidebarBreadcrumbs({
     return false;
   }
 
-  extract(sidebarItems);
+  // A document may also appear as a link outside its index category.
+  if (!extract(sidebarItems, 'category')) {
+    extract(sidebarItems, 'doc');
+  }
 
   return breadcrumbs;
 }

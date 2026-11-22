@@ -673,6 +673,45 @@ describe('useSidebarBreadcrumbs', () => {
     expect(createUseSidebarBreadcrumbsMock([], false)('/foo')).toBeNull();
   });
 
+  it('uses the first category in sidebar order when two share an index', () => {
+    const href = '/overview';
+    const nested = testCategory({href, label: 'Nested overview'});
+    const parent = testCategory({items: [nested]});
+    const other = testCategory({href, label: 'Other overview'});
+
+    expect(createUseSidebarBreadcrumbsMock([parent, other])(href)).toEqual([
+      parent,
+      nested,
+    ]);
+    expect(createUseSidebarBreadcrumbsMock([other, parent])(href)).toEqual([
+      other,
+    ]);
+  });
+
+  it('keeps the first document trail when no category owns the page', () => {
+    const doc = testLink({href: '/guide', docId: 'guide'});
+    const first = testCategory({label: 'First', items: [doc]});
+    const second = testCategory({label: 'Second', items: [doc]});
+
+    expect(createUseSidebarBreadcrumbsMock([first, second])(doc.href)).toEqual([
+      first,
+      doc,
+    ]);
+  });
+
+  it('returns the full path to a nested index referenced by an earlier doc', () => {
+    const href = '/extras';
+    const indexLink = testLink({href, docId: 'extras/index'});
+    const extras = testCategory({href});
+    const parent = testCategory({items: [extras]});
+    const sidebar = [testCategory({items: [indexLink]}), parent];
+
+    expect(createUseSidebarBreadcrumbsMock(sidebar)(href)).toEqual([
+      parent,
+      extras,
+    ]);
+  });
+
   it('returns null when there is no sidebar', () => {
     expect(
       createUseSidebarBreadcrumbsMock(undefined, false)('/foo'),
@@ -907,13 +946,31 @@ describe('useCurrentSidebarSiblings', () => {
     expect(mockUseCurrentSidebarSiblings('/cat')).toEqual(category.items);
   });
 
+  it.each([
+    ['link', testLink({href: '/extras'})],
+    ['doc', testLink({href: '/extras', docId: 'extras/index'})],
+  ] as const)('prefers the index category over an earlier %s', (_, link) => {
+    const extras = testCategory({
+      href: '/extras',
+      items: [testLink({href: '/extras/versions', docId: 'extras/versions'})],
+    });
+    const sidebar = [
+      testCategory({items: [link]}),
+      testCategory({items: [extras]}),
+    ];
+
+    expect(createUseCurrentSidebarSiblingsMock(sidebar)('/extras')).toEqual(
+      extras.items,
+    );
+  });
+
   it('works for sidebar root', () => {
     const category: PropSidebarItemCategory = testCategory({
       href: '/cat',
       items: [testLink(), testLink()],
     });
     const sidebar: PropSidebar = [
-      testLink({href: '/rootLink'}),
+      testLink({href: '/rootLink', docId: 'intro'}),
       testLink(),
       category,
       testCategory(),
