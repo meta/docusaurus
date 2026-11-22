@@ -202,6 +202,13 @@ describe('createExcerpt', () => {
           Download it from https://nodejs.org. Then run: npm ci
         `),
     ).toBe('Download it from https://nodejs.org. Then run: npm ci');
+
+    const longUnbrokenRun = `:${'word_long_identifier-'.repeat(2000)}`;
+    expect(
+      createExcerpt(dedent`
+          ${longUnbrokenRun}
+        `),
+    ).toBe(longUnbrokenRun);
   });
 
   it('creates excerpt for content with imports/exports declarations, with CRLF line endings', () => {
