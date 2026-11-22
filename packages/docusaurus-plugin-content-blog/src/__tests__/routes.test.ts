@@ -138,6 +138,17 @@ describe('buildAllRoutes', () => {
     `);
   });
 
+  it('keeps the blog index title metadata for the page heading', async () => {
+    const {routes} = await testBuildAllRoutes({
+      content: {
+        blogPosts: [],
+      },
+    });
+
+    const blogIndexRoute = routes.find((route) => route.path === '/blog');
+    expect(blogIndexRoute?.props.metadata.blogTitle).toBe('Blog Title');
+  });
+
   it('works for single blog post', async () => {
     const {routes, data} = await testBuildAllRoutes({
       content: {

@@ -18,16 +18,23 @@ import BlogListPaginator from '@theme/BlogListPaginator';
 import SearchMetadata from '@theme/SearchMetadata';
 import type {Props} from '@theme/BlogListPage';
 import BlogPostItems from '@theme/BlogPostItems';
+import Heading from '@theme/Heading';
 import BlogListPageStructuredData from '@theme/BlogListPage/StructuredData';
 
-function BlogListPageMetadata(props: Props): ReactNode {
+function useBlogListPageTitle(props: Props): string {
   const {metadata} = props;
   const {
     siteConfig: {title: siteTitle},
   } = useDocusaurusContext();
-  const {blogDescription, blogTitle, permalink} = metadata;
+  const {blogTitle, permalink} = metadata;
   const isBlogOnlyMode = permalink === '/';
-  const title = isBlogOnlyMode ? siteTitle : blogTitle;
+  return isBlogOnlyMode ? siteTitle : blogTitle;
+}
+
+function BlogListPageMetadata(props: Props): ReactNode {
+  const {metadata} = props;
+  const {blogDescription} = metadata;
+  const title = useBlogListPageTitle(props);
   return (
     <>
       <PageMetadata title={title} description={blogDescription} />
@@ -38,8 +45,10 @@ function BlogListPageMetadata(props: Props): ReactNode {
 
 function BlogListPageContent(props: Props): ReactNode {
   const {metadata, items, sidebar} = props;
+  const title = useBlogListPageTitle(props);
   return (
     <BlogLayout sidebar={sidebar}>
+      <Heading as="h1">{title}</Heading>
       <BlogPostItems items={items} />
       <BlogListPaginator metadata={metadata} />
     </BlogLayout>
