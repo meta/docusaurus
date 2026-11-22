@@ -49,7 +49,7 @@ export default function DocRootLayoutSidebar({
   }, [setHiddenSidebarContainer, hiddenSidebar]);
 
   return (
-    <aside
+    <div
       className={clsx(
         ThemeClassNames.docs.docSidebarContainer,
         styles.docSidebarContainer,
@@ -79,6 +79,6 @@ export default function DocRootLayoutSidebar({
           {hiddenSidebar && <ExpandButton toggleSidebar={toggleSidebar} />}
         </div>
       </ResetOnSidebarChange>
-    </aside>
+    </div>
   );
 }

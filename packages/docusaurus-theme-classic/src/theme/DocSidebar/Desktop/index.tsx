@@ -8,6 +8,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import {useThemeConfig} from '@docusaurus/theme-common';
+import {translate} from '@docusaurus/Translate';
 import Logo from '@theme/Logo';
 import CollapseButton from '@theme/DocSidebar/Desktop/CollapseButton';
 import Content from '@theme/DocSidebar/Desktop/Content';
@@ -24,7 +25,12 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
   } = useThemeConfig();
 
   return (
-    <div
+    <nav
+      aria-label={translate({
+        id: 'theme.docs.sidebar.navAriaLabel',
+        message: 'Docs sidebar',
+        description: 'The ARIA label for the sidebar navigation',
+      })}
       className={clsx(
         styles.sidebar,
         hideOnScroll && styles.sidebarWithHideableNavbar,
@@ -33,7 +39,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
       {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo} />}
       <Content path={path} sidebar={sidebar} />
       {hideable && <CollapseButton onClick={onCollapse} />}
-    </div>
+    </nav>
   );
 }
 
