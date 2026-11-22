@@ -16,8 +16,8 @@ import styles from './styles.module.css';
 const svgSprite = '#theme-svg-external-link';
 
 export default function IconExternalLink({
-  width = 13.5,
-  height = 13.5,
+  width = '0.84375rem',
+  height = '0.84375rem',
 }: Props): ReactNode {
   return (
     <svg

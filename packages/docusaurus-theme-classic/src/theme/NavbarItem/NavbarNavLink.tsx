@@ -40,7 +40,7 @@ export default function NavbarNavLink({
             {label}
             {isExternalLink && (
               <IconExternalLink
-                {...(isDropdownLink && {width: 12, height: 12})}
+                {...(isDropdownLink && {width: '0.75rem', height: '0.75rem'})}
               />
             )}
           </>
