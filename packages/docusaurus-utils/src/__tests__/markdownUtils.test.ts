@@ -438,6 +438,53 @@ Lorem Ipsum
     });
   });
 
+  it('parses markdown h1 title preserving trailing hash without preceding whitespace', () => {
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # Learn C#
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # Learn C#
+
+          Lorem Ipsum
+        `,
+      contentTitle: 'Learn C#',
+    });
+
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # F# {#fsharp-intro}
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # F# {#fsharp-intro}
+
+          Lorem Ipsum
+        `,
+      contentTitle: 'F#',
+    });
+
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # Learn C# #
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # Learn C# #
+
+          Lorem Ipsum
+        `,
+      contentTitle: 'Learn C#',
+    });
+  });
+
   it('parses markdown h1 title at the top followed by h2 title', () => {
     const markdown = dedent`
 
