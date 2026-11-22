@@ -27,15 +27,47 @@ export function dispatchLifecycleAction<K extends keyof ClientModule>(
   return () => callbacks.forEach((cb) => cb?.());
 }
 
+function scrollToHashElement(id: string): () => void {
+  let observer: MutationObserver | undefined;
+
+  const tryScroll = (): boolean => {
+    const element = document.getElementById(id);
+
+    if (!element) {
+      return false;
+    }
+
+    observer?.disconnect();
+    observer = undefined;
+    element.scrollIntoView();
+    return true;
+  };
+
+  if (!tryScroll()) {
+    observer = new MutationObserver(() => {
+      tryScroll();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  return () => {
+    observer?.disconnect();
+  };
+}
+
 function scrollAfterNavigation({
   location,
   previousLocation,
 }: {
   location: Location;
   previousLocation: Location | null;
-}) {
+}): () => void {
   if (!previousLocation) {
-    return; // no-op: use native browser feature
+    return () => {}; // no-op: use native browser feature
   }
 
   const samePathname = location.pathname === previousLocation.pathname;
@@ -44,17 +76,18 @@ function scrollAfterNavigation({
 
   // Query-string changes: do not scroll to top/hash
   if (samePathname && sameHash && !sameSearch) {
-    return;
+    return () => {};
   }
 
   const {hash} = location;
+
   if (!hash) {
     window.scrollTo(0, 0);
-  } else {
-    const id = decodeURIComponent(hash.substring(1));
-    const element = document.getElementById(id);
-    element?.scrollIntoView();
+    return () => {};
   }
+
+  const id = decodeURIComponent(hash.substring(1));
+  return scrollToHashElement(id);
 }
 
 function ClientLifecyclesDispatcher({
@@ -68,10 +101,25 @@ function ClientLifecyclesDispatcher({
 }): ReactNode {
   useLayoutEffect(() => {
     if (previousLocation !== location) {
-      scrollAfterNavigation({location, previousLocation});
-      dispatchLifecycleAction('onRouteDidUpdate', {previousLocation, location});
+      const cleanupScroll = scrollAfterNavigation({
+        location,
+        previousLocation,
+      });
+
+      const cleanupLifecycle = dispatchLifecycleAction('onRouteDidUpdate', {
+        previousLocation,
+        location,
+      });
+
+      return () => {
+        cleanupScroll();
+        cleanupLifecycle();
+      };
     }
+
+    return undefined;
   }, [previousLocation, location]);
+
   return children;
 }
 
