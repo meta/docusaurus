@@ -382,7 +382,7 @@ export async function getGitRepositoryFilesInfo(
   cwd: string,
 ): Promise<GitFileInfoMap> {
   // git --no-pager -c log.showSignature=false log --format=t:%ct,a:%an --name-status
-  const result = await execa(
+  const subprocess = execa(
     'git',
     [
       '--no-pager',
@@ -401,13 +401,14 @@ export async function getGitRepositoryFilesInfo(
     ],
     {
       cwd,
-      // TODO use streaming to avoid a large buffer
-      // See https://github.com/withastro/starlight/issues/3154
-      maxBuffer: 20 * 1024 * 1024,
+      // Stream stdout instead of buffering the entire git log output.
+      // This avoids a large memory allocation for repositories with long histories.
+      buffer: {
+        stdout: false,
+        stderr: true,
+      },
     },
   );
-
-  const logLines = result.stdout.split('\n');
 
   const now = Date.now();
 
@@ -416,7 +417,7 @@ export async function getGitRepositoryFilesInfo(
   let runningAuthor = 'N/A';
   const runningMap: GitFileInfoMap = new Map();
 
-  for (const logLine of logLines) {
+  for await (const logLine of subprocess) {
     if (logLine.startsWith('t:')) {
       // t:<timestamp>,a:<author name>
       // We can't use split(',') because author names may contain commas
@@ -466,6 +467,13 @@ export async function getGitRepositoryFilesInfo(
       lastUpdate: newLastUpdate,
     });
   }
+
+  // Explicitly await the subprocess promise so that a non-zero exit code
+  // from `git log` surfaces as a rejected promise (build failure),
+  // preserving the same "Git failure fails the build" behavior as before.
+  // Execa's return value is both an async iterable and a promise:
+  // https://github.com/sindresorhus/execa/blob/main/docs/api.md
+  await subprocess;
 
   return runningMap;
 }
