@@ -177,7 +177,12 @@ async function doProcessDocMetadata({
   // Note: the title is used by default for page title, sidebar label,
   // pagination buttons... frontMatter.title should be used in priority over
   // contentTitle (because it can contain markdown/JSX syntax)
-  const title: string = frontMatter.title ?? contentTitle ?? baseID;
+  // if filename is `index` or `readme`, then use the parent directory name
+  const derivedNameFromPath = /^(?:index|readme)$/i.test(baseID)
+    ? path.basename(sourceDirName)
+    : unprefixedFileName;
+  const title: string =
+    frontMatter.title ?? contentTitle ?? derivedNameFromPath;
 
   const description: string = frontMatter.description ?? excerpt ?? '';
 
