@@ -29,7 +29,10 @@ export default function BlogPostItemFooter(): ReactNode {
 
   const tagsExists = tags.length > 0;
 
-  const renderFooter = tagsExists || truncatedPost || editUrl;
+  const renderFooter =
+    tagsExists ||
+    truncatedPost ||
+    !!(editUrl || lastUpdatedAt || lastUpdatedBy);
 
   if (!renderFooter) {
     return null;
