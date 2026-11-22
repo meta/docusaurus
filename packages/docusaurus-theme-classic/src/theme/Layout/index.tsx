@@ -36,7 +36,7 @@ export default function Layout(props: Props): ReactNode {
     <LayoutProvider>
       <PageMetadata title={title} description={description} />
 
-      <SkipToContent />
+      <SkipToContent title={title} />
 
       <AnnouncementBar />
 

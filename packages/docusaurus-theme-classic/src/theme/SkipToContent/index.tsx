@@ -9,6 +9,6 @@ import type {ReactNode} from 'react';
 import {SkipToContentLink} from '@docusaurus/theme-common';
 import styles from './styles.module.css';
 
-export default function SkipToContent(): ReactNode {
-  return <SkipToContentLink className={styles.skipToContent} />;
+export default function SkipToContent({title}: {title?: string}): ReactNode {
+  return <SkipToContentLink className={styles.skipToContent} title={title} />;
 }
