@@ -44,6 +44,10 @@ function getIconTitleProps(
 function CardCategory({item}: {item: PropSidebarItemCategory}): ReactNode {
   const href = findFirstSidebarItemLink(item);
   const categoryItemsPlural = useDocCardDescriptionCategoryItemsPlural();
+  // A category that links to a doc is not itself a sidebar link item, so the
+  // doc description is not available as item.description. Prefer an explicit
+  // category description, then the linked doc, then the item count.
+  const linkedDoc = useDocById(item.docId);
 
   // Unexpected: categories that don't have a link have been filtered upfront
   if (!href) {
@@ -54,7 +58,11 @@ function CardCategory({item}: {item: PropSidebarItemCategory}): ReactNode {
       item={item}
       className={item.className}
       href={href}
-      description={item.description ?? categoryItemsPlural(item.items.length)}
+      description={
+        item.description ??
+        linkedDoc?.description ??
+        categoryItemsPlural(item.items.length)
+      }
       {...getIconTitleProps(item)}
     />
   );
