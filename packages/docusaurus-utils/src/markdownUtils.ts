@@ -218,7 +218,7 @@ export function createExcerpt(fileString: string): string | undefined {
       // Remove admonition definition.
       .replace(/:::.*/, '')
       // Remove Emoji names within colons include preceding whitespace.
-      .replace(/\s?:(?:::|[^:\n])+:/g, '')
+      .replace(/\s?:(?:\+1|-1|[\w-]+):/g, '')
       // Remove custom Markdown heading id.
       .replace(/\{#*[\w-]+\}/, '')
       // Collapse whitespace left behind by the removals above.
