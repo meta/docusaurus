@@ -16,6 +16,24 @@ TODO merge this logic back in Infima?
   margin-left: var(--ifm-menu-link-padding-vertical);
 }
 
+/*
+Infima rotates every caret inside a collapsed category, including the carets
+of nested expanded categories, which animate while the parent collapses.
+See https://github.com/facebook/docusaurus/issues/8512
+ */
+:global(
+  .menu__list-item:not(.menu__list-item--collapsed)
+    > .menu__list-item-collapsible
+    > .menu__link--sublist-caret
+)::after,
+:global(
+  .menu__list-item:not(.menu__list-item--collapsed)
+    > .menu__list-item-collapsible
+    > .menu__caret
+)::before {
+  transform: rotate(180deg);
+}
+
 .categoryLinkLabel {
   flex: 1;
   overflow: hidden;
