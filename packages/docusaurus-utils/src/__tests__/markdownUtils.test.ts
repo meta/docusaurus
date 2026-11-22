@@ -202,6 +202,11 @@ describe('createExcerpt', () => {
           Download it from https://nodejs.org. Then run: npm ci
         `),
     ).toBe('Download it from https://nodejs.org. Then run: npm ci');
+    expect(
+      createExcerpt(dedent`
+          Build 2:wink: is ready.
+        `),
+    ).toBe('Build 2 is ready.');
 
     const longUnbrokenRun = `:${'word_long_identifier-'.repeat(2000)}`;
     expect(
