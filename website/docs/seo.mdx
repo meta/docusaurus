@@ -218,3 +218,96 @@ Docusaurus uses your file names as links, but you can always change that using s
 Search engines rely on the HTML markup such as `<h2>`, `<table>`, etc., to understand the structure of your webpage. When Docusaurus renders your pages, semantic markup, e.g. `<aside>`, `<nav>`, `<main>`, are used to divide the different sections of the page, helping the search engine to locate parts like sidebar, navbar, and the main page content.
 
 Most [CommonMark](https://spec.commonmark.org/0.30/#atx-headings) syntaxes have their corresponding HTML tags. By using Markdown consistently in your project, you will make it easier for search engines to understand your page content.
+
+## Internationalization (i18n) SEO {#i18n-seo}
+
+When your Docusaurus site supports multiple languages, it's crucial to implement proper SEO practices to help search engines understand and serve the right content to users. Here's how to optimize your multilingual site:
+
+### Language Tags {#language-tags}
+
+Docusaurus automatically adds the appropriate `lang` attribute to your HTML:
+
+```html
+<html lang="en">
+  <!-- English content -->
+</html>
+
+<html lang="es">
+  <!-- Spanish content -->
+</html>
+```
+
+### Hreflang Tags {#hreflang-tags}
+
+Hreflang tags help search engines serve the correct language version to users. Docusaurus automatically generates these tags for all your language versions:
+
+```html
+<!-- For your English pages -->
+<link rel="alternate" hreflang="en" href="https://example.com/en/doc" />
+<link rel="alternate" hreflang="es" href="https://example.com/es/doc" />
+<link rel="alternate" hreflang="x-default" href="https://example.com/doc" />
+```
+
+:::tip Understanding hreflang
+
+- Use `hreflang` to indicate language variants of a page
+- Include all language versions, including the current page
+- Add `x-default` for pages without targeting
+- Always use full URLs in `href` attributes
+
+:::
+
+### Canonical URLs {#i18n-canonical}
+
+For multilingual content, canonical URLs help prevent duplicate content issues:
+
+```html
+<!-- In your English version -->
+<link rel="canonical" href="https://example.com/en/doc" />
+
+<!-- In your Spanish version -->
+<link rel="canonical" href="https://example.com/es/doc" />
+```
+
+:::caution
+
+Don't use canonical URLs across different language versions. Each language version should be treated as unique content.
+
+:::
+
+### Best Practices {#i18n-seo-best-practices}
+
+1. **URL Structure**
+   - Use clear language indicators in URLs (e.g., `/en/`, `/es/`)
+   - Keep URL structure consistent across languages
+   - Consider using country codes for region-specific content (e.g., `/en-us/`, `/es-mx/`)
+
+2. **Content Translation**
+   - Translate meta tags (title, description) for each language
+   - Maintain consistent heading structure across translations
+   - Adapt content for cultural differences when necessary
+
+3. **Default Language**
+   - Set a clear default language in your configuration
+   - Use `x-default` for language selection pages
+   - Consider your primary audience when choosing defaults
+
+4. **Technical Implementation**
+   ```js title="docusaurus.config.js"
+   export default {
+     i18n: {
+       defaultLocale: 'en',
+       locales: ['en', 'es', 'fr'],
+       localeConfigs: {
+         en: {
+           htmlLang: 'en',
+           path: 'en',
+         },
+         es: {
+           htmlLang: 'es',
+           path: 'es',
+         },
+       },
+     },
+   };
+   
