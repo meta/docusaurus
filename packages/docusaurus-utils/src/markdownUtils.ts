@@ -329,15 +329,16 @@ export function parseMarkdownContentTitle(
     ? content.replace(titleMatch[0]!, '')
     : content;
   if (regularTitleMatch) {
+    let title = regularTitleMatch
+      .groups!.title!.replace(/^[ \t]+|[ \t]+$/g, '')
+      .replace(/(?:[ \t]+|^)#+$/, '');
+    const titleWithoutId = title.replace(/\s*\{#*[\w-]+\}$/, '');
+    if (titleWithoutId !== title) {
+      title = titleWithoutId.replace(/(?:[ \t]+|^)#+$/, '');
+    }
     return {
       content: newContent.trim(),
-      contentTitle: toTextContentTitle(
-        regularTitleMatch
-          .groups!.title!.trim()
-          .replace(/(?:[ \t]+|^)#+$/, '')
-          .replace(/\s*\{#*[\w-]+\}$/, '')
-          .replace(/(?:[ \t]+|^)#+$/, ''),
-      ).trim(),
+      contentTitle: toTextContentTitle(title).replace(/^[ \t]+|[ \t]+$/g, ''),
     };
   }
   return {

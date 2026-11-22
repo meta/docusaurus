@@ -513,6 +513,36 @@ Lorem Ipsum
         `,
       contentTitle: 'Learn C\u00A0#',
     });
+
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # \u00A0#
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # \u00A0#
+
+          Lorem Ipsum
+        `,
+      contentTitle: '\u00A0#',
+    });
+
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # Title # #
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # Title # #
+
+          Lorem Ipsum
+        `,
+      contentTitle: 'Title #',
+    });
   });
 
   it('parses markdown h1 title at the top followed by h2 title', () => {
