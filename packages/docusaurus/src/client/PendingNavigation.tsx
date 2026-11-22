@@ -10,7 +10,6 @@ import {Route} from 'react-router-dom';
 import ClientLifecyclesDispatcher, {
   dispatchLifecycleAction,
 } from './ClientLifecyclesDispatcher';
-import ExecutionEnvironment from './exports/ExecutionEnvironment';
 import preload from './preload';
 import type {Location} from 'history';
 
@@ -19,76 +18,89 @@ type Props = {
   readonly children: ReactNode;
 };
 type State = {
-  nextRouteHasLoaded: boolean;
+  renderedLocation: Location;
+  previousLocation: Location | null;
 };
 
 class PendingNavigation extends React.Component<Props, State> {
-  private previousLocation: Location | null;
-  private routeUpdateCleanupCb: () => void;
+  private routeUpdateCleanupCb: () => void = () => {};
+  private isUnmounted = false;
 
   constructor(props: Props) {
     super(props);
 
-    // previousLocation doesn't affect rendering, hence not stored in state.
-    this.previousLocation = null;
-    this.routeUpdateCleanupCb = ExecutionEnvironment.canUseDOM
-      ? dispatchLifecycleAction('onRouteUpdate', {
-          previousLocation: null,
-          location: this.props.location,
-        })
-      : () => {};
+    // Store renderedLocation in state so the old screen stays visible
+    // while the new route is being preloaded.
     this.state = {
-      nextRouteHasLoaded: true,
+      renderedLocation: props.location,
+      previousLocation: null,
     };
   }
 
-  // Intercept location update and still show current route until next route
-  // is done loading.
-  override shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
-    if (nextProps.location === this.props.location) {
-      // `nextRouteHasLoaded` is false means there's a pending route transition.
-      // Don't update until it's done.
-      return nextState.nextRouteHasLoaded;
-    }
-
-    // props.location being different means the router is trying to navigate to
-    // a new route. We will preload the new route.
-    const nextLocation = nextProps.location;
-    // Save the location first.
-    this.previousLocation = this.props.location;
-    this.setState({nextRouteHasLoaded: false});
+  override componentDidMount(): void {
     this.routeUpdateCleanupCb = dispatchLifecycleAction('onRouteUpdate', {
-      previousLocation: this.previousLocation,
-      location: nextLocation,
+      previousLocation: null,
+      location: this.props.location,
     });
+  }
 
-    // Load data while the old screen remains. Force preload instead of using
-    // `window.docusaurus`, because we want to avoid loading screen even when
-    // user is on saveData
-    preload(nextLocation.pathname)
-      .then(() => {
-        this.routeUpdateCleanupCb();
-        this.setState({nextRouteHasLoaded: true});
-      })
-      .catch((e: unknown) => {
-        console.warn(e);
-        // If chunk loading failed, it could be because the path to a chunk
-        // no longer exists due to a new deployment. Force refresh the page
-        // instead of just not navigating.
-        window.location.reload();
+  // Intercept location updates in commit phase and still show old route
+  // until next route is done loading.
+  override componentDidUpdate(prevProps: Props): void {
+    if (this.props.location !== prevProps.location) {
+      this.routeUpdateCleanupCb();
+
+      // props.location being different means the router is trying to navigate
+      // to a new route. We will preload the new route.
+      const nextLocation = this.props.location;
+      this.routeUpdateCleanupCb = dispatchLifecycleAction('onRouteUpdate', {
+        previousLocation: prevProps.location,
+        location: nextLocation,
       });
-    return false;
+
+      // Load data while the old screen remains. Force preload instead of using
+      // `window.docusaurus`, because we want to avoid loading screen even when
+      // user is on saveData
+      preload(nextLocation.pathname)
+        .then(() => {
+          if (this.isUnmounted) {
+            return;
+          }
+          this.routeUpdateCleanupCb();
+          this.setState({
+            renderedLocation: nextLocation,
+            previousLocation: prevProps.location,
+          });
+        })
+        .catch((e: unknown) => {
+          if (this.isUnmounted) {
+            return;
+          }
+          console.warn(e);
+          // If chunk loading failed, it could be because the path to a chunk
+          // no longer exists due to a new deployment. Force refresh the page
+          // instead of just not navigating.
+          window.location.reload();
+        });
+    }
+  }
+
+  override componentWillUnmount(): void {
+    this.isUnmounted = true;
+    this.routeUpdateCleanupCb();
   }
 
   override render(): ReactNode {
-    const {children, location} = this.props;
+    const {children} = this.props;
+    const {renderedLocation, previousLocation} = this.state;
+
     // Use a controlled <Route> to trick all descendants into rendering the old
     // location.
     return (
       <ClientLifecyclesDispatcher
-        previousLocation={this.previousLocation}
-        location={location}>
-        <Route location={location} render={() => children} />
+        previousLocation={previousLocation}
+        location={renderedLocation}>
+        <Route location={renderedLocation} render={() => children} />
       </ClientLifecyclesDispatcher>
     );
   }
