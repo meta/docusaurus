@@ -182,6 +182,11 @@ describe('createExcerpt', () => {
     ).toBe('Meeting runs 10:30 to 11:45 daily.');
     expect(
       createExcerpt(dedent`
+          Meeting runs 10:30:45 to 11:45:00 daily.
+        `),
+    ).toBe('Meeting runs 10:30:45 to 11:45:00 daily.');
+    expect(
+      createExcerpt(dedent`
           Note: install first. Tip: run the build.
         `),
     ).toBe('Note: install first. Tip: run the build.');
