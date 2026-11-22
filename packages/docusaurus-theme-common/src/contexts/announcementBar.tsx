@@ -79,6 +79,11 @@ function useContextValue(): ContextValue {
 
     if (isNewAnnouncement || !isDismissedInStorage()) {
       setClosed(false);
+      if (typeof document !== 'undefined') {
+        document.documentElement.removeAttribute(
+          'data-announcement-bar-initially-dismissed',
+        );
+      }
     }
   }, [announcementBar]);
 
