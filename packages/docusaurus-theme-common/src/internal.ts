@@ -69,7 +69,13 @@ export {useHomePageRoute, isSamePath} from './utils/routesUtils';
 
 export {PluginHtmlClassNameProvider} from './utils/metadataUtils';
 
-export {splitNavbarItems, NavbarProvider} from './utils/navbarUtils';
+export {
+  splitNavbarItems,
+  NavbarProvider,
+  isItemActive,
+  containsActiveItems,
+  type NavItemActiveConfig,
+} from './utils/navbarUtils';
 
 export {extractLeadingEmoji} from './utils/emojiUtils';
 
