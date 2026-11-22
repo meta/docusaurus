@@ -51,7 +51,17 @@ export default function DropdownNavbarItemDesktop({
       className={clsx('navbar__item', 'dropdown', 'dropdown--hoverable', {
         'dropdown--right': position === 'right',
         'dropdown--show': showDropdown,
-      })}>
+      })}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape' && showDropdown) {
+          e.stopPropagation();
+          setShowDropdown(false);
+          // Return focus to the dropdown trigger
+          const trigger =
+            dropdownRef.current?.querySelector<HTMLElement>('.navbar__link');
+          trigger?.focus();
+        }
+      }}>
       <NavbarNavLink
         aria-haspopup="true"
         aria-expanded={showDropdown}

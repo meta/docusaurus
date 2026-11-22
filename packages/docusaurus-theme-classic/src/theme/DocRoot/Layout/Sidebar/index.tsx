@@ -7,6 +7,7 @@
 
 import React, {type ReactNode, useState, useCallback} from 'react';
 import clsx from 'clsx';
+import {translate} from '@docusaurus/Translate';
 import {prefersReducedMotion, ThemeClassNames} from '@docusaurus/theme-common';
 import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
 import {useLocation} from '@docusaurus/router';
@@ -50,6 +51,11 @@ export default function DocRootLayoutSidebar({
 
   return (
     <aside
+      aria-label={translate({
+        id: 'theme.docs.sidebar.containerAriaLabel',
+        message: 'Docs sidebar',
+        description: 'The ARIA label for the docs sidebar container',
+      })}
       className={clsx(
         ThemeClassNames.docs.docSidebarContainer,
         styles.docSidebarContainer,

@@ -32,7 +32,12 @@ export default function DocRootLayoutSidebarExpandButton({
       })}
       tabIndex={0}
       role="button"
-      onKeyDown={toggleSidebar}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleSidebar();
+        }
+      }}
       onClick={toggleSidebar}>
       <IconArrow className={styles.expandButtonIcon} />
     </div>

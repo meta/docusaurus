@@ -7,6 +7,7 @@
 
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
+import {translate} from '@docusaurus/Translate';
 import {useNavbarSecondaryMenu} from '@docusaurus/theme-common/internal';
 import {ThemeClassNames} from '@docusaurus/theme-common';
 import type {Props} from '@theme/Navbar/MobileSidebar/Layout';
@@ -37,7 +38,12 @@ export default function NavbarMobileSidebarLayout({
 }: Props): ReactNode {
   const {shown: secondaryMenuShown} = useNavbarSecondaryMenu();
   return (
-    <div
+    <nav
+      aria-label={translate({
+        id: 'theme.navbar.mobileSidebarAriaLabel',
+        message: 'Navigation bar',
+        description: 'The ARIA label for the mobile sidebar navigation',
+      })}
       className={clsx(
         ThemeClassNames.layout.navbar.mobileSidebar.container,
         'navbar-sidebar',
@@ -54,6 +60,6 @@ export default function NavbarMobileSidebarLayout({
           {secondaryMenu}
         </NavbarMobileSidebarPanel>
       </div>
-    </div>
+    </nav>
   );
 }
