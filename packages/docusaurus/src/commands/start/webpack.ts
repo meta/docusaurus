@@ -19,6 +19,7 @@ import {
   executePluginsConfigureWebpack,
 } from '../../webpack/configure';
 import {createStartClientConfig} from '../../webpack/client';
+import {DevHtmlFilename} from '../../webpack/plugins/DevHtmlPlugin';
 import type {StartCLIOptions} from './start';
 import type {
   ConfigureWebpackUtils,
@@ -54,7 +55,7 @@ function registerWebpackE2ETestHook(compiler: Compiler) {
   });
 }
 
-function createDevServerConfig({
+export function createDevServerConfig({
   cliOptions,
   props,
   host,
@@ -116,7 +117,7 @@ function createDevServerConfig({
           : 'https',
     }),
     historyApiFallback: {
-      rewrites: [{from: /\/*/, to: baseUrl}],
+      rewrites: [{from: /\/*/, to: path.posix.join(baseUrl, DevHtmlFilename)}],
     },
     allowedHosts: 'all',
     host,

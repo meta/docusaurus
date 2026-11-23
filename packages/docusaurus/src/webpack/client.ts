@@ -98,9 +98,8 @@ export async function createStartClientConfig({
         level: 'warn',
       },
       plugins: [
-        // Generates an `index.html` file with the <script> injected.
+        // Generates the dev HTML shell with the <script> injected.
         new DevHtmlPlugin({
-          filename: 'index.html',
           render: (assets) =>
             renderDevHtml({
               ...assets,
