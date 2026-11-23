@@ -212,6 +212,11 @@ describe('createExcerpt', () => {
           Score 2:100: points
         `),
     ).toBe('Score 2 points');
+    expect(
+      createExcerpt(dedent`
+          Visit https://[2001:100::1]/ for details.
+        `),
+    ).toBe('Visit https://[2001:100::1]/ for details.');
 
     const longUnbrokenRun = `:${'word_long_identifier-'.repeat(2000)}`;
     expect(

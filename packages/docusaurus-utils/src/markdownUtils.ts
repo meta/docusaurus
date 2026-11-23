@@ -217,6 +217,8 @@ export function createExcerpt(fileString: string): string | undefined {
       .replace(/^\s{0,3}>\s?/g, '')
       // Remove admonition definition.
       .replace(/:::.*/, '')
+      // Protect URLs from shortcode and markup removal.
+      .replace(/https?:\/\/[^\s)]+/g, (url) => MDXEscapingUtils.escapeMDX(url))
       // Remove Emoji names within colons include preceding whitespace.
       .replace(
         /(?:\s?:(?:\+1|-1|(?=[a-zA-Z0-9_]*[a-zA-Z])[\w-]+):|\s?:(?:100|1234):)/g,
