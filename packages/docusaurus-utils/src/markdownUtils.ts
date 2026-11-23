@@ -219,7 +219,7 @@ export function createExcerpt(fileString: string): string | undefined {
       .replace(/:::.*/, '')
       // Remove Emoji names within colons include preceding whitespace.
       .replace(
-        /(?:\s?:(?:\+1|-1|(?=[a-zA-Z0-9_]*[a-zA-Z])[\w-]+):|(?<!\d)\s?:(?:100|1234):(?!\d))/g,
+        /(?:\s?:(?:\+1|-1|(?=[a-zA-Z0-9_]*[a-zA-Z])[\w-]+):|\s?:(?:100|1234):)/g,
         '',
       )
       // Remove custom Markdown heading id.

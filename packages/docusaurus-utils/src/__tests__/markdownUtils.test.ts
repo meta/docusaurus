@@ -207,6 +207,11 @@ describe('createExcerpt', () => {
           Build 2:wink: is ready.
         `),
     ).toBe('Build 2 is ready.');
+    expect(
+      createExcerpt(dedent`
+          Score 2:100: points
+        `),
+    ).toBe('Score 2 points');
 
     const longUnbrokenRun = `:${'word_long_identifier-'.repeat(2000)}`;
     expect(
