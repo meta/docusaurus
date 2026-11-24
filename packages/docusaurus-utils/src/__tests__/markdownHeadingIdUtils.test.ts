@@ -549,6 +549,44 @@ describe('writeMarkdownHeadingId', () => {
         ### def {/* #def */}
       `);
     });
+
+    it('ignores headings inside tilde and longer fenced code blocks and does not reserve ids inside them', () => {
+      expect(
+        write(dedent`
+          # Fenced code reproduction
+
+          ~~~md
+          ## Reusable API {#reusable-api}
+          ~~~
+
+          ## Reusable API
+
+          \`\`\`\`markdown
+          \`\`\`
+          ## Nested API
+          \`\`\`
+          \`\`\`\`
+
+          ## Nested API
+        `),
+      ).toEqual(dedent`
+        # Fenced code reproduction
+
+        ~~~md
+        ## Reusable API {#reusable-api}
+        ~~~
+
+        ## Reusable API {#reusable-api}
+
+        \`\`\`\`markdown
+        \`\`\`
+        ## Nested API
+        \`\`\`
+        \`\`\`\`
+
+        ## Nested API {#nested-api}
+      `);
+    });
   });
 
   describe('mdx-comment syntax', () => {
@@ -753,6 +791,44 @@ describe('writeMarkdownHeadingId', () => {
         ### abc {/* #abc */}
 
         ### def {#def}
+      `);
+    });
+
+    it('ignores headings inside tilde and longer fenced code blocks and does not reserve ids inside them', () => {
+      expect(
+        write(dedent`
+          # Fenced code reproduction
+
+          ~~~md
+          ## Reusable API {#reusable-api}
+          ~~~
+
+          ## Reusable API
+
+          \`\`\`\`markdown
+          \`\`\`
+          ## Nested API
+          \`\`\`
+          \`\`\`\`
+
+          ## Nested API
+        `),
+      ).toEqual(dedent`
+        # Fenced code reproduction
+
+        ~~~md
+        ## Reusable API {#reusable-api}
+        ~~~
+
+        ## Reusable API {/* #reusable-api */}
+
+        \`\`\`\`markdown
+        \`\`\`
+        ## Nested API
+        \`\`\`
+        \`\`\`\`
+
+        ## Nested API {/* #nested-api */}
       `);
     });
   });
