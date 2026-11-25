@@ -1,3 +1,4 @@
+"$schema" = "https://open-api.netlify.com/netlify.schema.json"
 
 [functions]
 directory = "functions"
