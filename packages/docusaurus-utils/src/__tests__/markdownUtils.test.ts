@@ -494,6 +494,20 @@ Lorem Ipsum
     });
   });
 
+  it('preserves trailing hash when separated by non-breaking space', () => {
+    const markdown = dedent`
+
+          # Learn\u00a0#
+
+          Lorem Ipsum
+
+        `;
+    expect(parseMarkdownContentTitle(markdown)).toEqual({
+      content: markdown,
+      contentTitle: 'Learn\u00a0#',
+    });
+  });
+
   it('parses markdown h1 title at the top followed by h2 title', () => {
     const markdown = dedent`
 
