@@ -438,6 +438,76 @@ Lorem Ipsum
     });
   });
 
+  it('preserves non-delimiting trailing hash in title (e.g. C#)', () => {
+    const markdown = dedent`
+
+          # Learn C#
+
+          Lorem Ipsum
+
+        `;
+    expect(parseMarkdownContentTitle(markdown)).toEqual({
+      content: markdown,
+      contentTitle: 'Learn C#',
+    });
+  });
+
+  it('preserves non-delimiting trailing hash in title with closing #', () => {
+    const markdown = dedent`
+
+          # Learn C# #
+
+          Lorem Ipsum
+
+        `;
+    expect(parseMarkdownContentTitle(markdown)).toEqual({
+      content: markdown,
+      contentTitle: 'Learn C#',
+    });
+  });
+
+  it('handles empty heading consisting only of closing hashes', () => {
+    const markdown = dedent`
+
+          # ###
+
+          Lorem Ipsum
+
+        `;
+    expect(parseMarkdownContentTitle(markdown)).toEqual({
+      content: markdown,
+      contentTitle: '',
+    });
+  });
+
+  it('preserves literal hash before custom ID', () => {
+    const markdown = dedent`
+
+          # Version # {#version}
+
+          Lorem Ipsum
+
+        `;
+    expect(parseMarkdownContentTitle(markdown)).toEqual({
+      content: markdown,
+      contentTitle: 'Version #',
+    });
+  });
+
+  it('preserves trailing hash when separated by non-breaking space', () => {
+    const markdown = dedent`
+
+          # Learn\u00a0#
+
+          Lorem Ipsum
+
+        `;
+    expect(parseMarkdownContentTitle(markdown)).toEqual({
+      content: markdown,
+      contentTitle: 'Learn\u00a0#',
+    });
+  });
+
   it('parses markdown h1 title at the top followed by h2 title', () => {
     const markdown = dedent`
 
