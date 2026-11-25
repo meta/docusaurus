@@ -1,0 +1,7 @@
+{
+  "theme.IdealImageMessage.404error": "404. Тасвир ёфт нашуд",
+  "theme.IdealImageMessage.error": "Хатогӣ. Барои аз нав бор кардан пахш кунед",
+  "theme.IdealImageMessage.load": "Барои бор кардан пахш кунед{sizeMessage}",
+  "theme.IdealImageMessage.loading": "Бор шуда истодааст...",
+  "theme.IdealImageMessage.offline": "Браузери шумо офлайн аст. Тасвир бор нашуд"
+}
