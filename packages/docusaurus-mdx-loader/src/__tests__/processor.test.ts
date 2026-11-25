@@ -314,6 +314,22 @@ Body
     expect(result.content).toMatchSnapshot();
   });
 
+  it('returns messages reported by Remark plugins', async () => {
+    const reportingPlugin: Plugin<[], Root> = () => (_tree, file) => {
+      file.message('This is a Remark plugin warning');
+    };
+    const options = createOptions({remarkPlugins: [reportingPlugin]});
+    const result = await processContent('# Title', options);
+    expect(result.messages).toHaveLength(1);
+    expect(result.messages[0]!.reason).toBe('This is a Remark plugin warning');
+  });
+
+  it('returns no messages when Remark plugins report nothing', async () => {
+    const options = createOptions();
+    const result = await processContent('# Title', options);
+    expect(result.messages).toEqual([]);
+  });
+
   describe('remarkMdxOptions', () => {
     // See https://github.com/mdx-js/mdx/issues/2628
     const importAttributes = `import text from './file.txt' with {type: 'text'};
