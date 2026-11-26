@@ -161,6 +161,10 @@ After adding or changing `translate()` or `<Translate>` messages in a theme or p
 - Argos skips some pages (`isBlacklisted()` in `argos/tests/screenshot.spec.ts`, like `/tests/pages/markdown-tests-md`): check it before picking one
 - For a CommonMark repro, import a `_`-prefixed `.md` partial in an existing `.mdx` page of `website/_dogfooding/_docs tests/tests/` (like `_admonitions-md.md` in `admonitions.mdx`). `_` files get no route, while a new docs page changes the sidebar of every dogfood docs page screenshot
 
+### Git worktrees
+
+Start each new worktree from an up-to-date `origin/main`: `git fetch origin main`, then branch from `origin/main`, or rebase on it when the worktree already exists. Never pull, check out or edit `main` in the main checkout: it can hold the maintainer's local edits.
+
 ## Contributing, Issue and PR Guidelines
 
 Docusaurus maintainers work locally with an env variable `DOCUSAURUS_MAINTAINER=true` set. Make sure to check its presence to know which rules to apply.
