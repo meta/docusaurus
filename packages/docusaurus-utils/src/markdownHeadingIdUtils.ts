@@ -131,11 +131,14 @@ function checkCodeFence(
   line: string,
   state: {inCode: boolean; fenceChar?: '`' | '~'; fenceLength?: number},
 ): boolean {
-  const trimmed = line.trimStart();
-  const indent = line.length - trimmed.length;
+  let indent = 0;
+  while (indent < line.length && line[indent] === ' ') {
+    indent += 1;
+  }
   if (indent > 3) {
     return false;
   }
+  const trimmed = line.slice(indent);
   const firstChar = trimmed[0];
   if (firstChar !== '`' && firstChar !== '~') {
     return false;

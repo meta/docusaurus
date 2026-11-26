@@ -847,25 +847,32 @@ describe('writeMarkdownHeadingId', () => {
       `);
     });
 
-    it('handles indented code fences up to 3 spaces', () => {
-      const input = dedent`
-        ## Heading 1
+    it.each([1, 2, 3])(
+      'handles indented code fences with %i spaces',
+      (spaces) => {
+        const indent = ' '.repeat(spaces);
+        const input = [
+          '## Heading 1',
+          '',
+          `${indent}\`\`\``,
+          '## Indented code heading',
+          `${indent}\`\`\``,
+          '',
+          '## Heading 2',
+        ].join('\n');
 
-          \`\`\`
-          ## Indented code heading
-          \`\`\`
+        const expected = [
+          '## Heading 1 {#heading-1}',
+          '',
+          `${indent}\`\`\``,
+          '## Indented code heading',
+          `${indent}\`\`\``,
+          '',
+          '## Heading 2 {#heading-2}',
+        ].join('\n');
 
-        ## Heading 2
-      `;
-      expect(writeMarkdownHeadingId(input)).toBe(dedent`
-        ## Heading 1 {#heading-1}
-
-          \`\`\`
-          ## Indented code heading
-          \`\`\`
-
-        ## Heading 2 {#heading-2}
-      `);
-    });
+        expect(writeMarkdownHeadingId(input)).toBe(expected);
+      },
+    );
   });
 });
