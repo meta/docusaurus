@@ -7,9 +7,7 @@
 
 import {useEffect, useRef} from 'react';
 import {useThemeConfig} from '../utils/useThemeConfig';
-
-// TODO make the hardcoded theme-classic classnames configurable (or add them
-// to ThemeClassNames?)
+import {ThemeClassNames} from '../utils/ThemeClassNames';
 
 /**
  * If the anchor has no height and is just a "marker" in the DOM; we'll use the
@@ -93,10 +91,19 @@ function getLinks(linkClassName: string) {
   ) as HTMLAnchorElement[];
 }
 
+function getNavbarElement(): Element {
+  return (
+    document.querySelector(`.${ThemeClassNames.layout.navbar.container}`) ??
+    // TODO Docusaurus v5: remove this fallback for navbars swizzled before
+    //  ThemeClassNames.layout.navbar existed
+    // Using TS ! (not ?) because otherwise a bad selector would be un-noticed
+    document.querySelector('.navbar')!
+  );
+}
+
 function getNavbarHeight(): number {
   // Not ideal to obtain actual height this way
-  // Using TS ! (not ?) because otherwise a bad selector would be un-noticed
-  return document.querySelector('.navbar')!.clientHeight;
+  return getNavbarElement().clientHeight;
 }
 
 function useAnchorTopOffsetRef() {
