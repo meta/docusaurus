@@ -160,3 +160,40 @@ Post about the new release on:
 - Discord #announcements channel - [example](https://discord.com/channels/398180168688074762/867060988717301780/1491091672250191963)
 
 It's not always easy to get access to an official [@docusaurus](https://x.com/docusaurus) account, but marketing is important, so at least publish something under your own name/account.
+
+---
+
+## Add a new package
+
+The [Publish workflow](https://github.com/meta/docusaurus/actions/workflows/publish.yml) can only publish a package that has npm Trusted Publishing configured, and npm only lets us configure it on a package that already exists. A maintainer must set up each new monorepo package once, from their own npm account, before or right when the PR adding it merges. Otherwise, `pnpm --recursive publish` stops at the first 404 of the OIDC token exchange, and no package gets published.
+
+1. In an empty folder outside the repository, create a placeholder `package.json`:
+
+```json
+{
+  "name": "@docusaurus/new-package",
+  "version": "0.0.0",
+  "description": "Short description (placeholder, real versions are published from CI)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meta/docusaurus.git",
+    "directory": "packages/docusaurus-new-package"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
+```
+
+2. Run `npm publish` in that folder. npm also creates a `0.0.0-stage` version along the way.
+
+3. Configure the trusted publisher:
+
+```bash
+npm trust github @docusaurus/new-package --repo meta/docusaurus --file publish.yml --allow-publish --allow-stage-publish --yes
+```
+
+4. Check that `npm trust list @docusaurus/new-package` prints the same configuration as an existing package, like `npm trust list @docusaurus/fs`.
+
+`npm trust` requires npm 11.15 or later. If `npm` is wrapped by Socket Firewall (`sfw npm`), the wrapper can't parse the `/-/package/<name>/trust` URLs and returns a false 403: run `command npm trust …` to bypass it.

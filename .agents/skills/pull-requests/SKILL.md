@@ -65,3 +65,4 @@ Bots post comments on every PR: Lighthouse scores, Netlify deploy preview, Socke
 - Never use auto-merge, including `gh pr merge --auto`. The repository doesn't use auto-merge, and `--auto` merges immediately when the PR is already mergeable.
 - If CI checks are still running, wait for all of them to finish before merging (see [CI checks](#ci-checks)).
 - If any CI check fails, report the failure and do not merge. The only exception is the known canary supply chain failure above.
+- If the PR adds a package to `packages/`, it must exist on npm with Trusted Publishing configured before or right when the PR merges, or the next canary publishes no package at all. Ask the maintainer to follow [Add a new package](../../../admin/publish.md#add-a-new-package).
