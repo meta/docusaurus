@@ -139,9 +139,9 @@
   --ifm-font-color-base: var(--ifm-color-content);
   --ifm-font-color-base-inverse: var(--ifm-color-content-inverse);
   --ifm-font-color-secondary: var(--ifm-color-content-secondary);
-  /* No system-ui: on Windows in Chinese, Japanese or Korean, it renders the */
-  /* Latin and Han glyphs with a CJK UI font, ignoring lang, see https://github.com/meta/docusaurus/issues/11727 */
-  /* Chrome on macOS ignores -apple-system: BlinkMacSystemFont gives it the system font */
+  /* No system-ui: Windows in Chinese, Japanese or Korean resolves it to a CJK */
+  /* UI font that ignores lang, see https://github.com/meta/docusaurus/pull/13133 */
+  /* BlinkMacSystemFont: Chrome on macOS ignores -apple-system */
   /* Roboto to the first sans-serif were added by postcss-preset-env v7 */
   /* Removing them could change the per-glyph font fallback */
   --ifm-font-family-base:
