@@ -251,6 +251,7 @@ minimumReleaseAgeIgnoreMissingTime: false
 minimumReleaseAgeExcludePrune: true
 minimumReleaseAgeExclude:
   - pnpm
+  - '@pnpm/exe.*'
   - typescript
   - '@rspack/*'
 

@@ -21,7 +21,8 @@ Monorepo based on:
 - `packages/` - Core Docusaurus packages and plugins, published to npm
   - `docusaurus/` - Main CLI and core functionality
   - `docusaurus-plugin-*` - Official plugins, the main ones are `docs`, `blog`, `pages`
-  - `docusaurus-theme-classic/` - Default theme, based on the Infima.dev design system and CSS modules
+  - `docusaurus-theme-classic/` - Default theme, based on the Infima design system and CSS modules
+  - `docusaurus-infima/` - The Infima design system (`@docusaurus/infima`), loaded by the classic theme
   - `docusaurus-theme-common/` - Reusable headless theme components and utilities, unopinionated
   - `docusaurus-bundler/` - Webpack/Rspack bundler abstraction
   - `docusaurus-types/` - TypeScript definitions
