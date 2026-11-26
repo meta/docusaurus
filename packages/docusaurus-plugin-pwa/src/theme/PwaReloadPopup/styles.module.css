@@ -14,6 +14,7 @@ and falls back to Infima's default values otherwise.
   position: fixed;
   bottom: 16px;
   right: 16px;
+  box-sizing: border-box;
   width: 344px;
   display: flex;
   align-items: center;
