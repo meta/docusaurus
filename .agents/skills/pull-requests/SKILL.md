@@ -54,6 +54,14 @@ gh pr checks <PR-NUMBER> --watch --fail-fast
 
 It exits with `0` once all checks pass, or non-zero on the first failure. CI takes around 10 minutes, so run it in the background if your agent supports it. If it exits immediately with "no checks reported", the checks haven't registered yet: run it again. On failure, report the failing check and read its logs with `gh run view <RUN-ID> --log-failed`.
 
+When the last commit of a PR branch is a `refactor: apply lint autofix` commit, the `lint-autofix.yml` workflow pushed it, and most CI jobs don't run on it properly (they wait for a manual approval). Pull it, then push an empty commit so that all the CI jobs run:
+
+```bash
+git pull --ff-only
+git commit --allow-empty -m "chore: trigger CI"
+git push
+```
+
 Known flaky failure: the `Supply Chain - Site Template @canary` job often fails because canary releases are not published atomically. npm scans each package for malware, so they become available at different times. A failure with `ERR_PNPM_NO_MATCHING_VERSION` on a `@docusaurus/*` canary version is this known issue: ignore it. If the job fails for any other reason, in particular a third-party dependency blocked for a vulnerability or malware by one of the workflow's tools (sfw, pnpm…), report it and block the PR merge.
 
 ## Bot comments
