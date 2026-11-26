@@ -3,16 +3,6 @@
 exports[`docusaurus-plugin-content-pages > loads simple pages 1`] = `
 [
   {
-    "permalink": "/",
-    "source": "@site/src/pages/index.js",
-    "type": "jsx",
-  },
-  {
-    "permalink": "/typescript",
-    "source": "@site/src/pages/typescript.tsx",
-    "type": "jsx",
-  },
-  {
     "description": "Markdown index page",
     "editUrl": undefined,
     "frontMatter": {
@@ -67,21 +57,21 @@ exports[`docusaurus-plugin-content-pages > loads simple pages 1`] = `
     "source": "@site/src/pages/hello/world.js",
     "type": "jsx",
   },
+  {
+    "permalink": "/",
+    "source": "@site/src/pages/index.js",
+    "type": "jsx",
+  },
+  {
+    "permalink": "/typescript",
+    "source": "@site/src/pages/typescript.tsx",
+    "type": "jsx",
+  },
 ]
 `;
 
 exports[`docusaurus-plugin-content-pages > loads simple pages with french translations (translate: false) 1`] = `
 [
-  {
-    "permalink": "/fr/",
-    "source": "@site/src/pages/index.js",
-    "type": "jsx",
-  },
-  {
-    "permalink": "/fr/typescript",
-    "source": "@site/src/pages/typescript.tsx",
-    "type": "jsx",
-  },
   {
     "description": "Markdown index page",
     "editUrl": undefined,
@@ -137,11 +127,6 @@ exports[`docusaurus-plugin-content-pages > loads simple pages with french transl
     "source": "@site/src/pages/hello/world.js",
     "type": "jsx",
   },
-]
-`;
-
-exports[`docusaurus-plugin-content-pages > loads simple pages with french translations 1`] = `
-[
   {
     "permalink": "/fr/",
     "source": "@site/src/pages/index.js",
@@ -152,6 +137,11 @@ exports[`docusaurus-plugin-content-pages > loads simple pages with french transl
     "source": "@site/src/pages/typescript.tsx",
     "type": "jsx",
   },
+]
+`;
+
+exports[`docusaurus-plugin-content-pages > loads simple pages with french translations 1`] = `
+[
   {
     "description": "Markdown index page",
     "editUrl": undefined,
@@ -207,21 +197,21 @@ exports[`docusaurus-plugin-content-pages > loads simple pages with french transl
     "source": "@site/src/pages/hello/world.js",
     "type": "jsx",
   },
+  {
+    "permalink": "/fr/",
+    "source": "@site/src/pages/index.js",
+    "type": "jsx",
+  },
+  {
+    "permalink": "/fr/typescript",
+    "source": "@site/src/pages/typescript.tsx",
+    "type": "jsx",
+  },
 ]
 `;
 
 exports[`docusaurus-plugin-content-pages > loads simple pages with last update 1`] = `
 [
-  {
-    "permalink": "/",
-    "source": "@site/src/pages/index.js",
-    "type": "jsx",
-  },
-  {
-    "permalink": "/typescript",
-    "source": "@site/src/pages/typescript.tsx",
-    "type": "jsx",
-  },
   {
     "description": "Markdown index page",
     "editUrl": "url placeholder",
@@ -275,6 +265,16 @@ exports[`docusaurus-plugin-content-pages > loads simple pages with last update 1
   {
     "permalink": "/hello/world",
     "source": "@site/src/pages/hello/world.js",
+    "type": "jsx",
+  },
+  {
+    "permalink": "/",
+    "source": "@site/src/pages/index.js",
+    "type": "jsx",
+  },
+  {
+    "permalink": "/typescript",
+    "source": "@site/src/pages/typescript.tsx",
     "type": "jsx",
   },
 ]

@@ -106,3 +106,24 @@ describe('validateOptions', () => {
     });
   });
 });
+
+describe('DEFAULT_OPTIONS', () => {
+  describe('docusaurus.infima layer', () => {
+    const isInfima = DEFAULT_OPTIONS.layers!['docusaurus.infima']!;
+
+    it.each([
+      '/repo/packages/docusaurus-infima/dist/infima.css',
+      '/site/node_modules/@docusaurus/infima/dist/infima.css',
+      'C:\\site\\node_modules\\@docusaurus\\infima\\dist\\infima.css',
+    ])('matches %s', (filePath) => {
+      expect(isInfima(filePath)).toBe(true);
+    });
+
+    it.each([
+      '/site/node_modules/infima/dist/css/default/default.css',
+      '/site/src/css/custom.css',
+    ])('does not match %s', (filePath) => {
+      expect(isInfima(filePath)).toBe(false);
+    });
+  });
+});

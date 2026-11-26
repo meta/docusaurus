@@ -1,0 +1,34 @@
+{
+  "name": "@docusaurus/infima",
+  "version": "4.0.0",
+  "description": "Infima CSS framework, used by the Docusaurus classic theme.",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    "./infima.css": "./dist/infima.css",
+    "./infima-rtl.css": "./dist/infima-rtl.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meta/docusaurus.git",
+    "directory": "packages/docusaurus-infima"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "rtlcss": "catalog:"
+  },
+  "engines": {
+    "node": ">=26.13"
+  }
+}

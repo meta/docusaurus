@@ -15,6 +15,9 @@ const jiti = createJiti(__filename, {
   fsCache: true,
   // Bypass Node.js runtime require cache for hot reloads
   moduleCache: false,
+  // On Bun, jiti defaults to the native import(), which caches modules forever
+  // See https://github.com/meta/docusaurus/pull/13026
+  tryNative: false,
 
   interopDefault: true,
   debug: DEBUG,

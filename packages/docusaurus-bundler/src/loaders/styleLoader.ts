@@ -6,6 +6,7 @@
  */
 
 import {getCSSExtractPlugin} from '../currentBundler';
+import {getClientQueries} from '../browserslist';
 import type {ConfigureWebpackUtils, CurrentBundler} from '@docusaurus/types';
 
 type Loader = {loader: string; options?: {[key: string]: unknown}};
@@ -102,8 +103,10 @@ function getPostCssLoader(): Loader {
           [
             require.resolve('postcss-preset-env'),
             {
-              // Keeping this empty options object on purpose
-              // It could be more convenient for configurePostCss() usage
+              // Otherwise, preset-env ignores the Docusaurus default
+              // queries, and Autoprefixer reads the config of each CSS
+              // file's path
+              browsers: getClientQueries(),
             },
           ],
         ],

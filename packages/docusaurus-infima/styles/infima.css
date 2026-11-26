@@ -1,0 +1,53 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/* Common */
+@import url('common/variables.css');
+@import url('common/base.css');
+
+/* Layout */
+@import url('layout/grid.css');
+@import url('layout/spacing.css');
+
+/* Content */
+@import url('content/code.css');
+@import url('content/heading.css');
+@import url('content/image.css');
+@import url('content/markdown.css');
+@import url('content/list.css');
+@import url('content/table.css');
+@import url('content/typography.css');
+
+/* Utilities */
+@import url('utilities/shadow.css');
+@import url('utilities/text.css');
+@import url('utilities/custom-scrollbar.css');
+@import url('utilities/misc.css');
+
+/* Components */
+@import url('components/alert.css');
+@import url('components/avatar.css');
+@import url('components/badge.css');
+@import url('components/breadcrumb.css');
+@import url('components/button.css');
+@import url('components/button-group.css');
+@import url('components/card.css');
+@import url('components/table-of-contents.css');
+@import url('components/close.css');
+@import url('components/dropdown.css');
+@import url('components/footer.css');
+@import url('components/forms.css');
+@import url('components/hero.css');
+@import url('components/menu.css');
+@import url('components/navbar.css');
+@import url('components/pagination.css');
+@import url('components/pagination-nav.css');
+@import url('components/pills.css');
+@import url('components/tabs.css');
+
+/* Mode */
+@import url('common/dark-mode.css');

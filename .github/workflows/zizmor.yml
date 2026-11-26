@@ -29,6 +29,7 @@ permissions: {}
 jobs:
   zizmor:
     name: zizmor
+    if: github.repository == 'meta/docusaurus'
     timeout-minutes: 10
     runs-on: ubuntu-latest
     permissions:

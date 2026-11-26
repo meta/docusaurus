@@ -90,7 +90,8 @@ export {
   escapePath,
   addTrailingPathSeparator,
 } from './pathUtils';
-export {md5Hash, hashString, simpleHash, docuHash} from './hashUtils';
+// No md5Hash export: FIPS mode forbids MD5, see https://github.com/meta/docusaurus/pull/13007
+export {hashString, simpleHash, docuHash} from './hashUtils';
 export {
   getAssetRuleUtils,
   findAssetRule,

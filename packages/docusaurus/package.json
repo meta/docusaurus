@@ -94,6 +94,7 @@
     "react-dom": "catalog:"
   },
   "engines": {
-    "node": ">=26.13"
+    "node": ">=26.13",
+    "bun": ">=1.4.3"
   }
 }

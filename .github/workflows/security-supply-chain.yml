@@ -29,6 +29,7 @@ jobs:
   # Check our monorepo for new supply chain compromissions
   supply-chain-monorepo:
     name: Supply Chain - Monorepo
+    if: github.repository == 'meta/docusaurus'
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
@@ -56,6 +57,7 @@ jobs:
   # See why https://github.com/meta/docusaurus/pull/12448
   supply-chain-site-template:
     name: Supply Chain - Site Template @${{ matrix.npm_dist_tag }}
+    if: github.repository == 'meta/docusaurus'
     timeout-minutes: 30
     runs-on: ubuntu-latest
 
@@ -114,7 +116,6 @@ jobs:
             - 'semver@6.3.1'
             - 'webpack-dev-middleware@7.4.6'
             - 'undici-types@6.21.0'
-            - 'encodeurl@2.0.2' # TODO remove once https://github.com/pillarjs/encodeurl/issues/43 is closed
           YAML
 
           sfw pnpm install || sfw pnpm install || sfw pnpm install

@@ -11,10 +11,11 @@ export const DefaultPackageManager = 'npm';
 
 // Order matters
 export const LockfileNames = {
-  npm: 'package-lock.json',
-  yarn: 'yarn.lock',
-  pnpm: 'pnpm-lock.yaml',
-  bun: 'bun.lockb',
+  npm: ['package-lock.json'],
+  yarn: ['yarn.lock'],
+  pnpm: ['pnpm-lock.yaml'],
+  // bun.lockb is the binary lockfile of Bun < 1.2
+  bun: ['bun.lock', 'bun.lockb'],
 };
 
 export type PackageManager = keyof typeof LockfileNames;

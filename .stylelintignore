@@ -13,6 +13,7 @@ packages/lqip-loader/lib/
 packages/docusaurus/lib/
 packages/docusaurus-*/lib/*
 packages/create-docusaurus/lib/*
+packages/docusaurus-infima/dist/
 packages/create-docusaurus/templates/
 website/static/katex/katex.min.css
 website/_dogfooding/_asset-tests/badSyntax.css

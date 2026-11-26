@@ -86,4 +86,27 @@ describe('docusaurus-plugin-content-pages', () => {
 
     expect(pagesMetadata).toMatchSnapshot();
   });
+
+  it('loads the pages of a folder named like a Markdown file', async () => {
+    const siteDir = path.join(
+      __dirname,
+      '__fixtures__',
+      'website-with-folder-named-like-page',
+    );
+    const context = await loadContext({siteDir});
+    const plugin = await pluginContentPages(
+      context,
+      validateOptions({
+        validate: normalizePluginOptions,
+        options: {
+          path: 'src/pages',
+        },
+      }),
+    );
+    const pagesMetadata = await plugin.loadContent!();
+
+    expect(pagesMetadata!.map((page) => page.source)).toEqual([
+      '@site/src/pages/folder.md/page.md',
+    ]);
+  });
 });

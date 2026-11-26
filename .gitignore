@@ -27,6 +27,7 @@ packages/docusaurus/lib/
 packages/docusaurus-*/lib/*
 packages/eslint-plugin/lib/
 packages/stylelint-copyright/lib/
+packages/docusaurus-infima/dist/
 
 website/changelog
 

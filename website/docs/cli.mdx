@@ -173,6 +173,10 @@ Serve your built website locally.
 | `--host` | `localhost` | Specify a host to use. For example, if you want your server to be accessible externally, you can use `--host 0.0.0.0`. |
 | `--no-open` | `false` locally, `true` in CI | Do not open a browser window to the server location. |
 
+#### 404 pages {/* #serve-404-pages */}
+
+`docusaurus serve` answers unknown paths with the nearest `404.html`, looking up the folders of the path. Each locale gets its own [localized 404 page](./i18n/i18n-tutorial.mdx#single-domain-deployment): `/fr/unknown` serves `/fr/404.html`.
+
 #### HTTP caching {/* #serve-http-caching */}
 
 `docusaurus serve` tells browsers how to cache each response with the [`Cache-Control`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control) header:

@@ -33,4 +33,20 @@ module.exports = {
     'comment-empty-line-before': null,
     'value-keyword-case': ['lower', {camelCaseSvgKeywords: true}],
   },
+  overrides: [
+    {
+      files: ['packages/docusaurus-infima/styles/**/*.css'],
+      // Fixing these would change the Infima output, or its cascade order
+      rules: {
+        'comment-whitespace-inside': null, // Breaks the /*rtl:raw: directive
+        'declaration-block-no-redundant-longhand-properties': null,
+        'declaration-property-value-keyword-no-deprecated': null,
+        'media-feature-range-notation': null,
+        'no-descending-specificity': null,
+        'property-no-deprecated': null,
+        'selector-not-notation': null,
+        'value-keyword-case': null, // Font family names
+      },
+    },
+  ],
 };

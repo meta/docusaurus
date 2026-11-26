@@ -1,0 +1,62 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+:root {
+  --ifm-table-cell-padding: 0.75rem;
+
+  --ifm-table-background: transparent;
+  --ifm-table-stripe-background: rgb(0 0 0 / 3%);
+
+  --ifm-table-border-width: 1px;
+  --ifm-table-border-color: var(--ifm-color-emphasis-300);
+
+  --ifm-table-head-background: inherit;
+  --ifm-table-head-color: inherit;
+  --ifm-table-head-font-weight: var(--ifm-font-weight-bold);
+
+  --ifm-table-cell-color: inherit;
+}
+
+table {
+  border-collapse: collapse;
+  display: block;
+  margin-bottom: var(--ifm-spacing-vertical);
+  overflow: auto;
+}
+
+table thead tr {
+  border-bottom: 2px solid var(--ifm-table-border-color);
+}
+
+table thead {
+  background-color: var(--ifm-table-stripe-background);
+}
+
+table tr {
+  background-color: var(--ifm-table-background);
+  border-top: var(--ifm-table-border-width) solid var(--ifm-table-border-color);
+}
+
+table tr:nth-child(2n) {
+  background-color: var(--ifm-table-stripe-background);
+}
+
+table th,
+table td {
+  border: var(--ifm-table-border-width) solid var(--ifm-table-border-color);
+  padding: var(--ifm-table-cell-padding);
+}
+
+table th {
+  background-color: var(--ifm-table-head-background);
+  color: var(--ifm-table-head-color);
+  font-weight: var(--ifm-table-head-font-weight);
+}
+
+table td {
+  color: var(--ifm-table-cell-color);
+}

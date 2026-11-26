@@ -1,0 +1,54 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+.plugin-id-infima {
+  .demo-section > .row:not(:first-child) {
+    margin-top: 2rem;
+  }
+
+  .demo-section > .row:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+
+  @media (width <= 1024px) {
+    .demo-section > .row > [class^='col']:not(:last-child) {
+      padding-bottom: 1rem;
+    }
+  }
+
+  .demo-grid [class^='col'] .col-inner {
+    background-color: var(--ifm-color-emphasis-100);
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .demo-section .row--no-gutters .col-inner {
+    border: 1px solid var(--ifm-color-emphasis-300);
+  }
+
+  /* The docs column is narrower than the infima.dev demo page: buttons wrap */
+  .demo-section .col:has(> .button) {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .demo-section .color {
+    border-radius: 8px;
+    display: inline-block;
+    height: 3rem;
+    padding: 1rem;
+    text-align: center;
+    width: 3rem;
+  }
+
+  .demo-section .color-contrast {
+    display: inline-block;
+    margin-left: 2rem;
+  }
+}

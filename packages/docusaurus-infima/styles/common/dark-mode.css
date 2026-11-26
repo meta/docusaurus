@@ -1,0 +1,57 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+html[data-theme='dark'] {
+  --ifm-color-scheme: dark;
+
+  --ifm-color-emphasis-0: var(--ifm-color-gray-1000);
+  --ifm-color-emphasis-100: var(--ifm-color-gray-900);
+  --ifm-color-emphasis-200: var(--ifm-color-gray-800);
+  --ifm-color-emphasis-300: var(--ifm-color-gray-700);
+  --ifm-color-emphasis-400: var(--ifm-color-gray-600);
+  --ifm-color-emphasis-500: var(--ifm-color-gray-500);
+  --ifm-color-emphasis-600: var(--ifm-color-gray-400);
+  --ifm-color-emphasis-700: var(--ifm-color-gray-300);
+  --ifm-color-emphasis-800: var(--ifm-color-gray-200);
+  --ifm-color-emphasis-900: var(--ifm-color-gray-100);
+  --ifm-color-emphasis-1000: var(--ifm-color-gray-0);
+
+  --ifm-background-color: #1b1b1d;
+  --ifm-background-surface-color: #242526;
+
+  --ifm-hover-overlay: rgb(255 255 255 / 5%);
+
+  --ifm-color-content: #e3e3e3;
+  --ifm-color-content-secondary: rgb(255 255 255 / 100%);
+
+  --ifm-breadcrumb-separator-filter: invert(64%) sepia(11%) saturate(0%)
+    hue-rotate(149deg) brightness(99%) contrast(95%);
+
+  --ifm-code-background: rgb(255 255 255 / 10%);
+
+  --ifm-scrollbar-track-background-color: #444;
+  --ifm-scrollbar-thumb-background-color: #686868;
+  --ifm-scrollbar-thumb-hover-background-color: #7a7a7a;
+
+  --ifm-table-stripe-background: rgb(255 255 255 / 7%);
+
+  --ifm-toc-border-color: var(--ifm-color-emphasis-200);
+
+  /* Precomputed with the dark mode values of common/variables.css */
+  --ifm-color-primary-contrast-background: rgb(16 36 69);
+  --ifm-color-primary-contrast-foreground: rgb(235 242 252);
+  --ifm-color-secondary-contrast-background: rgb(71 71 72);
+  --ifm-color-secondary-contrast-foreground: rgb(253 253 254);
+  --ifm-color-success-contrast-background: rgb(0 49 0);
+  --ifm-color-success-contrast-foreground: rgb(230 246 230);
+  --ifm-color-info-contrast-background: rgb(25 60 71);
+  --ifm-color-info-contrast-foreground: rgb(238 249 253);
+  --ifm-color-warning-contrast-background: rgb(77 56 0);
+  --ifm-color-warning-contrast-foreground: rgb(255 248 230);
+  --ifm-color-danger-contrast-background: rgb(75 17 19);
+  --ifm-color-danger-contrast-foreground: rgb(255 235 236);
+}

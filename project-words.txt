@@ -1,5 +1,6 @@
 # Project Words - Run pnpm lint:spelling:sort after adding words
 abernathyca
+Abramov
 Adriaan
 aldridged
 alexbdebrie
@@ -14,6 +15,7 @@ apify
 appinstalled
 Applanga
 applescript
+Ashim
 astring
 atrule
 autogenerating
@@ -23,6 +25,7 @@ backgrounded
 Bartosz
 beforeinstallprompt
 Bhatt
+Blockquotes
 blockquotes
 Bokmål
 bunfig
@@ -71,6 +74,7 @@ Dogfood
 dogfood
 Dogfooding
 dogfooding
+dont
 Dyte
 dyte
 easyops
@@ -81,6 +85,7 @@ Endilie
 endilie
 endiliey
 ERRNAMETOOLONG
+Español
 etlua
 externalwaiting
 failfast
@@ -105,6 +110,7 @@ hasura
 Heavener
 Hideable
 hideable
+Hoverable
 hoverable
 Husain
 Héctor
@@ -113,6 +119,7 @@ IANAD
 Idents
 Infima
 infima
+infimum
 inlines
 interactiveness
 Interpolatable
@@ -137,6 +144,7 @@ Lifecycles
 lifecycles
 lightningcss
 Linkify
+longessssssssst
 longlonglonglonglonglonglonglonglonglonglonglong
 Lorber
 lorber
@@ -174,11 +182,13 @@ moonwave
 Nabors
 Nakagawa
 nand
+Navbars
 Navigations
 navigations
 navlink
 newtab
 Nisarag
+nocaret
 noflash
 noicon
 nojekyll
@@ -212,6 +222,7 @@ playbtn
 Plushie
 plushie
 plushies
+Pojer
 Preapproved
 precached
 precaching
@@ -223,6 +234,7 @@ profilo
 PRPL
 Pyltsyn
 QJPUV
+Quaco
 quasis
 Quddus
 Quddús
@@ -232,6 +244,7 @@ rachelnabors
 Ramón
 reactjs
 rearchitecture
+reasonml
 Recma
 recma
 redirections
@@ -282,6 +295,7 @@ structurizr
 styl
 sublabel
 sublicensable
+Sublist
 sublist
 subsubcategory
 subsubfolder
@@ -337,6 +351,7 @@ Vinnik
 vjeux
 voir
 waivable
+Walke
 webfactory
 webpackbar
 webstorm

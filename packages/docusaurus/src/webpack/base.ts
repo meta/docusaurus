@@ -119,7 +119,11 @@ export async function createBaseConfig({
       // Changing the target browsers or Node.js version must evict the cache
       // The same Browserslist queries can match other browsers over time and
       // after data upgrades, for example "baseline widely available"
-      getTargets({isServer}),
+      // The client and server caches must be evicted together, or the MDX
+      // cross-compiler cache hangs the build
+      // See https://github.com/meta/docusaurus/pull/13035
+      getTargets({isServer: false}),
+      getTargets({isServer: true}),
       // The plugin code computing loader options is not a build dependency
       // Upgrading a third-party plugin must evict the cache
       siteMetadata.pluginVersions,
@@ -135,7 +139,9 @@ export async function createBaseConfig({
   function getCacheBuildDependencies(): string[] {
     return [
       __filename,
-      path.join(__dirname, isServer ? 'server.js' : 'client.js'),
+      // Both: the client and server caches must be evicted together
+      path.join(__dirname, 'client.js'),
+      path.join(__dirname, 'server.js'),
       // Docusaurus config changes can affect MDX/JSX compilation, so we'd
       // rather evict the cache.
       // See https://github.com/questdb/questdb.io/issues/493

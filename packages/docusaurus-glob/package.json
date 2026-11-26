@@ -18,6 +18,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@docusaurus/fs": "workspace:*",
     "chokidar": "catalog:",
     "picomatch": "catalog:",
     "tinyglobby": "catalog:",

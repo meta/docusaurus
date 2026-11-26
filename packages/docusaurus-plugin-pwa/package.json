@@ -22,6 +22,8 @@
   "dependencies": {
     "@docusaurus/bundler": "workspace:*",
     "@docusaurus/core": "workspace:*",
+    "@docusaurus/fs": "workspace:*",
+    "@docusaurus/glob": "workspace:*",
     "@docusaurus/logger": "workspace:*",
     "@docusaurus/theme-common": "workspace:*",
     "@docusaurus/theme-translations": "workspace:*",
