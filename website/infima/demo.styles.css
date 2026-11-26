@@ -30,7 +30,7 @@
     border: 1px solid var(--ifm-color-emphasis-300);
   }
 
-  /* The docs column is narrower than the infima.dev demo page: buttons wrap */
+  /* The docs column is narrow: buttons wrap */
   .demo-section .col:has(> .button) {
     align-items: baseline;
     display: flex;
