@@ -9,8 +9,8 @@ import type {ComponentType, ReactNode} from 'react';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 
-// The PWA plugin is disabled in dev builds (Argos uses one): no @theme alias
-// Its types need the WebWorker lib (Workbox), the website doesn't load them
+// The PWA plugin is disabled in dev (Argos) and hash router builds: no @theme
+// alias. Its types need the WebWorker lib (Workbox), the website lacks it
 const PwaReloadPopup: ComponentType<{onReload: () => void}> =
   require('@docusaurus/plugin-pwa/lib/theme/PwaReloadPopup').default;
 
