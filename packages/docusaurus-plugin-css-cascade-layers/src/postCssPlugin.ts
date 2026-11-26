@@ -6,18 +6,17 @@
  */
 
 import {findLayer} from './layers';
-import type {Root, PluginCreator} from 'postcss';
+import type {Helpers, Root, PluginCreator} from 'postcss';
 import type {PluginOptions} from './options';
 
-function wrapCssRootInLayer(root: Root, layer: string): void {
-  const rootBefore = root.clone();
-  root.removeAll();
-  root.append({
-    type: 'atrule',
-    name: 'layer',
-    params: layer,
-    nodes: rootBefore.nodes,
-  });
+function wrapCssRootInLayer(
+  root: Root,
+  layer: string,
+  {AtRule}: Helpers,
+): void {
+  const layerAtRule = new AtRule({name: 'layer', params: layer});
+  layerAtRule.append(root.nodes);
+  root.append(layerAtRule);
 }
 
 export const PostCssPluginWrapInLayer: PluginCreator<{
@@ -29,14 +28,14 @@ export const PostCssPluginWrapInLayer: PluginCreator<{
   const layers = Object.entries(options.layers);
   return {
     postcssPlugin: 'postcss-wrap-in-layer',
-    Once(root) {
+    Once(root, helpers) {
       const filePath = root.source?.input.file;
       if (!filePath) {
         return;
       }
       const layer = findLayer(filePath, layers);
       if (layer) {
-        wrapCssRootInLayer(root, layer);
+        wrapCssRootInLayer(root, layer, helpers);
       }
     },
   };
