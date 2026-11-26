@@ -203,7 +203,6 @@ const config: KnipConfig = ({
       ],
       ignoreDependencies: [
         // Plugins and themes referenced by short name in docusaurus.config.ts
-        '@docusaurus/plugin-pwa',
         '@docusaurus/plugin-rsdoctor',
         '@docusaurus/theme-mermaid',
         // Netlify build plugin, see netlify.toml
