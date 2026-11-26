@@ -140,9 +140,9 @@
     "vite": "catalog:dev",
     "vitest": "catalog:dev"
   },
-  "packageManager": "pnpm@12.3.4",
+  "packageManager": "pnpm@12.22.0",
   "engines": {
     "node": ">=26.13",
-    "pnpm": ">=12.3.4"
+    "pnpm": ">=12.22.0"
   }
 }
