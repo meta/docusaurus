@@ -458,9 +458,6 @@ catalogs:
     serve-handler:
       specifier: ^6.1.8
       version: 6.1.8
-    sharp:
-      specifier: ^0.35.1
-      version: 0.35.5
     sitemap:
       specifier: ^9.0.1
       version: 9.0.1
@@ -949,7 +946,7 @@ importers:
         specifier: 'catalog:'
         version: 0.78.0
       sharp:
-        specifier: 'catalog:'
+        specifier: ^0.35.1
         version: 0.35.5(@types/node@26.6.1)
 
   admin/test-bad-package:
@@ -1977,7 +1974,7 @@ importers:
         specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
       sharp:
-        specifier: 'catalog:'
+        specifier: ^0.35.1
         version: 0.35.5(@types/node@26.6.1)
       tslib:
         specifier: 'catalog:'
@@ -2776,7 +2773,7 @@ importers:
         specifier: workspace:*
         version: link:../docusaurus-logger
       sharp:
-        specifier: 'catalog:'
+        specifier: ^0.35.1
         version: 0.35.5(@types/node@26.6.1)
       tslib:
         specifier: 'catalog:'
