@@ -163,7 +163,7 @@ After adding or changing `translate()` or `<Translate>` messages in a theme or p
 
 ### Git worktrees
 
-Start each new worktree from an up-to-date `origin/main`: `git fetch origin main`, then branch from `origin/main`, or rebase on it when the worktree already exists. Never pull, check out or edit `main` in the main checkout: it can hold the maintainer's local edits.
+Start each new worktree from an up-to-date `origin/main`: `git fetch origin main`, then branch from `origin/main`, or rebase on it when the worktree already exists. Then run `pnpm install` if `pnpm-lock.yaml` changed, and rebuild the packages. Never pull, check out or edit `main` in the main checkout: it can hold the maintainer's local edits.
 
 ## Contributing, Issue and PR Guidelines
 
