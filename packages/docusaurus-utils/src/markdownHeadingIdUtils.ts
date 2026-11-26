@@ -127,6 +127,51 @@ export type WriteHeadingIDOptions = SluggerOptions & {
   overwrite?: boolean;
 };
 
+function checkCodeFence(
+  line: string,
+  state: {inCode: boolean; fenceChar?: '`' | '~'; fenceLength?: number},
+): boolean {
+  const trimmed = line.trimStart();
+  const indent = line.length - trimmed.length;
+  if (indent > 3) {
+    return false;
+  }
+  const firstChar = trimmed[0];
+  if (firstChar !== '`' && firstChar !== '~') {
+    return false;
+  }
+  let fenceLength = 0;
+  while (fenceLength < trimmed.length && trimmed[fenceLength] === firstChar) {
+    fenceLength += 1;
+  }
+  if (fenceLength < 3) {
+    return false;
+  }
+  const rest = trimmed.slice(fenceLength);
+
+  if (state.inCode) {
+    if (
+      firstChar === state.fenceChar &&
+      fenceLength >= state.fenceLength! &&
+      rest.trim() === ''
+    ) {
+      state.inCode = false;
+      state.fenceChar = undefined;
+      state.fenceLength = undefined;
+      return true;
+    }
+    return false;
+  }
+
+  if (firstChar === '`' && rest.includes('`')) {
+    return false;
+  }
+  state.inCode = true;
+  state.fenceChar = firstChar;
+  state.fenceLength = fenceLength;
+  return true;
+}
+
 /**
  * Takes Markdown content, returns new content with heading IDs written.
  * Respects existing IDs (unless `overwrite=true`) and never generates colliding
@@ -166,7 +211,16 @@ export function writeMarkdownHeadingId(
   // If we can't overwrite existing slugs, make sure other headings don't
   // generate colliding slugs by first marking these slugs as occupied
   if (!overwrite) {
+    const codeState: {
+      inCode: boolean;
+      fenceChar?: '`' | '~';
+      fenceLength?: number;
+    } = {inCode: false};
     lines.forEach((line) => {
+      const isFence = checkCodeFence(line, codeState);
+      if (codeState.inCode || isFence) {
+        return;
+      }
       const parsedHeading = parseHeadingIdAnySyntax(line);
       if (parsedHeading.id) {
         slugger.slug(parsedHeading.id);
@@ -174,15 +228,16 @@ export function writeMarkdownHeadingId(
     });
   }
 
-  let inCode = false;
+  const codeState: {
+    inCode: boolean;
+    fenceChar?: '`' | '~';
+    fenceLength?: number;
+  } = {inCode: false};
   return lines
     .map((line) => {
-      if (line.startsWith('```')) {
-        inCode = !inCode;
-        return line;
-      }
+      const isFence = checkCodeFence(line, codeState);
       // Ignore h1 headings, as we don't create anchor links for those
-      if (inCode || !line.startsWith('##')) {
+      if (codeState.inCode || isFence || !line.startsWith('##')) {
         return line;
       }
       const parsedHeading = parseHeadingIdAnySyntax(line);
