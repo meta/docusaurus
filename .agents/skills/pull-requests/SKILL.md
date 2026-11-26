@@ -29,14 +29,16 @@ After creating the PR, update the deploy preview link in its description with th
 
 ## Pushing to a PR
 
-Before pushing new commits to a PR, rebase the branch on a freshly fetched `origin/main`, and resolve the conflicts if any. Pull first to keep the commits others pushed to the PR branch, like the lint autofix commit. For a stacked PR, rebase on its lower PR branch instead.
+Before pushing new commits to a PR, bring the branch up to date: pull the commits others pushed to it (like the lint autofix commit), merge a freshly fetched `origin/main`, and resolve the conflicts if any. For a stacked PR, merge its lower PR branch instead.
 
 ```bash
 git pull --rebase
 git fetch origin main
-git rebase origin/main
-git push --force-with-lease
+git merge origin/main
+git push
 ```
+
+Merge instead of rebasing a pushed branch: PRs are squash-merged, so merge commits don't reach `main`, and the push needs no force. A force push breaks the other checkouts of the branch and the "changes since your last review" view.
 
 ## Scope and stacked PRs
 
