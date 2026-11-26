@@ -296,7 +296,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 The `@theme/PwaReloadPopup` component is rendered when a new service worker is waiting to be installed, and we suggest a reload to the user. You can [swizzle](../../swizzling.mdx) this component and implement your own UI. It will receive an `onReload` callback as props, which should be called when the `reload` button is clicked. This will tell the service worker to install the waiting service worker and reload the page.
 
-The default theme includes an implementation for the reload popup and uses [Infima Alerts](/infima/components/alert).
+The plugin includes a default implementation of the reload popup, styled like a secondary [Infima Alert](/infima/components/alert).
 
 ![A screen recording of the reload process. An alert box shows in the bottom right of the window, saying "New content available". After clicking the "Refresh" button, the page's main heading changes from "Introduction" to "PWA :))".](/img/pwa_reload.gif)
 

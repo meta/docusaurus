@@ -30,7 +30,6 @@
     "@docusaurus/types": "workspace:*",
     "@docusaurus/utils": "workspace:*",
     "@docusaurus/utils-validation": "workspace:*",
-    "clsx": "catalog:",
     "tslib": "catalog:",
     "webpack": "catalog:",
     "workbox-build": "catalog:",

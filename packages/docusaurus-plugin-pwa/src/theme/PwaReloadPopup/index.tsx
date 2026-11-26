@@ -6,7 +6,6 @@
  */
 
 import {type ReactNode, useState} from 'react';
-import clsx from 'clsx';
 import Translate, {translate} from '@docusaurus/Translate';
 import type {Props} from '@theme/PwaReloadPopup';
 
@@ -17,7 +16,7 @@ export default function PwaReloadPopup({onReload}: Props): ReactNode {
 
   return (
     isVisible && (
-      <div className={clsx('alert', 'alert--secondary', styles.popup)}>
+      <div className={styles.popup}>
         <p>
           <Translate
             id="theme.PwaReloadPopup.info"
@@ -27,7 +26,7 @@ export default function PwaReloadPopup({onReload}: Props): ReactNode {
         </p>
         <div className={styles.buttonContainer}>
           <button
-            className="button button--link"
+            className={styles.refreshButton}
             type="button"
             onClick={() => {
               setIsVisible(false);
@@ -47,7 +46,7 @@ export default function PwaReloadPopup({onReload}: Props): ReactNode {
               description:
                 'The ARIA label for close button of PWA reload popup',
             })}
-            className="close"
+            className={styles.closeButton}
             type="button"
             onClick={() => setIsVisible(false)}>
             <span aria-hidden="true">×</span>

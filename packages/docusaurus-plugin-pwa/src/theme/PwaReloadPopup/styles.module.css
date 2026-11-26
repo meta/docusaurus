@@ -5,6 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+/*
+The popup looks like an Infima secondary alert when the theme loads Infima,
+and falls back to Infima's default values otherwise.
+ */
+
 .popup {
   position: fixed;
   bottom: 16px;
@@ -14,6 +19,18 @@
   align-items: center;
   justify-content: space-between;
   z-index: 999;
+  padding: var(--ifm-alert-padding-vertical, 1rem)
+    var(--ifm-alert-padding-horizontal, 1rem);
+  border: var(--ifm-alert-border-width, 0) solid
+    var(--ifm-color-secondary-dark, rgb(212 213 216));
+  border-left-width: var(--ifm-alert-border-left-width, 5px);
+  border-radius: var(--ifm-alert-border-radius, 0.4rem);
+  box-shadow: var(--ifm-alert-shadow, 0 1px 2px 0 rgb(0 0 0 / 10%));
+  background-color: var(
+    --ifm-color-secondary-contrast-background,
+    rgb(253 253 254)
+  );
+  color: var(--ifm-color-secondary-contrast-foreground, rgb(71 71 72));
 }
 
 .popup p {
@@ -33,7 +50,35 @@
   align-items: center;
 }
 
-.buttonContainer :global(.close) {
+.refreshButton {
+  padding: var(--ifm-button-padding-vertical, 0.375rem)
+    var(--ifm-button-padding-horizontal, 1.5rem);
+  border: var(--ifm-button-border-width, 1px) solid transparent;
+  border-radius: var(--ifm-button-border-radius, 0.4rem);
+  background-color: transparent;
+  color: inherit;
+  font-size: 0.875rem;
+  font-weight: var(--ifm-button-font-weight, 700);
+  line-height: 1.5;
+  text-decoration: underline;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+.closeButton {
   margin: 0;
   padding: 0;
+  color: inherit;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0.75;
+  transition: opacity var(--ifm-transition-fast, 200ms)
+    var(--ifm-transition-timing-default, cubic-bezier(0.08, 0.52, 0.52, 1));
+}
+
+.closeButton:hover,
+.closeButton:focus {
+  opacity: 1;
 }
