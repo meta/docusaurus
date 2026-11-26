@@ -16,7 +16,7 @@
     "@mdx-js/mdx": "catalog:",
     "@types/history": "catalog:",
     "@types/mdast": "catalog:",
-    "@types/react": "19.3.0",
+    "@types/react": "catalog:",
     "commander": "catalog:",
     "joi": "catalog:",
     "mdast-util-directive": "catalog:",

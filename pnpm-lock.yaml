@@ -1560,7 +1560,7 @@ importers:
         specifier: 'catalog:'
         version: 4.7.11
       '@types/react':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       '@types/react-dom':
         specifier: 'catalog:'
@@ -2407,7 +2407,7 @@ importers:
         specifier: 'catalog:'
         version: 4.7.11
       '@types/react':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       '@types/react-router-config':
         specifier: 'catalog:'
@@ -2636,7 +2636,7 @@ importers:
         specifier: 'catalog:'
         version: 4.0.4
       '@types/react':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       commander:
         specifier: 'catalog:'

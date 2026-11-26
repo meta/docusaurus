@@ -44,17 +44,6 @@ export default {
     },
 
     {
-      label: 'Ignore the exact @types/react version in type-alias packages',
-      packages: [
-        '@docusaurus/module-type-aliases',
-        '@docusaurus/theme-common',
-        '@docusaurus/types',
-      ],
-      dependencies: ['@types/react'],
-      isIgnored: true,
-    },
-
-    {
       label: 'Ignore broad ESLint peerDep range in ESLint plugin',
       packages: ['@docusaurus/eslint-plugin'],
       dependencyTypes: ['peer'],
