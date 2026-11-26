@@ -408,7 +408,9 @@ The broken links detection is only available for a production build (`docusaurus
 
 - Type: `'ignore' | 'log' | 'warn' | 'throw'`
 
-The behavior of Docusaurus when it detects any broken anchor declared with the `Heading` component of Docusaurus.
+The behavior of Docusaurus when it detects any broken anchor.
+
+Anchors are automatically collected from your rendered HTML pages: any element `id` attribute (such as `<div id="anchor"/>`) as well as legacy `<a name="anchor"/>` named anchors are valid anchor targets, in addition to anchors explicitly collected through the [`useBrokenLinks()`](/docs/docusaurus-core#usebrokenlinks) API.
 
 By default, it throws an error, to ensure you never ship any broken anchor.
 

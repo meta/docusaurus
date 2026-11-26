@@ -15,6 +15,7 @@ import {
   createStatefulBrokenLinks,
   BrokenLinksProvider,
 } from './BrokenLinksContext';
+import {extractHtmlAnchors} from './extractHtmlAnchors';
 import {toPageCollectedMetadataInternal} from './serverHelmetUtils';
 import type {AppRenderer, PageCollectedDataInternal} from '../common';
 
@@ -40,6 +41,17 @@ const render: AppRenderer['render'] = async ({pathname}) => {
   );
 
   const html = await renderToHtml(app);
+
+  // The broken anchors checker only knows about anchors explicitly collected
+  // through the useBrokenLinks() API (e.g. by the <Heading/> theme component).
+  // We also extract anchor targets from the rendered HTML so that arbitrary
+  // anchors such as <div id="anchor"/> or legacy <a name="anchor"/> in
+  // MDX/React pages are automatically recognized, like browsers do for
+  // fragment navigation.
+  // See https://github.com/facebook/docusaurus/issues/9808
+  extractHtmlAnchors(html).forEach((anchor) =>
+    statefulBrokenLinks.collectAnchor(anchor),
+  );
 
   const {helmet} = helmetContext as FilledContext;
 
