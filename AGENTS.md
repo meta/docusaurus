@@ -115,6 +115,8 @@ Before pushing, run `pnpm lint`, `pnpm typecheck:tests` (and `pnpm --filter webs
 
 The exports of package entry points (`package.json` `main` and `exports`) are public API, even when undocumented (see the comments in `packages/docusaurus-theme-common/src/index.ts`) or unused by the monorepo: third-party sites, plugins and themes use them. Never remove them as dead code: report them, and only remove one when the maintainer explicitly decides to, as a breaking change. `/internal` entry points (like `@docusaurus/theme-common/internal`) have no stability guarantee, but removing their exports is still a breaking change PR.
 
+Changing a theme component that the theme's swizzle config (`getSwizzleConfig()`) doesn't mark as `safe` to eject or wrap is not a breaking change: unsafe components are implementation details (see [What is safe to swizzle?](website/docs/swizzling.mdx#what-is-safe-to-swizzle)). Components missing from the config are unsafe.
+
 To fix CSpell unknown words, don't run `pnpm lint:spelling:fix`: it checks the whole repository and is slow. Instead:
 
 1. Check the files you changed: `pnpm exec cspell --no-progress --show-context <files>`. Ignore files in dot-directories (`.agents/`, `.github/`...): `pnpm lint:spelling` doesn't check them
