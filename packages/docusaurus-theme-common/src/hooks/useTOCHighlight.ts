@@ -91,19 +91,11 @@ function getLinks(linkClassName: string) {
   ) as HTMLAnchorElement[];
 }
 
-function getNavbarElement(): Element {
-  return (
-    document.querySelector(`.${ThemeClassNames.layout.navbar.container}`) ??
-    // TODO Docusaurus v5: remove this fallback for navbars swizzled before
-    //  ThemeClassNames.layout.navbar existed
-    // Using TS ! (not ?) because otherwise a bad selector would be un-noticed
-    document.querySelector('.navbar')!
-  );
-}
-
 function getNavbarHeight(): number {
   // Not ideal to obtain actual height this way
-  return getNavbarElement().clientHeight;
+  // Using TS ! (not ?) because otherwise a bad selector would be un-noticed
+  return document.querySelector(`.${ThemeClassNames.layout.navbar.container}`)!
+    .clientHeight;
 }
 
 function useAnchorTopOffsetRef() {
