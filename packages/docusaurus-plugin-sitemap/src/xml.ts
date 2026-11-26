@@ -12,11 +12,6 @@ export async function sitemapItemsToXmlString(
   items: SitemapItem[],
   options: {lastmod: LastModOption | null},
 ): Promise<string> {
-  if (items.length === 0) {
-    // Fail fast with a clearer error than the lib's EmptySitemap error
-    throw new Error("Can't generate a sitemap with no items");
-  }
-
   // We could generate the XML ourselves, but we keep using the lib on purpose
   // Users can return undocumented fields from createSitemapItems()
   // (links, img, video, news...) that the lib serializes

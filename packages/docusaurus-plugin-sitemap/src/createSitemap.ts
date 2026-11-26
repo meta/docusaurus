@@ -43,9 +43,6 @@ function createDefaultCreateSitemapItems(
 ): CreateSitemapItemsFn {
   return async (params) => {
     const sitemapRoutes = getSitemapRoutes({...params, ...internalParams});
-    if (sitemapRoutes.length === 0) {
-      return [];
-    }
     return Promise.all(
       sitemapRoutes.map((route) =>
         createSitemapItem({
