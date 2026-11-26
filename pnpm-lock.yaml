@@ -728,7 +728,7 @@ catalogs:
       version: 4.0.0
     vite:
       specifier: ^8.2.2
-      version: 8.2.2
+      version: 8.2.4
     vitest:
       specifier: ^5.0.0
       version: 5.0.0
@@ -774,7 +774,7 @@ importers:
         version: 10.4.1
       '@testing-library/jest-dom':
         specifier: catalog:dev
-        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)))
+        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)))
       '@testing-library/react':
         specifier: catalog:dev
         version: 16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -798,10 +798,10 @@ importers:
         version: typescript@7.0.2
       '@vitejs/plugin-react':
         specifier: catalog:dev
-        version: 6.1.1(vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 6.1.1(vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))
       '@vitest/eslint-plugin':
         specifier: catalog:dev
-        version: 1.6.27(@typescript-eslint/eslint-plugin@8.71.1(@typescript-eslint/parser@8.71.1(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)))
+        version: 1.6.27(@typescript-eslint/eslint-plugin@8.71.1(@typescript-eslint/parser@8.71.1(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)))
       cross-env:
         specifier: catalog:dev
         version: 10.1.0
@@ -912,10 +912,10 @@ importers:
         version: 8.71.1(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
       vite:
         specifier: catalog:dev
-        version: 8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)
+        version: 8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)
       vitest:
         specifier: catalog:dev
-        version: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))
 
   admin/new.docusaurus.io: {}
 
@@ -13246,8 +13246,8 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
-  vite@8.2.2:
-    resolution: {integrity: sha512-cFKLV/PRgAUlIRm5WjMjJ86jrftzpqcgH+Us+DS8mI3CDNiH30Whrz8uHL3+MOLPAgqbMBAqWdAHAphOAM+z/Q==}
+  vite@8.2.4:
+    resolution: {integrity: sha512-lfauXnrf2x0p+UoA+wXh0dgFWnUjCyG6Js95KBkgaCwUU9k0DAHI4W6Q0WCx+h+5g+Alce1y4Zi2QjjK0UvGBw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -17698,7 +17698,7 @@ snapshots:
       picocolors: 1.1.1
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)))':
+  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)))':
     dependencies:
       '@adobe/css-tools': 4.5.0
       '@testing-library/dom': 10.4.1
@@ -17708,7 +17708,7 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
     optionalDependencies:
-      vitest: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))
+      vitest: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))
 
   '@testing-library/react@16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
@@ -18324,12 +18324,12 @@ snapshots:
 
   '@vercel/oidc@3.2.0': {}
 
-  '@vitejs/plugin-react@6.1.1(vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))':
+  '@vitejs/plugin-react@6.1.1(vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)
+      vite: 8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)
 
-  '@vitest/eslint-plugin@1.6.27(@typescript-eslint/eslint-plugin@8.71.1(@typescript-eslint/parser@8.71.1(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)))':
+  '@vitest/eslint-plugin@1.6.27(@typescript-eslint/eslint-plugin@8.71.1(@typescript-eslint/parser@8.71.1(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)))':
     dependencies:
       '@typescript-eslint/scope-manager': 8.71.1
       '@typescript-eslint/utils': 8.71.1(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
@@ -18337,18 +18337,18 @@ snapshots:
     optionalDependencies:
       '@typescript-eslint/eslint-plugin': 8.71.1(@typescript-eslint/parser@8.71.1(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
       typescript: '@typescript/typescript6@6.0.2'
-      vitest: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))
+      vitest: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/mocker@5.0.0(vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))':
+  '@vitest/mocker@5.0.0(vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.0.0
       estree-walker: 3.0.3
       magic-string: 1.3.1
     optionalDependencies:
-      vite: 8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)
+      vite: 8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)
 
   '@vitest/spy@5.0.0': {}
 
@@ -25853,7 +25853,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0):
+  vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -25867,10 +25867,10 @@ snapshots:
       terser: 5.51.2
       yaml: 2.9.0
 
-  vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)):
+  vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.6.1)(jsdom@30.1.0)(vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.0(vite@8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))
+      '@vitest/mocker': 5.0.0(vite@8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))
       chai: 6.2.2
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -25881,7 +25881,7 @@ snapshots:
       tinybench: 6.1.4
       tinyexec: 1.3.0
       tinyglobby: 0.2.17
-      vite: 8.2.2(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)
+      vite: 8.2.4(@types/node@26.6.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
