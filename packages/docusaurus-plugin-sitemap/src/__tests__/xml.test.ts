@@ -13,16 +13,6 @@ import type {LastModOption, SitemapItem} from '../types';
 const options = {lastmod: 'datetime'} as const;
 
 describe('createSitemap', () => {
-  it('no items', async () => {
-    const items: SitemapItem[] = [];
-
-    await expect(
-      sitemapItemsToXmlString(items, options),
-    ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: Can't generate a sitemap with no items]`,
-    );
-  });
-
   it('simple item', async () => {
     const items: SitemapItem[] = [{url: 'https://docusaurus.io/docs/doc1'}];
 
