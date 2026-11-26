@@ -120,7 +120,6 @@ export function enhanceConfig(config: Configuration, params: Params): void {
 
   const newSvgRule: RuleSetRule = {
     test: /\.svg$/i,
-    with: {type: {not: 'text'}},
     oneOf: [
       {
         use: [createSVGRRule(params)],
