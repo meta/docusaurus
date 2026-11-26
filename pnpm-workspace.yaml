@@ -253,7 +253,6 @@ minimumReleaseAgeExclude:
   - pnpm
   - typescript
   - '@rspack/*'
-  - '@crowdin/*'
 
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 525600 # ignore packages published 1+ year ago
