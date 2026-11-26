@@ -644,6 +644,9 @@ type ParseFrontMatter = (params: {
   content: string;
 }>;
 
+// A unified plugin setting `this.parser`, like remark-parse
+type MarkdownParser = (params: {format: 'md' | 'mdx'}) => UnifiedPluggable;
+
 type MarkdownAnchorsConfig = {
   maintainCase: boolean;
 };
@@ -680,6 +683,7 @@ type MarkdownConfig = {
   emoji: boolean;
   preprocessor?: MarkdownPreprocessor;
   parseFrontMatter?: ParseFrontMatter;
+  parser?: MarkdownParser;
   mdx1Compat: MDX1CompatOptions;
   remarkRehypeOptions: object; // see https://github.com/remarkjs/remark-rehype#options
   anchors: MarkdownAnchorsConfig;
@@ -732,6 +736,7 @@ export default {
 | `emoji` | `boolean` | `true` | When `true`, allows Docusaurus to render emoji shortcodes (e.g., `:+1:`) as Unicode emoji (👍). When `false`, emoji shortcodes are left as-is. |
 | `preprocessor` | `MarkdownPreprocessor` | `undefined` | Gives you the ability to alter the Markdown content string before parsing. Use it as a last-resort escape hatch or workaround: it is almost always better to implement a Remark/Rehype plugin. |
 | `parseFrontMatter` | `ParseFrontMatter` | `undefined` | Gives you the ability to provide your own front matter parser, or to enhance the default parser. Read our [front matter guide](../guides/markdown-features/markdown-features-intro.mdx#front-matter) for details. |
+| `parser` | `MarkdownParser` | `undefined` | Replaces the default Markdown parser ([`remark-parse`](https://github.com/remarkjs/remark/tree/main/packages/remark-parse)). A function receiving the `format` (`'md'` or `'mdx'`) and returning a [unified parser plugin](https://github.com/unifiedjs/unified#parser), a plugin that sets `this.parser`. The parser must support the syntax that Docusaurus and your Remark plugins need: GFM, front matter, [directives](https://github.com/remarkjs/remark-directive), and MDX for the `mdx` format. |
 | `mdx1Compat` | `MDX1CompatOptions` | `{comments: false, admonitions: false, headingIds: false}` | Compatibility options to make it easier to upgrade from MDX v1. Opt-in to enable legacy syntax that is not valid MDX v2+ anymore. |
 | `anchors` | `MarkdownAnchorsConfig` | `{maintainCase: false}` | Options to control the behavior of anchors generated from Markdown headings |
 | `remarkRehypeOptions` | `object` | `undefined` | Makes it possible to pass custom [`remark-rehype` options](https://github.com/remarkjs/remark-rehype#options). |

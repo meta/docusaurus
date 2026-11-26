@@ -23,6 +23,7 @@ export {
   MDX1CompatOptions,
   MarkdownConfig,
   MarkdownHooks,
+  MarkdownParser,
   DefaultParseFrontMatter,
   ParseFrontMatter,
   OnBrokenMarkdownLinksFunction,

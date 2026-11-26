@@ -90,6 +90,7 @@ const DEFAULT_MARKDOWN_CONFIG: MarkdownConfig = {
   emoji: true,
   preprocessor: undefined,
   parseFrontMatter: DEFAULT_PARSE_FRONT_MATTER,
+  parser: undefined,
   mdx1Compat: {
     comments: false,
     admonitions: false,
@@ -506,6 +507,9 @@ export const ConfigSchema = Joi.object<
     parseFrontMatter: Joi.function().default(
       () => DEFAULT_CONFIG.markdown.parseFrontMatter,
     ),
+    parser: Joi.function()
+      .optional()
+      .default(() => DEFAULT_CONFIG.markdown.parser),
     mermaid: Joi.boolean().default(DEFAULT_CONFIG.markdown.mermaid),
     emoji: Joi.boolean().default(DEFAULT_CONFIG.markdown.emoji),
     preprocessor: Joi.function()

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import React, {type ReactNode} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import _ from 'lodash';
@@ -17,7 +17,8 @@ import {compileToJSX} from '../utils';
 import type {Options} from '../options';
 import type {Root} from 'mdast';
 import type {Root as HastRoot} from 'hast';
-import type {Plugin} from 'unified';
+import type {Plugin, Processor} from 'unified';
+import type {MarkdownParser} from '@docusaurus/types';
 import type {DeepPartial} from 'utility-types';
 
 function createOptions(overrides: DeepPartial<Options> = {}): Options {
@@ -272,6 +273,31 @@ Body
       options,
     );
     expect(result.content).toMatchSnapshot();
+  });
+
+  describe.each(['md', 'mdx'] as const)('%s format parser', (format) => {
+    it('uses the tree of the custom parser', async () => {
+      const parser = vi.fn<MarkdownParser>(
+        () =>
+          function customParser(this: Processor) {
+            this.parser = (): Root => ({
+              type: 'root',
+              children: [
+                {
+                  type: 'paragraph',
+                  children: [{type: 'text', value: 'Parsed'}],
+                },
+              ],
+            });
+          },
+      );
+      const html = await renderContent(
+        'Ignored content',
+        createOptions({markdownConfig: {format, parser}}),
+      );
+      expect(html).toBe('<p>Parsed</p>');
+      expect(parser).toHaveBeenCalledWith({format});
+    });
   });
 
   it('awaits async user plugins', async () => {

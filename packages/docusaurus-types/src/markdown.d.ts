@@ -18,6 +18,10 @@ export type MarkdownPreprocessor = (args: {
   fileContent: string;
 }) => string;
 
+export type MarkdownParser = (params: {
+  format: 'md' | 'mdx';
+}) => NonNullable<ProcessorOptions['remarkPlugins']>[number];
+
 export type MDX1CompatOptions = {
   comments: boolean;
   admonitions: boolean;
@@ -143,6 +147,17 @@ export type MarkdownConfig = {
    * @see https://github.com/meta/docusaurus/issues/5568
    */
   parseFrontMatter: ParseFrontMatter;
+
+  /**
+   * Replaces the default Markdown parser (remark-parse).
+   *
+   * Returns a unified parser plugin for the given format, a plugin that sets
+   * `this.parser` to a function returning an mdast tree.
+   *
+   * @see https://github.com/unifiedjs/unified#parser
+   * @default undefined
+   */
+  parser?: MarkdownParser;
 
   /**
    * Allow mermaid language code blocks to be rendered into Mermaid diagrams:
