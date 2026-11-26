@@ -39,9 +39,8 @@ describe('PostCssPluginWrapInLayer', () => {
       flipPlugin,
     ]).process('a{left:var(--width)}', {from: '/site/file.css'});
 
-    // Bug: the inserted fallback isn't flipped
     expect(result.css).toMatchInlineSnapshot(
-      `"@layer myLayer{a{left:1px;right:var(--width)}}"`,
+      `"@layer myLayer{a{right:1px;right:var(--width)}}"`,
     );
   });
 });
