@@ -27,6 +27,17 @@ Write the description to a uniquely named file in your session scratchpad (like 
 
 After creating the PR, update the deploy preview link in its description with the assigned PR number: `https://deploy-preview-<PR-NUMBER>--docusaurus-2.netlify.app/`. Include links to relevant preview pages in the template's Test links section so that reviewers can easily find them.
 
+## Pushing to a PR
+
+Before pushing new commits to a PR, rebase the branch on a freshly fetched `origin/main`, and resolve the conflicts if any. Pull first to keep the commits others pushed to the PR branch, like the lint autofix commit. For a stacked PR, rebase on its lower PR branch instead.
+
+```bash
+git pull --rebase
+git fetch origin main
+git rebase origin/main
+git push --force-with-lease
+```
+
 ## Scope and stacked PRs
 
 - Keep each PR strictly minimal: every hunk must be required by the PR. Put unrelated refactors and cleanups in another PR, stacked on top.
