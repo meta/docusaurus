@@ -6,7 +6,7 @@ Don't depend on it directly: it has no stability guarantee, except for the `--if
 
 ## Sources
 
-The `styles` folder contains plain CSS. `scripts/build.mjs` only inlines the `@import` rules of `styles/infima.css` into `dist/infima.css`, and flips it with rtlcss into `dist/infima-rtl.css`. The site bundler does the rest: vendor prefixes and fallbacks for the site's target browsers, and minification.
+The `styles` folder contains plain CSS. `scripts/build.mjs` only inlines the `@import` rules of `styles/infima.css` into `dist/infima.css`. The site bundler does the rest: vendor prefixes and fallbacks for the site's target browsers, and minification.
 
 The rule order is the cascade order: moving a rule can change which one wins.
 

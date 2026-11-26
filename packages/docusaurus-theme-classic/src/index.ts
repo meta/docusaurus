@@ -20,10 +20,6 @@ import type {ThemeConfig} from '@docusaurus/theme-common';
 import type {Plugin as PostCssPlugin} from 'postcss';
 import type {PluginOptions} from '@docusaurus/theme-classic';
 
-function getInfimaCSSFile(direction: string) {
-  return `@docusaurus/infima/infima${direction === 'rtl' ? '-rtl' : ''}.css`;
-}
-
 export default function themeClassic(
   context: LoadContext,
   options: PluginOptions,
@@ -69,7 +65,7 @@ export default function themeClassic(
 
     getClientModules() {
       const modules = [
-        require.resolve(getInfimaCSSFile(direction)),
+        require.resolve('@docusaurus/infima/infima.css'),
         './prism-include-languages',
         './nprogress',
       ];
@@ -99,17 +95,10 @@ export default function themeClassic(
 
     configurePostCss(postCssOptions) {
       if (direction === 'rtl') {
-        const resolvedInfimaFile = require.resolve(getInfimaCSSFile(direction));
         const plugin: PostCssPlugin = {
           postcssPlugin: 'RtlCssPlugin',
-          prepare: (result) => {
-            const file = result.root.source?.input.file;
-            // Skip Infima as we are using the its RTL version.
-            if (file === resolvedInfimaFile) {
-              return {};
-            }
-            return rtlcss(result.root as unknown as rtlcss.ConfigOptions);
-          },
+          // rtlcss() returns a plugin, but its type is Plugin | Processor
+          prepare: () => rtlcss() as PostCssPlugin,
         };
         postCssOptions.plugins.push(plugin);
       }

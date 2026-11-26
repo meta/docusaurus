@@ -1409,11 +1409,7 @@ importers:
         specifier: catalog:dev
         version: 4.0.3
 
-  packages/docusaurus-infima:
-    devDependencies:
-      rtlcss:
-        specifier: 'catalog:'
-        version: 4.3.0
+  packages/docusaurus-infima: {}
 
   packages/docusaurus-logger:
     dependencies:

@@ -7,7 +7,6 @@
   ],
   "exports": {
     "./infima.css": "./dist/infima.css",
-    "./infima-rtl.css": "./dist/infima-rtl.css",
     "./package.json": "./package.json"
   },
   "files": [
@@ -25,9 +24,6 @@
     "directory": "packages/docusaurus-infima"
   },
   "license": "MIT",
-  "devDependencies": {
-    "rtlcss": "catalog:"
-  },
   "engines": {
     "node": ">=26.13"
   }
