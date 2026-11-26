@@ -6,25 +6,28 @@
  */
 
 import {findLayer} from './layers';
-import type {Root, PluginCreator} from 'postcss';
+import type {Helpers, Root, PluginCreator} from 'postcss';
 import type {PluginOptions} from './options';
 
 // The layer order is the order of first appearance in the CSS bundle
 // Declaring it in each file makes it independent of the bundler CSS order
 // See https://github.com/meta/docusaurus/pull/13032
-function prependLayersDeclaration(root: Root, layerNames: string[]): void {
-  root.prepend({type: 'atrule', name: 'layer', params: layerNames.join(', ')});
+function prependLayersDeclaration(
+  root: Root,
+  layerNames: string[],
+  {AtRule}: Helpers,
+): void {
+  root.prepend(new AtRule({name: 'layer', params: layerNames.join(', ')}));
 }
 
-function wrapCssRootInLayer(root: Root, layer: string): void {
-  const rootBefore = root.clone();
-  root.removeAll();
-  root.append({
-    type: 'atrule',
-    name: 'layer',
-    params: layer,
-    nodes: rootBefore.nodes,
-  });
+function wrapCssRootInLayer(
+  root: Root,
+  layer: string,
+  {AtRule}: Helpers,
+): void {
+  const layerAtRule = new AtRule({name: 'layer', params: layer});
+  layerAtRule.append(root.nodes);
+  root.append(layerAtRule);
 }
 
 export const PostCssPluginWrapInLayer: PluginCreator<{
@@ -37,15 +40,15 @@ export const PostCssPluginWrapInLayer: PluginCreator<{
   const layerNames = Object.keys(options.layers);
   return {
     postcssPlugin: 'postcss-wrap-in-layer',
-    Once(root) {
+    Once(root, helpers) {
       const filePath = root.source?.input.file;
       if (!filePath) {
         return;
       }
       const layer = findLayer(filePath, layers);
       if (layer) {
-        wrapCssRootInLayer(root, layer);
-        prependLayersDeclaration(root, layerNames);
+        wrapCssRootInLayer(root, layer, helpers);
+        prependLayersDeclaration(root, layerNames, helpers);
       }
     },
   };
