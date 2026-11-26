@@ -174,6 +174,16 @@ describe('createExcerpt', () => {
     );
   });
 
+  it('creates excerpt preserving text containing colons while removing emoji shortcodes', () => {
+    expect(
+      createExcerpt(
+        'Meeting runs 10:30:45 to 11:45:00 daily :wink: with :8ball:. Note: install first. Tip: run the build :+1: and score :100:.',
+      ),
+    ).toBe(
+      'Meeting runs 10:30:45 to 11:45:00 daily with. Note: install first. Tip: run the build and score.',
+    );
+  });
+
   it('creates excerpt for content with imports/exports declarations, with CRLF line endings', () => {
     expect(
       createExcerpt(
