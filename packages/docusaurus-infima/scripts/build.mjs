@@ -7,12 +7,10 @@
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import rtlcss from 'rtlcss';
 
 const packageDir = path.dirname(import.meta.dirname);
 const entryFile = path.join(packageDir, 'styles/infima.css');
 const outputFile = path.join(packageDir, 'dist/infima.css');
-const rtlOutputFile = path.join(packageDir, 'dist/infima-rtl.css');
 
 // Matches the imports of the entry file, like @import url('common/base.css');
 const ImportRegExp = /^@import url\('(?<importPath>.+)'\);$/gm;
@@ -23,7 +21,6 @@ async function main() {
   const css = await inlineImports(entryFile);
   await fs.mkdir(path.dirname(outputFile), {recursive: true});
   await fs.writeFile(outputFile, css);
-  await fs.writeFile(rtlOutputFile, rtlcss.process(css));
 }
 
 async function inlineImports(file) {

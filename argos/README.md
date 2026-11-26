@@ -24,7 +24,7 @@ The workflow execute the 3 main steps below:
 
 ### Infima CSS
 
-- Upload the CSS files compiled by [`@docusaurus/infima`](../packages/docusaurus-infima) (LTR and RTL) to diff them on Argos, in a separate `infima` build, using `pnpm argos:upload:infima`
+- Upload the CSS files compiled by [`@docusaurus/infima`](../packages/docusaurus-infima) to diff them on Argos, in a separate `infima` build, using `pnpm argos:upload:infima`
 
 ## Run manually
 
