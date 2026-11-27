@@ -8,42 +8,33 @@
 declare module '@docusaurus/theme-search-algolia' {
   import type {DeepPartial, Overwrite, Optional} from 'utility-types';
 
-  import type {DocSearchProps} from '@docsearch/react';
-  import type {FacetFilters} from 'algoliasearch/lite';
+  import type {
+    DocSearchProps,
+    DocSearchAskAi,
+    DocSearchIndex,
+  } from '@docsearch/react';
 
-  // The config after normalization (e.g. AskAI string -> object)
-  // This matches DocSearch v4.3+ AskAi configuration
-  export type AskAiConfig = {
-    indexName: string;
-    apiKey: string;
-    appId: string;
-    assistantId: string;
-    searchParameters?: {
-      facetFilters?: FacetFilters;
-    };
-    suggestedQuestions?: boolean;
-  };
+  // `tools` won't currently work as they require functions
+  export type AskAiConfig = Omit<DocSearchAskAi, 'tools'>;
 
   // DocSearch props that Docusaurus exposes directly through props forwarding
   type DocusaurusDocSearchProps = Pick<
     DocSearchProps,
     | 'appId'
     | 'apiKey'
-    | 'indexName'
     | 'placeholder'
     | 'translations'
-    | 'searchParameters'
     | 'insights'
     | 'initialQuery'
+    | 'indices'
+    | 'facets'
+    | 'resultBadgeKey'
   > & {
     // Docusaurus normalizes the AskAI config to an object
     askAi?: AskAiConfig;
   };
 
   export type ThemeConfigAlgolia = DocusaurusDocSearchProps & {
-    // TODO Docusaurus v4: upgrade to DocSearch v4, migrate indexName to indices
-    indexName: string;
-
     // Docusaurus custom options, not coming from DocSearch
     contextualSearch: boolean;
     externalUrlRegex?: string;
@@ -58,20 +49,37 @@ declare module '@docusaurus/theme-search-algolia' {
     algolia: ThemeConfigAlgolia;
   };
 
+  type UserAlgoliaConfig = Overwrite<
+    DeepPartial<Omit<ThemeConfigAlgolia, 'indices'>>,
+    {
+      // Required fields:
+      appId: ThemeConfigAlgolia['appId'];
+      apiKey: ThemeConfigAlgolia['apiKey'];
+      // askAi also accepts a shorter string form
+      askAi?:
+        | string
+        | Optional<
+            AskAiConfig,
+            'indices' | 'appId' | 'apiKey' | 'searchParameters'
+          >;
+    }
+  > &
+    // Single index shorthand, or multiple indices (exclusive)
+    (
+      | {
+          indexName: string;
+          searchParameters?: DocSearchIndex['searchParameters'];
+          indices?: never;
+        }
+      | {
+          indices: ThemeConfigAlgolia['indices'];
+          indexName?: never;
+          searchParameters?: never;
+        }
+    );
+
   export type UserThemeConfig = {
-    algolia?: Overwrite<
-      DeepPartial<ThemeConfigAlgolia>,
-      {
-        // Required fields:
-        appId: ThemeConfigAlgolia['appId'];
-        apiKey: ThemeConfigAlgolia['apiKey'];
-        indexName: ThemeConfigAlgolia['indexName'];
-        // askAi also accepts a shorter string form
-        askAi?:
-          | string
-          | Optional<AskAiConfig, 'indexName' | 'appId' | 'apiKey'>;
-      }
-    >;
+    algolia?: UserAlgoliaConfig;
   };
 }
 
@@ -88,8 +96,8 @@ declare module '@theme/SearchBar' {
 }
 
 declare module '@theme/SearchTranslations' {
-  import type {DocSearchTranslations} from '@docsearch/react';
+  import type {DocSearchAITranslations} from '@docsearch/react';
 
-  const translations: DocSearchTranslations;
+  const translations: DocSearchAITranslations;
   export default translations;
 }

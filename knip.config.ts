@@ -88,8 +88,6 @@ const config: KnipConfig = ({
       ],
       ignore: ['examples/**'],
       ignoreDependencies: [
-        // Only needed to typecheck DocSearch
-        '@ai-sdk/react',
         // Resolved by tests through Vitest aliases
         '@docusaurus/plugin-content-blog',
         '@docusaurus/plugin-content-pages',

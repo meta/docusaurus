@@ -8,7 +8,7 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 
 import {type ReactNode, useEffect, useReducer, useRef, useState} from 'react';
-import clsx from 'clsx';
+import {clsx} from 'clsx';
 
 import algoliaSearchHelper from 'algoliasearch-helper';
 import {liteClient} from 'algoliasearch/lite';
@@ -32,6 +32,7 @@ import {
 } from '@docusaurus/theme-search-algolia/client';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import type {DocSearchIndex} from '@docsearch/react';
 import styles from './styles.module.css';
 
 // Very simple pluralization: probably good enough for now
@@ -232,12 +233,17 @@ function getSearchPageTitle(searchQuery: string | undefined): string {
       });
 }
 
+function getIndexName(indices: Array<string | DocSearchIndex>): string {
+  const first = indices[0]!;
+  return typeof first === 'string' ? first : first.name;
+}
+
 function SearchPageContent(): ReactNode {
   const {
     i18n: {currentLocale},
   } = useDocusaurusContext();
   const {
-    algolia: {appId, apiKey, indexName, contextualSearch},
+    algolia: {appId, apiKey, indices, contextualSearch},
   } = useAlgoliaThemeConfig();
   const processSearchResultUrl = useSearchResultUrlProcessor();
   const documentsFoundPlural = useDocumentsFoundPlural();
@@ -297,6 +303,9 @@ function SearchPageContent(): ReactNode {
   const disjunctiveFacets = contextualSearch
     ? ['language', 'docusaurus_tag']
     : [];
+
+  // The algoliasearch-helper only allows a single index: use the first one
+  const indexName = getIndexName(indices);
 
   const algoliaClient = liteClient(appId, apiKey);
   const algoliaHelper = algoliaSearchHelper(algoliaClient, indexName, {

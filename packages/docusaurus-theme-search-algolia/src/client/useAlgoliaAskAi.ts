@@ -6,26 +6,13 @@
  */
 
 import {useCallback, useMemo, useState} from 'react';
+import {mergeFacetFilters} from '@docsearch/react/utils';
 import translations from '@theme/SearchTranslations';
 import {useAlgoliaContextualFacetFiltersIfEnabled} from './useAlgoliaContextualFacetFilters';
-import {mergeFacetFilters} from './utils';
-import type {AskAiConfig} from '@docusaurus/theme-search-algolia';
-import type {
-  DocSearchModalProps,
-  DocSearchTranslations,
-} from '@docsearch/react';
+import type {DocSearchProps} from './types';
 import type {FacetFilters} from 'algoliasearch/lite';
-
-// The minimal props the hook needs from DocSearch v4 props
-interface DocSearchV4PropsLite {
-  indexName: string;
-  apiKey: string;
-  appId: string;
-  placeholder?: string;
-  translations?: DocSearchTranslations;
-  searchParameters?: DocSearchModalProps['searchParameters'];
-  askAi?: AskAiConfig;
-}
+import type {AskAiConfig} from '@docusaurus/theme-search-algolia';
+import type {DocSearchModalProps} from '@docsearch/react';
 
 type UseAskAiResult = {
   canHandleAskAi: boolean;
@@ -41,38 +28,53 @@ type UseAskAiResult = {
   };
 };
 
-// We need to apply contextualSearch facetFilters to AskAI filters
-// This can't be done at config normalization time because contextual filters
-// can only be determined at runtime
-function applyAskAiContextualSearch(
+export function buildAskAiSearchParameters(
   askAi: AskAiConfig | undefined,
   contextualSearchFilters: FacetFilters | undefined,
 ): AskAiConfig | undefined {
   if (!askAi) {
     return undefined;
   }
-  if (!contextualSearchFilters) {
+
+  const indices = new Set([
+    ...(askAi.indices ?? []),
+    ...Object.keys(askAi.searchParameters ?? {}),
+  ]);
+
+  if (!indices.size) {
     return askAi;
   }
-  const askAiFacetFilters = askAi.searchParameters?.facetFilters;
+
+  const searchParameters = Object.fromEntries(
+    [...indices].map((indexName) => {
+      const params = askAi.searchParameters?.[indexName];
+      return [
+        indexName,
+        {
+          ...params,
+          facetFilters: mergeFacetFilters(
+            contextualSearchFilters,
+            params?.facetFilters,
+          ),
+        },
+      ];
+    }),
+  );
+
   return {
     ...askAi,
-    searchParameters: {
-      ...askAi.searchParameters,
-      facetFilters: mergeFacetFilters(
-        askAiFacetFilters,
-        contextualSearchFilters,
-      ),
-    },
+    // The agent only searches the explicit `indices`, when there are some
+    indices: askAi.indices?.length ? [...indices] : askAi.indices,
+    searchParameters,
   };
 }
 
-export function useAlgoliaAskAi(props: DocSearchV4PropsLite): UseAskAiResult {
+export function useAlgoliaAskAi(props: DocSearchProps): UseAskAiResult {
   const [isAskAiActive, setIsAskAiActive] = useState(false);
   const contextualSearchFilters = useAlgoliaContextualFacetFiltersIfEnabled();
 
   const askAi = useMemo(() => {
-    return applyAskAiContextualSearch(props.askAi, contextualSearchFilters);
+    return buildAskAiSearchParameters(props.askAi, contextualSearchFilters);
   }, [props.askAi, contextualSearchFilters]);
 
   const canHandleAskAi = Boolean(askAi);
@@ -86,7 +88,7 @@ export function useAlgoliaAskAi(props: DocSearchV4PropsLite): UseAskAiResult {
   }, []);
 
   const extraAskAiProps: UseAskAiResult['extraAskAiProps'] = {
-    askAi: askAi as any,
+    askAi,
     canHandleAskAi,
     isAskAiActive,
     onAskAiToggle,

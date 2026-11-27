@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {useMemo} from 'react';
 import {DEFAULT_SEARCH_TAG} from '@docusaurus/theme-common/internal';
 import {useDocsContextualSearchTags} from '@docusaurus/plugin-content-docs/client';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -20,14 +21,18 @@ function useSearchTags() {
 // Translate search-engine agnostic search tags to Algolia search filters
 export function useAlgoliaContextualFacetFilters(): FacetFilters {
   const locale = useDocusaurusContext().i18n.currentLocale;
-  const tags = useSearchTags();
+  const tagsKey = useSearchTags().join('\n');
 
-  // Seems safe to convert locale->language, see AlgoliaSearchMetadata comment
-  const languageFilter = `language:${locale}`;
+  return useMemo(() => {
+    // Seems safe to convert locale->language, see AlgoliaSearchMetadata comment
+    const languageFilter = `language:${locale}`;
 
-  const tagsFilter = tags.map((tag) => `docusaurus_tag:${tag}`);
+    const tagsFilter = tagsKey
+      .split('\n')
+      .map((tag) => `docusaurus_tag:${tag}`);
 
-  return [languageFilter, tagsFilter];
+    return [languageFilter, tagsFilter];
+  }, [locale, tagsKey]);
 }
 
 export function useAlgoliaContextualFacetFiltersIfEnabled():

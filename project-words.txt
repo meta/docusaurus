@@ -17,6 +17,7 @@ appinstalled
 Applanga
 applescript
 Ashim
+askai
 astring
 atrule
 autogenerating
@@ -204,6 +205,7 @@ osascript
 Outerbounds
 outerbounds
 overrideable
+oxor
 ozaki
 ozakione
 O’Shannessy

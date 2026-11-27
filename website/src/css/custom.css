@@ -120,6 +120,7 @@ html[data-theme='dark'] {
   --docsearch-hit-color: var(--ifm-font-color-base);
   --docsearch-hit-active-color: var(--ifm-color-white);
   --docsearch-hit-background: var(--ifm-color-white);
+  --docsearch-hit-focus-background: #003dff1a;
   /* Footer */
   --docsearch-footer-background: var(--ifm-color-white);
 }
