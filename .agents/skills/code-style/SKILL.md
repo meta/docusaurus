@@ -38,9 +38,12 @@ async function main() {
 
 ## Comments
 
-- Don't comment code that is self-explanatory: when the names, the signature or the code already say it, add no comment.
+- Unnecessary comments are harmful: spare them. Don't comment what is self-explanatory, explicit or covered by a unit test: when the names, the signature, the code or a test already say it (like an explicit option or attribute name), add no comment.
 - Comment the code that is weird, unexpected or surprising (a workaround, a non-obvious constraint, an order that matters): that's where readers need one.
-- Keep comments short, one line when possible. Point to the details instead of writing them out: link the issue, PR, documentation or upstream bug that explains them.
+- Keep comments terse, one line when possible, phrased as concisely as possible. Point to the details instead of writing them out: link the issue, PR, documentation or upstream bug that explains them.
+- Never explain a third-party feature (a tool setting, a library API…) in a comment: link its documentation instead, and only comment a usage of it that is non-obvious.
+- Start the comment of a temporary workaround, like one for an upstream bug that will probably be fixed, with `TODO`, and link the issue tracking the fix.
+- When you come across a `TODO` linking an issue, check whether the issue is fixed. If it is, suggest removing the workaround, upgrading the dependency if needed.
 - Prefer linking the PR that adds the comment over older references: its description can hold all the context, and link to those older issues and PRs.
 - When moving an existing comment, keep its wording: fix typos, don't rephrase it.
 - Put each comment on the code it applies to, never floating between unrelated lines. To explain why an option keeps its default value, write that option with its default value, like `trailingSlash: undefined`, and comment it.
