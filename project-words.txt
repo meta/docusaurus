@@ -310,6 +310,7 @@ supersuit
 swizzlable
 Sébastien
 Tagkey
+talata
 Teik
 Therox
 thisweekinreact
