@@ -29,6 +29,7 @@ const ignorePatterns = [
   // Built outputs — we test sources, not the compiled `lib/`.
   '**/packages/docusaurus/lib/**',
   '**/packages/docusaurus-logger/lib/**',
+  '**/packages/docusaurus-prompts/lib/**',
   '**/packages/docusaurus-utils/lib/**',
   '**/packages/docusaurus-utils-common/lib/**',
   '**/packages/docusaurus-utils-validation/lib/**',
@@ -89,6 +90,11 @@ const resolveAliases: AliasOptions = [
   {
     find: /^@docusaurus\/fs$/,
     replacement: `${rootDir}packages/docusaurus-fs/src/index.ts`,
+  },
+  // Resolve @docusaurus/prompts to src instead of lib.
+  {
+    find: /^@docusaurus\/prompts$/,
+    replacement: `${rootDir}packages/docusaurus-prompts/src/index.ts`,
   },
   // Resolve @docusaurus/utils-validation to src instead of lib.
   {

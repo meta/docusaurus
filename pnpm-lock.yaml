@@ -1063,15 +1063,15 @@ importers:
       '@docusaurus/logger':
         specifier: workspace:*
         version: link:../docusaurus-logger
+      '@docusaurus/prompts':
+        specifier: workspace:*
+        version: link:../docusaurus-prompts
       commander:
         specifier: 'catalog:'
         version: 15.0.0
       cross-spawn:
         specifier: 'catalog:'
         version: 7.0.6
-      prompts:
-        specifier: 'catalog:'
-        version: 2.4.2
       semver:
         specifier: 'catalog:'
         version: 7.8.5
@@ -1177,6 +1177,9 @@ importers:
       '@docusaurus/mdx-loader':
         specifier: workspace:*
         version: link:../docusaurus-mdx-loader
+      '@docusaurus/prompts':
+        specifier: workspace:*
+        version: link:../docusaurus-prompts
       '@docusaurus/utils':
         specifier: workspace:*
         version: link:../docusaurus-utils
@@ -1234,9 +1237,6 @@ importers:
       p-map:
         specifier: 'catalog:'
         version: 7.0.8
-      prompts:
-        specifier: 'catalog:'
-        version: 2.4.2
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -2320,6 +2320,18 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
+
+  packages/docusaurus-prompts:
+    dependencies:
+      '@docusaurus/logger':
+        specifier: workspace:*
+        version: link:../docusaurus-logger
+      prompts:
+        specifier: 'catalog:'
+        version: 2.4.2
+      tslib:
+        specifier: 'catalog:'
+        version: 2.8.1
 
   packages/docusaurus-remark-plugin-npm2yarn:
     dependencies:

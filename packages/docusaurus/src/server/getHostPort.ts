@@ -10,9 +10,9 @@ import {
   type ExecSyncOptionsWithStringEncoding,
 } from 'node:child_process';
 import logger from '@docusaurus/logger';
+import {askConfirm} from '@docusaurus/prompts';
 import detect from 'detect-port';
 import {DEFAULT_PORT} from '@docusaurus/utils';
-import prompts from 'prompts';
 
 const execOptions: ExecSyncOptionsWithStringEncoding = {
   encoding: 'utf8',
@@ -76,16 +76,15 @@ async function choosePort(
     }
     clearConsole();
     const existingProcess = getProcessForPort(defaultPort);
-    const {shouldChangePort} = (await prompts({
-      type: 'confirm',
-      name: 'shouldChangePort',
+    const shouldChangePort = await askConfirm({
       message: logger.yellow(`${logger.bold('[WARNING]')} ${message}${
         existingProcess ? ` Probably:\n  ${existingProcess}` : ''
       }
 
 Would you like to run the app on another port instead?`),
       initial: true,
-    })) as {shouldChangePort: boolean};
+      answerHint: 'the --port option',
+    });
     return shouldChangePort ? port : null;
   } catch (err) {
     throw new Error(

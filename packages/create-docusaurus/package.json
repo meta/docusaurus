@@ -24,9 +24,9 @@
   "dependencies": {
     "@docusaurus/fs": "workspace:*",
     "@docusaurus/logger": "workspace:*",
+    "@docusaurus/prompts": "workspace:*",
     "commander": "catalog:",
     "cross-spawn": "catalog:",
-    "prompts": "catalog:",
     "semver": "catalog:",
     "tslib": "catalog:"
   },
