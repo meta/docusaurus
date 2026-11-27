@@ -225,7 +225,6 @@ catalogs:
     remark: ^15.0.1
     remark-rehype: ^11.1.2
     rimraf: ^6.1.3
-    search-insights: ^2.17.3
     stylelint-config-standard: ^40.0.0
     syncpack: ^15.3.3
     to-vfile: ^8.0.0
