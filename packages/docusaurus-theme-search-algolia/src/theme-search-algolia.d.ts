@@ -96,8 +96,8 @@ declare module '@theme/SearchBar' {
 }
 
 declare module '@theme/SearchTranslations' {
-  import type {DocSearchTranslations} from '@docsearch/react';
+  import type {DocSearchAITranslations} from '@docsearch/react';
 
-  const translations: DocSearchTranslations;
+  const translations: DocSearchAITranslations;
   export default translations;
 }
