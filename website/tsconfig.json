@@ -32,7 +32,12 @@
     // imported, invalid semantics...). Because we don't have end-to-end type
     // tests, removing this would make things much harder to catch.
     "skipLibCheck": false,
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "@site/*": ["${configDir}/*"],
+      // See src/remark/satteri.d.ts
+      "satteri": ["${configDir}/src/remark/satteri.d.ts"]
+    }
   },
   "exclude": ["build", ".docusaurus", "src/sw.js", "_dogfooding/_asset-tests"]
 }

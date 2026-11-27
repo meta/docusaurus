@@ -265,6 +265,7 @@ rtcts
 runneradmin
 Samply
 samply
+satteri
 saurus
 Sebastien
 sebastien
@@ -308,6 +309,7 @@ supabase
 superproject
 supersuit
 swizzlable
+Sätteri
 Sébastien
 Tagkey
 talata
