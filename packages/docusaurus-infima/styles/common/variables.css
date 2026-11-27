@@ -139,13 +139,27 @@
   --ifm-font-color-base: var(--ifm-color-content);
   --ifm-font-color-base-inverse: var(--ifm-color-content-inverse);
   --ifm-font-color-secondary: var(--ifm-color-content-secondary);
-  /* No system-ui: it's meant for UI elements, not paragraphs, and Windows in */
-  /* Chinese, Japanese or Korean resolves it to a UI font that ignores lang */
-  /* See https://github.com/meta/docusaurus/issues/11727 */
-  /* BlinkMacSystemFont: Chrome on macOS ignores -apple-system */
-  /* 'Ubuntu Sans' and 'Adwaita Sans': the UI fonts of Ubuntu and GNOME 48+ */
-  /* The other fonts up to the first sans-serif were added by postcss-preset-env v7 */
+  /* No system-ui: Windows in Chinese, Japanese or Korean resolves it to a UI font that ignores lang */
+  /* Details: https://github.com/meta/docusaurus/pull/13148 */
+  /* -apple-system: Safari and Firefox on macOS and iOS */
+  /* BlinkMacSystemFont: Chrome and Edge on macOS, which ignore -apple-system */
+  /* 'Segoe UI': Windows */
+  /* Roboto: Android and ChromeOS */
+  /* 'Ubuntu Sans': Ubuntu 24.04+ */
+  /* Ubuntu: older Ubuntu */
+  /* 'Adwaita Sans': GNOME 48+, like Fedora 42+ */
+  /* Cantarell: older GNOME */
+  /* 'Noto Sans': KDE and other Linux desktops */
+  /* sans-serif: the browser default, like Arial, Helvetica or Liberation Sans */
+  /* The next 4 items were added by postcss-preset-env v7, and are rarely reached */
   /* Removing them could change the per-glyph font fallback */
+  /* 'Segoe UI': Windows */
+  /* Helvetica: macOS and iOS */
+  /* Arial: Windows and macOS */
+  /* sans-serif: the browser default */
+  /* 'Apple Color Emoji': macOS and iOS emojis */
+  /* 'Segoe UI Emoji': Windows emojis */
+  /* 'Segoe UI Symbol': Windows symbols */
   --ifm-font-family-base:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Ubuntu Sans',
     Ubuntu, 'Adwaita Sans', Cantarell, 'Noto Sans', sans-serif, 'Segoe UI',
