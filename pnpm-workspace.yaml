@@ -246,8 +246,6 @@ overrides:
 minimumReleaseAge: 10080 # 7 days in minutes
 minimumReleaseAgeStrict: true
 minimumReleaseAgeIgnoreMissingTime: false
-# pnpm install removes the entries that the lockfile no longer resolves
-# Entries still in the lockfile stay, even once older than minimumReleaseAge
 minimumReleaseAgeExcludePrune: true
 minimumReleaseAgeExclude:
   - pnpm
@@ -257,7 +255,6 @@ minimumReleaseAgeExclude:
 
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 525600 # ignore packages published 1+ year ago
-# pnpm install removes the entries that the lockfile no longer resolves
 trustPolicyExcludePrune: true
 trustPolicyExclude:
   - '@trickfilm400/rollup-plugin-off-main-thread@3.0.0-pre1'
