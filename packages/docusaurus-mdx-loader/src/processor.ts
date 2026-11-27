@@ -184,6 +184,12 @@ function createProcessorUncached({
   // (after npm2yarn for example)
   remarkPlugins.push(codeCompatPlugin);
 
+  // Replaces remark-parse. Last, so that it can read what the other plugins
+  // registered, like micromark syntax extensions
+  if (options.markdownConfig.parser) {
+    remarkPlugins.push(options.markdownConfig.parser({format}));
+  }
+
   const rehypePlugins: MDXPlugin[] = [
     ...(options.beforeDefaultRehypePlugins ?? []),
     ...(options.rehypePlugins ?? []),

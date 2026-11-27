@@ -92,6 +92,7 @@ describe('normalizeConfig', () => {
         emoji: false,
         parseFrontMatter: async (params) =>
           params.defaultParseFrontMatter(params),
+        parser: () => () => {},
         preprocessor: ({fileContent}) => fileContent,
         mdx1Compat: {
           comments: true,
@@ -584,6 +585,7 @@ describe('markdown', () => {
       emoji: false,
       parseFrontMatter: async (params) =>
         params.defaultParseFrontMatter(params),
+      parser: () => () => {},
       preprocessor: ({fileContent}) => fileContent,
       mdx1Compat: {
         comments: false,
