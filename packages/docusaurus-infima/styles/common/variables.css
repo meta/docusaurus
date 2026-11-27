@@ -149,18 +149,13 @@
   /* Cantarell: GNOME */
   /* 'Noto Sans': KDE and other Linux desktops */
   /* sans-serif: the browser default */
-  /* BlinkMacSystemFont: Chrome and Edge on macOS */
-  /* 'Segoe UI': Windows */
-  /* Helvetica: macOS and iOS */
-  /* Arial: Windows and macOS */
-  /* sans-serif: the browser default */
   /* 'Apple Color Emoji': macOS and iOS emojis */
   /* 'Segoe UI Emoji': Windows emojis */
   /* 'Segoe UI Symbol': Windows symbols */
   --ifm-font-family-base:
     system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell,
-    'Noto Sans', sans-serif, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
   /* SFMono-Regular: SF Mono, when installed */
   /* Menlo: macOS */
   /* Monaco: older macOS */
