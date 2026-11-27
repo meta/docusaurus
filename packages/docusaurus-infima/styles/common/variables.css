@@ -139,15 +139,38 @@
   --ifm-font-color-base: var(--ifm-color-content);
   --ifm-font-color-base-inverse: var(--ifm-color-content-inverse);
   --ifm-font-color-secondary: var(--ifm-color-content-secondary);
-  /* The fonts after system-ui were added by postcss-preset-env v7 */
-  /* Removing them could change the per-glyph font fallback */
+  /* No system-ui: Windows in Chinese, Japanese or Korean resolves it to a UI font that ignores lang */
+  /* Details: https://github.com/meta/docusaurus/pull/13148 */
+  /* -apple-system: Safari and Firefox on macOS and iOS */
+  /* BlinkMacSystemFont: Chrome and Edge on macOS, which ignore -apple-system */
+  /* 'Segoe UI': Windows */
+  /* 'Ubuntu Sans': Ubuntu 24.04+ */
+  /* Ubuntu: older Ubuntu */
+  /* 'Adwaita Sans': GNOME 48+, like Fedora 42+ */
+  /* Cantarell: older GNOME */
+  /* 'Noto Sans': KDE and other Linux desktops */
+  /* Roboto: Android and ChromeOS, after the Linux fonts, as Linux can also have it */
+  /* Arial: Liberation Sans on Linux, and Arabic and Hebrew in Chrome and Edge on macOS */
+  /* sans-serif: the browser default */
+  /* 'Apple Color Emoji': macOS and iOS emojis */
+  /* 'Segoe UI Emoji': Windows emojis */
+  /* 'Segoe UI Symbol': Windows symbols */
+  /* 'Noto Color Emoji': Linux emojis */
   --ifm-font-family-base:
-    system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell,
-    'Noto Sans', sans-serif, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Ubuntu Sans', Ubuntu,
+    'Adwaita Sans', Cantarell, 'Noto Sans', Roboto, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  /* ui-monospace: SF Mono in Safari */
+  /* SFMono-Regular: SF Mono, when installed */
+  /* Menlo: macOS */
+  /* Monaco: older macOS */
+  /* Consolas: Windows */
+  /* 'Liberation Mono': Linux */
+  /* 'Courier New': Windows and macOS */
+  /* monospace: the browser default */
   --ifm-font-family-monospace:
-    SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-    monospace;
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
   --ifm-font-size-base: 100%;
 
   --ifm-font-weight-light: 300;

@@ -1,6 +1,6 @@
 ---
 name: verification
-description: Prove how code behaves before reporting it. Use before claiming that a change works, fails or is needed, in particular on another platform than the one you run on (like Windows from macOS).
+description: Prove how code behaves before reporting it. Use before claiming that a change works, fails or is needed, in particular on another platform than the one you run on (like Windows from macOS), and before posting visual diffs in a PR.
 ---
 
 # Verification
@@ -22,3 +22,15 @@ The same goes for how a page renders or behaves on an OS or browser you don't ru
 - Delete the workflow afterwards with a normal commit, never a force-push.
 
 A runner can't change every OS setting. For example, a Windows display language only applies after a new sign-in: simulate it through the setting the code reads (like the UI fonts that the `SystemParametersInfo` Win32 API sets), and report it as a simulation.
+
+## Visual diffs in PRs
+
+When a PR changes how pages render, post a visual diff in it. It matters most when the diff:
+
+- Isn't captured by Argos.
+- Can't be seen on the deploy preview from the maintainer's macOS computer.
+- Can't easily be tested locally either.
+
+Take the screenshots with a local headless browser (like Playwright), never with the maintainer's own browser (Claude in Chrome): it disrupts their usage. For other OSes like Windows and Linux, take them with a temporary workflow (see [Other platforms](#other-platforms)), then download its artifacts to process them locally.
+
+Post the images inline in a PR comment, as native GitHub comment images: not links, artifacts or committed files. GitHub has no API to upload them, so this is the only exception: upload them through the maintainer's browser, in a new tab. Like Argos, crop them and show them in a before/after table when it makes sense. When the diff isn't obvious, highlight it or comment it.

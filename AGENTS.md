@@ -130,7 +130,7 @@ Task-specific instructions live in skills, following the [Agent Skills](https://
 - [`code-style`](.agents/skills/code-style/SKILL.md) - Write or modify code that humans can easily review
 - [`dependencies`](.agents/skills/dependencies/SKILL.md) - Add, remove or upgrade npm dependencies, keep dependency groups in sync
 - [`pull-requests`](.agents/skills/pull-requests/SKILL.md) - Create, update, check the CI of, or merge a PR (maintainers only)
-- [`verification`](.agents/skills/verification/SKILL.md) - Prove how code behaves before reporting it, including on another platform (like Windows from macOS)
+- [`verification`](.agents/skills/verification/SKILL.md) - Prove how code behaves before reporting it, including on another platform (like Windows from macOS), and post visual diffs in PRs
 
 ## Conventions
 
