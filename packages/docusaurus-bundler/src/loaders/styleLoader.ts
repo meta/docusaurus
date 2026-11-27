@@ -9,6 +9,8 @@ import {getCSSExtractPlugin} from '../currentBundler';
 import {getClientQueries} from '../browserslist';
 import type {ConfigureWebpackUtils, CurrentBundler} from '@docusaurus/types';
 
+type Loader = {loader: string; options?: {[key: string]: unknown}};
+
 export async function createStyleLoadersFactory({
   currentBundler,
 }: {
@@ -39,7 +41,7 @@ export async function createStyleLoadersFactory({
             },
           ]
         : // Ignore regular CSS files
-          [{loader: require.resolve('./nullLoader')}];
+          [getNullLoader()];
     }
 
     return [
@@ -59,30 +61,56 @@ export async function createStyleLoadersFactory({
       // But in practice, it's not a big deal because css-loader also uses postcss
       // and is able to reuse the parsed AST from postcss-loader
       // See https://github.com/webpack-contrib/css-loader/blob/master/src/index.js#L159
-      {
-        // Options for PostCSS as we reference these options twice
-        // Adds vendor prefixing based on your specified browser support in
-        // package.json
-        loader: require.resolve('postcss-loader'),
-        options: {
-          postcssOptions: {
-            // Necessary for external CSS imports to work
-            // https://github.com/facebook/create-react-app/issues/2677
-            ident: 'postcss',
-            plugins: [
-              [
-                require.resolve('postcss-preset-env'),
-                {
-                  // Otherwise, preset-env ignores the Docusaurus default
-                  // queries, and Autoprefixer reads the config of each CSS
-                  // file's path
-                  browsers: getClientQueries(),
-                },
-              ],
-            ],
-          },
-        },
-      },
+      getPostCssLoader(),
     ];
+  };
+}
+
+/**
+ * The loaders to use with the Rspack native CSS rule types ("css" and
+ * "css/module"), which replace css-loader and CssExtractRspackPlugin.
+ */
+export function getNativeStyleLoaders({
+  isServer,
+  isCssModule,
+}: {
+  isServer: boolean;
+  isCssModule: boolean;
+}): Loader[] {
+  // On the server we don't need to emit CSS, only CSS module class names
+  if (isServer) {
+    return isCssModule ? [] : [getNullLoader()];
+  }
+  return [getPostCssLoader()];
+}
+
+function getNullLoader(): Loader {
+  return {loader: require.resolve('./nullLoader')};
+}
+
+function getPostCssLoader(): Loader {
+  return {
+    // Options for PostCSS as we reference these options twice
+    // Adds vendor prefixing based on your specified browser support in
+    // package.json
+    loader: require.resolve('postcss-loader'),
+    options: {
+      postcssOptions: {
+        // Necessary for external CSS imports to work
+        // https://github.com/facebook/create-react-app/issues/2677
+        ident: 'postcss',
+        plugins: [
+          [
+            require.resolve('postcss-preset-env'),
+            {
+              // Otherwise, preset-env ignores the Docusaurus default
+              // queries, and Autoprefixer reads the config of each CSS
+              // file's path
+              browsers: getClientQueries(),
+            },
+          ],
+        ],
+      },
+    },
   };
 }

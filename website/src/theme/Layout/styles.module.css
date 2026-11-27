@@ -6,6 +6,7 @@
  */
 
 /* Used to test CSS insertion order */
-.test-marker-theme-layout {
+/* Global: Rspack removes the unused CSS module classes */
+:global(.test-marker-theme-layout) {
   content: 'theme-layout';
 }

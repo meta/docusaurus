@@ -40,7 +40,34 @@ describe('PostCssPluginWrapInLayer', () => {
     ]).process('a{left:var(--width)}', {from: '/site/file.css'});
 
     expect(result.css).toMatchInlineSnapshot(
-      `"@layer myLayer{a{right:1px;right:var(--width)}}"`,
+      `"@layer myLayer;@layer myLayer{a{right:1px;right:var(--width)}}"`,
     );
+  });
+
+  const layers = {
+    'layer.a': (filePath: string) => filePath.endsWith('a.css'),
+    'layer.b': (filePath: string) => filePath.endsWith('b.css'),
+  };
+
+  async function processCss(css: string, filePath: string): Promise<string> {
+    const result = await postcss([PostCssPluginWrapInLayer({layers})]).process(
+      css,
+      {from: filePath},
+    );
+    return result.css;
+  }
+
+  it('wraps the file in its layer, after the layers declaration', async () => {
+    await expect(
+      processCss('.a { color: red; }', '/site/b.css'),
+    ).resolves.toMatchInlineSnapshot(
+      `"@layer layer.a, layer.b;@layer layer.b {.a { color: red; } }"`,
+    );
+  });
+
+  it('does not change a file without layer', async () => {
+    await expect(
+      processCss('.a { color: red; }', '/site/c.css'),
+    ).resolves.toMatchInlineSnapshot(`".a { color: red; }"`);
   });
 });
