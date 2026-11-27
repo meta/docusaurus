@@ -55,7 +55,7 @@ describe('buildAskAiSearchParameters', () => {
       ),
     ).toEqual({
       agentId: 'agent',
-      indices: ['index-1'],
+      indices: ['index-1', 'index-2'],
       searchParameters: {
         'index-1': {},
         'index-2': {facetFilters: ['type:content']},
@@ -98,7 +98,7 @@ describe('buildAskAiSearchParameters', () => {
       ),
     ).toEqual({
       agentId: 'agent',
-      indices: ['index-1'],
+      indices: ['index-1', 'index-2'],
       searchParameters: {
         'index-1': {facetFilters: contextualFacetFilters},
         'index-2': {distinct: false, facetFilters: contextualFacetFilters},

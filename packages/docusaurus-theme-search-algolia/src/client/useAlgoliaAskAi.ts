@@ -61,7 +61,12 @@ export function buildAskAiSearchParameters(
     }),
   );
 
-  return {...askAi, searchParameters};
+  return {
+    ...askAi,
+    // The agent only searches the explicit `indices`, when there are some
+    indices: askAi.indices?.length ? [...indices] : askAi.indices,
+    searchParameters,
+  };
 }
 
 export function useAlgoliaAskAi(props: DocSearchProps): UseAskAiResult {
