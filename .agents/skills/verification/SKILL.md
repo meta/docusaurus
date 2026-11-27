@@ -1,6 +1,6 @@
 ---
 name: verification
-description: Prove how code behaves before reporting it. Use before claiming that a change works, fails or is needed, in particular on another platform than the one you run on (like Windows from macOS).
+description: Prove how code behaves before reporting it. Use before claiming that a change works, fails or is needed, in particular on another platform than the one you run on (like Windows from macOS), and before posting screenshots in a PR.
 ---
 
 # Verification
@@ -17,8 +17,16 @@ The same goes for how a page renders or behaves on an OS or browser you don't ru
 
 - Push it (like `.github/workflows/tmp-<topic>.yml`) in a commit titled `DO NOT MERGE: …`, on the PR or on a temporary branch. Trigger it on `pull_request` or `push`: `workflow_dispatch` only runs workflows that exist on the default branch.
 - Run a matrix of Linux, Windows and macOS runners, and drive the browsers with Playwright (Chrome, Edge, Firefox, WebKit).
-- Upload the screenshots as artifacts, and print measured values in the log, like the fonts that the Chrome DevTools Protocol `CSS.getPlatformFontsForNode` reports for a node.
+- Upload each screenshot as its own unzipped artifact (an `actions/upload-artifact` step per file, with `archive: false` and a short `retention-days`), and print measured values in the log, like the fonts that the Chrome DevTools Protocol `CSS.getPlatformFontsForNode` reports for a node.
 - Download the artifacts with `gh run download`, look at the screenshots yourself before reporting, and link the run.
 - Delete the workflow afterwards with a normal commit, never a force-push.
 
 A runner can't change every OS setting. For example, a Windows display language only applies after a new sign-in: simulate it through the setting the code reads (like the UI fonts that the `SystemParametersInfo` Win32 API sets), and report it as a simulation.
+
+## Screenshots in PRs
+
+When screenshots back the test plan, post them in the PR. They matter most for visual changes that Argos and CI don't report or validate (other OSes and browsers, fonts, installed software).
+
+- Never use the maintainer's own browser (Claude in Chrome) to take, upload or post them. Take them with headless tooling, and publish them from a GitHub Actions workflow, as above.
+- Link each artifact in a PR comment that says what each image shows. Its URL is `https://github.com/<owner>/<repo>/actions/runs/<run-id>/artifacts/<artifact-id>`, with the ids listed by `gh api repos/<owner>/<repo>/actions/runs/<run-id>/artifacts`.
+- Prefer cropped, labeled before/after images to raw full-page screenshots.
