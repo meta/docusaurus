@@ -39,7 +39,7 @@ describe('useNormalizeIndices', () => {
   it('normalizes the indices with the contextual facetFilters', () => {
     expect(
       renderUseNormalizeIndices({
-        contextualSearch: 'true',
+        contextualSearch: true,
         indices: [
           'index-1',
           {name: 'index-2', searchParameters: {facetFilters: ['type:content']}},
@@ -122,7 +122,7 @@ describe('normalizeIndex', () => {
   });
 
   describe('with contextual search', () => {
-    const normalize = normalizeIndex(contextualFacetFilters, 'true');
+    const normalize = normalizeIndex(contextualFacetFilters, true);
 
     it('uses the contextual facetFilters for an index name string', () => {
       expect(normalize('my-index')).toEqual({
@@ -189,7 +189,7 @@ describe('normalizeIndex', () => {
     });
 
     it('returns empty facetFilters when contextual and config ones are empty', () => {
-      expect(normalizeIndex([], 'true')('my-index')).toEqual({
+      expect(normalizeIndex([], true)('my-index')).toEqual({
         name: 'my-index',
         searchParameters: {facetFilters: []},
       });
@@ -225,8 +225,8 @@ describe('normalizeIndex', () => {
     });
   });
 
-  it('ignores contextual facetFilters when contextual search is an empty string', () => {
-    const normalize = normalizeIndex(contextualFacetFilters, '');
+  it('ignores contextual facetFilters when contextual search is false', () => {
+    const normalize = normalizeIndex(contextualFacetFilters, false);
     expect(normalize('my-index')).toEqual({
       name: 'my-index',
       searchParameters: {facetFilters: []},
@@ -235,17 +235,15 @@ describe('normalizeIndex', () => {
 
   it('normalizes multiple indices', () => {
     const indices = ['index-1', {name: 'index-2'}];
-    expect(indices.map(normalizeIndex(contextualFacetFilters, 'true'))).toEqual(
-      [
-        {
-          name: 'index-1',
-          searchParameters: {facetFilters: contextualFacetFilters},
-        },
-        {
-          name: 'index-2',
-          searchParameters: {facetFilters: contextualFacetFilters},
-        },
-      ],
-    );
+    expect(indices.map(normalizeIndex(contextualFacetFilters, true))).toEqual([
+      {
+        name: 'index-1',
+        searchParameters: {facetFilters: contextualFacetFilters},
+      },
+      {
+        name: 'index-2',
+        searchParameters: {facetFilters: contextualFacetFilters},
+      },
+    ]);
   });
 });

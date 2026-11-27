@@ -15,7 +15,7 @@ type Index = DocSearchProps['indices'][number];
 
 export function normalizeIndex(
   contextualFacetFilters: FacetFilters,
-  contextualSearch?: string,
+  contextualSearch?: boolean,
 ) {
   return (index: Index): Index => {
     const normalizedIndex =
