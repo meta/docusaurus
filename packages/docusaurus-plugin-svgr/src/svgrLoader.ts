@@ -80,6 +80,9 @@ function createDefaultSVGRConfig({siteDir}: {siteDir: string}): SVGRConfig {
     svgo: true,
     svgoConfig: createDefaultSVGOConfig({siteDir}),
     titleProp: true,
+    // Skip svgr.config.js discovered in the site directory or an ancestor.
+    // See https://github.com/meta/docusaurus/issues/8646
+    runtimeConfig: false,
   };
 }
 
