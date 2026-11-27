@@ -76,22 +76,36 @@ export const DataAttributeQueryStringInlineJavaScript = `
 // the announcement bar asap (before React hydration)
 export function getAnnouncementBarInlineScript({
   siteStorage,
+  announcementBar,
 }: {
   siteStorage: SiteStorage;
+  announcementBar?: {
+    id?: string;
+  };
 }): string {
   // Duplicated constant. Unfortunately we can't import it from theme-common, as
   // we need to support older nodejs versions without ESM support
   // TODO: import from theme-common once we support Node.js with ESM support
   // + move all those announcementBar stuff there too
+  const AnnouncementBarIdStorageKey = `docusaurus.announcement.id${siteStorage.namespace}`;
   const AnnouncementBarDismissStorageKey = `docusaurus.announcement.dismiss${siteStorage.namespace}`;
   const AnnouncementBarDismissDataAttribute =
     'data-announcement-bar-initially-dismissed';
+  const announcementBarId = announcementBar?.id;
 
   /* language=js */
   return `(function() {
   function isDismissed() {
     try {
-      return localStorage.getItem('${AnnouncementBarDismissStorageKey}') === 'true';
+      ${
+        announcementBarId !== undefined
+          ? `if (localStorage.getItem('${AnnouncementBarIdStorageKey}') !== ${JSON.stringify(
+              announcementBarId,
+            )}) {
+        return false;
+      }\n      `
+          : ''
+      }return localStorage.getItem('${AnnouncementBarDismissStorageKey}') === 'true';
     } catch (err) {}
     return false;
   }
