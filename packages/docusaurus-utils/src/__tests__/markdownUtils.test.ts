@@ -438,6 +438,76 @@ Lorem Ipsum
     });
   });
 
+  it('parses markdown h1 title with trailing hash in heading text (e.g. C#)', () => {
+    const markdown = dedent`
+
+          # Learn C#
+
+          Lorem Ipsum
+
+        `;
+    expect(parseMarkdownContentTitle(markdown)).toEqual({
+      content: markdown,
+      contentTitle: 'Learn C#',
+    });
+  });
+
+  it('parses markdown h1 title with trailing hash and closing ATX #', () => {
+    const markdown = dedent`
+
+          # Learn C# ###
+
+          Lorem Ipsum
+
+        `;
+    expect(parseMarkdownContentTitle(markdown)).toEqual({
+      content: markdown,
+      contentTitle: 'Learn C#',
+    });
+  });
+
+  it('parses markdown h1 title with trailing hash and fixed anchor-id syntax', () => {
+    const markdown = dedent`
+
+          # Learn C# {#my-anchor-id}
+
+          Lorem Ipsum
+
+        `;
+    expect(parseMarkdownContentTitle(markdown)).toEqual({
+      content: markdown,
+      contentTitle: 'Learn C#',
+    });
+  });
+
+  it('parses markdown h1 title with trailing hash, closing ATX # and anchor-id', () => {
+    const markdown = dedent`
+
+          # Learn C# ## {#my-anchor-id}
+
+          Lorem Ipsum
+
+        `;
+    expect(parseMarkdownContentTitle(markdown)).toEqual({
+      content: markdown,
+      contentTitle: 'Learn C#',
+    });
+  });
+
+  it('parses markdown h1 title matching CommonMark example (foo#)', () => {
+    const markdown = dedent`
+
+          # foo#
+
+          Lorem Ipsum
+
+        `;
+    expect(parseMarkdownContentTitle(markdown)).toEqual({
+      content: markdown,
+      contentTitle: 'foo#',
+    });
+  });
+
   it('parses markdown h1 title at the top followed by h2 title', () => {
     const markdown = dedent`
 
