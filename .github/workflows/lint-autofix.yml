@@ -44,6 +44,12 @@ jobs:
           # Security: prevents cache poisoning, as the fixes of this job are pushed to the repository
           cache: false
 
+      # TODO remove once https://github.com/pnpm/pnpm/issues/18498 is fixed
+      # The setup install already pruned the stale pnpm-workspace.yaml exclusions
+      # Install again, or the next pnpm commands fail verifyDepsBeforeRun
+      - name: AutoFix pnpm exclusions
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
       - name: AutoFix Duplicated deps
         run: pnpm lint:deps:fix
 

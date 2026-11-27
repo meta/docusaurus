@@ -246,33 +246,18 @@ overrides:
 minimumReleaseAge: 10080 # 7 days in minutes
 minimumReleaseAgeStrict: true
 minimumReleaseAgeIgnoreMissingTime: false
+minimumReleaseAgeExcludePrune: true
 minimumReleaseAgeExclude:
-  - image-size@2.0.4
-  - webpack@5.111.0
-  - enhanced-resolve@5.25.0
-  - schema-utils@4.5.0
-  - react@19.3.0
-  - react-dom@19.3.0
-  - scheduler@0.28.0
-  - '@types/react@19.3.0'
-  - '@types/react-dom@19.3.0'
-  - tar@7.5.16
-  - '@rsdoctor/core@2.0.0'
-  - '@rsdoctor/client@2.0.0'
-  - '@rsdoctor/shared@2.0.0'
-  - serve-handler@6.1.8
   - pnpm
   - '@pnpm/exe.*'
   - typescript
   - '@rspack/*'
-  - '@crowdin/*'
 
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 525600 # ignore packages published 1+ year ago
+trustPolicyExcludePrune: true
 trustPolicyExclude:
-  - 'tinyexec@1.2.2'
   - '@trickfilm400/rollup-plugin-off-main-thread@3.0.0-pre1'
-  - 'browserslist-load-config@1.0.2'
   - '@vercel/detect-agent@1.2.5' # See https://github.com/vercel/vercel/issues/17408
 
 trustLockfile: false
