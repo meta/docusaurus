@@ -81,7 +81,6 @@
     "update-translations": "pnpm --filter @docusaurus/theme-translations run update"
   },
   "devDependencies": {
-    "@ai-sdk/react": "catalog:dev",
     "@crowdin/cli": "catalog:dev",
     "@docusaurus/eslint-plugin": "workspace:*",
     "@docusaurus/monorepo-scripts": "workspace:*",
