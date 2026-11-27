@@ -10,13 +10,15 @@ main {
   width: 100%;
   margin: 2rem auto;
   max-width: 800px;
-  /* 'Segoe UI' before system-ui: Windows in Chinese, Japanese or Korean */
-  /* resolves it to a UI font that ignores lang, see https://github.com/meta/docusaurus/pull/13133 */
+  /* No system-ui: it's meant for UI elements, not paragraphs, and Windows in */
+  /* Chinese, Japanese or Korean resolves it to a UI font that ignores lang */
+  /* See https://github.com/meta/docusaurus/issues/11727 */
   /* BlinkMacSystemFont: Chrome on macOS ignores -apple-system */
+  /* 'Ubuntu Sans' and 'Adwaita Sans': the UI fonts of Ubuntu and GNOME 48+ */
   /* stylelint-disable-next-line font-family-name-quotes */
   font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, Roboto, Ubuntu,
-    Cantarell, 'Noto Sans', sans-serif;
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Ubuntu Sans',
+    Ubuntu, 'Adwaita Sans', Cantarell, 'Noto Sans', sans-serif;
 }
 
 .info {
