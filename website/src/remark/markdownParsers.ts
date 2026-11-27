@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {parser as satteriParser} from './satteriParser';
 import {parser as talataParser} from './talataParser';
 import type {MarkdownParser} from '@docusaurus/types';
 
@@ -14,6 +15,7 @@ import type {MarkdownParser} from '@docusaurus/types';
 export const MarkdownParsers: {[name: string]: MarkdownParser | undefined} = {
   micromark: undefined,
   talata: talataParser,
+  satteri: satteriParser,
 };
 
 const DefaultMarkdownParser = 'talata';

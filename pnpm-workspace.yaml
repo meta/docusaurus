@@ -138,6 +138,7 @@ catalog:
   resolve-pathname: ^3.0.0
   rtlcss: ^4.3.0
   schema-dts: ^2.1.0
+  satteri: ^0.11.7
   semver: ^7.8.5
   serve-handler: ^6.1.8
   sharp: ^0.35.1
