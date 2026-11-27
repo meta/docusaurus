@@ -139,15 +139,17 @@
   --ifm-font-color-base: var(--ifm-color-content);
   --ifm-font-color-base-inverse: var(--ifm-color-content-inverse);
   --ifm-font-color-secondary: var(--ifm-color-content-secondary);
-  /* No system-ui: Windows in Chinese, Japanese or Korean resolves it to a CJK */
-  /* UI font that ignores lang, see https://github.com/meta/docusaurus/pull/13133 */
+  /* Windows fonts come before system-ui: Windows in Chinese, Japanese or Korean */
+  /* resolves it to a UI font that ignores lang, see https://github.com/meta/docusaurus/pull/13133 */
   /* BlinkMacSystemFont: Chrome on macOS ignores -apple-system */
-  /* Roboto to the first sans-serif were added by postcss-preset-env v7 */
+  /* The fonts from Roboto to the first sans-serif were added by postcss-preset-env v7 */
   /* Removing them could change the per-glyph font fallback */
+  --ifm-font-family-cjk: 'Segoe UI';
   --ifm-font-family-base:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, Cantarell,
-    'Noto Sans', sans-serif, 'Segoe UI', Helvetica, Arial, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', var(--ifm-font-family-cjk),
+    system-ui, Roboto, Ubuntu, Cantarell, 'Noto Sans', sans-serif, 'Segoe UI',
+    Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
   --ifm-font-family-monospace:
     SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
     monospace;
@@ -181,6 +183,23 @@
   --ifm-z-index-dropdown: 100;
   --ifm-z-index-fixed: 200;
   --ifm-z-index-overlay: 400;
+}
+
+/* The Windows font of the page language, the default 'Segoe UI' is a no-op */
+:root:where(:lang(zh)) {
+  --ifm-font-family-cjk: 'Microsoft YaHei';
+}
+
+:root:where(:lang(zh-TW), :lang(zh-HK), :lang(zh-MO), :lang(zh-Hant)) {
+  --ifm-font-family-cjk: 'Microsoft JhengHei';
+}
+
+:root:where(:lang(ja)) {
+  --ifm-font-family-cjk: 'Yu Gothic', Meiryo;
+}
+
+:root:where(:lang(ko)) {
+  --ifm-font-family-cjk: 'Malgun Gothic';
 }
 
 @media (prefers-reduced-motion: reduce) {
