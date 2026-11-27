@@ -19,6 +19,23 @@ html {
   -webkit-tap-highlight-color: transparent;
   text-rendering: optimizelegibility;
   text-size-adjust: 100%;
+  /* Small gap between Chinese or Japanese characters and Latin letters or digits (and Korean in Chrome) */
+  text-autospace: normal;
+}
+
+/* No gap in code, where it would break column alignment and split identifiers */
+:where(pre, code, kbd, samp) {
+  text-autospace: no-autospace;
+}
+
+/* Strict line breaks in Chinese, Japanese and Korean: no line starts with ゃ or ー */
+:where([lang]:lang(zh), [lang]:lang(ja), [lang]:lang(ko)) {
+  line-break: strict;
+}
+
+/* Back to the default in other languages, as WebKit's strict breaks also split Latin words like C++ */
+:where([lang]:not(:lang(zh), :lang(ja), :lang(ko))) {
+  line-break: auto;
 }
 
 body {
