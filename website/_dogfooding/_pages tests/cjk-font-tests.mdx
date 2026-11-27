@@ -39,3 +39,43 @@ The characters 今令直骨角次 exist in every one of these languages, but eac
 ## Without a specific `lang`
 
 This paragraph inherits the page's `lang="en"`, so the browser picks the fallback font of the Han characters on its own: 今令直骨角次 — 文档网站 ドキュメント 문서.
+
+## Spacing between CJK and Latin text
+
+No spaces between the Chinese, Japanese or Korean characters and the Latin letters or digits below. Browsers that support [`text-autospace`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-autospace) add a small gap there, except in code.
+
+<div lang="zh-CN">
+
+**zh-CN**: 使用React和MDX编写文档，从2017年开始支持i18n。
+
+</div>
+
+<div lang="ja">
+
+**ja**: `getRandom関数`は1以上100以下の値を返すReactのコンポーネントです。
+
+```text
+getRandom関数は1以上100以下の値を返す
+```
+
+</div>
+
+<div lang="ko">
+
+**ko**: React로 만든 Docusaurus는 2017년에 공개되었습니다.
+
+</div>
+
+## Line breaks
+
+Each box fits 10 characters. With strict line breaks, no Japanese line starts with a small kana like ャ or with the long vowel mark ー: the character before them moves to the next line too. No line starts with 。, even without strict line breaks.
+
+<div lang="ja" style={{width: '10.3em', border: '1px dashed'}}>
+
+ビルド結果をすぐにキャッシュします
+
+検索結果をすぐにコピーします。
+
+設定を読み込みました。
+
+</div>

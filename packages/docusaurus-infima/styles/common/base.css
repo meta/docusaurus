@@ -19,6 +19,18 @@ html {
   -webkit-tap-highlight-color: transparent;
   text-rendering: optimizelegibility;
   text-size-adjust: 100%;
+  /* Small gap between Chinese, Japanese or Korean characters and Latin letters or digits */
+  text-autospace: normal;
+}
+
+/* No gap in code, where it would break column alignment and split identifiers */
+:where(pre, code, kbd, samp) {
+  text-autospace: no-autospace;
+}
+
+/* Strict line breaks in Chinese, Japanese and Korean: no line starts with ゃ or ー */
+:where([lang]:lang(zh), [lang]:lang(ja), [lang]:lang(ko)) {
+  line-break: strict;
 }
 
 body {
