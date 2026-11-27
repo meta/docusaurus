@@ -329,13 +329,13 @@ export function parseMarkdownContentTitle(
     ? content.replace(titleMatch[0]!, '')
     : content;
   if (regularTitleMatch) {
+    let title = regularTitleMatch
+      .groups!.title!.replace(/^[ \t]+|[ \t]+$/g, '')
+      .replace(/(?:[ \t]+|^)#+$/, '');
+    title = title.replace(/\s*\{#*[\w-]+\}$/, '');
     return {
       content: newContent.trim(),
-      contentTitle: toTextContentTitle(
-        regularTitleMatch
-          .groups!.title!.trim()
-          .replace(/\s*(?:\{#*[\w-]+\}|#+)$/, ''),
-      ).trim(),
+      contentTitle: toTextContentTitle(title).replace(/^[ \t]+|[ \t]+$/g, ''),
     };
   }
   return {

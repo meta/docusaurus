@@ -438,6 +438,128 @@ Lorem Ipsum
     });
   });
 
+  it('parses markdown h1 title preserving trailing hash without preceding whitespace', () => {
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # Learn C#
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # Learn C#
+
+          Lorem Ipsum
+        `,
+      contentTitle: 'Learn C#',
+    });
+
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # F# {#fsharp-intro}
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # F# {#fsharp-intro}
+
+          Lorem Ipsum
+        `,
+      contentTitle: 'F#',
+    });
+
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # Learn C# #
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # Learn C# #
+
+          Lorem Ipsum
+        `,
+      contentTitle: 'Learn C#',
+    });
+
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # Title {#custom-id} #
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # Title {#custom-id} #
+
+          Lorem Ipsum
+        `,
+      contentTitle: 'Title',
+    });
+
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # Learn C\u00A0#
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # Learn C\u00A0#
+
+          Lorem Ipsum
+        `,
+      contentTitle: 'Learn C\u00A0#',
+    });
+
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # \u00A0#
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # \u00A0#
+
+          Lorem Ipsum
+        `,
+      contentTitle: '\u00A0#',
+    });
+
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # Title # #
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # Title # #
+
+          Lorem Ipsum
+        `,
+      contentTitle: 'Title #',
+    });
+
+    expect(
+      parseMarkdownContentTitle(dedent`
+          # Part # {#id}
+
+          Lorem Ipsum
+        `),
+    ).toEqual({
+      content: dedent`
+          # Part # {#id}
+
+          Lorem Ipsum
+        `,
+      contentTitle: 'Part #',
+    });
+  });
+
   it('parses markdown h1 title at the top followed by h2 title', () => {
     const markdown = dedent`
 
