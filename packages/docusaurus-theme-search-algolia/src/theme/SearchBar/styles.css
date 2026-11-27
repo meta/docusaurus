@@ -6,6 +6,7 @@
  */
 
 :root {
+  --docsearch-font-family: var(--ifm-font-family-base);
   --docsearch-primary-color: var(--ifm-color-primary);
   --docsearch-text-color: var(--ifm-font-color-base);
 }
