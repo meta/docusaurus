@@ -107,7 +107,7 @@ const config: KnipConfig = ({
     },
     'admin/scripts': {
       // Run directly with node, or through the package bin commands
-      entry: ['*.js', 'claude/*.js'],
+      entry: ['*.{js,ts}', 'claude/*.js'],
     },
     'packages/create-docusaurus': {
       // Used to test the CLI package
@@ -196,6 +196,8 @@ const config: KnipConfig = ({
         'src/plugins/featureRequests/FeatureRequestsPlugin.js!',
         'src/plugins/featureRequests/FeatureRequestsPage.tsx!',
         'src/sw.js!',
+        // Loaded by admin/scripts/benchmarkMarkdownParsers.ts
+        'src/remark/markdownParsers.ts',
       ],
       ignore: [
         // Intentionally broken files for testing purposes
