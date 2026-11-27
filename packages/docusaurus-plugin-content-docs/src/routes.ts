@@ -183,7 +183,7 @@ type BuildVersionRoutesParam = Omit<BuildAllRoutesParam, 'versions'> & {
 async function buildVersionRoutes(
   param: BuildVersionRoutesParam,
 ): Promise<RouteConfig> {
-  const {version, options, actions, aliasedSource} = param;
+  const {version, options, actions} = param;
 
   async function buildVersionSubRoutes() {
     const [sidebarRoute, tagsRoutes] = await Promise.all([
@@ -197,11 +197,10 @@ async function buildVersionRoutes(
   // The version metadata is provided to the whole version subtree through the
   // route context, see useDocsVersion()
   async function createVersionMetadataModule(): Promise<string> {
-    const modulePath = await actions.createData(
+    return actions.createData(
       `version-${docuHash(version.versionName)}.json`,
       toVersionMetadataProp(options.id, version),
     );
-    return aliasedSource(modulePath);
   }
 
   async function doBuildVersionRoutes(): Promise<RouteConfig> {
@@ -264,7 +263,6 @@ type CreateAllRoutesParam = {
   versions: FullVersion[];
   options: PluginOptions;
   actions: PluginContentLoadedActions;
-  aliasedSource: (str: string) => string;
 };
 
 export async function createAllRoutes(
