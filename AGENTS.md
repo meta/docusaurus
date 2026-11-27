@@ -115,6 +115,8 @@ Before pushing, run `pnpm lint`, `pnpm typecheck:tests` (and `pnpm --filter webs
 
 The exports of package entry points (`package.json` `main` and `exports`) are public API, even when undocumented (see the comments in `packages/docusaurus-theme-common/src/index.ts`) or unused by the monorepo: third-party sites, plugins and themes use them. Never remove them as dead code: report them, and only remove one when the maintainer explicitly decides to, as a breaking change. `/internal` entry points (like `@docusaurus/theme-common/internal`) have no stability guarantee, but removing their exports is still a breaking change PR.
 
+Changing a theme component that the theme's swizzle config (`getSwizzleConfig()`) doesn't mark as `safe` to eject or wrap is not a breaking change: unsafe components are implementation details (see [What is safe to swizzle?](website/docs/swizzling.mdx#what-is-safe-to-swizzle)). Components missing from the config are unsafe.
+
 To fix CSpell unknown words, don't run `pnpm lint:spelling:fix`: it checks the whole repository and is slow. Instead:
 
 1. Check the files you changed: `pnpm exec cspell --no-progress --show-context <files>`. Ignore files in dot-directories (`.agents/`, `.github/`...): `pnpm lint:spelling` doesn't check them
@@ -160,6 +162,10 @@ After adding or changing `translate()` or `<Translate>` messages in a theme or p
 - For UI changes and bug fixes visible on the site, add a page to one of the plugin folders of `website/_dogfooding/` (like `_pages tests/`, see `dogfooding.config.ts`) so that the deploy preview and the Argos visual tests show it
 - Argos skips some pages (`isBlacklisted()` in `argos/tests/screenshot.spec.ts`, like `/tests/pages/markdown-tests-md`): check it before picking one
 - For a CommonMark repro, import a `_`-prefixed `.md` partial in an existing `.mdx` page of `website/_dogfooding/_docs tests/tests/` (like `_admonitions-md.md` in `admonitions.mdx`). `_` files get no route, while a new docs page changes the sidebar of every dogfood docs page screenshot
+
+### Git worktrees
+
+Start each new worktree from an up-to-date `origin/main`: `git fetch origin main`, then branch from `origin/main`, or merge it when the worktree already exists. Then run `pnpm install` if `pnpm-lock.yaml` changed, and rebuild the packages. Never pull, check out or edit `main` in the main checkout: it can hold the maintainer's local edits.
 
 ## Contributing, Issue and PR Guidelines
 

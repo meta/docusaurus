@@ -27,6 +27,19 @@ Write the description to a uniquely named file in your session scratchpad (like 
 
 After creating the PR, update the deploy preview link in its description with the assigned PR number: `https://deploy-preview-<PR-NUMBER>--docusaurus-2.netlify.app/`. Include links to relevant preview pages in the template's Test links section so that reviewers can easily find them.
 
+## Pushing to a PR
+
+Before pushing new commits to a PR, bring the branch up to date: pull the commits others pushed to it (like the lint autofix commit), merge a freshly fetched `origin/main`, and resolve the conflicts if any. For a stacked PR, merge its lower PR branch instead.
+
+```bash
+git pull --rebase
+git fetch origin main
+git merge origin/main
+git push
+```
+
+Merge instead of rebasing a pushed branch: PRs are squash-merged, so merge commits don't reach `main`, and the push needs no force. A force push breaks the other checkouts of the branch and the "changes since your last review" view.
+
 ## Scope and stacked PRs
 
 - Keep each PR strictly minimal: every hunk must be required by the PR. Put unrelated refactors and cleanups in another PR, stacked on top.
@@ -54,6 +67,14 @@ gh pr checks <PR-NUMBER> --watch --fail-fast
 ```
 
 It exits with `0` once all checks pass, or non-zero on the first failure. CI takes around 10 minutes, so run it in the background if your agent supports it. If it exits immediately with "no checks reported", the checks haven't registered yet: run it again. On failure, report the failing check and read its logs with `gh run view <RUN-ID> --log-failed`.
+
+When the last commit of a PR branch is a `refactor: apply lint autofix` commit, the `lint-autofix.yml` workflow pushed it, and most CI jobs don't run on it properly (they wait for a manual approval). Pushing new commits on top runs them. If you have none to push, pull it, then push an empty commit so that all the CI jobs run:
+
+```bash
+git pull --ff-only
+git commit --allow-empty -m "chore: trigger CI"
+git push
+```
 
 Known flaky failure: the `Supply Chain - Site Template @canary` job often fails because canary releases are not published atomically. npm scans each package for malware, so they become available at different times. A failure with `ERR_PNPM_NO_MATCHING_VERSION` on a `@docusaurus/*` canary version is this known issue: ignore it. If the job fails for any other reason, in particular a third-party dependency blocked for a vulnerability or malware by one of the workflow's tools (sfw, pnpm…), report it and block the PR merge.
 
