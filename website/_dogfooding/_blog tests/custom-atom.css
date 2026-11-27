@@ -17,8 +17,9 @@ main {
   max-width: 800px;
   /* stylelint-disable-next-line font-family-name-quotes */
   font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Ubuntu Sans',
-    Ubuntu, 'Adwaita Sans', Cantarell, 'Noto Sans', sans-serif;
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Ubuntu Sans', Ubuntu,
+    'Adwaita Sans', Cantarell, 'Noto Sans', Roboto, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 .info {
