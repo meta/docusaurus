@@ -47,10 +47,15 @@ jobs:
 
       # Playwright is a dependency of the argos workspace package
       # With the pnpm isolated nodeLinker, its binary isn't available at the root
+      # Replaces the CJK fonts of Playwright, which render zh, ja and ko with the same glyph shapes,
+      # with Noto CJK, which has the regional shapes of each, see /tests/pages/cjk-font-tests
       # Installed in the background, concurrently with the website build
-      - name: Install Playwright browsers
+      - name: Install Playwright browsers and CJK fonts
         id: playwright-install
-        run: pnpm --filter argos exec playwright install --with-deps chromium
+        run: |
+          pnpm --filter argos exec playwright install --with-deps chromium
+          sudo apt-get install --yes --no-install-recommends fonts-noto-cjk
+          sudo apt-get remove --yes fonts-wqy-zenhei fonts-ipafont-gothic
         background: true
 
       - name: Build website for screenshots
