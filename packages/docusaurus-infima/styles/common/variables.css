@@ -144,19 +144,19 @@
   /* -apple-system: Safari and Firefox on macOS and iOS */
   /* BlinkMacSystemFont: Chrome and Edge on macOS, which ignore -apple-system */
   /* 'Segoe UI': Windows */
-  /* Roboto: Android and ChromeOS */
   /* 'Ubuntu Sans': Ubuntu 24.04+ */
   /* Ubuntu: older Ubuntu */
   /* 'Adwaita Sans': GNOME 48+, like Fedora 42+ */
   /* Cantarell: older GNOME */
   /* 'Noto Sans': KDE and other Linux desktops */
+  /* Roboto: Android and ChromeOS, after the Linux desktop fonts, as Linux can also have it */
   /* sans-serif: the browser default */
   /* 'Apple Color Emoji': macOS and iOS emojis */
   /* 'Segoe UI Emoji': Windows emojis */
   /* 'Segoe UI Symbol': Windows symbols */
   --ifm-font-family-base:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Ubuntu Sans',
-    Ubuntu, 'Adwaita Sans', Cantarell, 'Noto Sans', sans-serif,
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Ubuntu Sans', Ubuntu,
+    'Adwaita Sans', Cantarell, 'Noto Sans', Roboto, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   /* ui-monospace: SF Mono in Safari */
   /* SFMono-Regular: SF Mono, when installed */
