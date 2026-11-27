@@ -57,6 +57,22 @@ jobs:
         run: pnpm argos:build
       - name: Wait for Playwright browsers
         wait: playwright-install
+        # Chromium resolves sans-serif to Arial, that fontconfig replaces with Liberation Sans
+        # DejaVu Sans keeps the font that system-ui gave, see https://github.com/meta/docusaurus/pull/13148
+      - name: Render sans-serif with DejaVu Sans
+        run: |
+          mkdir -p ~/.config/fontconfig
+          cat > ~/.config/fontconfig/fonts.conf <<'EOF'
+          <?xml version="1.0"?>
+          <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+          <fontconfig>
+            <match target="pattern">
+              <test name="family"><string>Arial</string></test>
+              <edit name="family" mode="assign" binding="strong"><string>DejaVu Sans</string></edit>
+            </match>
+          </fontconfig>
+          EOF
+          fc-match Arial
       - name: Take and upload Argos screenshots
         run: pnpm argos:screenshot
 
