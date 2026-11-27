@@ -10,6 +10,7 @@ import npm2yarn from '@docusaurus/remark-plugin-npm2yarn';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import configTabs from './src/remark/configTabs';
+import {getMarkdownParser} from './src/remark/markdownParsers';
 
 import versions from './versions.json';
 import VersionsArchived from './versionsArchived.json';
@@ -217,6 +218,7 @@ export default async function createConfigAsync() {
     },
     markdown: {
       format: 'detect',
+      parser: getMarkdownParser(),
       mermaid: true,
       hooks: {
         onBrokenMarkdownLinks: 'warn',
