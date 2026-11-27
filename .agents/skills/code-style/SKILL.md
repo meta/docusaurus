@@ -38,7 +38,7 @@ async function main() {
 
 ## Comments
 
-- Unnecessary comments are harmful: spare them. Don't comment code that is self-explanatory, explicit or covered by a unit test: when the names, the signature or the code already say it (like an explicit option or attribute name), add no comment.
+- Unnecessary comments are harmful: spare them. Don't comment what is self-explanatory, explicit or covered by a unit test: when the names, the signature, the code or a test already say it (like an explicit option or attribute name), add no comment.
 - Comment the code that is weird, unexpected or surprising (a workaround, a non-obvious constraint, an order that matters): that's where readers need one.
 - Keep comments terse, one line when possible, phrased as concisely as possible. Point to the details instead of writing them out: link the issue, PR, documentation or upstream bug that explains them.
 - Never explain a third-party feature (a tool setting, a library API…) in a comment: link its documentation instead, and only comment a usage of it that is non-obvious.
