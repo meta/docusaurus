@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "با ما در میان بگذارید.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "آیا اطمینان دارید این جستجو باید نتیجه ای داشته باشد؟",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "جستجو پیشنهادی برای",
-  "theme.SearchModal.placeholder": "جستجوی مستندات",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Gi oss beskjed.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Tenker du at denne spørringen bør gi resultater?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Prøv å søke etter",
-  "theme.SearchModal.placeholder": "Søk i dokumenter",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Faites-le nous savoir.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Vous pensez que cette requête doit donner des résultats ?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Essayez de chercher",
-  "theme.SearchModal.placeholder": "Rechercher des docs",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Demander à l'IA : ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Retour à la recherche par mots-clés",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Retour à la recherche par mots-clés",

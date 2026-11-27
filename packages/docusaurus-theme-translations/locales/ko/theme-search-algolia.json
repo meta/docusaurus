@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "알려주시기 바랍니다.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "검색 결과가 없는 것이 오류라고 생각되십니까?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "다른 추천 검색어",
-  "theme.SearchModal.placeholder": "문서 검색",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "AI에게 질문: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "키워드 검색으로 돌아가기",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "키워드 검색으로 돌아가기",

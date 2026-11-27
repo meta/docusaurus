@@ -58,8 +58,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsText___DESCRIPTION": "The text for reporting missing results",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Try searching for",
   "theme.SearchModal.noResultsScreen.suggestedQueryText___DESCRIPTION": "The text for suggested query",
-  "theme.SearchModal.placeholder": "Search docs",
-  "theme.SearchModal.placeholder___DESCRIPTION": "The placeholder of the input of the DocSearch pop-up modal",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.resultsScreen.askAiPlaceholder___DESCRIPTION": "The placeholder text for Ask AI input",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",

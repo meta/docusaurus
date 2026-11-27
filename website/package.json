@@ -38,7 +38,6 @@
   },
   "dependencies": {
     "@crowdin/crowdin-api-client": "catalog:",
-    "@docsearch/react": "catalog:",
     "@docusaurus/core": "workspace:*",
     "@docusaurus/fs": "workspace:*",
     "@docusaurus/glob": "workspace:*",
@@ -96,7 +95,6 @@
     "mdast-util-mdx": "catalog:",
     "prismjs": "catalog:",
     "rimraf": "catalog:dev",
-    "search-insights": "catalog:dev",
     "unified": "catalog:",
     "utility-types": "catalog:"
   }

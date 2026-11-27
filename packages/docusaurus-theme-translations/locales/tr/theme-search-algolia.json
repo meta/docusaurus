@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Bilmemize izin ver.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Bu sorgunun sonuç döndürmesi gerektiğine inanıyor musunuz?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Aramayı deneyin",
-  "theme.SearchModal.placeholder": "Dokümanlarda ara",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

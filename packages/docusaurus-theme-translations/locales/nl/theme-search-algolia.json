@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Laat het ons weten.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Zou deze zoekopdracht resultaten moeten opleveren?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Probeer om te zoeken op",
-  "theme.SearchModal.placeholder": "Doorzoek de documentatie",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

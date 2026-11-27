@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Кажете ни.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Мислите дека ова барање треба да врати резултати?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Обидете се да пребарате",
-  "theme.SearchModal.placeholder": "Пребарај документација",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Прашај ја ВИ: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Назад кон пребарување по клучни зборови",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Назад кон пребарување по клучни зборови",

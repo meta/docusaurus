@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Hãy để chúng tôi biết.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Tin rằng truy vấn này sẽ trả về kết quả?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Thử tìm kiếm",
-  "theme.SearchModal.placeholder": "Tìm kiếm tài liệu",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Ask AI: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Back to keyword search",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Back to keyword search",

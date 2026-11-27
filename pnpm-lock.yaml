@@ -781,9 +781,6 @@ catalogs:
     rimraf:
       specifier: ^6.1.3
       version: 6.1.3
-    search-insights:
-      specifier: ^2.17.3
-      version: 2.17.3
     stylelint-config-standard:
       specifier: ^40.0.0
       version: 40.0.0
@@ -2866,9 +2863,6 @@ importers:
       '@crowdin/crowdin-api-client':
         specifier: 'catalog:'
         version: 1.57.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
-      '@docsearch/react':
-        specifier: 'catalog:'
-        version: 4.7.0(@algolia/client-search@5.57.0)(@types/react@19.3.0)(algoliasearch@5.57.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(search-insights@2.17.3)
       '@docusaurus/core':
         specifier: workspace:*
         version: link:../packages/docusaurus
@@ -3026,9 +3020,6 @@ importers:
       rimraf:
         specifier: catalog:dev
         version: 6.1.3
-      search-insights:
-        specifier: catalog:dev
-        version: 2.17.3
       unified:
         specifier: 'catalog:'
         version: 11.0.5
