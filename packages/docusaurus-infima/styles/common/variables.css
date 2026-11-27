@@ -139,7 +139,8 @@
   --ifm-font-color-base: var(--ifm-color-content);
   --ifm-font-color-base-inverse: var(--ifm-color-content-inverse);
   --ifm-font-color-secondary: var(--ifm-color-content-secondary);
-  /* system-ui: the font of the operating system UI */
+  /* No system-ui: Windows in Chinese, Japanese or Korean resolves it to a UI font that ignores lang */
+  /* Details: https://github.com/meta/docusaurus/pull/13148 */
   /* -apple-system: Safari and Firefox on macOS and iOS */
   /* BlinkMacSystemFont: Chrome and Edge on macOS, which ignore -apple-system */
   /* 'Segoe UI': Windows */
@@ -156,8 +157,8 @@
   /* 'Segoe UI Symbol': Windows symbols */
   /* 'Noto Color Emoji': Linux emojis */
   --ifm-font-family-base:
-    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Ubuntu Sans',
-    Ubuntu, 'Adwaita Sans', Cantarell, 'Noto Sans', Roboto, Arial, sans-serif,
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Ubuntu Sans', Ubuntu,
+    'Adwaita Sans', Cantarell, 'Noto Sans', Roboto, Arial, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   /* ui-monospace: SF Mono in Safari */
   /* SFMono-Regular: SF Mono, when installed */
