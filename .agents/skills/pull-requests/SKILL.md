@@ -40,6 +40,9 @@ git push
 
 Merge instead of rebasing a pushed branch: PRs are squash-merged, so merge commits don't reach `main`, and the push needs no force. A force push breaks the other checkouts of the branch and the "changes since your last review" view.
 
+- When asked to update a PR, bring it up to date without a force push.
+- When asked to rebase a pushed branch, don't rebase yet: suggest a merge instead and ask for a confirmation. The request most likely means "update the PR".
+
 ## Scope and stacked PRs
 
 - Keep each PR strictly minimal: every hunk must be required by the PR. Put unrelated refactors and cleanups in another PR, stacked on top.
