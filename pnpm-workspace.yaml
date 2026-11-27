@@ -262,6 +262,7 @@ minimumReleaseAgeExclude:
   - '@rsdoctor/shared@2.0.0'
   - serve-handler@6.1.8
   - pnpm
+  - '@pnpm/exe.*'
   - typescript
   - '@rspack/*'
   - '@crowdin/*'
