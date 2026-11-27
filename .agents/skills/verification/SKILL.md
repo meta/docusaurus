@@ -33,4 +33,4 @@ When a PR changes how pages render, post a visual diff in it. It matters most wh
 
 Take the screenshots with a local headless browser (like Playwright), never with the maintainer's own browser (Claude in Chrome): it disrupts their usage. For other OSes like Windows and Linux, take them with a temporary workflow (see [Other platforms](#other-platforms)), then download its artifacts to process them locally.
 
-Post the images in a PR comment, uploaded to GitHub like any comment image: they don't need to be artifacts. Like Argos, crop them and show them in a before/after table when it makes sense. When the diff isn't obvious, highlight it or comment it.
+Post the images inline in a PR comment, as native GitHub comment images: not links, artifacts or committed files. GitHub has no API to upload them, so this is the only exception: upload them through the maintainer's browser, in a new tab. Like Argos, crop them and show them in a before/after table when it makes sense. When the diff isn't obvious, highlight it or comment it.
