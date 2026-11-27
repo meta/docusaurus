@@ -5,6 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+// Adds the Algolia fields to the @docusaurus/types UserThemeConfig interface
+/// <reference types="@docusaurus/theme-search-algolia" preserve="true" />
+
 import type {Options as DocsPluginOptions} from '@docusaurus/plugin-content-docs';
 import type {Options as BlogPluginOptions} from '@docusaurus/plugin-content-blog';
 import type {Options as PagesPluginOptions} from '@docusaurus/plugin-content-pages';
@@ -14,9 +17,8 @@ import type {Options as GtagPluginOptions} from '@docusaurus/plugin-google-gtag'
 import type {Options as GTMPluginOptions} from '@docusaurus/plugin-google-tag-manager';
 import type {Options as CssCascadeLayersPluginOptions} from '@docusaurus/plugin-css-cascade-layers';
 import type {Options as ThemeOptions} from '@docusaurus/theme-classic';
-import type {ThemeConfig as BaseThemeConfig} from '@docusaurus/types';
-import type {UserThemeConfig as ClassicThemeConfig} from '@docusaurus/theme-common';
-import type {UserThemeConfig as AlgoliaThemeConfig} from '@docusaurus/theme-search-algolia';
+// Importing from theme-common also adds the classic theme fields
+import type {UserThemeConfig} from '@docusaurus/theme-common';
 
 export type Options = {
   /**
@@ -49,6 +51,5 @@ export type Options = {
   cssCascadeLayers?: false | CssCascadeLayersPluginOptions;
 };
 
-export type ThemeConfig = BaseThemeConfig &
-  ClassicThemeConfig &
-  AlgoliaThemeConfig;
+// Theme config fields of all the themes of this preset, including Algolia's
+export type ThemeConfig = UserThemeConfig;
