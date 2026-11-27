@@ -139,12 +139,35 @@
   --ifm-font-color-base: var(--ifm-color-content);
   --ifm-font-color-base-inverse: var(--ifm-color-content-inverse);
   --ifm-font-color-secondary: var(--ifm-color-content-secondary);
-  /* The fonts after system-ui were added by postcss-preset-env v7 */
+  /* system-ui: the font of the operating system UI */
+  /* The fonts after system-ui up to the first sans-serif were added by postcss-preset-env v7 */
   /* Removing them could change the per-glyph font fallback */
+  /* -apple-system: Safari and Firefox on macOS and iOS */
+  /* 'Segoe UI': Windows */
+  /* Roboto: Android and ChromeOS */
+  /* Ubuntu: Ubuntu */
+  /* Cantarell: GNOME */
+  /* 'Noto Sans': KDE and other Linux desktops */
+  /* sans-serif: the browser default */
+  /* BlinkMacSystemFont: Chrome and Edge on macOS */
+  /* 'Segoe UI': Windows */
+  /* Helvetica: macOS and iOS */
+  /* Arial: Windows and macOS */
+  /* sans-serif: the browser default */
+  /* 'Apple Color Emoji': macOS and iOS emojis */
+  /* 'Segoe UI Emoji': Windows emojis */
+  /* 'Segoe UI Symbol': Windows symbols */
   --ifm-font-family-base:
     system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell,
     'Noto Sans', sans-serif, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  /* SFMono-Regular: SF Mono, when installed */
+  /* Menlo: macOS */
+  /* Monaco: older macOS */
+  /* Consolas: Windows */
+  /* 'Liberation Mono': Linux */
+  /* 'Courier New': Windows and macOS */
+  /* monospace: the browser default */
   --ifm-font-family-monospace:
     SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
     monospace;
