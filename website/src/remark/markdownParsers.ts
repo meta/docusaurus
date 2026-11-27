@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {parser as talataParser} from './talataParser';
 import type {MarkdownParser} from '@docusaurus/types';
 
 // The Markdown parsers that the website can use, DOCUSAURUS_MARKDOWN_PARSER
@@ -12,9 +13,10 @@ import type {MarkdownParser} from '@docusaurus/types';
 // micromark is remark-parse, the default parser of Docusaurus
 export const MarkdownParsers: {[name: string]: MarkdownParser | undefined} = {
   micromark: undefined,
+  talata: talataParser,
 };
 
-const DefaultMarkdownParser = 'micromark';
+const DefaultMarkdownParser = 'talata';
 
 export function getMarkdownParser(): MarkdownParser | undefined {
   const name = process.env.DOCUSAURUS_MARKDOWN_PARSER ?? DefaultMarkdownParser;
