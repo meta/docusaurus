@@ -158,6 +158,7 @@
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Ubuntu Sans',
     Ubuntu, 'Adwaita Sans', Cantarell, 'Noto Sans', sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  /* ui-monospace: SF Mono in Safari */
   /* SFMono-Regular: SF Mono, when installed */
   /* Menlo: macOS */
   /* Monaco: older macOS */
@@ -166,8 +167,8 @@
   /* 'Courier New': Windows and macOS */
   /* monospace: the browser default */
   --ifm-font-family-monospace:
-    SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-    monospace;
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
   --ifm-font-size-base: 100%;
 
   --ifm-font-weight-light: 300;
