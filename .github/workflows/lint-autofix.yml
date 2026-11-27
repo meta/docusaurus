@@ -46,6 +46,7 @@ jobs:
 
       # The setup install already pruned the stale pnpm-workspace.yaml exclusions
       # Install again, or the next pnpm commands fail verifyDepsBeforeRun
+      # See https://github.com/pnpm/pnpm/issues/18498
       - name: AutoFix pnpm exclusions
         run: pnpm install --frozen-lockfile --ignore-scripts
 
