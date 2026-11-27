@@ -63,3 +63,5 @@ When adding such code, always add a `TODO Docusaurus v<NextVersion>` comment nex
 ```ts
 // TODO Docusaurus v5: remove this migration error
 ```
+
+While the major version of `lerna.json` has no stable release yet (`npm view @docusaurus/core version` is still on the previous major), breaking changes are allowed: ship the clean change. Don't add fallbacks, shims or legacy code paths that only keep the behavior of older versions working, even marked with a `TODO Docusaurus v<NextVersion>` comment. Only add such code when a maintainer asks for it.
