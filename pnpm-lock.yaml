@@ -2015,9 +2015,6 @@ importers:
       '@docusaurus/utils-validation':
         specifier: workspace:*
         version: link:../docusaurus-utils-validation
-      clsx:
-        specifier: 'catalog:'
-        version: 2.1.1
       react:
         specifier: 'catalog:'
         version: 19.3.0

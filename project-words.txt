@@ -118,6 +118,7 @@ héllô
 IANAD
 Infima
 infima
+Infima's
 infimum
 inlines
 interactiveness
