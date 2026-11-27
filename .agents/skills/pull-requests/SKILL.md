@@ -55,7 +55,7 @@ When a Dependabot PR needs more than the version bump to pass CI, don't push to 
 ## Labels
 
 - Give each PR exactly one `pr: <type>` label, picked from the existing labels (`gh label list --search "pr:"`). It categorizes the PR in the changelog. Use `pr: ignore` for changes too insignificant to appear in a user-facing changelog.
-- Before calling a change breaking (`pr: breaking change` label, `## Breaking Changes` section), check what it breaks. Changes that only affect theme components unsafe to swizzle (not marked safe for the swizzle action in the theme's `getSwizzleConfig()`, see [What is safe to swizzle?](../../../website/docs/swizzling.mdx#what-is-safe-to-swizzle)), or the behavior of `/internal` entry points (like `@docusaurus/theme-common/internal`), are not breaking. Removing exports, even from `/internal` entry points, is breaking (see [`AGENTS.md`](../../../AGENTS.md)).
+- Before calling a change breaking (`pr: breaking change` label, `## Breaking Changes` section), check what it breaks against the public API rules of [`AGENTS.md`](../../../AGENTS.md#linting--formatting): changes that only affect unsafe theme components or the behavior of `/internal` entry points are not breaking.
 - If the PR can affect visual rendering (HTML markup, CSS, theme components…), also add the `Argos` label. It runs the visual regression tests (see `.github/workflows/argos.yml`).
 
 ## CI checks
