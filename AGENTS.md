@@ -113,7 +113,7 @@ Update Vitest failing snapshots with the `-u` option. Do not blindly update snap
 
 Before pushing, run `pnpm lint`, `pnpm typecheck:tests` (and `pnpm --filter website typecheck` for website or package changes, after building the changed packages) and the tests of the code you changed, as CI does.
 
-The exports of package entry points (`package.json` `main` and `exports`) are public API, even when undocumented (see the comments in `packages/docusaurus-theme-common/src/index.ts`) or unused by the monorepo: third-party sites, plugins and themes use them. Never remove them as dead code: report them, and only remove one when the maintainer explicitly decides to, as a breaking change. `/internal` entry points (like `@docusaurus/theme-common/internal`) have no stability guarantee, but removing their exports is still a breaking change PR.
+The exports of package entry points (`package.json` `main` and `exports`) are public API, even when undocumented (see the comments in `packages/docusaurus-theme-common/src/index.ts`) or unused by the monorepo: third-party sites, plugins and themes use them. Never remove them as dead code: report them, and only remove one when the maintainer explicitly decides to, as a breaking change. `/internal` entry points (like `@docusaurus/theme-common/internal`) have no stability guarantee: changing their behavior is not a breaking change, but removing their exports is still a breaking change PR.
 
 Changing a theme component that the theme's swizzle config (`getSwizzleConfig()`) doesn't mark as `safe` to eject or wrap is not a breaking change: unsafe components are implementation details (see [What is safe to swizzle?](website/docs/swizzling.mdx#what-is-safe-to-swizzle)). Components missing from the config are unsafe.
 
