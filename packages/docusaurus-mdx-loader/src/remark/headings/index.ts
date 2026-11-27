@@ -61,6 +61,15 @@ function getCommentHeadingId(heading: Heading): string | undefined {
     }
   }
 
+  // HTML comment parsed by @slorber/remark-comment when mdx1Compat.comments is enabled
+  if ((lastChild?.type as string) === 'comment') {
+    const commentContent = (lastChild as unknown as {commentValue?: string})
+      .commentValue;
+    if (commentContent) {
+      return getCommentContentHeadingId(commentContent);
+    }
+  }
+
   return undefined;
 }
 
@@ -80,28 +89,66 @@ function extractCommentId(heading: Heading) {
   return undefined;
 }
 
+// Recursively finds all text-bearing leaf nodes contributing to visible heading text
+function findAllTextNodes(parent: {children?: unknown[]}): {
+  node: {value: string};
+  parent: {children: unknown[]};
+  index: number;
+}[] {
+  const result: {
+    node: {value: string};
+    parent: {children: unknown[]};
+    index: number;
+  }[] = [];
+
+  function walk(node: {children?: unknown[]}) {
+    if (!node.children || !Array.isArray(node.children)) {
+      return;
+    }
+    for (let i = 0; i < node.children.length; i++) {
+      const child = node.children[i] as {
+        type: string;
+        value?: string;
+        children?: unknown[];
+      };
+      if (['html', 'jsx', 'comment'].includes(child.type)) {
+        continue;
+      }
+      if (typeof child.value === 'string') {
+        result.push({
+          node: child as {value: string},
+          parent: node as {children: unknown[]},
+          index: i,
+        });
+      } else if (child.children) {
+        walk(child);
+      }
+    }
+  }
+
+  walk(parent);
+  return result;
+}
+
 // Try to find an explicit id in the heading text (classic {#id} syntax)
 function extractClassicSyntaxHeadingId(heading: Heading, headingText: string) {
   const parsedHeading = parseMarkdownHeadingId(headingText, 'classic');
   // Remove the heading text from its id (legacy syntax)
   if (parsedHeading.id) {
-    // When there's an id, it is always in the last child node
-    const lastNode = heading.children.at(-1) as Text;
-    if (heading.children.length > 1) {
-      const lastNodeText = parseMarkdownHeadingId(
-        lastNode.value,
-        'classic',
-      ).text;
-      // When the last part contains text + id, remove the id
-      if (lastNodeText) {
-        lastNode.value = lastNodeText;
+    const suffixLength = headingText.length - parsedHeading.text.length;
+    if (suffixLength > 0) {
+      const textNodes = findAllTextNodes(heading);
+      let remaining = suffixLength;
+      for (let i = textNodes.length - 1; i >= 0 && remaining > 0; i--) {
+        const {node, parent, index} = textNodes[i]!;
+        if (node.value.length <= remaining) {
+          remaining -= node.value.length;
+          parent.children.splice(index, 1);
+        } else {
+          node.value = node.value.slice(0, node.value.length - remaining);
+          remaining = 0;
+        }
       }
-      // When last part contains only the id: completely remove that node
-      else {
-        heading.children.pop();
-      }
-    } else {
-      lastNode.value = parsedHeading.text;
     }
     return parsedHeading.id;
   }
@@ -114,7 +161,7 @@ const plugin: Plugin<PluginOptions[], Root> = function plugin({
   return (root) => {
     function getHeadingText(heading: Heading) {
       const headingTextNodes = heading.children.filter(
-        ({type}) => !['html', 'jsx'].includes(type),
+        ({type}) => !['html', 'jsx', 'comment'].includes(type),
       );
       return toString(headingTextNodes.length > 0 ? headingTextNodes : heading);
     }
