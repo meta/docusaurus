@@ -10,8 +10,12 @@ main {
   width: 100%;
   margin: 2rem auto;
   max-width: 800px;
+  /* Same stack as --ifm-font-family-base in @docusaurus/infima */
   /* stylelint-disable-next-line font-family-name-quotes */
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Ubuntu Sans', Ubuntu,
+    'Adwaita Sans', Cantarell, 'Noto Sans', Roboto, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 .info {
