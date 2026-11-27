@@ -90,8 +90,6 @@ declare module '@theme/SearchBar' {
 declare module '@theme/SearchTranslations' {
   import type {DocSearchTranslations} from '@docsearch/react';
 
-  const translations: DocSearchTranslations & {
-    placeholder: string;
-  };
+  const translations: DocSearchTranslations;
   export default translations;
 }

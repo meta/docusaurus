@@ -31,7 +31,6 @@ import type {
   DocSearchTransformClient,
   DocSearchHit,
   DocSearchTranslations,
-  UseDocSearchKeyboardEventsProps,
 } from '@docsearch/react';
 
 import type {AutocompleteState} from '@algolia/autocomplete-core';
@@ -40,24 +39,15 @@ import type {ThemeConfigAlgolia} from '@docusaurus/theme-search-algolia';
 
 type DocSearchProps = Omit<
   DocSearchModalProps,
-  'onClose' | 'initialScrollY'
+  'onClose' | 'initialScrollY' | 'indexName' | 'askAi' | 'translations'
 > & {
+  indexName: string;
   contextualSearch?: string;
   externalUrlRegex?: string;
   searchPagePath: boolean | string;
-  askAi?: Exclude<
-    (DocSearchModalProps & {askAi: unknown})['askAi'],
-    string | undefined
-  >;
-};
-
-// extend DocSearchProps for v4 features
-// TODO Docusaurus v4: cleanup after we drop support for DocSearch v3
-interface DocSearchV4Props extends Omit<DocSearchProps, 'askAi'> {
-  indexName: string;
   askAi?: ThemeConfigAlgolia['askAi'];
   translations?: DocSearchTranslations;
-}
+};
 
 let DocSearchModal: typeof DocSearchModalType | null = null;
 
@@ -189,9 +179,9 @@ function useSearchParameters({
   };
 }
 
-function DocSearch({externalUrlRegex, ...props}: DocSearchV4Props) {
+function DocSearch({externalUrlRegex, ...props}: DocSearchProps) {
   const navigator = useNavigator({externalUrlRegex});
-  const searchParameters = useSearchParameters({...props} as DocSearchProps);
+  const searchParameters = useSearchParameters(props);
   const transformItems = useTransformItems(props);
   const transformSearchClient = useTransformSearchClient();
 
@@ -249,11 +239,7 @@ function DocSearch({externalUrlRegex, ...props}: DocSearchV4Props) {
     searchButtonRef,
     isAskAiActive: isAskAiActive ?? false,
     onAskAiToggle: onAskAiToggle ?? (() => {}),
-  } satisfies UseDocSearchKeyboardEventsProps & {
-    // TODO Docusaurus v4: cleanup after we drop support for DocSearch v3
-    isAskAiActive: boolean;
-    onAskAiToggle: (askAiToggle: boolean) => void;
-  } as UseDocSearchKeyboardEventsProps);
+  });
 
   return (
     <>
@@ -309,11 +295,11 @@ function DocSearch({externalUrlRegex, ...props}: DocSearchV4Props) {
   );
 }
 
-export default function SearchBar(props: Partial<DocSearchV4Props>): ReactNode {
+export default function SearchBar(props: Partial<DocSearchProps>): ReactNode {
   const {siteConfig} = useDocusaurusContext();
 
-  const docSearchProps: DocSearchV4Props = {
-    ...(siteConfig.themeConfig.algolia as DocSearchV4Props),
+  const docSearchProps: DocSearchProps = {
+    ...(siteConfig.themeConfig.algolia as DocSearchProps),
     // Let props override theme config
     // See https://github.com/meta/docusaurus/pull/11581
     ...props,

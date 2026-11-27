@@ -6,7 +6,6 @@
  */
 
 import {useCallback, useMemo, useState} from 'react';
-import {version as docsearchVersion} from '@docsearch/react/version';
 import translations from '@theme/SearchTranslations';
 import {useAlgoliaContextualFacetFiltersIfEnabled} from './useAlgoliaContextualFacetFilters';
 import {mergeFacetFilters} from './utils';
@@ -18,7 +17,6 @@ import type {
 import type {FacetFilters} from 'algoliasearch/lite';
 
 // The minimal props the hook needs from DocSearch v4 props
-// TODO Docusaurus v4: cleanup after we drop support for DocSearch v3
 interface DocSearchV4PropsLite {
   indexName: string;
   apiKey: string;
@@ -28,8 +26,6 @@ interface DocSearchV4PropsLite {
   searchParameters?: DocSearchModalProps['searchParameters'];
   askAi?: AskAiConfig;
 }
-
-const isV4 = docsearchVersion.startsWith('4.');
 
 type UseAskAiResult = {
   canHandleAskAi: boolean;
@@ -81,10 +77,9 @@ export function useAlgoliaAskAi(props: DocSearchV4PropsLite): UseAskAiResult {
 
   const canHandleAskAi = Boolean(askAi);
 
-  const currentPlaceholder =
-    isAskAiActive && isV4
-      ? translations.modal?.searchBox?.placeholderTextAskAi
-      : translations.modal?.searchBox?.placeholderText || props?.placeholder;
+  const currentPlaceholder = isAskAiActive
+    ? translations.modal?.searchBox?.placeholderTextAskAi
+    : translations.modal?.searchBox?.placeholderText || props?.placeholder;
 
   const onAskAiToggle = useCallback((askAiToggle: boolean) => {
     setIsAskAiActive(askAiToggle);

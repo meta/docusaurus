@@ -29,7 +29,6 @@
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": "Bizə bildirin.",
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": "Bu sorğunun nəticə qaytarmalı olduğunu düşünürsünüz?",
   "theme.SearchModal.noResultsScreen.suggestedQueryText": "Bunu axtarmağa cəhd edin:",
-  "theme.SearchModal.placeholder": "Sənədlərdə axtar",
   "theme.SearchModal.resultsScreen.askAiPlaceholder": "Süni intellektdən soruş: ",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": "Açar söz axtarışına qayıt",
   "theme.SearchModal.searchBox.backToKeywordSearchButtonText": "Açar söz axtarışına qayıt",
