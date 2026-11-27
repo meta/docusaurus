@@ -10,8 +10,11 @@ main {
   width: 100%;
   margin: 2rem auto;
   max-width: 800px;
+  /* No system-ui, see https://github.com/meta/docusaurus/issues/11727 */
   /* stylelint-disable-next-line font-family-name-quotes */
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, Cantarell,
+    'Noto Sans', sans-serif;
 }
 
 .info {
