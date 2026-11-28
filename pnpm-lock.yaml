@@ -643,6 +643,9 @@ catalogs:
     '@types/cross-spawn':
       specifier: ^6.0.6
       version: 6.0.6
+    '@types/d3-selection':
+      specifier: ^3.0.11
+      version: 3.0.11
     '@types/escape-html':
       specifier: ^1.0.4
       version: 1.0.4
@@ -2576,6 +2579,12 @@ importers:
       '@docusaurus/utils-validation':
         specifier: workspace:*
         version: link:../docusaurus-utils-validation
+      d3-selection:
+        specifier: 'catalog:'
+        version: 3.0.0
+      d3-transition:
+        specifier: 'catalog:'
+        version: 3.0.1(d3-selection@3.0.0)
       mermaid:
         specifier: 'catalog:'
         version: 12.0.0
@@ -2588,6 +2597,10 @@ importers:
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
+    devDependencies:
+      '@types/d3-selection':
+        specifier: 'catalog:dev'
+        version: 3.0.11
 
   packages/docusaurus-theme-search-algolia:
     dependencies:

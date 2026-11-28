@@ -73,6 +73,8 @@ catalog:
   copy-text-to-clipboard: ^3.2.2
   cross-spawn: ^7.0.6
   css-loader: ^7.1.5
+  d3-selection: ^3.0.0
+  d3-transition: ^3.0.1
   detect-port: ^2.1.0
   escape-html: ^1.0.3
   estree-util-value-to-estree: ^3.5.0
@@ -179,6 +181,7 @@ catalogs:
     '@types/babel__traverse': ^7.28.0
     '@types/color': ^3.0.7
     '@types/cross-spawn': ^6.0.6
+    '@types/d3-selection': ^3.0.11
     '@types/escape-html': ^1.0.4
     '@types/estree': ^1.0.9
     '@types/hast': ^3.0.5
