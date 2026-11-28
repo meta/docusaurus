@@ -47,6 +47,38 @@ export function truncate(fileString: string, truncateMarker: RegExp): string {
   return fileString.split(truncateMarker, 1).shift()!;
 }
 
+// Matches the destination of a Markdown inline link/image pointing to a bare
+// in-page anchor, e.g. the "#anchor" in "[text](#anchor)" (an optional title or
+// surrounding <> may follow). Other relative links (./x, ../x, x.md) are
+// intentionally excluded: they are resolved elsewhere in the MDX pipeline.
+const AnchorLinkTargetRegex = /(?<before>\]\(\s*<?)(?<hash>#[^\s)>]+)/g;
+
+/**
+ * In blog paginated list views (tags, authors, "/blog"...), a truncated post
+ * preview is rendered under the list page URL, not under the post permalink.
+ * A relative in-page anchor link such as `[jump](#section)` would then resolve
+ * against the list page (e.g. `/blog#section`) and lead nowhere.
+ *
+ * This rebases bare `#anchor` link targets found in a truncated preview to the
+ * post's own permalink, so those anchors keep pointing at the post in list
+ * views. Only bare anchors are rewritten; other relative links are handled by
+ * the regular MDX link-resolution plugins and are left untouched here.
+ *
+ * Note: like other string-level Markdown transforms in Docusaurus, this is a
+ * best-effort pass and does not skip anchors written inside code spans/blocks.
+ *
+ * See https://github.com/facebook/docusaurus/issues/9731
+ */
+export function resolveTruncatedAnchorLinks(
+  fileString: string,
+  permalink: string,
+): string {
+  return fileString.replace(
+    AnchorLinkTargetRegex,
+    (match, before: string, hash: string) => `${before}${permalink}${hash}`,
+  );
+}
+
 export function reportUntruncatedBlogPosts({
   blogPosts,
   onUntruncatedBlogPosts,
