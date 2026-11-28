@@ -756,4 +756,123 @@ describe('writeMarkdownHeadingId', () => {
       `);
     });
   });
+
+  describe('fenced code blocks', () => {
+    it('does not modify headings inside tilde code blocks', () => {
+      const input = dedent`
+        ## Heading 1
+
+        ~~~markdown
+        ## Heading inside tilde
+        ~~~
+
+        ## Heading 2
+      `;
+      expect(writeMarkdownHeadingId(input)).toBe(dedent`
+        ## Heading 1 {#heading-1}
+
+        ~~~markdown
+        ## Heading inside tilde
+        ~~~
+
+        ## Heading 2 {#heading-2}
+      `);
+    });
+
+    it('does not modify headings inside longer code blocks containing shorter fences', () => {
+      const input = dedent`
+        ## Heading 1
+
+        \`\`\`\`markdown
+        \`\`\`
+        ## Heading inside nested backticks
+        \`\`\`
+        \`\`\`\`
+
+        ## Heading 2
+      `;
+      expect(writeMarkdownHeadingId(input)).toBe(dedent`
+        ## Heading 1 {#heading-1}
+
+        \`\`\`\`markdown
+        \`\`\`
+        ## Heading inside nested backticks
+        \`\`\`
+        \`\`\`\`
+
+        ## Heading 2 {#heading-2}
+      `);
+    });
+
+    it('does not modify headings inside longer tilde code blocks containing shorter tildes', () => {
+      const input = dedent`
+        ## Heading 1
+
+        ~~~~markdown
+        ~~~
+        ## Heading inside nested tildes
+        ~~~
+        ~~~~
+
+        ## Heading 2
+      `;
+      expect(writeMarkdownHeadingId(input)).toBe(dedent`
+        ## Heading 1 {#heading-1}
+
+        ~~~~markdown
+        ~~~
+        ## Heading inside nested tildes
+        ~~~
+        ~~~~
+
+        ## Heading 2 {#heading-2}
+      `);
+    });
+
+    it('does not reserve heading IDs defined inside code blocks', () => {
+      const input = dedent`
+        \`\`\`markdown
+        ## Reusable API {#reusable-api}
+        \`\`\`
+
+        ## Reusable API
+      `;
+      // The heading outside should get {#reusable-api}, not {#reusable-api-1}
+      expect(writeMarkdownHeadingId(input)).toBe(dedent`
+        \`\`\`markdown
+        ## Reusable API {#reusable-api}
+        \`\`\`
+
+        ## Reusable API {#reusable-api}
+      `);
+    });
+
+    it.each([1, 2, 3])(
+      'handles indented code fences with %i spaces',
+      (spaces) => {
+        const indent = ' '.repeat(spaces);
+        const input = [
+          '## Heading 1',
+          '',
+          `${indent}\`\`\``,
+          '## Indented code heading',
+          `${indent}\`\`\``,
+          '',
+          '## Heading 2',
+        ].join('\n');
+
+        const expected = [
+          '## Heading 1 {#heading-1}',
+          '',
+          `${indent}\`\`\``,
+          '## Indented code heading',
+          `${indent}\`\`\``,
+          '',
+          '## Heading 2 {#heading-2}',
+        ].join('\n');
+
+        expect(writeMarkdownHeadingId(input)).toBe(expected);
+      },
+    );
+  });
 });
