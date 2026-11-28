@@ -21,6 +21,11 @@ const defaultMagicComments: MagicCommentConfig[] = [
     line: 'highlight-next-line',
     block: {start: 'highlight-start', end: 'highlight-end'},
   },
+  // New anchor magic comment for issue #11617
+  {
+    className: 'theme-code-block-anchor',
+    anchor: 'my-custom-anchor',
+  },
 ];
 
 describe('parseCodeBlockTitle', () => {
@@ -693,6 +698,62 @@ line
         },
       }
     `);
+  });
+
+  it('parses anchor-next-line directive', () => {
+    expect(
+      parseLines(
+        `// anchor-next-line my-custom-anchor
+aaa
+bbb`,
+        {
+          language: 'js',
+          magicComments: defaultMagicComments,
+        },
+      ),
+    ).toMatchInlineSnapshot(`
+      {
+        "code": "// anchor-next-line my-custom-anchor
+aaa
+bbb",
+        "lineClassNames": {
+          "0": [
+            "theme-code-block-anchor",
+          ],
+        },
+      }
+    );
+  });
+
+  it('parses multiple anchors in different lines', () => {
+    expect(
+      parseLines(
+        `
+// anchor-next-line first-anchor
+first line
+// anchor-second my-second-anchor
+second line
+`,
+        {
+          language: 'js',
+          magicComments: defaultMagicComments,
+        },
+      ),
+    ).toMatchInlineSnapshot(`
+      {
+        "code": "
+      first line
+      second line",
+        "lineClassNames": {
+          "1": [
+            "theme-code-block-anchor",
+          ],
+          "3": [
+            "theme-code-block-anchor",
+          ],
+        },
+      }
+    );
   });
 });
 
